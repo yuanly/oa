@@ -8,7 +8,7 @@
 		center__maskContents:true,
 	});
 
-//删除电话
+	//删除电话
 	$("#tel_tmpl > span").click(function(){
 		$(this).parent().remove();
 	});
@@ -22,6 +22,7 @@
 			$(this).val(yinhang);
 		});
 	});
+	//剥离动态模板。注：剥离必须在以上事件设置之后进行。
 	var telTmpl = $("#tel_tmpl").detach();
 	var zhanghuTmpl = $("#zhanghu_tmpl").detach();
 	
@@ -54,8 +55,9 @@
 			$("#gangwei").val(gangwei);
 		});
 	});
-	//将一个联系人信息设置到详细表单中，并进入编辑状态。支持空联系人（即新增联系人）test
-	function editContact(contact){
+	//将contact对象设置到表单 支持空联系人（即新增联系人）
+	function obj2form(contact){
+		currContact = contact;
 		if(contact._id){
 			$("#bianhao").text(contact._id);
 		}else{
@@ -65,10 +67,8 @@
 		$("#shangjia").val(contact.shangjia);
 		$("#gangwei").val(contact.gangwei);
 		$("#dizhi").val(contact.dizhi);
-		$(".ui-layout-center").find(".handwrite").removeAttr("readonly");
-		$("#beizhu2").hide();
-		$("#taContainer").show();
 		$("#beizhu").val(contact.beizhu);
+		$("#beizhu2").html(contact.beizhu);
 		
 		var jiadianhua = $("#jiadianhua").detach();
 		$("#dianhualiebiao").empty();
@@ -78,6 +78,7 @@
 			$("#dianhualiebiao").append(tel);
 		});
 		$("#dianhualiebiao").append(jiadianhua);
+		
 		
 		var jiazhanghu = $("#jiazhanghu").detach();
 		$("#zhanghuliebiao").empty();
@@ -90,11 +91,38 @@
 		});
 		$("#zhanghuliebiao").append(jiazhanghu);
 		
+	}
+	//进入编辑状态。
+	function editContact(){
+		$(".handwrite").removeAttr("readonly"); 
+		$("#beizhu2").hide();
+		$("#taContainer").show();
 		$("#bianji").hide();
 		$("#tijiao").show();
-	} 
-	editContact({});
-	//编辑器定义  “图片”和“地图”按钮
+	}
+	//进入只读状态 
+	function readonlyContact(){
+		$(".handwrite").Attr("readonly",true); 
+		$("#beizhu2").show();
+		$("#taContainer").hide();
+		$("#bianji").show();
+		$("#tijiao").hide();
+	}
+		//新增联系人
+	$("#newContact").click(function(){
+		obj2form({})
+		editContact();
+	});
+	//将表单的内容转换为contact对象
+	function form2Obj(){
+			var contact = {};
+			contact.mingchen = $("#mingchen").val().trim();
+			contact.dianhua = $("#dianhua").val().trim();
+			contact.dizhi = $("#dizhi").val().trim();
+			contact.beizhu = $("#beizhu").val().trim();
+			return contact;
+	}
+	//编辑器定义 “图片”和“地图”按钮
 		 var plugins={
 	     		map:{
 	     			c:'btnMap',
@@ -134,10 +162,11 @@
 	     			e:function(){}
 	     		}
 	     };
-	    editor = $("#beizhu").xheditor({plugins:plugins,
+	    //编辑器设置
+	    var editor = $("#beizhu").xheditor({plugins:plugins,
 				tools:'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,Removeformat,|,Align,List,Outdent,Indent,|,Link,Unlink,Img,Hr,Emot,Table,|,Preview,Print,Fullscreen,|,map,|,pic,|,attach,|',
 				width:700,height:200});
-
+/*
 	//设置记录点击处理，在模板被剥离前。
 	$(".tr_contact").click(function(){
 		showDetail($(this).data("_id"));
@@ -168,15 +197,7 @@
 	$("#nextPage").click(function(){
 		listContacts($("#pager").data("offset")+1);
 	});
-	//新增商家
-	$("#newContact").click(function(){
-		$("#bianhao").text("【新增】");
-		$("#mingchen").val("");
-		$("#dianhua").val("");
-		$("#dizhi").val("");
-		$("#beizhu").val("");
-		makeEditable();
-	});
+
 	//提交
 	$("#tijiao").click(function(){
 			if("" == $("#mingchen").val().trim()){
@@ -243,7 +264,7 @@
 		});
 	}
 	
-	/*显示指定商家详情*/
+	//显示指定商家详情
 	function showDetail(_id){
 				postJson("contacts.php",{_id:_id},function(contact){
 					obj2form(contact);
@@ -254,35 +275,7 @@
 					$("#tijiao").hide();
 				});
 	}
-	//将contact对象设置到表单
-	function obj2form(contact){
-		currContact = contact;
-		$("#bianhao").text(contact._id);
-		$("#mingchen").val(contact.mingchen);
-		$("#dianhua").val(contact.dianhua);
-		$("#dizhi").val(contact.dizhi);
-		$("#beizhu2").html(contact.beizhu);
-	//	$("#beizhu").val(contact.beizhu);
-	}
-	
-	
-	//将表单的内容转换为contact对象
-	function form2Obj(){
-			var contact = {};
-			contact.mingchen = $("#mingchen").val().trim();
-			contact.dianhua = $("#dianhua").val().trim();
-			contact.dizhi = $("#dizhi").val().trim();
-			contact.beizhu = $("#beizhu").val().trim();
-			return contact;
-	}
-	//进入编辑状态
-	function makeEditable(elm){	
-			$("#beizhu2").hide();
-			$("#taContainer").show();
-			$(".ui-layout-center .plainInput").removeAttr("readonly");
-			$("#bianji").hide();
-			$("#tijiao").show();
-	}
-	
-//	makeEditable();
+
+
+*/
 });
