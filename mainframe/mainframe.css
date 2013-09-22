@@ -1,0 +1,25 @@
+	*{
+		margin:0px;
+		padding:0px
+	}
+	.ui-layout-north {
+   		background-color: #FFCCFF;
+   		padding:3px;
+   		height:20px !important
+    }
+    .ui-layout-center {
+    	padding:0px
+    }
+    .ui-layout-south {
+   		background-color: #0AC2FF;
+   		padding:2px;
+   		height:20px
+    }
+    .ui-layout-west{
+    	padding:2px
+    }
+    #logout_id:hover{
+    	cursor:pointer;
+    	color:#FF470A;
+    	text-decoration:underline
+    }

@@ -1,0 +1,91 @@
+<html>
+	<head>
+<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Cache-Control" content="max-age=0"> 
+<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
+<link type="text/css" rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.css" />
+<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
+<link type="text/css" rel="stylesheet" href="news.css" />
+
+<title>消息管理</title> 
+<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
+<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+<script src="../../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+<script src="../../../js/my.js" type="text/javascript"></script>
+<script src="../../../js/localstorage.js" type="text/javascript"></script>
+<script src="../../../js/server.js" type="text/javascript"></script>
+<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+<script src="../../../js/jquery.layout-latest.js" type="text/javascript"></script>
+<script src="news.js" type="text/javascript"></script>
+
+<body>   
+<div class="ui-layout-center">
+	<div id="newsDetailContainer">
+		<div id="newsDetail">
+			<div style="width:100%;text-align:center;"><span style="font-weight:bold;line-height:35px;padding:5 10px;font-size:16px;background-color:#4178B0;color:white" id="d_title">title</span>&nbsp;<span style="color:blue;font-size:0.5em;cursor:pointer">【删除】</span></div>
+			<table style="font-size:14px;color:#008000;">
+				<tr id="first_tr">
+				<td style="vertical-align:top">
+					<div style="display:inline-block;border:3px solid #fff;width:50px;height:50px;border-radius:28px;box-shadow:0px 2px 1px rgba(128,128,128,.5);">
+						<img id="d_head" src="http://localhost:81/oa/logo/wulun_1.JPG" style="width:48px;height:48px;border-radius:25px;"/>
+					</div>
+				</td>
+				<td style="padding-left:10px;font-size:12px">姓名：<span id="d_name">伍伦</span>
+					日期：<span id="d_date">2013-04-18</span>
+					时间：<span id="d_time">17:23:32</span>
+					<div style="font-size:16px;margin-bottom:10px;color:black;background-color:#f6f6f6;padding:10px;margin-top:5px;border-radius:10px;line-height:1.75em" id="d_content">content</div>
+				</td>
+				</tr>
+			</table>
+		</div>
+		<hr style="border:1px solid #4178B0;">
+		<div style="width:100%;text-align:center"><span style="color:blue;font-size:0.5em;cursor:pointer;margin-right:auto" id="d_reply">【回复】</span></div>
+	</div>
+</div> 
+<div class="ui-layout-west">
+	<div id="headerline" style="background-color:#ff6600;padding:2px;margin-bottom:0px" >
+		<span style="color:white;font-weight:bold;cursor:pointer" id="allNews">最新消息 &nbsp;</span>
+		<span class="header filterBtn">确认版</span> |
+		<span class="header filterBtn">重要</span> |
+		<span class="header filterBtn">客户找</span> |
+		<span class="header filterBtn">急货</span> |
+		<span class="header filterBtn">问题货</span> |
+		<span class="header filterBtn">教训</span> |
+		<span class="header" id="fabu">发布</span>	
+	</div>
+	<div style="width:100%;height:8px;background-color:#f8f8f8">&nbsp;</div>
+	<table id="newslist" style="margin-bottom:10px;background-color:#f6f6f6;width:100%">
+	<tr id="new_tr">
+		<td id="newid" style="vertical-align:top">322.</td>
+		<td id="newtype" style="vertical-align:top;color:#cc9900" nowrap>【消息】</td>
+		<td nowrap><a id="lin" href="#"></a><span style="color:#aaaaaa;font-size:0.85em" id="author"></span><div style="color:#aaaaaa;font-size:0.85em">
+			发布：<span id="createtime" style="font-weight:normal">2013-01-23 17:04:30</span>&nbsp;更新：<span id="updatetime">2013-01-23 17:04:30</span>&nbsp;阅读：<span id="readcount">20</span>&nbsp;回复：<span id="replycount">2</span></div></td>
+	</tr>
+	</table>
+	<a  href="#" id="getMore">更多...</a>
+	<hr color="#ff6600">
+</div> 
+<div id="template" style="display:none">
+	<div id="fabuxiaoxi"  style="background-color:#fff;width:800px;padding:2px;margin:0 auto;border:solid 1px gray">
+		<div id="handle" style="background-color:pink;text-align:center;margin-bottom:5px;width:100%;height:30px;line-height:30px;font-size:16px;">&nbsp;<span id="handle_name">发布消息</span></div>  
+		<span class="plainBtn" id="clearEditor" title="清空所有输入"><img src="../../../img/eraser.png" style="width:16px;height:16x;vertical-align:text-bottom;"/>清空</span>
+		<span class="plainBtn" id="submitNew" title="提交编辑结果"><img src="../../../img/ok.png" style="width:16px;height:16x;vertical-align:text-bottom;"/>提交</span>
+		<span>标题：</span><input id="title" type="text" size=70  />&nbsp;<span>类型：</span><select id="type">
+			<option value="消息">消息</option>
+			<option value="重要">重要</option>
+			<option value="确认版">确认版</option>
+			<option value="客户找">客户找</option>
+			<option value="急货">急货</option>
+			<option value="问题货">问题货</option>
+			<option value="教训">教训</option>
+		</select> 
+		<textarea id="editor" style="width:800px;height:600px" ></textarea> 
+	</div>
+</div>
+
+</body>
+</html>

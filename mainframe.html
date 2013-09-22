@@ -1,0 +1,180 @@
+<html>
+<link rel="shortcut icon" href="./logo/zhongtailogo.ico">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Cache-Control" content="max-age=9999999">
+<title>中泰订单管理系统</title>
+<link type="text/css" rel="stylesheet" href="./css/ui-lightness/jquery-ui-1.10.2.custom.css" />
+<link type="text/css" rel="stylesheet" href="./css/layout-default-latest.css" />
+
+<script src="./js/jquery-1.9.1.js"></script>
+<script src="./js/jquery-ui-1.10.2.custom.js"></script>
+<script src="./js/jquery.layout-latest.js"></script>
+<script src="./js/server.js"></script>
+<style>
+	*{
+		margin:0px;
+		padding:0px
+	}
+	.ui-layout-north {
+   		background-color: #FFCCFF;
+   		padding:3px;
+   		height:20px !important
+    }
+    .ui-layout-center {
+    	padding:0px
+    }
+    .ui-layout-south {
+   		background-color: #0AC2FF;
+   		padding:2px;
+   		height:20px
+    }
+    .ui-layout-west{
+    	padding:2px
+    }
+    #logout_id:hover{
+    	cursor:pointer;
+    	color:#FF470A;
+    	text-decoration:underline
+    }
+    #accordion li{
+    	white-space: nowrap
+    }
+    #accordion a{
+    	text-decoration:none;
+    	color:#CC9900
+    }
+    #accordion a:hover{
+    	color:#FF470A;
+    	font-weight:bold
+    }
+</style>
+<script>
+$(function(){
+	$("body").layout({
+		resizable:false,
+		west__resizable:true,
+		west__maxSize:300,
+		center__maskContents:true,
+		spacing_open:1,
+		west__spacing_open:2
+	});
+	$("#logout_id").click(function(){
+		location.href="./login/login.html";
+	})
+	$("#accordion").accordion({
+		active:0,
+		animate:100,
+		heightStyle:"content"
+	});
+	server.getTheUser(function(resp){
+		$("#username").text(resp.username);
+	});
+});
+</script>
+</head>
+<body>
+	<iframe class="ui-layout-center"  name="contentpane" src="./news/news.html"></iframe>
+	<div class="ui-layout-north">
+		<table style="width:100%;border-collapse:collapse;color:blue;font-size:90%">
+			<tr>
+				<td style="width:30%"><span  title="当前用户"><img src="./img/user.png" style="width:16px;height:16px;vertical-align:text-bottom;padding-right:5px"/><span id="username">匿名者</span></span></td>
+				<td style="width:30%" align=center><span style="font-weight:bolder;color:#CC3300">伍泰OA</span></td>
+				<td style="width:30%" align=right><span id="logout_id" title="退出OA"><img src="img/exit.png" style="width:16px;height:16x;vertical-align:text-bottom;"/>退出</span>&nbsp;</td>
+			</tr>
+		</table>
+	</div>
+	<div class="ui-layout-south">
+		<table style="width:100%;border-collapse:collapse;color:white;font-style:italic;font-size:80%">
+			<tr>
+				<td>客户至上 用心服务 Customer First Service Foremost</td>
+				<td style="" align=right>版权所有 伍泰进出口贸易有限公司&nbsp;</td>
+			</tr>
+		</table>
+	</div>
+	<div class="ui-layout-west">
+		<table style="height:100%">
+			<tr style="vertical-align:top">
+				<td>
+					<div id="accordion">
+					  <h3>常用</h3>
+					  <div>
+					  	<ul>
+							<li><a href="./news/news.html" target="contentpane">最新消息</a></li>
+							<li><a href="#">商家管理</a></li>
+							<li><a href="#">样板管理</a></li>
+							<li><a href="#">联系人</a></li>
+						</ul>
+					  </div>
+					  <h3>原稿</h3>
+					  <div>
+						<ul>
+							<li><a href="#">上传</a></li>
+							<li><a href="#">接稿</a></li>
+							<li><a href="#">录单</a></li>
+							<li><a href="#">审核</a></li>
+							<li><a href="#">跟单</a></li>
+							<li><a href="#">复核</a></li>
+							<li><a href="#">查询</a></li>
+						</ul>
+					  </div>
+					  <h3>订单</h3>
+					  <div>
+						<ul>
+							<li><a href="#">跟单</a></li>
+							<li><a href="#">订购</a></li>
+							<li><a href="#">审核</a></li>
+							<li><a href="#">发货</a></li>
+							<li><a href="#">慢单</a></li>
+							<li><a href="#">查询</a></li>
+						</ul>
+					  </div>
+					  <h3>对单</h3>
+					  <div>Second content panel</div>
+					  <h3>验货单</h3>
+					  <div>
+						<ul>
+							<li><a href="#">制单</a></li>
+							<li><a href="#">交单</a></li>
+							<li><a href="#">查询</a></li>
+						</ul>
+					  </div>
+					  <h3>装柜单</h3>
+					  <div>
+						<ul>
+							<li><a href="#">制单</a></li>
+							<li><a href="#">装柜</a></li>
+							<li><a href="#">查询</a></li>
+						</ul>
+					  </div>
+					  <h3>其他</h3>
+					  <div>
+						<ul>
+							<li><a href="#">个人资料</a></li>
+							<li><a href="#">公司资料</a></li>
+							<li><a href="#">操作日志</a></li>
+						</ul>
+					  </div>
+					</div>
+				</td>
+			</tr>
+			<tr style="vertical-align:bottom">
+				<td>
+					<div style="margin-top:20px;background-color:yellow;">	
+						<div style="width:12em;overflow:hidden;">
+							<a href="./news/news.html" target="contentpane" style="text-decoration:none;">最新消息...</a><p/>
+							<table style="white-space:nowrap;">
+								<tr>
+									<td>
+										This is some long text that will not fit in the box
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

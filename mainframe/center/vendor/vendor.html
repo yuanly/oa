@@ -1,0 +1,67 @@
+﻿<html>
+	<head>
+	<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=0"> 
+	<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
+	<title>商家管理</title> 	 
+	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
+	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+	<script src="../../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+	<script src="../../../js/my.js" type="text/javascript"></script>
+	<script src="../../../js/localstorage.js" type="text/javascript"></script>
+	<script src="../../../js/server.js" type="text/javascript"></script>
+	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+	<script src="../../../js/jquery.layout-latest.js" type="text/javascript"></script>
+	<script type="text/javascript" src="vendor.js"></script>
+	<style>
+		th{
+			background-color:#99ccff;
+		}
+		.tr_vendor:hover{
+			color:brown;
+			font-width:bold;
+		}
+		.tr_vendor{
+			white-space:nowrap; 
+			cursor:pointer;
+		}
+	</style>
+</head>
+<body style="margin:0px;padding:0px">
+	<div class="ui-layout-west">
+		<div>
+			<div>
+				查询商家：<input id="option" class="plainInput" type=text size=20/> <span id="newVendor" class="plainBtn" style="margin-left:50px;">新增商家</span>
+			</div>
+			<table id="vendortable">
+				<tr id="tableheader">
+					<th>编号</th><th nowrap>商家名称</th><th>电话</th><th>地址</th>
+				</tr>
+				<tr class="tr_vendor">
+					<td id="td_bianhao"></td><td id="td_mingchen"></td><td id="td_dianhua"></td><td id="td_dizhi"></td>
+				</tr>
+			</table>	
+			<div id="pager"><span id="prevPage" class="plainBtn">上一页</span> <span id="nextPage" class="plainBtn">下一页</span></div>
+		</div>
+	</div>
+	<div class="ui-layout-center">
+		<table align=center style="margin-top:20px;line-height:40px;padding:10px;padding-top:2px;border:1px solid #ddd">
+			<tr id="detailheader" style="background-color:#eee;line-height:25px;"><td align=center ><span id="bianji" class="plainBtn">编辑</span><span id="tijiao" class="plainBtn" style="display:none">提交</span></td></tr>
+			<tr><td><span>编号：<span><div id="bianhao" style="color:#660033;display:inline-block;width:65px">【新增】</div><span style="margin-left:10px">商家名称：</span><input id="mingchen" class="plainInput" readonly  type="text" size=30/><span style="margin-left:20px">联系电话：</span><input id="dianhua" class="plainInput" type="text" size=26 readonly /></td></tr>
+			<tr><td><span>地址：</span><input id="dizhi" class="plainInput" type="text" style="width:650px" readonly /></td></tr>
+			<tr><td>
+				<div>备注：</div>
+				<div id="beizhu2" style="font-size:80%;width:700px;height:400px;border:1px solid #ede" ></div>
+				<div id="taContainer" style="display:none">
+					<textarea id="beizhu" style="width:700px;height:400px;display:none"></textarea>
+				</div>
+			</td></tr>
+		</table>
+	</div>
+</body>
+</html>

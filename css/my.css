@@ -1,0 +1,36 @@
+    .plainBtn{
+    	font-size:90%;
+    	color:blue
+    }
+    .plainBtn:hover{
+    	font-size:90%;
+    	cursor:pointer;
+    	color:#FF470A;
+    	text-decoration:underline
+    }
+    .plainInput{
+			margin-left:0px;
+			padding-left:0px;
+			border-top:0px;
+			border-right:0px;
+			border-bottom:1px solid gray;
+			border-left:0px;
+			color:#660033
+    }
+    .yuanliyustip{
+			filter:alpha(opacity=70);-moz-opacity:70;opacity:.7;
+	 	 	-moz-border-radius: 2px;
+			-webkit-border-radius: 2px;
+			border-bottom-radius: 2px;
+			border-radius:2px;
+			-moz-box-shadow: 1px 1px 3px rgba(0,0,0,.3);
+			-webkit-box-shadow: 1px 1px 3px rgba(0,0,0,.3);
+			box-shadow: 1px 1px 3px rgba(0,0,0,.3);
+			position:absolute;
+			border:0px solid brown;
+			background-color:yellow;
+			z-index:1000;
+			cursor:pointer;
+			line-height:25px;
+			font-weight:bold; 
+		}

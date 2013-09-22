@@ -1,0 +1,87 @@
+﻿<html>
+	<script src="jquery-1.9.1.js"></script>
+	<script src="my.js"></script>
+	<script>
+		$(function(){
+			//selector_tmpl = $("#selector").remove();
+
+			/*
+			* event 点击事件，用来获取鼠标位置
+			* getObjs(page,option,function(resp)) 获取列表对象的函数
+			* fields 字符串数据，指定需要显示的对象的属性
+			* callback(resp) 将选中的对象返回给调用者
+			*/
+			function setSelector1(event,getObjs,fields,callback){
+					var selector_tmpl = $('<div id="selector">\
+						<div id="mengban" style="position:absolute;top:0px;left:0px;width:100%;height:100%;z-index:100;background-color:rgba(250,250,255,.4);"></div>\
+						<div id="panel" style="position:absolute;z-index:101;background-color:white;padding:5px;border:1px solid gray">\
+							<input id="option" type="text" size=20/> <span style="color:blue;cursor:pointer;float:right" id="guanbi">关闭</span>\
+							<table></table>\
+							<div style="text-align:center;padding-top:5px"><span id="pager" style="cursor:pointer;color:blue">更多...</span></div>\
+						</div>\
+					</div>');
+					
+				$("body").append(selector_tmpl);
+				var panel = selector_tmpl.find("#panel");
+				panel.find("#pager").data("page",0);
+				function listObjs(page){
+					panel.find("table").empty();
+					getObjs(page,panel.find("#option").val(),function(objs){
+						each(objs,function(n,obj){
+							var tr = $("<tr></tr>");
+							tr.data("background-color",toggle("#ffeeff","#eeffff"));
+							tr.css("background-color",tr.data("background-color")).css("cursor","pointer");
+							each(fields,function(m,field){
+								tr.append("<td>"+obj[field]+"</td>");
+							});
+							panel.find("table").append(tr);
+							tr.mouseover(function(){
+								tr.css("background-color","yellow");
+							}).mouseout(function(){
+								tr.css("background-color",tr.data("background-color"));
+							}).click(function(){
+								selector_tmpl.remove();
+								callback(obj);
+							});
+						});
+					});
+				}
+				listObjs(panel.find("#pager").data("page"));
+				panel.find("#pager").click(function(){
+					panel.find("#pager").data("page",panel.find("#pager").data("page")+1);
+					listObjs(panel.find("#pager").data("page"));
+				}).mouseover(function(){$(this).css("color","red");}).mouseout(function(){$(this).css("color","blue");});
+				panel.find("#guanbi").click(function(){
+					selector_tmpl.remove();
+				}).mouseover(function(){$(this).css("color","red");}).mouseout(function(){$(this).css("color","blue");});
+				panel.css("top",event.clientY).css("left",event.clientX-panel.width()>10?event.clientX-panel.width():10);
+			}
+			function getTestObjs(page,option,callback){
+				callback(
+				[{_id:1,name:"袁立宇",address:"中国广州丽江花园左岸15-1503"},
+				{_id:2,name:"袁立宇",address:"中国广州丽江花园左岸15-1503"},
+				{_id:3,name:"袁立宇",address:"中国广州丽江花园左岸15-1503"},
+				{_id:4,name:"袁立宇",address:"中国广州丽江花园左岸15-1503"},
+				{_id:5,name:"袁立宇",address:"中国广州丽江花园左岸15-1503"},
+				{_id:6,name:"袁立宇",address:"中国广州丽江花园左岸15-1503"},
+				{_id:7,name:"袁立宇",address:"中国广州丽江花园左岸15-1503"},
+				{_id:8,name:"袁立宇",address:"中国广州丽江花园左岸15-1503"},
+				{_id:9,name:"袁立宇",address:"中国广州丽江花园左岸15-1503"}]
+				);
+			};
+			$("input").click(function(event){
+				//console.log(event.clientY+","+event.clientX);
+				//setSelector(event,getTestObjs,["_id","name","address"],function(usr){
+				//	console.log(usr);
+				//});
+				setSelector2(event,["中国银行","工商银行","建设银行","光大银行","平安银行"],function(bank){
+					console.log(bank);
+				});
+			});
+		});
+	</script>
+	<body>
+		
+		<input type="button" value="test" style="margin-top:100px;margin-left:200px"/>
+	</body>
+</html>

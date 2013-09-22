@@ -1,0 +1,68 @@
+﻿<html>
+	<head>
+		<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Cache-Control" content="max-age=0"> 
+		
+		<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+		
+		
+		<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script type="text/javascript" src="../../../js/my.js"></script>
+	<script type="text/javascript" src="../../../js/server.js"></script>
+	<script type="text/javascript" src="../../../js/localstorage.js"></script>
+<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+	<script type="text/javascript" src="user.js"></script>
+</head>
+<body style="margin:0px;padding:0px">
+	<div id="bgImg" style="position:absolute;opacity:.3;width:100%;height:100%;z-index:-1;background-position:center;background-image:url(../../../login/image/landscape/3.jpg);background-size:cover;">
+	</div>
+	<div id="center1" style="display:table;height:100%;width:100%;text-align:center;z-index:10">
+		<div id="center2" style="display:table-cell;vertical-align:middle"> 
+				<table id="container" style="border:1px solid gray;background-color:rgba(255,255,255,.8)" align=center border=0>
+					<tr><td id="handle" colspan=2 style="text-align:center;font-weight:bold;background-color:rgba(0,0,0,.2)">用户信息</td></tr>
+					<tr>
+						<td id="left" style="padding-right:20px">
+							<div style="cursor:pointer;display:inline-block;border:3px solid #fff;width:50px;height:50px;border-radius:28px;box-shadow:0px 2px 1px rgba(128,128,128,.5);">
+								<img id="portrait" src="../../../logo/noface.jpg" style="width:50px;height:50px;border-radius:25px"/>
+							</div>
+						</td>
+						<td id="right">
+							<span style="font-weight:normal">名称：</span><input id="userName" class="plainInput" type="text" size=20  style=";margin-bottom:10px;background-color:rgba(255,255,255,0)" disabled /><br/>
+							<span style="font-weight:normal">角色：</span><select id="selRole" class="plainInput" style="width:150px;margin-bottom:10px;-webkit-appearance: button;background-color:rgba(255,255,255,0)" disabled >
+									<option value="operator" selected>操作员</option>
+									<option value="manager">管理员</option>
+									<option value="root">超级管理员</option>
+								</select>
+								<div id="pwTrigger">
+									<span style="font-weight:normal;margin-top:10px">密码：</span><span id="changepassword" class="plainBtn">更改密码</span>
+								</div>
+							<div id="pwcontainer" style="display:none">
+							<span style="font-weight:normal;margin-top:10px">新密码：</span><input id="newPassword" class="plainInput" type="password" size=17 style=";margin-top:10px;background-color:rgba(255,255,255,0)"/><br/>
+						<span style="font-weight:normal;margin-top:10px">确认密码：</span><input id="verifyPassword" class="plainInput" type="password" size=14  style=";margin-top:10px;background-color:rgba(255,255,255,0)"/></div>
+							
+							<span style="font-weight:normal;">桌面风格：</span><select id="selBg" disabled class="plainInput editable" style="width:120px;margin-top:10px;-webkit-appearance: button;;background-color:rgba(255,255,255,0)">
+									<option value="landscape" selected>风景</option>
+									<option value="gqj">宫崎骏动漫</option>
+								</select>
+						</td>
+					</tr>
+					<tr style="height:60px">
+						<td colspan=2 style="text-align:center">
+							<span id="enableEdit" class="plainBtn" style="margin-right:40px;">编辑</span>
+							<span id="submit" class="plainBtn" style="display:none;margin-right:40px;">提交</span>
+							<span id="newUser" class="plainBtn" style="margin-right:40px;display:none">新增</span>
+							<span id="moreUser" class="plainBtn" style="display:none" title="在用户列表设置用户状态">更多</span>
+						</td>
+					</tr>
+				</table>
+		</div>
+			<div id="file-uploader-demo2" style="display:none">		
+				<noscript>			
+					<p>Please enable JavaScript to use file uploader.</p>
+					<!-- or put a simple form for upload here -->
+				</noscript>         
+			</div>
+	</div>
+</body>
+</html>

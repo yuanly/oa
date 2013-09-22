@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link href="fileuploader.css" rel="stylesheet" type="text/css">
+	<style>    	 
+		.btnMap {
+			width:30px !important;
+			background:transparent url(../../img/map.jpg) no-repeat center center;
+		}
+		.btnPic {
+			width:30px !important;
+			background:transparent url(../../img/pic.jpg) no-repeat center center;
+		}
+		.btnAttach		 {
+			width:30px !important;
+			background:transparent url(../../img/attach.jpg) no-repeat center center;
+		}
+    </style>
+    <script src="fileuploader.js" type="text/javascript"></script>
+    <script src="../../js/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script>
+    <script src="../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+    <script src="../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+    <script> 
+    var editor;
+    	$(function(){
+    		
+
+            var uploader = new qq.FileUploader({
+                element: $("#file-uploader-demo1")[0],
+                action: '../server/up.php',
+                params:{'memo':'test1'},
+                debug: true
+            });
+		
+            var plugins={
+            		map:{
+            			c:'btnMap',
+            			t:'插入地图',
+            			e:function(){
+            				var _this=this;
+            				_this.saveBookmark();
+            				_this.showIframeModal('Google 地图','../../xheditor-1.2.1/demos/googlemap/googlemap.html',function(v){
+            					_this.loadBookmark();
+            					_this.pasteHTML('<img src="'+v+'" />');
+            				},538,404);		
+            			}
+            		},
+            		pic:{
+            			c:'btnPic',
+            			t:'插入图片',
+            			e:function(){
+            				editor.pasteHTML("<img src='../../img/attach.jpg'/>");
+            				editor.showModal("title","<div id='file-uploader-demo2'>aaa</div>",300,100,function(){});
+            				 var uploader1 = new qq.FileUploader({
+            		                element: $("#file-uploader-demo2")[0],
+            		                action: '../server/up.php',
+            		                params:{'memo':'test1'},
+            		                debug: true,
+            		                onComplete: function(id, fileName, responseJSON){
+            		                	editor.removeModal();
+            		                },
+            		            });
+            				 //uploader1._button.getInput().click();
+            			}
+            		},
+            		attach:{
+            			c:'btnAttach',
+            			t:'插入附件',
+            			e:function(){}
+            		}
+            };
+
+			editor = $("#editor").xheditor({plugins:plugins,
+				tools:'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,Removeformat,|,Align,List,Outdent,Indent,|,Link,Unlink,Img,Hr,Emot,Table,|,Preview,Print,Fullscreen,|,map,|,pic,|,attach,|',
+				width:window.screen.width-10,height:600});
+    	});
+    </script>
+	
+</head>
+<body>		  
+	<p>To upload a file, click on the button below. Drag-and-drop is supported in FF, Chrome.</p>
+	<p>Progress-bar is supported in FF3.6+, Chrome6+, Safari4+</p>
+	
+	<div id="file-uploader-demo1">		
+		<noscript>			
+			<p>Please enable JavaScript to use file uploader.</p>
+			<!-- or put a simple form for upload here -->
+		</noscript>         
+	</div>
+	<div>
+    <input type="text" value="aa"/>
+    <textarea id="editor" name="content" style="background:url(../../img/editorbg.jpg) no-repeat right bottom fixed"></textarea>
+    </div> 
+</body>
+</html>

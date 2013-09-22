@@ -1,0 +1,91 @@
+﻿<html>
+	<head>
+	<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=0"> 
+	<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
+	<title>联系人管理</title> 	 
+	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
+	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+	<script src="../../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+	<script src="../../../js/my.js" type="text/javascript"></script>
+	<script src="../../../js/localstorage.js" type="text/javascript"></script>
+	<script src="../../../js/server.js" type="text/javascript"></script>
+	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+	<script src="../../../js/jquery.layout-latest.js" type="text/javascript"></script>
+	<script type="text/javascript" src="contact.js"></script>
+	<style>
+		th{
+			background-color:#99ccff;
+		}
+		.tr_contact:hover{
+			color:brown;
+			font-width:bold;
+		}
+		.tr_contact{
+			white-space:nowrap; 
+			cursor:pointer;
+		}
+	</style>
+</head>
+<body style="margin:0px;padding:0px">
+	<div class="ui-layout-west">
+		<div>
+			<div>
+				查询商家：<input id="option" class="plainInput" type=text size=20/> <span id="newContact" class="plainBtn" style="margin-left:50px;">新增联系人</span>
+			</div>
+			<table id="contacttable">
+				<tr id="tableheader">
+					<th>编号</th><th nowrap>商家</th><th>名称</th><th>电话</th>
+				</tr>
+				<tr class="tr_contact">
+					<td id="td_bianhao"></td><td id="td_mingchen"></td><td id="td_dianhua"></td><td id="td_dizhi"></td>
+				</tr>
+			</table>	
+			<div id="pager"><span id="prevPage" class="plainBtn">上一页</span> <span id="nextPage" class="plainBtn">下一页</span></div>
+		</div>
+	</div>
+	<div class="ui-layout-center">
+		<table align=center style="margin-top:20px;line-height:40px;padding:10px;padding-top:2px;border:1px solid #ddd">
+			<tr id="detailheader" style="background-color:#eee;line-height:25px;"><td align=center ><span id="bianji" class="plainBtn">编辑</span><span id="tijiao" class="plainBtn  cBianJi">提交</span></td></tr>
+			<tr><td><span>编号：<span><div id="bianhao" style="color:#660033;display:inline-block;width:65px;text-decoration:underline">【新增】</div><span style="margin-left:10px">名称：</span><input id="mingchen" class="plainInput handwrite" readonly  type="text" size=16/><span style="margin-left:10px">商家：</span><input id="shangjia" class="plainInput" readonly  type="text" size=27 style="cursor:pointer"/><span style="margin-left:20px">岗位：</span><input id="gangwei" class="plainInput" type="text" size=8 readonly style="cursor:pointer" /></td></tr>
+			<tr><td><span>地址：</span><input id="dizhi" class="plainInput handwrite" type="text" style="width:650px" readonly /></td></tr>
+			<tr><td>
+				<div style="vertical-align:top;">
+					电话：
+					<div id="dianhualiebiao" style="display:inline-block;font-size:80%">
+						<div id="tel_tmpl" class="tel"><input type="text" class="plainInput cBianJi" size=40 /><span class="plainBtn">[ - ]</span></div>
+						<div class="plainBtn cBianJi" id="jiadianhua" style="line-height:20px;width:20px;">[ + ]</div>
+					</div>
+				</div>
+			</td></tr>
+			<tr><td>
+				<div style="vertical-align:top;">
+					帐户：
+					<div id="zhanghuliebiao" style="display:inline-block;font-size:80%">
+						<div id="zhanghu_tmpl" class="zhanghu" style="line-height:20px;margin-bottom:15px" >
+							银行：<input id="yinhang" type="text" class="plainInput" size=20 style="cursor:pointer" readonly />
+							网点：<input id="wangdian" type="text" class="plainInput handwrite" size=40 /><br/>
+							户名：<input id="huming" type="text" class="plainInput handwrite" size=20 />
+							帐号：<input id="zhanghao" type="text" class="plainInput handwrite" size=40 />
+							<span class="plainBtn cBianJi">[ - ]</span>
+						</div>
+						<div class="plainBtn cBianJi" id="jiazhanghu"  style="line-height:20px;width:20px;">[ + ]</div>
+					</div>
+				</div>
+			</td></tr>
+			<tr><td>
+				<div>备注：</div>
+				<div id="beizhu2" style="font-size:80%;width:700px;height:200px;border:1px solid #ede" ></div>
+				<div id="taContainer" style="display:none">
+					<textarea id="beizhu" style="width:700px;height:200px;display:none"></textarea>
+				</div>
+			</td></tr>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+	*{
+		margin:0px;
+		padding:0px
+	}
+    #accordion li{
+    	white-space: nowrap
+    }
+    #accordion a{
+    	text-decoration:none;
+    	color:#CC9900
+    }
+    #accordion a:hover{
+    	color:#FF470A;
+    	font-weight:bold
+    }
