@@ -54,7 +54,7 @@
 			$("#gangwei").val(gangwei);
 		});
 	});
-	//将一个联系人信息设置到详细表单中，并进入编辑状态。支持空联系人（即新增联系人）
+	//将一个联系人信息设置到详细表单中，并进入编辑状态。支持空联系人（即新增联系人）test
 	function editContact(contact){
 		if(contact._id){
 			$("#bianhao").text(contact._id);
