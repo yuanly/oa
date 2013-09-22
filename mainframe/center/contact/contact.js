@@ -26,6 +26,50 @@
 	var telTmpl = $("#tel_tmpl").detach();
 	var zhanghuTmpl = $("#zhanghu_tmpl").detach();
 	
+	//编辑器定义 “图片”和“地图”按钮
+		 var plugins={
+	     		map:{
+	     			c:'btnMap',
+	     			t:'插入地图',
+	     			e:function(){
+	     				var _this=this;
+	     				_this.saveBookmark();
+	     				_this.showIframeModal('Google 地图','../../../xheditor-1.2.1/demos/googlemap/googlemap.html',function(v){
+	     					_this.loadBookmark();
+	     					_this.pasteHTML('<img src="'+v+'" />');
+	     				},538,404);		
+	     			}
+	     		},
+	     		pic:{
+	     			c:'btnPic',
+	     			t:'插入图片',
+	     			e:function(){
+	     				//editor.pasteHTML("<img src='../img/attach.jpg'/>");
+	     				editor.showModal("上传本地图片","<div id='file-uploader-demo2'></div>",120,50,function(){});
+	     				 var uploader1 = new qq.FileUploader({
+	     		                element: $("#file-uploader-demo2")[0],
+	     		                action: '../../../uploader/server/up.php',
+	     		                params:{'memo':'new'},
+	     		                debug: true,
+	     		                onComplete: function(id, fileName, respJson){
+	     		                	//{"id":16,"success":true}
+	     		                	editor.pasteHTML("<img src='../../../uploader/server/down.php?id="+respJson.id+"'/>");
+	     		                },
+	     		            });
+	     				editor.removeModal();
+	     				 uploader1._button.getInput().click();
+	     			}
+	     		},
+	     		attach:{
+	     			c:'btnAttach',
+	     			t:'插入附件',
+	     			e:function(){}
+	     		}
+	     };
+	    //编辑器设置
+	    var editor = $("#beizhu").xheditor({plugins:plugins,
+				tools:'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,Removeformat,|,Align,List,Outdent,Indent,|,Link,Unlink,Img,Hr,Emot,Table,|,Preview,Print,Fullscreen,|,map,|,pic,|,attach,|',
+				width:700,height:200});
 	//添加电话
 	$("#jiadianhua").click(function(){
 		$(this).before(telTmpl.clone(true));
@@ -45,7 +89,7 @@
 				});
 			},["_id","mingchen"],function(vendor){
 				$("#shangjia").val(vendor.mingchen);
-				$("#shangjia").data("vendor",vendor);
+				$("#shangjia").data("shangjia",vendor);
 			}
 		);
 	});
@@ -64,7 +108,12 @@
 			$("#bianhao").text("【新增】");
 		}
 		$("#mingchen").val(contact.mingchen);
-		$("#shangjia").val(contact.shangjia);
+		if(contact.shangjia){
+			$("#shangjia").val(contact.shangjia.mingchen);
+			$("#shangjia").data("shangjia",contact.shangjia);
+		}else{
+			$("#shangjia").val("");
+		}
 		$("#gangwei").val(contact.gangwei);
 		$("#dizhi").val(contact.dizhi);
 		$("#beizhu").val(contact.beizhu);
@@ -116,56 +165,69 @@
 	//将表单的内容转换为contact对象
 	function form2Obj(){
 			var contact = {};
+			if("【新增】"!=$("#bianhao").text()){
+				contact._id = $("#bianhao").text().trim();
+			}
 			contact.mingchen = $("#mingchen").val().trim();
-			contact.dianhua = $("#dianhua").val().trim();
+			if($("#shangjia").data("shangjia")){
+				contact.shangjia = {};
+				contact.shangjia._id = $("#shangjia").data("shangjia")._id;
+				contact.shangjia.mingchen = $("#shangjia").data("shangjia").mingchen;
+			}
+			contact.gangwei = $("#gangwei").val().trim();
 			contact.dizhi = $("#dizhi").val().trim();
 			contact.beizhu = $("#beizhu").val().trim();
+			if($("#dianhualiebiao").find(".tel")>0){
+				contact.dianhualiebiao = [];
+				each($("#dianhualiebiao").find(".tel"),function(n,tel){
+					if("" != tel.find("input").val().trim()){
+						contact.dianhualiebiao.push(tel.find("input").val().trim());
+					}
+				});
+			}
+			if($("#zhanghuliebiao").find(".zhanghu")>0){
+				contact.zhanghuliebiao = [];
+				each($("#zhanghuliebiao").find(".zhanghu"),function(n,zhanghu){
+					if("" != zhanghao.find("#zhanghao").val().trim() && "" != zhanghao.find("#huming").val().trim()){
+						var zh = {};
+						zh.zhanghao = zhanghao.find("#zhanghao").val().trim();
+						zh.huming =  zhanghao.find("#huming").val().trim();
+						zh.yinhang =  zhanghao.find("#yinhang").val().trim();
+						zh.wangdian =  zhanghao.find("#wangdian").val().trim();
+						contact.zhanghuliebiao.push(zh);
+					}
+				});
+			}
+			
 			return contact;
 	}
-	//编辑器定义 “图片”和“地图”按钮
-		 var plugins={
-	     		map:{
-	     			c:'btnMap',
-	     			t:'插入地图',
-	     			e:function(){
-	     				var _this=this;
-	     				_this.saveBookmark();
-	     				_this.showIframeModal('Google 地图','../../../xheditor-1.2.1/demos/googlemap/googlemap.html',function(v){
-	     					_this.loadBookmark();
-	     					_this.pasteHTML('<img src="'+v+'" />');
-	     				},538,404);		
-	     			}
-	     		},
-	     		pic:{
-	     			c:'btnPic',
-	     			t:'插入图片',
-	     			e:function(){
-	     				//editor.pasteHTML("<img src='../img/attach.jpg'/>");
-	     				editor.showModal("上传本地图片","<div id='file-uploader-demo2'></div>",120,50,function(){});
-	     				 var uploader1 = new qq.FileUploader({
-	     		                element: $("#file-uploader-demo2")[0],
-	     		                action: '../../../uploader/server/up.php',
-	     		                params:{'memo':'new'},
-	     		                debug: true,
-	     		                onComplete: function(id, fileName, respJson){
-	     		                	//{"id":16,"success":true}
-	     		                	editor.pasteHTML("<img src='../../../uploader/server/down.php?id="+respJson.id+"'/>");
-	     		                },
-	     		            });
-	     				editor.removeModal();
-	     				 uploader1._button.getInput().click();
-	     			}
-	     		},
-	     		attach:{
-	     			c:'btnAttach',
-	     			t:'插入附件',
-	     			e:function(){}
-	     		}
-	     };
-	    //编辑器设置
-	    var editor = $("#beizhu").xheditor({plugins:plugins,
-				tools:'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,Removeformat,|,Align,List,Outdent,Indent,|,Link,Unlink,Img,Hr,Emot,Table,|,Preview,Print,Fullscreen,|,map,|,pic,|,attach,|',
-				width:700,height:200});
+		//提交
+	$("#tijiao").click(function(){
+		if("" == $("#mingchen").val().trim()){
+			tip(null,"联系人名称不能留空！",1500);
+			return;
+		}
+		var contact = form2obj();
+		if("【新增】" == $("#bianhao").text()){		
+			postJson("contact.php",contact,function(res){
+				if(res.success == true){
+					window.location.reload();
+				}else{
+					ask3(null,res.err);
+				}
+			});
+		}else{
+			postJson("contact.php",contact,function(res){
+				if(res.success == true){
+					obj2form(contact);
+					readonlyContact();
+					tip(null,"成功修改联系人信息！",3000);
+				}else{
+					ask3(null,res.err);
+				}
+			});
+		}
+	});
 /*
 	//设置记录点击处理，在模板被剥离前。
 	$(".tr_contact").click(function(){
@@ -198,38 +260,7 @@
 		listContacts($("#pager").data("offset")+1);
 	});
 
-	//提交
-	$("#tijiao").click(function(){
-			if("" == $("#mingchen").val().trim()){
-				tip(null,"商家名称不能留空！",1500);
-				return;
-			}
-		if("【新增】" == $("#bianhao").text()){		
-			postJson("contact.php",form2Obj(),function(res){
-				if(res.success == true){
-					window.location.reload();
-				}else{
-					ask3(null,res.err);//可能是重名
-				}
-			});
-		}else{
-			var contact = form2Obj();
-			contact._id = currContact._id;			
-			postJson("contact.php",contact,function(res){
-				if(res.success == true){
-					currContact = contact;
-					$("#beizhu2").html(contact.beizhu);
-					$("#beizhu2").show();
-					$("#taContainer").hide();
-					$("#bianji").show();
-					$("#tijiao").hide();
-					tip(null,"成功修改商家信息！",3000);
-				}else{
-					ask3(null,res.err);//可能是重名
-				}
-			});
-		}
-	});
+
 	//设置头部点击处理（放到当前面板）
 	$("#tableheader").click(function(){
 		layout.sizePane("west",$("#contacttable").width()+20);
