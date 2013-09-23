@@ -418,6 +418,14 @@ jQuery.fn.unmodal = function(){
 	return this;
 };
 
+jQuery.fn.vals = function(v){
+	if("undefined" == typeof v || null == v){
+		$(this).val("");
+	}else{
+		$(this).val(v);
+	}
+}
+
 jQuery.fn.changex = function(callback){
 	this.keyup(function(event){
 		if($(this).data("lastValue") != $(this).val().trim()){
