@@ -15,6 +15,6 @@ if(isset($contact["_id"])){//ÐÞ¸Ä
 }else{//ÐÂÔö
 	$contact["_id"] = (int)getId("contact");
 	$contact["access"] = time();
-	coll(¡±contact")->save($contact);
+	coll("contact")->save($contact);
 	echo '{"success":true}';
 }

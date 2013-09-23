@@ -1,6 +1,7 @@
 ﻿$(function(){
 	var currContact = null;
 	var limit = 20;
+	var tr_contact = $(".tr_contact").detach();
 	//定义左右布局
 	var layout = $("body").layout({
 		west__size:"auto",
@@ -70,6 +71,9 @@
 	    var editor = $("#beizhu").xheditor({plugins:plugins,
 				tools:'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,Removeformat,|,Align,List,Outdent,Indent,|,Link,Unlink,Img,Hr,Emot,Table,|,Preview,Print,Fullscreen,|,map,|,pic,|,attach,|',
 				width:700,height:200});
+	//列出商家
+	listContacts(0);
+	
 	//添加电话
 	$("#jiadianhua").click(function(){
 		$(this).before(telTmpl.clone(true));
@@ -163,7 +167,7 @@
 		editContact();
 	});
 	//将表单的内容转换为contact对象
-	function form2Obj(){
+	function form2obj(){
 			var contact = {};
 			if("【新增】"!=$("#bianhao").text()){
 				contact._id = $("#bianhao").text().trim();
@@ -177,23 +181,23 @@
 			contact.gangwei = $("#gangwei").val().trim();
 			contact.dizhi = $("#dizhi").val().trim();
 			contact.beizhu = $("#beizhu").val().trim();
-			if($("#dianhualiebiao").find(".tel")>0){
+			if($("#dianhualiebiao").find(".tel").length>0){ 
 				contact.dianhualiebiao = [];
-				each($("#dianhualiebiao").find(".tel"),function(n,tel){
-					if("" != tel.find("input").val().trim()){
-						contact.dianhualiebiao.push(tel.find("input").val().trim());
+				$("#dianhualiebiao").find(".tel").each(function(n,tel){
+					if("" != $(tel).find("input").val().trim()){
+						contact.dianhualiebiao.push($(tel).find("input").val().trim());
 					}
 				});
 			}
-			if($("#zhanghuliebiao").find(".zhanghu")>0){
+			if($("#zhanghuliebiao").find(".zhanghu").length>0){
 				contact.zhanghuliebiao = [];
-				each($("#zhanghuliebiao").find(".zhanghu"),function(n,zhanghu){
-					if("" != zhanghao.find("#zhanghao").val().trim() && "" != zhanghao.find("#huming").val().trim()){
+				$("#zhanghuliebiao").find(".zhanghu").each(function(n,zhanghu){
+					if("" != $(zhanghu).find("#zhanghao").val().trim() && "" != $(zhanghu).find("#huming").val().trim()){
 						var zh = {};
-						zh.zhanghao = zhanghao.find("#zhanghao").val().trim();
-						zh.huming =  zhanghao.find("#huming").val().trim();
-						zh.yinhang =  zhanghao.find("#yinhang").val().trim();
-						zh.wangdian =  zhanghao.find("#wangdian").val().trim();
+						zh.zhanghao = $(zhanghu).find("#zhanghao").val().trim();
+						zh.huming =  $(zhanghu).find("#huming").val().trim();
+						zh.yinhang =  $(zhanghu).find("#yinhang").val().trim();
+						zh.wangdian =  $(zhanghu).find("#wangdian").val().trim();
 						contact.zhanghuliebiao.push(zh);
 					}
 				});
@@ -228,6 +232,32 @@
 			});
 		}
 	});
+	
+		//列出商家
+	function listContacts(offset){
+		if(offset<0){
+			return;
+		}
+		$("#pager").data("offset",offset);
+		postJson("contacts.php",{offset:offset*limit,limit:limit,option:$("#option").data("lastValue")},function(contacts){
+			$("#contacttable .tr_contact").remove();
+			each(contacts,function(n,contact){
+				tr = tr_contact.clone(true);
+				tr.data("_id",contact._id);
+				tr.find("#td_bianhao").text(contact._id);
+				tr.find("#td_mingchen").text(contact.mingchen);
+				tr.find("#td_dianhua").text(contact.dianhualiebiao);
+				if(contact.shangjia){
+					tr.find("#td_shangjia").text(contact.shangjia.mingchen);
+				}
+				tr.css("background-color",toggle("#deedde","#dedeed"));
+				$("#contacttable").append(tr);
+			});
+			if(contacts.length>0){//将列表第一个商家显示在右边的商家详情表单
+				//showDetail(contacts[0]["_id"]);
+			}
+		});
+	}
 /*
 	//设置记录点击处理，在模板被剥离前。
 	$(".tr_contact").click(function(){
@@ -271,29 +301,7 @@
 		console.log($("body").width()-$(this).width()-100);
 		layout.sizePane("west",$("body").width()-$(this).width()-100);
 	});
-	//列出商家
-	function listContacts(offset){
-		if(offset<0){
-			return;
-		}
-		$("#pager").data("offset",offset);
-		postJson("contacts.php",{offset:offset*limit,limit:limit,option:$("#option").data("lastValue")},function(contacts){
-			$("#contacttable .tr_contact").remove();
-			each(contacts,function(n,contact){
-				tr = tr_contact.clone(true);
-				tr.data("_id",contact._id);
-				tr.find("#td_bianhao").text(contact._id);
-				tr.find("#td_mingchen").text(contact.mingchen);
-				tr.find("#td_dianhua").text(contact.dianhua);
-				tr.find("#td_dizhi").text(contact.dizhi);
-				tr.css("background-color",toggle("#deedde","#dedeed"));
-				$("#contacttable").append(tr);
-			});
-			if(contacts.length>0){//将列表第一个商家显示在右边的商家详情表单
-				showDetail(contacts[0]["_id"]);
-			}
-		});
-	}
+
 	
 	//显示指定商家详情
 	function showDetail(_id){

@@ -17,7 +17,7 @@ if(isset($param["_id"])){//特定联系人详情
 			$cur = coll("contact")->find(array("shangjia"=>array('$regex'=>$param["option"]["shangjia"])),array("beizhu"=>0))->sort(array("access"=>-1))->skip($param["offset"])->limit($param["limit"]);
 		}		
 	}else{
-		$cur = vendorColl()->find(array(),array("beizhu"=>0))->sort(array("access"=>-1))->skip($param["offset"])->limit($param["limit"]);
+		$cur = coll("contact")->find(array(),array("beizhu"=>0))->sort(array("access"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	}
 	echo  cur2json($cur);
 	
