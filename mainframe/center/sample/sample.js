@@ -1,12 +1,15 @@
 ﻿$(function(){
-	var currContact = null;
-	var limit = 20;
+	
+	///////////////////////////////上面事件处理 下面自动执行/////////////////////////////////////////////
 	//定义左右布局
 	var layout = $("body").layout({
 		west__size:"auto",
 		west__maskContents:true,
 		center__maskContents:true,
 	});
+	/*
+	var currSample = null;
+	var limit = 20;
 
 	//删除电话
 	$("#tel_tmpl > span").click(function(){
@@ -25,10 +28,10 @@
 	}
 
 		//设置记录点击处理，在模板被剥离前。
-	$(".tr_contact").click(function(){
+	$(".tr_sample").click(function(){
 		showDetail($(this).data("_id"));
 	});
-	var tr_contact = $(".tr_contact").detach();
+	var tr_sample = $(".tr_sample").detach();
 	//剥离动态模板。注：剥离必须在以上事件设置之后进行。
 	var telTmpl = $("#tel_tmpl").detach();
 	$(".yinhang").click(yinhangclickhandler);
@@ -79,7 +82,7 @@
 				tools:'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,Removeformat,|,Align,List,Outdent,Indent,|,Link,Unlink,Img,Hr,Emot,Table,|,Preview,Print,Fullscreen,|,map,|,pic,|,attach,|',
 				width:700,height:200});
 	//列出商家
-	listContacts(0);
+	listSamples(0);
 	
 	//添加电话
 	$("#jiadianhua").click(function(){
@@ -110,29 +113,29 @@
 			$("#gangwei").val(gangwei);
 		});
 	}
-	//将contact对象设置到表单 支持空联系人（即新增联系人）
-	function obj2form(contact){
-		currContact = contact;
-		if(contact._id){
-			$("#bianhao").text(contact._id);
+	//将sample对象设置到表单 支持空联系人（即新增联系人）
+	function obj2form(sample){
+		currSample = sample;
+		if(sample._id){
+			$("#bianhao").text(sample._id);
 		}else{
 			$("#bianhao").text("【新增】");
 		};
-		$("#mingchen").vals(contact.mingchen);
-		if(contact.shangjia){
-			$("#shangjia").vals(contact.shangjia.mingchen);
-			$("#shangjia").data("shangjia",contact.shangjia);
+		$("#mingchen").vals(sample.mingchen);
+		if(sample.shangjia){
+			$("#shangjia").vals(sample.shangjia.mingchen);
+			$("#shangjia").data("shangjia",sample.shangjia);
 		}else{
 			$("#shangjia").val("");
 		}
-		$("#gangwei").vals(contact.gangwei);
-		$("#dizhi").vals(contact.dizhi);
-		$("#beizhu").vals(contact.beizhu);
-		$("#beizhu2").html(contact.beizhu);
+		$("#gangwei").vals(sample.gangwei);
+		$("#dizhi").vals(sample.dizhi);
+		$("#beizhu").vals(sample.beizhu);
+		$("#beizhu2").html(sample.beizhu);
 		
 		var jiadianhua = $("#jiadianhua").detach();
 		$("#dianhualiebiao").empty();
-		each(contact.dianhualiebiao,function(n,dianhua){
+		each(sample.dianhualiebiao,function(n,dianhua){
 			var tel = telTmpl.clone(true);
 			tel.find("input").val(dianhua);
 			$("#dianhualiebiao").append(tel);
@@ -142,7 +145,7 @@
 		
 		var jiazhanghu = $("#jiazhanghu").detach();
 		$("#zhanghuliebiao").empty();
-		each(contact.zhanghuliebiao,function(n,zhanghu){
+		each(sample.zhanghuliebiao,function(n,zhanghu){
 			var zh = zhanghuTmpl.clone(true);
 			zh.find("#yinhang").val(zhanghu.yinhang);
 			zh.find("#wangdian").val(zhanghu.wangdian);
@@ -154,7 +157,7 @@
 		
 	}
 	//进入编辑状态。
-	function editContact(){
+	function editSample(){
 		$(".handwrite").removeAttr("readonly"); 
 		$("#beizhu2").hide();
 		$("#taContainer").show();
@@ -168,7 +171,7 @@
 		$(".yinhang").click(yinhangclickhandler);
 	}
 	//进入只读状态 
-	function readonlyContact(){
+	function readonlySample(){
 		$(".handwrite").attr("readonly",true); 
 		$("#beizhu2").show();
 		$("#taContainer").hide();
@@ -181,35 +184,35 @@
 		$(".jia").hide();
 	}
 		//新增联系人
-	$("#newContact").click(function(){
+	$("#newSample").click(function(){
 		obj2form({})
-		editContact();
+		editSample();
 	});
-	//将表单的内容转换为contact对象
+	//将表单的内容转换为sample对象
 	function form2obj(){
-			var contact = {};
+			var sample = {};
 			if("【新增】"!=$("#bianhao").text()){
-				contact._id = $("#bianhao").text().trim();
+				sample._id = $("#bianhao").text().trim();
 			}
-			contact.mingchen = $("#mingchen").val().trim();
+			sample.mingchen = $("#mingchen").val().trim();
 			if($("#shangjia").data("shangjia")){
-				contact.shangjia = {};
-				contact.shangjia._id = $("#shangjia").data("shangjia")._id;
-				contact.shangjia.mingchen = $("#shangjia").data("shangjia").mingchen;
+				sample.shangjia = {};
+				sample.shangjia._id = $("#shangjia").data("shangjia")._id;
+				sample.shangjia.mingchen = $("#shangjia").data("shangjia").mingchen;
 			}
-			contact.gangwei = $("#gangwei").val().trim();
-			contact.dizhi = $("#dizhi").val().trim();
-			contact.beizhu = $("#beizhu").val().trim();
+			sample.gangwei = $("#gangwei").val().trim();
+			sample.dizhi = $("#dizhi").val().trim();
+			sample.beizhu = $("#beizhu").val().trim();
 			if($("#dianhualiebiao").find(".tel").length>0){ 
-				contact.dianhualiebiao = [];
+				sample.dianhualiebiao = [];
 				$("#dianhualiebiao").find(".tel").each(function(n,tel){
 					if("" != $(tel).find("input").val().trim()){
-						contact.dianhualiebiao.push($(tel).find("input").val().trim());
+						sample.dianhualiebiao.push($(tel).find("input").val().trim());
 					}
 				});
 			}
 			if($("#zhanghuliebiao").find(".zhanghu").length>0){
-				contact.zhanghuliebiao = [];
+				sample.zhanghuliebiao = [];
 				$("#zhanghuliebiao").find(".zhanghu").each(function(n,zhanghu){
 					if("" != $(zhanghu).find("#zhanghao").val().trim() && "" != $(zhanghu).find("#huming").val().trim()){
 						var zh = {};
@@ -217,12 +220,12 @@
 						zh.huming =  $(zhanghu).find("#huming").val().trim();
 						zh.yinhang =  $(zhanghu).find("#yinhang").val().trim();
 						zh.wangdian =  $(zhanghu).find("#wangdian").val().trim();
-						contact.zhanghuliebiao.push(zh);
+						sample.zhanghuliebiao.push(zh);
 					}
 				});
 			}
 			
-			return contact;
+			return sample;
 	}
 		//提交
 	$("#tijiao").click(function(){
@@ -230,9 +233,9 @@
 			tip(null,"联系人名称不能留空！",1500);
 			return;
 		}
-		var contact = form2obj();
+		var sample = form2obj();
 		if("【新增】" == $("#bianhao").text()){		
-			postJson("contact.php",contact,function(res){
+			postJson("sample.php",sample,function(res){
 				if(res.success == true){
 					window.location.reload();
 				}else{
@@ -240,10 +243,10 @@
 				}
 			});
 		}else{
-			postJson("contact.php",contact,function(res){
+			postJson("sample.php",sample,function(res){
 				if(res.success == true){
-					obj2form(contact);
-					readonlyContact();
+					obj2form(sample);
+					readonlySample();
 					tip(null,"成功修改联系人信息！",3000);
 				}else{
 					ask3(null,res.err);
@@ -260,27 +263,27 @@
 		return s;
 	}
 		//列出商家
-	function listContacts(offset){
+	function listSamples(offset){
 		if(offset<0){
 			return;
 		}
 		$("#pager").data("offset",offset);
-		postJson("contacts.php",{offset:offset*limit,limit:limit,option:{"shangjia":$("#shangjiaoption").data("lastValue"),"mingchen":$("#mingchenoption").data("lastValue")}},function(contacts){
-			$("#contacttable .tr_contact").remove();
-			each(contacts,function(n,contact){
-				tr = tr_contact.clone(true);
-				tr.data("_id",contact._id);
-				tr.find("#td_bianhao").text(contact._id);
-				tr.find("#td_mingchen").text(contact.mingchen);
-				tr.find("#td_dianhua").text(showdianhuas(contact.dianhualiebiao));
-				if(contact.shangjia){
-					tr.find("#td_shangjia").text(contact.shangjia.mingchen);
+		postJson("samples.php",{offset:offset*limit,limit:limit,option:{"shangjia":$("#shangjiaoption").data("lastValue"),"mingchen":$("#mingchenoption").data("lastValue")}},function(samples){
+			$("#sampletable .tr_sample").remove();
+			each(samples,function(n,sample){
+				tr = tr_sample.clone(true);
+				tr.data("_id",sample._id);
+				tr.find("#td_bianhao").text(sample._id);
+				tr.find("#td_mingchen").text(sample.mingchen);
+				tr.find("#td_dianhua").text(showdianhuas(sample.dianhualiebiao));
+				if(sample.shangjia){
+					tr.find("#td_shangjia").text(sample.shangjia.mingchen);
 				}
 				tr.css("background-color",toggle("#deedde","#dedeed"));
-				$("#contacttable").append(tr);
+				$("#sampletable").append(tr);
 			});
-			if(contacts.length>0){//将列表第一个商家显示在右边的商家详情表单
-				showDetail(contacts[0]["_id"]);
+			if(samples.length>0){//将列表第一个商家显示在右边的商家详情表单
+				showDetail(samples[0]["_id"]);
 			}
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();
@@ -288,33 +291,33 @@
 	}
 		//显示指定商家详情
 	function showDetail(_id){
-		postJson("contacts.php",{_id:_id},function(contact){
-			obj2form(contact);
-			readonlyContact();
+		postJson("samples.php",{_id:_id},function(sample){
+			obj2form(sample);
+			readonlySample();
 		});
 	}
 	//处理“编辑”按钮
 	$("#bianji").click(function(){
-		editContact();
+		editSample();
 	});
 	//过滤条件变更处理
 	$(".option").changex(function(){
-		listContacts(0);
+		listSamples(0);
 	});
 	//翻页处理
 	$("#prevPage").click(function(){
-		listContacts($("#pager").data("offset")-1);
+		listSamples($("#pager").data("offset")-1);
 	});
 	$("#nextPage").click(function(){
-		listContacts($("#pager").data("offset")+1);
+		listSamples($("#pager").data("offset")+1);
 	});
 	//设置头部点击处理（放到当前面板）
 	$("#tableheader").click(function(){
-		layout.sizePane("west",$("#contacttable").width()+20);
+		layout.sizePane("west",$("#sampletable").width()+20);
 	});
 	$("#detailheader").click(function(){
 		layout.sizePane("west",$("body").width()-$(this).width()-100);
 	});
 	
-	
+	*/
 });
