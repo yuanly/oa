@@ -36,7 +36,7 @@
 	<div class="ui-layout-west">
 		<div>
 			<div  style="min-width:600px;">
-				编号:<input id="option_bianhao" class="plainInput option" type=text size=6/>&nbsp;商家:<input id="option_shangjia" class="plainInput option" type=text size=12/>&nbsp;泰型:<input id="option_taixing" class="plainInput option" type=text size=12/>&nbsp;中型:<input id="option_zhongxing" class="plainInput option" type=text size=12/> <span id="newsample" class="plainBtn" style="float:right">新增样板</span>
+				编号:<input id="option_bianhao" class="plainInput option" type=text size=6/>&nbsp;商家:<input id="option_shangjia" class="plainInput option" type=text size=12/>&nbsp;泰型:<input id="option_taixing" class="plainInput option" type=text size=12/>&nbsp;中型:<input id="option_zhongxing" class="plainInput option" type=text size=12/> <span id="xinzengyangban" class="plainBtn" style="float:right">新增样板</span>
 			</div>
 			<table id="sampletable"  style="min-width:600px;">
 				<tr id="tableheader">
@@ -52,29 +52,18 @@
 	<div class="ui-layout-center">
 		<table align=center style="margin-top:20px;line-height:40px;padding:10px;padding-top:2px;border:1px solid #ddd">
 			<tr id="detailheader" style="background-color:#eee;line-height:25px;"><td align=center ><span id="bianji" class="plainBtn">编辑</span><span id="tijiao" class="plainBtn  cBianJi">提交</span></td></tr>
-			<tr><td><span>编号：<span><div id="bianhao" style="color:#660033;display:inline-block;width:65px;text-decoration:underline">【新增】</div><span style="margin-left:10px">名称：</span><input id="mingchen" class="plainInput handwrite" readonly  type="text" size=16/><span style="margin-left:10px">商家：</span><input id="shangjia" class="plainInput" readonly  type="text" size=27 style="cursor:pointer"/><span style="margin-left:20px">岗位：</span><input id="gangwei" class="plainInput" type="text" size=8 readonly style="cursor:pointer" /></td></tr>
-			<tr><td><span>地址：</span><input id="dizhi" class="plainInput handwrite" type="text" style="width:650px" readonly /></td></tr>
+			<tr><td><span>编号：<span><div id="bianhao" style="color:#660033;display:inline-block;width:65px;text-decoration:underline">【新增】</div><span style="margin-left:10px">泰国型号：</span><input id="taiguoxinghao" class="plainInput handwrite" readonly  type="text" size=29/><span style="margin-left:10px">中国型号：</span><input id="zhongguoxinghao" class="plainInput" readonly  type="text" size=29 style="cursor:pointer"/></td></tr>
+			<tr><td><span>价格：</span><input id="jiage" class="plainInput handwrite" type="text" style="width:550px" readonly />&nbsp;<span>单位：</span><input id="danwei" class="plainInput handwrite" type="text" style="width:50px" readonly /></td></tr>
+			<tr><td><span>商家：<span><input id="shangjia" class="plainInput handwrite" type="text" style="width:200px" readonly />&nbsp;<span style="margin-left:10px">议价者：</span><input id="yijiazhe" class="plainInput handwrite" readonly  type="text" size=8 />&nbsp;<span style="margin-left:10px">议价日期：</span><input id="yijiariqi" class="plainInput" readonly  type="text" size=12 style="cursor:pointer"/>状态：</span><input id="zhuangtai" class="plainInput" readonly  type="text" size=4 style="cursor:pointer"/></td></tr>
 			<tr><td>
 				<div style="vertical-align:top;">
-					电话：
-					<div id="dianhualiebiao" style="display:inline-block;font-size:80%">
-						<div id="tel_tmpl" class="tel"><input type="text" class="plainInput cBianJi handwrite" size=40 /><span class="plainBtn jian">[ - ]</span></div>
-						<div class="plainBtn cBianJi jia" id="jiadianhua" style="line-height:20px;width:20px;">[ + ]</div>
-					</div>
-				</div>
-			</td></tr>
-			<tr><td>
-				<div style="vertical-align:top;">
-					帐户：
+					备选：
 					<div id="zhanghuliebiao" style="display:inline-block;font-size:80%">
 						<div id="zhanghu_tmpl" class="zhanghu" style="line-height:20px;margin-bottom:15px" >
-							银行：<input id="yinhang" type="text" class="plainInput yinhang" size=20 style="cursor:pointer" readonly />
-							网点：<input id="wangdian" type="text" class="plainInput handwrite" size=40 /><br/>
-							户名：<input id="huming" type="text" class="plainInput handwrite" size=20 />
-							帐号：<input id="zhanghao" type="text" class="plainInput handwrite" size=40 />
-							<span class="plainBtn cBianJi jian">[ - ]</span>
+							编号：<input id="yinhang" type="text" class="plainInput yinhang" size=5 style="cursor:pointer" readonly />
+							商家：<input id="wangdian" type="text" class="plainInput handwrite" size=20 />
+							价格：<input id="huming" type="text" class="plainInput handwrite" size=47 />
 						</div>
-						<div class="plainBtn cBianJi jia" id="jiazhanghu"  style="line-height:20px;width:20px;">[ + ]</div>
 					</div>
 				</div>
 			</td></tr>
@@ -86,6 +75,9 @@
 				</div>
 			</td></tr>
 		</table>
+		<div>
+			<span class="plainBtn">留言</span>
+		</div>
 	</div>
 </body>
 </html>
