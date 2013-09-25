@@ -1,4 +1,5 @@
 ﻿$(function(){
+	//{_id:"A232",taiguoxinghao:"",zhongguoxinghao:"",shangjia:{_id:1,mingchen:""},jiage:[beizhu:"",zhi:1.2],danwei:"",yijiazhe:2,yijiariqi:1222223,zhuantai:"",beizhu:""}
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	//新增样板
 	function xinzengyangban(){
@@ -10,6 +11,28 @@
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 	//用参数对象更新表单的内容
 	function obj2form(yangban){
+		$("#xiangdan").data("yangban",yangban);
+		$("#bianhao").vals(yangban._id);
+		$("#taiguoxinghao").vals(yangban.taiguoxinghao);
+		$("#zhongguoxinghao").vals(yangban.zhongguoxinghao);
+		var jiage = "";
+		each(yangban.jiage,function(n,jg){
+			if(jg.beizhu){
+				jiage += "("+jg.beizhu+":"+jg.zhi+"元) ";
+			}else{
+				jiage += "("+jg.zhi+"元) ";
+			}
+		});
+		$("#jiage").val(jiage);
+		$("#danwei").vals(yangban.danwei);
+		if(yangban.shangjia){
+			$("#shangjia").vals(yangban.shangjia.mingchen);
+		}else{
+			$("#shangjia").val("");
+		}
+		$("#yijiazhe")vals(getUser(yangban.yijiazhe));
+		
+		
 		
 	}
 	//读取表单内容，构造对象并返回
