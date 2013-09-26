@@ -30,10 +30,10 @@
 		}else{
 			$("#shangjia").val("");
 		}
-		$("#yijiazhe")vals(getUser(yangban.yijiazhe));
-		
-		
-		
+		$("#yijiazhe").vals(getUser(yangban.yijiazhe));		
+		$("#yijiariqi").val(int2Date(yangban.yijiariqi));
+		$("#zhuangtai").vals(yangban.zhuangtai);
+		$("#beizhu").editorVal(yangban.beizhu);
 	}
 	//读取表单内容，构造对象并返回
 	function form2obj(){
@@ -42,9 +42,17 @@
 	}
 	//进入编辑状态
 	function bianji(){
+		$(".plainInput").removeAttr("disabled");
+		$("#beizhu").editorWritable();
+		$("#bianji").hide();
+		$("#tijiao").show();
 	}
 	//进入只读状态
 	function zhidu(){
+		$(".plainInput").attr("disabled",true);
+		$("#beizhu").editorReadonly();
+		$("#bianji").show();
+		$("#tijiao").hide();
 	}
 	///////////////////////////////初始化/////////////////////////////////////////////
 	//定义左右布局
@@ -53,7 +61,14 @@
 		west__maskContents:true,
 		center__maskContents:true,
 	});
+	$(".plainInput").css("background-color","white");
+	//定义议价日期 的 日期控件
+	$("#yijiariqi").datepicker().attr("disabled",true);
+	//定义备注 的 编辑器
+	$("#beizhu").myeditor(700,200).editorReadonly();
+	
 	/*
+	
 	var currSample = null;
 	var limit = 20;
 

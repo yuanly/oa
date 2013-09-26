@@ -956,3 +956,122 @@ function setSelector2(event, items, callback){
 	}).mouseover(function(){$(this).css("color","red");}).mouseout(function(){$(this).css("color","blue");});
 	panel.css("top",event.clientY).css("left",event.clientX-panel.width()>10?event.clientX-panel.width():10);
 }
+//设置日历控件语言为中文
+jQuery(function($){
+	$.datepicker.regional['zh-CN'] = {clearText: '清除', clearStatus: '清除已选日期',
+		closeText: '关闭', closeStatus: '不改变当前选择',
+		prevText: '&lt;上月', prevStatus: '显示上月',
+		nextText: '下月&gt;', nextStatus: '显示下月',
+		currentText: '今天', currentStatus: '显示本月',
+		monthNames: ['一月','二月','三月','四月','五月','六月',
+		'七月','八月','九月','十月','十一月','十二月'],
+		monthNamesShort: ['一','二','三','四','五','六',
+		'七','八','九','十','十一','十二'],
+		monthStatus: '选择月份', yearStatus: '选择年份',
+		weekHeader: '周', weekStatus: '年内周次',
+		dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+		dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+		dayNamesMin: ['日','一','二','三','四','五','六'],
+		dayStatus: '设置 DD 为一周起始', dateStatus: '选择 m月 d日, DD',
+		dateFormat: 'yy/mm/dd', firstDay: 1, 
+		initStatus: '请选择日期', isRTL: false};
+	$.datepicker.setDefaults($.datepicker.regional['zh-CN']);
+});
+//封装xheditor封装 w:width h:height r:指当前脚本相对于root的路径（可选）
+jQuery.fn.myeditor = function (w,h,r) {
+	if("undefined" == typeof r){
+		r = "../../../";
+	}
+	
+	//编辑器定义 “图片”和“地图”按钮
+	 var plugins={
+	   		map:{
+	   			c:'btnMap',
+	   			t:'插入地图',
+	   			e:function(){
+	   				var _this=this;
+	   				_this.saveBookmark();
+	   				_this.showIframeModal('Google 地图',r+'xheditor-1.2.1/demos/googlemap/googlemap.html',function(v){
+	   					_this.loadBookmark();
+	   					_this.pasteHTML('<img src="'+v+'" />');
+	   				},538,404);		
+	   			}
+	   		},
+	   		pic:{
+	   			c:'btnPic',
+	   			t:'插入图片',
+	   			e:function(){
+	   				//editor.pasteHTML("<img src='../img/attach.jpg'/>");
+	   				editor.showModal("上传本地图片","<div id='file-uploader-demo2'></div>",120,50,function(){});
+	   				 var uploader1 = new qq.FileUploader({
+	   		                element: $("#file-uploader-demo2")[0],
+	   		                action: r+'uploader/server/up.php',
+	   		                params:{'memo':'new'},
+	   		                debug: true,
+	   		                onComplete: function(id, fileName, respJson){
+	   		                	//{"id":16,"success":true}
+	   		                	editor.pasteHTML("<img src="+r+"uploader/server/down.php?id="+respJson.id+"'/>");
+	   		                },
+	   		            });
+	   				editor.removeModal();
+	   				 uploader1._button.getInput().click();
+	   			}
+	   		},
+	   		attach:{
+	   			c:'btnAttach',
+	   			t:'插入附件',
+	   			e:function(){}
+	   		}
+	 };
+	 
+	 this.empty();
+	 this.append('\
+	 			<div id="editor_div1" style="font-size:80%;width:'+w+'px;height:'+h+'px;border:1px solid #ede" ></div>\
+				<div id="editor_div2"><textarea></textarea></div>');
+	 //编辑器设置
+  var editor = this.find("textarea").xheditor({plugins:plugins,
+		tools:'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,Removeformat,|,Align,List,Outdent,Indent,|,Link,Unlink,Img,Hr,Emot,Table,|,Preview,Print,Fullscreen,|,map,|,pic,|,attach,|',
+		width:w,height:h});
+	return this;
+}
+jQuery.fn.editorWritable = function(){
+	this.find("#editor_div1").hide();
+	this.find("#editor_div2").show();
+	return this;
+};
+jQuery.fn.editorReadonly = function(){
+	this.find("#editor_div1").show();
+	this.find("#editor_div2").hide();
+	return this;
+};
+jQuery.fn.editorVal = function(v){
+	if(arguments.length==0){
+		return this.find("textarea").val().trim();
+	}else{
+		if("undefined" === typeof v){
+			v="";
+		}
+		this.find("#editor_div1").html(v);
+		this.find("textarea").val(v);
+		return this;
+	}
+}
+//
+jQuery.fn.myselector = function(){
+}
+
+function int2Date(i){
+	if("undefined" == typeof i){
+		return "";
+	}
+	var d = new Date(i);
+	return d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate();
+}
+//yyyy/mm/dd字符串转成毫秒数
+function date2Int(d){
+	try{
+		return Date.parse(d).getTime();
+	}catch(e){
+		return 0;
+	}
+}
