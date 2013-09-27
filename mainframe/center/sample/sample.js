@@ -28,6 +28,9 @@
 		$("#taiguoxinghao").vals(yangban.taiguoxinghao);
 		$("#zhongguoxinghao").vals(yangban.zhongguoxinghao);
 		$("#jiage").val(jiages2str(yangban.jiage));
+		if(!$("#jiage").val()){
+			$("#jiage").val("【 元】");
+		}
 		$("#danwei").vals(yangban.danwei);
 		if(yangban.shangjia){
 			$("#shangjia").vals(yangban.shangjia.mingchen);
@@ -37,6 +40,22 @@
 		$("#yijiazhe").vals(getUser(yangban.yijiazhe));		
 		$("#yijiariqi").val(int2Date(yangban.yijiariqi));
 		$("#zhuangtai").vals(yangban.zhuangtai);
+		$("#beixuan").empty();
+		if(!yangban.beixuan){
+			$("#beixuan").append("该样板还没有后备，请尽快寻找！");
+		}else{
+			each(yangban.beixuan,function(n,beixuan){
+				var beixuan_elm = beixuan_tmpl.clone(true);
+				beixuan_elm.find("#beixuan_bianhao").val(beixuan.bianhao);
+				if(beixuan.shangjia){
+					beixuan_elm.find("#beixuan_shangjia").vals(beixuan.shangjia.mingchen);
+				}else{
+					beixuan_elm.find("#beixuan_shangjia").val("");
+				}
+				beixuan_elm.find("#jiage").val(jiages2str(beixuan.jiage));
+				$("#beixuan").append(beixuan_elm);
+			});
+		}
 		$("#beizhu").editorVal(yangban.beizhu);
 	}
 	//读取表单内容，构造对象并返回
@@ -102,10 +121,10 @@
 	$("#jiage").change(function(){
  		$(this).val(jiages2str(getPrices($(this).val())));
  	});
+ 	var beixuan_tmpl = $("#beixuan_tmpl").detach();
+ 	
 	/*
-	
-	var currSample = null;
-	var limit = 20;
+	 
 
 	//删除电话
 	$("#tel_tmpl > span").click(function(){
