@@ -9,21 +9,25 @@
 	$("#xinzengyangban").click(xinzengyangban);
 	
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
+	//价格数组转换成字符串
+	function jiages2str(jiages){
+		var str = "";
+		each(jiages,function(n,jiage){
+			if(jiage.beizhu){
+				str += "【"+jiage.beizhu+" "+jiage.zhi+"元】 ";
+			}else{
+				str += "【"+jiage.zhi+"元】 ";
+			}
+		});
+		return str;
+	}
 	//用参数对象更新表单的内容
 	function obj2form(yangban){
 		$("#xiangdan").data("yangban",yangban);
 		$("#bianhao").vals(yangban._id);
 		$("#taiguoxinghao").vals(yangban.taiguoxinghao);
 		$("#zhongguoxinghao").vals(yangban.zhongguoxinghao);
-		var jiage = "";
-		each(yangban.jiage,function(n,jg){
-			if(jg.beizhu){
-				jiage += "("+jg.beizhu+":"+jg.zhi+"元) ";
-			}else{
-				jiage += "("+jg.zhi+"元) ";
-			}
-		});
-		$("#jiage").val(jiage);
+		$("#jiage").val(jiages2str(yangban.jiage));
 		$("#danwei").vals(yangban.danwei);
 		if(yangban.shangjia){
 			$("#shangjia").vals(yangban.shangjia.mingchen);
@@ -54,7 +58,35 @@
 		$("#bianji").show();
 		$("#tijiao").hide();
 	}
+	//解释价格内容
+	function getPrices(s){
+	 var r = [];
+	 var p = {};
+		var i = 0;
+		var si,ei;
+		while(i>=0){
+			si = s.substring(i).search(/(\d+\.)?\d+\s*元\s*】/);
+			if(si>=0){
+				si += i;
+				ei = s.substring(i,si).lastIndexOf("【");
+				if(ei>=0){
+					p={};
+					p.beizhu = s.substring(i+ei+1,si).trim();
+					i = s.substring(si).search(/元\s*】/);
+					p.zhi = parseInt(s.substring(si,i+si).trim());
+					i = i+si+2;
+					r.push(p);
+				}else{
+					break;
+				}
+			}else{
+				break;
+			}
+		}
+		return r;
+	} 
 	///////////////////////////////初始化/////////////////////////////////////////////
+	 
 	//定义左右布局
 	var layout = $("body").layout({
 		west__size:"auto",
@@ -66,7 +98,10 @@
 	$("#yijiariqi").datepicker().attr("disabled",true);
 	//定义备注 的 编辑器
 	$("#beizhu").myeditor(700,200).editorReadonly();
-	
+
+	$("#jiage").change(function(){
+ 		$(this).val(jiages2str(getPrices($(this).val())));
+ 	});
 	/*
 	
 	var currSample = null;

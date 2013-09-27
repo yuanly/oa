@@ -34,6 +34,9 @@ getUser=function(id){
 	if(null == gUsers){
 		gUsers = JSON.parse(localStorage.getItem("users"));
 	}
+	if(null == gUsers){
+		return null;
+	}
 	for(var i = 0;i<gUsers.length;i++){
 		if(gUsers[i]._id == id){
 			return gUsers[i];
