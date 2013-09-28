@@ -1073,10 +1073,35 @@ jQuery.fn.editorVal = function(v){
 		return this;
 	}
 }
-//
-jQuery.fn.myselector = function(){
+//利用input的list属性，动态设置下拉框控件
+jQuery.fn.myselector = function(values,valueField,labelField){
+	var listId = this.attr("id")+"_list";
+	this.attr("list",listId);
+	var list = $("<datalist></datalist>").attr("id",listId);
+	var option;
+	each(values,function(n,value){
+		if(valueField){
+			option = $("<option value='"+value[valueField]+"'/>");
+		}else{
+			option = $("<option value='"+value+"'/>");
+		}
+		if(labelField){
+				option.attr("label",value[labelField]);
+		}		
+		list.append(option);
+	});
+	$("body").append(list);
 }
-
+jQuery.fn.userSelector = function(){
+	var listId = this.attr("id")+"_list";
+	this.attr("list",listId);
+	var list = $("<datalist></datalist>").attr("id",listId);
+	each(getUsers(),function(n,value){
+		list.append("<option value='"+value._id+"' label='"+value.user_name+"'/>");
+	});
+	this.bind("input",function(){console.log($("#"+listId+" option:selected"))});
+	$("body").append(list);
+}
 function int2Date(i){
 	if("undefined" == typeof i){
 		return "";
@@ -1092,3 +1117,4 @@ function date2Int(d){
 		return 0;
 	}
 }
+

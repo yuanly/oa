@@ -1,12 +1,27 @@
 ﻿$(function(){
-	//{_id:"A232",taiguoxinghao:"",zhongguoxinghao:"",shangjia:{_id:1,mingchen:""},jiage:[beizhu:"",zhi:1.2],danwei:"",yijiazhe:2,yijiariqi:1222223,zhuantai:"",beizhu:""}
+	//{_id:"A232",taiguoxinghao:"",zhongguoxinghao:"",shangjia:{_id:1,mingchen:""},jiage:[beizhu:"",zhi:1.2],danwei:"",yijiazhe:2,yijiariqi:"2013/09/28",zhuantai:"",beizhu:""}
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	//新增样板
-	function xinzengyangban(){
+	function xinzengyangban_handle(){
 		obj2form({});
 		bianji();
 	}
-	$("#xinzengyangban").click(xinzengyangban);
+	$("#xinzengyangban").click(xinzengyangban_handle);
+	//提交
+	function tijiao_handle(){
+		var yangban = form2obj();
+		console.log(yangban);
+		if(!yangban._id){
+			tip(null,"样板编号不能为空！",1500);
+			return;
+		}
+		if(!yangban.zhongguoxinghao){
+			tip(null,"中国型号不能为空！",1500);
+			return;
+		}
+		console.log("ok");
+	}
+	$("#tijiao").click(tijiao_handle);
 	
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 	//价格数组转换成字符串
@@ -60,7 +75,19 @@
 	}
 	//读取表单内容，构造对象并返回
 	function form2obj(){
-		var yangban;
+		var yangban={};
+		yangban._id = $("#xiangdan #bianhao").val().trim();
+		yangban.taiguoxinghao = $("#xiangdan #taiguoxinghao").val().trim();
+		yangban.zhongguoxinghao = $("#xiangdan #zhongguoxinghao").val().trim();
+		yangban.jiage = getPrices($("#xiangdan #jiage").val());
+		yangban.danwei = $("#xiangdan #danwei").val().trim();
+		var shangjia = $("#xiangdan #shangjia").data("shangjia");
+		if(shangjia){
+			yangban.shangjia = {_id:shangjia._id,mingchen:shangjia.mingchen};
+		}
+		yangban.yijiazhe = $("#xiangdan #yijiazhe").val().trim();
+		yangban.yijiariq = $("#xiangdan #yijiariqi").val().trim();
+		yangban.beizhu = $("#xiangdan #beizhu").editorVal();
 		return yangban
 	}
 	//进入编辑状态
@@ -123,4 +150,5 @@
  	});
  	var beixuan_tmpl = $("#beixuan_tmpl").detach();
  	$("#shangjia").xuanzeshangjia();
+ 	$("#yijiazhe").userSelector();
 });

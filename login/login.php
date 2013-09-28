@@ -24,7 +24,8 @@ $result["cul"] = getCulture();
 echo jsonEncode($result);
 
 function getUsers(){
-	$cur = userColl()->find(array("ban"=>array('$exists'=>false)),array("password"=>0));
+	//$cur = userColl()->find(array("ban"=>array('$exists'=>false)),array("password"=>0));
+	$cur = userColl()->find(array(),array("password"=>0));
 	$rows = cur2obj($cur);
 	foreach($rows as &$value){
 		if(!isset($value["photo"])){

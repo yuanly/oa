@@ -1,11 +1,12 @@
- 
+ //设置当前登录用户
 function setTheUser(user){
 	localStorage.setItem("user",JSON.stringify(user))
 }
+//删除（取消设置）当前登录用户
 function delTheUser(){
 	localStorage.removeItem("user");
 }
-
+//返回当前登录的用户
 function getTheUser(){
 	try{
 		return JSON.parse(localStorage.getItem("user"));
@@ -25,21 +26,38 @@ function getLastUser(){
 		return null;
 	}
 }
+//设置上次选中用户
 function setLastUser(user){
 	localStorage.setItem("lastuser",JSON.stringify(user))
 }
 
 var gUsers = null;
-getUser=function(id){
+//返回所有用户
+getAllUsers = function(){
 	if(null == gUsers){
 		gUsers = JSON.parse(localStorage.getItem("users"));
 	}
-	if(null == gUsers){
+	return gUsers;
+}
+//返回所有没被禁用的用户
+getUsers = function(){
+	var users = [];
+	each(getAllUsers(),function(n,user){
+		if(!user.ban){
+			users.push(user);
+		}
+	});
+	return users;1
+}
+//根据id返回指定用户
+getUser=function(id){
+	var users = getAllUsers();
+	if(null == users){
 		return null;
 	}
-	for(var i = 0;i<gUsers.length;i++){
-		if(gUsers[i]._id == id){
-			return gUsers[i];
+	for(var i = 0;i<users.length;i++){
+		if(users[i]._id == id){
+			return users[i];
 		}
 	}
 	return null;

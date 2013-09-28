@@ -19,22 +19,24 @@
 			//设置全部用户
 			usertable = $("#users table").remove();  
 			each(content.users,function(n,user){
-				var atable =  usertable.clone();
-				if("yuanly" == user.user_name){
-					user.user_name = "袁立宇";
+				if(!user.ban){
+					var atable =  usertable.clone();
+					if("yuanly" == user.user_name){
+						user.user_name = "袁立宇";
+					}
+					$("#username",atable).text(user.user_name);
+					$("#userhead",atable).attr("src",user.photo);
+					$("#users").append("&nbsp;").append(atable); 
+					atable.click(function(){
+						$("#theusername").text(user.user_name);
+						$("#theuser").attr("src",user.photo);
+						setLastUser(user);
+						setBG(user);
+						lastUser=user;
+						$("#users").hide();
+						$("#password").focus();
+					});
 				}
-				$("#username",atable).text(user.user_name);
-				$("#userhead",atable).attr("src",user.photo);
-				$("#users").append("&nbsp;").append(atable); 
-				atable.click(function(){
-					$("#theusername").text(user.user_name);
-					$("#theuser").attr("src",user.photo);
-					setLastUser(user);
-					setBG(user);
-					lastUser=user;
-					$("#users").hide();
-					$("#password").focus();
-				});
 			});
 			
 			setBG(lastUser);
