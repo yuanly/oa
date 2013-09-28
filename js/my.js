@@ -857,7 +857,24 @@ function random(max,min){
 		return Math.floor((max+1) * Math.random());
 	}
 }
-
+//商家选择。把input元素设置成支持弹出商家选择框的控件
+jQuery.fn.xuanzeshangjia = function(vendors_php){
+	if(!vendors_php){
+		vendors_php = "../vendor/vendors.php";
+	}	
+	this.click(function(event){
+		var limit = 20;
+		setSelector(event,function(page,option,callback){
+				postJson(vendors_php,{offset:page*limit,limit:limit,option:option},function(vendors){
+					callback(vendors);
+				});
+			},["_id","mingchen"],function(vendor){
+				$(this).val(vendor.mingchen);
+				$(this).data("shangjia",vendor);
+			}
+		);
+	});
+}
 /*
 * 带查询的选择框
 * event 点击事件，用来获取鼠标位置
