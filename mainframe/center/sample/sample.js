@@ -31,6 +31,33 @@
 	$("#tijiao").click(tijiao_handle);
 	
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
+	//列出样板
+	function listYangban(offset){
+		if(offset<0){
+			return;
+		}
+		$("#pager").data("offset",offset);
+		postJson("samples.php",{offset:offset*limit,limit:limit,option:{"shangjia":$("#shangjiaoption").data("lastValue"),"mingchen":$("#mingchenoption").data("lastValue")}},function(contacts){
+			$("#contacttable .tr_contact").remove();
+			each(contacts,function(n,contact){
+				tr = tr_contact.clone(true);
+				tr.data("_id",contact._id);
+				tr.find("#td_bianhao").text(contact._id);
+				tr.find("#td_mingchen").text(contact.mingchen);
+				tr.find("#td_dianhua").text(showdianhuas(contact.dianhualiebiao));
+				if(contact.shangjia){
+					tr.find("#td_shangjia").text(contact.shangjia.mingchen);
+				}
+				tr.css("background-color",toggle("#deedde","#dedeed"));
+				$("#contacttable").append(tr);
+			});
+			if(contacts.length>0){//将列表第一个商家显示在右边的商家详情表单
+				showDetail(contacts[0]["_id"]);
+			}
+			//调整左侧宽度以便显示完整的列表
+			$("#tableheader").click();
+		});
+	}
 	//价格数组转换成字符串
 	function jiages2str(jiages){
 		var str = "";
