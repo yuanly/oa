@@ -10,7 +10,6 @@
 	//提交
 	function tijiao_handle(){
 		var yangban = form2obj();
-		console.log(yangban);
 		if(!yangban._id){
 			tip(null,"样板编号不能为空！",1500);
 			return;
@@ -19,7 +18,15 @@
 			tip(null,"中国型号不能为空！",1500);
 			return;
 		}
-		console.log("ok");
+		postJson("sample.php",yangban,function(res){
+			if(res.success == true){
+				obj2form(yangban);
+				zhidu();
+				tip(null,"成功提交样板信息！",3000);
+			}else{
+				ask3(null,res.err);
+			}
+		});
 	}
 	$("#tijiao").click(tijiao_handle);
 	
@@ -52,7 +59,12 @@
 		}else{
 			$("#shangjia").val("");
 		}
-		$("#yijiazhe").vals(getUser(yangban.yijiazhe));		
+		var user = getUser(yangban.yijiazhe);
+		if(user){
+		$("#yijiazhe").vals(user.user_name);
+		}else{
+		$("#yijiazhe").val("");
+		}
 		$("#yijiariqi").val(int2Date(yangban.yijiariqi));
 		$("#zhuangtai").vals(yangban.zhuangtai);
 		$("#beixuan").empty();
@@ -86,8 +98,9 @@
 			yangban.shangjia = {_id:shangjia._id,mingchen:shangjia.mingchen};
 		}
 		yangban.yijiazhe = $("#xiangdan #yijiazhe").val().trim();
-		yangban.yijiariq = $("#xiangdan #yijiariqi").val().trim();
+		yangban.yijiariqi = $("#xiangdan #yijiariqi").val().trim();
 		yangban.beizhu = $("#xiangdan #beizhu").editorVal();
+		yangban.zhuangtai = $("#zhuangtai").val().trim();
 		return yangban
 	}
 	//进入编辑状态
@@ -119,7 +132,7 @@
 					p={};
 					p.beizhu = s.substring(i+ei+1,si).trim();
 					i = s.substring(si).search(/元\s*】/);
-					p.zhi = parseInt(s.substring(si,i+si).trim());
+					p.zhi = parseFloat(s.substring(si,i+si).trim());
 					i = i+si+2;
 					r.push(p);
 				}else{
