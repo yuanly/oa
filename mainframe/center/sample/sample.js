@@ -37,27 +37,41 @@
 			return;
 		}
 		$("#pager").data("offset",offset);
-		postJson("samples.php",{offset:offset*limit,limit:limit,option:{"shangjia":$("#shangjiaoption").data("lastValue"),"mingchen":$("#mingchenoption").data("lastValue")}},function(contacts){
-			$("#contacttable .tr_contact").remove();
-			each(contacts,function(n,contact){
-				tr = tr_contact.clone(true);
-				tr.data("_id",contact._id);
-				tr.find("#td_bianhao").text(contact._id);
-				tr.find("#td_mingchen").text(contact.mingchen);
-				tr.find("#td_dianhua").text(showdianhuas(contact.dianhualiebiao));
-				if(contact.shangjia){
-					tr.find("#td_shangjia").text(contact.shangjia.mingchen);
+		postJson("samples.php",{offset:offset*limit,limit:limit,option:{"bianhao":$("#option_bianhao").data("lastValue"),
+																																		"shangjia":$("#option_shangjia").data("lastValue"),
+																																		"taixing":$("#option_taixing").data("lastValue"),
+																																		"zhongxing":$("#option_zhongxing").data("lastValue")}},function(samples){
+			$("#sampletable .tr_sample").remove();
+			each(samples,function(n,sample){
+				tr = tr_sample.clone(true);
+				tr.data("_id",sample._id);
+				tr.find("#td_bianhao").text(sample._id);
+				tr.find("#td_taiguoxinghao").text(sample.taiguoxinghao);
+				tr.find("#td_jiage").text(jiages2str(sample.jiage));
+				tr.find("#td_danwei").text(sample.danwei);
+				tr.find("#td_zhongguoxinghao").text(sample.zhongguoxinghao);
+				tr.find("#td_yijiariqi").text(sample.td_yijiariqi);
+				if(sample.shangjia){
+					tr.find("#td_shangjia").text(sample.shangjia.mingchen);
 				}
-				tr.css("background-color",toggle("#deedde","#dedeed"));
-				$("#contacttable").append(tr);
+				tr.css("background-color",toggle("#fff","#eee"));
+				$("#sampletable").append(tr);
 			});
-			if(contacts.length>0){//将列表第一个商家显示在右边的商家详情表单
-				showDetail(contacts[0]["_id"]);
+			if(samples.length>0){//将列表第一个商家显示在右边的商家详情表单
+				showDetail(samples[0]["_id"]);
 			}
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();
 		});
 	}
+	//将指定id的样板详情显示在右侧
+	function showDetail(id){
+		postJson("sample.php",{_id:id},function(sample){
+			obj2form(sample);
+			zhidu();
+		});
+	}
+	
 	//价格数组转换成字符串
 	function jiages2str(jiages){
 		var str = "";
@@ -172,7 +186,7 @@
 		return r;
 	} 
 	///////////////////////////////初始化/////////////////////////////////////////////
-	 
+	var limit = 20;
 	//定义左右布局
 	var layout = $("body").layout({
 		west__size:"auto",
@@ -191,4 +205,14 @@
  	var beixuan_tmpl = $("#beixuan_tmpl").detach();
  	$("#shangjia").xuanzeshangjia();
  	$("#yijiazhe").userSelector();
+ 	var tr_sample = $(".tr_sample").detach();
+ 	//设置头部点击处理（放到当前面板）
+	$("#tableheader").click(function(){
+		layout.sizePane("west",$("#sampletable").width()+20);
+	});
+	$("#detailheader").click(function(){
+		layout.sizePane("west",$("body").width()-$(this).width()-100);
+	});
+	//列出样板
+	listYangban(0);
 });
