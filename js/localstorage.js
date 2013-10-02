@@ -62,3 +62,15 @@ getUser=function(id){
 	}
 	return null;
 }
+function getUserIdByName(name){
+	var users = getAllUsers();
+	if(null == users){
+		return null;
+	}
+	for(var i = 0;i<users.length;i++){
+		if(users[i].user_name == name){
+			return users[i]._id;
+		}
+	}
+	return null;
+}

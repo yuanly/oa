@@ -28,8 +28,32 @@
 			}
 		});
 	}
-	$("#tijiao").click(tijiao_handle);
 	
+	$("#tijiao").click(tijiao_handle);
+	//设置记录点击处理，在模板被剥离前。
+	$(".tr_sample").click(function(){
+		showDetail($(this).data("_id"));
+	});
+	//筛选处理
+	$(".option").changex(function(){
+		listYangban(0);
+	}).focus(function(){
+		$(".option:not(:focus)").val("");
+		$(".option:not(:focus)").data("lastValue","");
+	});
+		//翻页处理
+	$("#prevPage").click(function(){
+		listYangban($("#pager").data("offset")-1);
+	});
+	$("#nextPage").click(function(){
+		listYangban($("#pager").data("offset")+1);
+	});
+	$("#bianji").click(function(){
+		bianji();
+	});
+	$("#beixuan_bianhao").click(function(){
+		showDetail($(this).val());
+	});
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 	//列出样板
 	function listYangban(offset){
@@ -50,11 +74,16 @@
 				tr.find("#td_jiage").text(jiages2str(sample.jiage));
 				tr.find("#td_danwei").text(sample.danwei);
 				tr.find("#td_zhongguoxinghao").text(sample.zhongguoxinghao);
-				tr.find("#td_yijiariqi").text(sample.td_yijiariqi);
+				tr.find("#td_yijiariqi").text(sample.yijiariqi);
 				if(sample.shangjia){
 					tr.find("#td_shangjia").text(sample.shangjia.mingchen);
 				}
 				tr.css("background-color",toggle("#fff","#eee"));
+				if(sample.zhuangtai == "停产"){
+					tr.css("color","gray").css("text-decoration","line-through");
+				}else if(sample.zhuangtai == "缺货"){
+					tr.css("color","gray").css("font-style","italic");
+				}
 				$("#sampletable").append(tr);
 			});
 			if(samples.length>0){//将列表第一个商家显示在右边的商家详情表单
@@ -66,9 +95,10 @@
 	}
 	//将指定id的样板详情显示在右侧
 	function showDetail(id){
-		postJson("sample.php",{_id:id},function(sample){
+		postJson("samples.php",{_id:id},function(sample){
 			obj2form(sample);
 			zhidu();
+			liuyanElm.shuaxinliebiao({hostId:id});
 		});
 	}
 	
@@ -97,31 +127,34 @@
 		$("#danwei").vals(yangban.danwei);
 		if(yangban.shangjia){
 			$("#shangjia").vals(yangban.shangjia.mingchen);
+			$("#shangjia").data("shangjia",yangban.shangjia);
 		}else{
 			$("#shangjia").val("");
 		}
 		var user = getUser(yangban.yijiazhe);
 		if(user){
-		$("#yijiazhe").vals(user.user_name);
+			$("#yijiazhe").vals(user.user_name);
 		}else{
 		$("#yijiazhe").val("");
 		}
-		$("#yijiariqi").val(int2Date(yangban.yijiariqi));
+		$("#yijiariqi").val(yangban.yijiariqi)
 		$("#zhuangtai").vals(yangban.zhuangtai);
 		$("#beixuan").empty();
-		if(!yangban.beixuan){
+		if(!yangban.beixuan || yangban.beixuan.length<=1){
 			$("#beixuan").append("该样板还没有后备，请尽快寻找！");
 		}else{
 			each(yangban.beixuan,function(n,beixuan){
-				var beixuan_elm = beixuan_tmpl.clone(true);
-				beixuan_elm.find("#beixuan_bianhao").val(beixuan.bianhao);
-				if(beixuan.shangjia){
-					beixuan_elm.find("#beixuan_shangjia").vals(beixuan.shangjia.mingchen);
-				}else{
-					beixuan_elm.find("#beixuan_shangjia").val("");
+				if(beixuan._id != yangban._id){
+					var beixuan_elm = beixuan_tmpl.clone(true);
+					beixuan_elm.find("#beixuan_bianhao").val(beixuan._id);
+					if(beixuan.shangjia){
+						beixuan_elm.find("#beixuan_shangjia").vals(beixuan.shangjia.mingchen);
+					}else{
+						beixuan_elm.find("#beixuan_shangjia").val("");
+					}
+					beixuan_elm.find("#beixuan_jiage").val(jiages2str(beixuan.jiage));
+					$("#beixuan").append(beixuan_elm);
 				}
-				beixuan_elm.find("#jiage").val(jiages2str(beixuan.jiage));
-				$("#beixuan").append(beixuan_elm);
 			});
 		}
 		$("#beizhu").editorVal(yangban.beizhu);
@@ -138,7 +171,7 @@
 		if(shangjia){
 			yangban.shangjia = {_id:shangjia._id,mingchen:shangjia.mingchen};
 		}
-		yangban.yijiazhe = $("#xiangdan #yijiazhe").val().trim();
+		yangban.yijiazhe = getUserIdByName($("#xiangdan #yijiazhe").val().trim());
 		yangban.yijiariqi = $("#xiangdan #yijiariqi").val().trim();
 		yangban.beizhu = $("#xiangdan #beizhu").editorVal();
 		yangban.zhuangtai = $("#zhuangtai").val().trim();
@@ -146,14 +179,14 @@
 	}
 	//进入编辑状态
 	function bianji(){
-		$(".plainInput").removeAttr("disabled");
+		$("#xiangdan").find(".plainInput").removeAttr("disabled");
 		$("#beizhu").editorWritable();
 		$("#bianji").hide();
 		$("#tijiao").show();
 	}
 	//进入只读状态
 	function zhidu(){
-		$(".plainInput").attr("disabled",true);
+		$("#xiangdan").find(".plainInput").attr("disabled",true);
 		$("#beizhu").editorReadonly();
 		$("#bianji").show();
 		$("#tijiao").hide();
@@ -215,4 +248,7 @@
 	});
 	//列出样板
 	listYangban(0);
+	
+	var liuyanElm = $("#liuyan").liuyan({hostType:"yangban",});
+	//liuyanElm.setOption({hostId:"123"});
 });

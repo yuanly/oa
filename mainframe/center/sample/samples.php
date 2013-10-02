@@ -6,10 +6,16 @@ session_start();
 checkuser();
 
 $param = getJson();
-if(isset($param["_id"])){//特定联系人详情
+if(isset($param["_id"])){//
 	$one = coll("yangban")->findAndModify(array("_id"=>$param["_id"]),array('$set'=>Array("access"=>time())));			
+	if($one){
+		$cur = coll("yangban")->find(array("zhongguoxinghao"=>$one["zhongguoxinghao"]),array("_id"=>1,"shangjia"=>1,"jiage"=>1));
+		if($cur->count()>1){
+			$one["beixuan"] = c2a($cur);
+		}
+	}
 	echo jsonEncode($one);
-}else{//商家列表
+}else{//
 	$query = array();
 	if(!empty($param["option"])){
 		if(!empty($param["option"]["bianhao"])){
