@@ -1,0 +1,92 @@
+﻿<html>
+	<head>
+	<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=0"> 
+	<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
+<link rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen">
+	<title>样板管理</title> 	 
+	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
+	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+	<script src="../../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+	<script src="../../../js/my.js" type="text/javascript"></script>
+	<script src="../../../js/localstorage.js" type="text/javascript"></script>
+	<script src="../../../js/server.js" type="text/javascript"></script>
+	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+	<script src="../../../js/jquery.layout-latest.js" type="text/javascript"></script>
+	<script type="text/javascript" src="sample.js"></script>
+	<style>
+		th{
+			background-color:#99ccff;
+		}
+		.tr_sample:hover{
+			color:brown;
+		}
+		.tr_sample{
+			white-space:nowrap; 
+			cursor:pointer;
+		}
+	</style>
+</head>
+<body style="margin:0px;padding:0px">
+	<div class="ui-layout-west">
+		<div>
+			<div  style="min-width:600px;">
+				编号:<input id="option_bianhao" class="plainInput option" type=text size=6/>&nbsp;商家:<input id="option_shangjia" class="plainInput option" type=text size=12/>&nbsp;泰型:<input id="option_taixing" class="plainInput option" type=text size=12/>&nbsp;中型:<input id="option_zhongxing" class="plainInput option" type=text size=12/> <span id="xinzengyangban" class="plainBtn" style="float:right">新增样板</span>
+			</div>
+			<table id="sampletable"  style="min-width:600px;">
+				<tr id="tableheader">
+					<th>编号</th><th nowrap>泰国型号</th><th nowrap>价格</th><th nowrap>单位</th><th nowrap>中国型号</th><th nowrap>议价日期</th><th nowrap>商家</th>
+				</tr>
+				<tr class="tr_sample">
+					<td id="td_bianhao"></td><td id="td_taiguoxinghao"></td><td id="td_jiage"></td><td id="td_danwei"></td><td id="td_zhongguoxinghao"></td><td id="td_yijiariqi"></td><td id="td_shangjia"></td>
+				</tr>
+			</table>	
+			<div id="pager"><span id="prevPage" class="plainBtn">上一页</span> <span id="nextPage" class="plainBtn">下一页</span></div>
+		</div>
+	</div>
+	<div class="ui-layout-center">
+		<table id="xiangdan" align=center style="margin-top:20px;line-height:40px;padding:10px;padding-top:2px;border:1px solid #ddd">
+			<tr id="detailheader" style="background-color:#eee;line-height:25px;"><td align=center ><span id="bianji" class="plainBtn">编辑</span><span id="tijiao" class="plainBtn  cBianJi">提交</span></td></tr>
+			<tr><td><span>编号：<span><input id="bianhao" class="plainInput" type="text" style="width:65px" /><span style="margin-left:10px">泰国型号：</span><input id="taiguoxinghao" class="plainInput"  type="text" size=29/><span style="margin-left:10px">中国型号：</span><input id="zhongguoxinghao" class="plainInput"  type="text" size=29/></td></tr>
+			<tr><td><span>价格：</span><input id="jiage" class="plainInput" type="text" style="width:550px" title="请按【<注释 ><价格>元】格式输入价格，<注释 >可以没有。如【金色 8元】【12元】"/>&nbsp;<span>单位：</span><input id="danwei" class="plainInput" type="text" list="danweilist" style="width:50px;" /></td></tr>
+			<tr><td nowrap><span>商家：<span><input id="shangjia" class="plainInput" type="text" style="width:200px;cursor:pointer" />&nbsp;<span style="margin-left:10px">议价者：</span><input id="yijiazhe" class="plainInput"  type="text" size=8 />&nbsp;<span style="margin-left:10px">议价日期：</span><input id="yijiariqi" class="plainInput"  type="text" size=12 style="cursor:pointer;"/>状态：</span><input id="zhuangtai" class="plainInput" list="zhuangtailist"  type="text" size=4 style="background-color:white"/></td></tr>
+			<tr><td>
+				<div style="vertical-align:top;">
+					备选：
+					<div id="beixuan" style="display:inline-block;font-size:80%;color:gray">
+						<div id="beixuan_tmpl" class="beixuan" style="line-height:20px;margin-bottom:15px" >
+							编号：<input id="beixuan_bianhao" type="text" class="plainInput"	 size=5 style="cursor:pointer;color:blue" readonly />
+							商家：<input id="beixuan_shangjia" type="text" class="plainInput" size=20  readonly style="color:gray"/>
+							价格：<input id="beixuan_jiage" type="text" class="plainInput" size=47  readonly style="color:gray"/>
+						</div>
+					</div>
+				</div>
+			</td></tr>
+			<tr><td>
+				<div>备注：</div>
+				<div id="beizhu"></div>
+			</td></tr>
+		</table>
+		<div id="liuyan">
+			<span class="plainBtn">留言</span>
+		</div>
+		<datalist id="zhuangtailist">
+			<option value="正常"/>
+			<option value="缺货"/>
+			<option value="停产"/>
+		</datalist>
+		<datalist id="danweilist">
+			<option value="码"/>
+			<option value="米"/>
+			<option value="件"/>
+			<option value="KG"/>
+			<option value="张"/>
+		</datalist>
+	</div>
+</body>
+</html>
