@@ -9,6 +9,10 @@
 	}
 	$("#tijiao").click(tijiaoyuangao);
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
+	function showDetail(yg){
+	}
+	function showDeetailById(id){
+	}
 	jQuery.fn.liucheng = function(theUser,yuangao){
 		var that = this.empty();
 		each(yuangao.liucheng,function(n,item){
