@@ -1020,7 +1020,8 @@
  	   		                debug: true,
  	   		                onComplete: function(id, fileName, respJson){
  	   		                	//{"id":16,"success":true}
- 	   		                	editor.pasteHTML("<img src="+r+"uploader/server/down.php?id="+respJson.id+"'/>");
+ 	   		                	var src = r+"uploader/server/down.php?id="+respJson.id;
+ 	   		                	editor.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:"+(w-20)+"px'/></a>");
  	   		                },
  	   		            });
  	   				editor.removeModal();
