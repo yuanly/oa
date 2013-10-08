@@ -7,8 +7,11 @@ checkuser();
 
 $yuangao = getJson();
 $yuangao["shangchuanshijian"] = time();
-$d = date("y/m/d",$yuangao["shangchuanshijian"]);
+$d = date("ymd",$yuangao["shangchuanshijian"]);
 $n = coll("yuangao")->count(array("_id"=>"/^".$d."/"));
-$yuangao["_id"] = $d."_".($n+1);
+$yuangao["_id"] = $d.".".($n+1);
+$yuangao["liucheng"] = array();
+$yuangao["liucheng"][] = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"上传","time"=>time());
+$yuangao["zhuangtai"] = "上传";
 coll("yuangao")->save($yuangao);
 echo jsonEncode($yuangao);

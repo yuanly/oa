@@ -7,16 +7,11 @@ checkuser();
 
 $param = getJson();
 if(isset($param["_id"])){//
-	$one = coll("yangban")->findAndModify(array("_id"=>$param["_id"]),array('$set'=>Array("access"=>time())));			
-	if($one){
-		$cur = coll("yangban")->find(array("zhongguoxinghao"=>$one["zhongguoxinghao"]),array("_id"=>1,"shangjia"=>1,"jiage"=>1));
-		if($cur->count()>1){
-			$one["beixuan"] = c2a($cur);
-		}
-	}
+	$one = coll("yuangao")->findOne(array("_id"=>$param["_id"]));
 	echo jsonEncode($one);
 }else{//
-	$query = array();
+	$query = array("zhuangtai"=>array('$ne'=>"删除"));
+	/*
 	if(!empty($param["option"])){
 		if(!empty($param["option"]["bianhao"])){
 			$query["_id"] = array('$regex'=>$param["option"]["bianhao"]);
@@ -28,7 +23,8 @@ if(isset($param["_id"])){//
 			$query["zhongguoxinghao"] = array('$regex'=>$param["option"]["zhongxing"]);
 		}
 	}
-	$cur = coll("yangban")->find($query,array("beizhu"=>0))->sort(array("access"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	*/
+	$cur = coll("yuangao")->find($query,array("neirong"=>0,"shenjieshuoming"=>0))->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	
 	echo  cur2json($cur);
 	
