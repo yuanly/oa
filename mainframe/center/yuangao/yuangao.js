@@ -19,14 +19,26 @@
 	$("#nextPage").click(function(){
 		listYuangao($("#pager").data("offset")+1);
 	});
-	$("#lc_anniu").click(function(){
+	function cz_anniu(){
 		$(this).parents("table").find("#lc_caozuo").toggle();
 		if($(this).attr("src").indexOf("up")>-1){
 			$(this).attr("src","../../../img/down.png");
 		}else{
 			$(this).attr("src","../../../img/up.png");
 		}
-	});
+	}
+	$("#lc_anniu").click(cz_anniu);
+	function cz_shanchu(){
+		var _id = $("#liucheng").data("_id");
+		console.log($(this).parents("#liuchengItem"));
+		postJson("yuangaos.php",{deleteId:_id},function(res){
+			listYuangao(0);
+		});
+	}
+	$("#cz_shanchu").click(cz_shanchu);
+	function cz_jiegao(){
+	}
+	$("#cz_jiegao").click(cz_jiegao);
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 		//列出原稿
 	function listYuangao(offset){
@@ -83,6 +95,7 @@
 	}
 	jQuery.fn.liucheng = function(theUser,yuangao){
 		var that = this.empty();
+		this.data("_id",yuangao._id);
 		each(yuangao.liucheng,function(n,item){
 			var tmpl = liuchengItem.clone(true);
 			$("#lc_bianhao",tmpl).text(n+1);
@@ -114,6 +127,7 @@
 						if("申请审结" != yuangao.liucheng[yuangao.liucheng.length-1].dongzuo){
 							var caozuoItem = caozuoTmpl.clone(true);
 							$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+							$("#cz_ludan",caozuoItem).show();
 							$("#cz_shenqingshenhe",caozuoItem).show();
 							$("#cz_shenqingshenjie",caozuoItem).show();
 							$("table",tmpl).append(caozuoItem);
