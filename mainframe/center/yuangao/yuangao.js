@@ -4,7 +4,8 @@
 	function tijiaoyuangao(){
 		var yuangao = {shangchuanzhe:getTheUser()._id,neirong:editor.editorVal()};
 		postJson("./yuangao.php",yuangao,function(yg){
-			showDetail(yg);
+			//showDetail(yg);
+			listYuangao(0);
 		});
 	}
 	$("#tijiao").click(tijiaoyuangao);
@@ -17,6 +18,14 @@
 	});
 	$("#nextPage").click(function(){
 		listYuangao($("#pager").data("offset")+1);
+	});
+	$("#lc_anniu").click(function(){
+		$(this).parents("table").find("#lc_caozuo").toggle();
+		if($(this).attr("src").indexOf("up")>-1){
+			$(this).attr("src","../../../img/down.png");
+		}else{
+			$(this).attr("src","../../../img/up.png");
+		}
 	});
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 		//列出原稿
