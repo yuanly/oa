@@ -3,7 +3,7 @@
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function tijiaoyuangao(){
 		var yuangao = {shangchuanzhe:getTheUser()._id,neirong:editor.editorVal()};
-		postJson("./yuangao.php",yuangao,function(yg){
+		postJson("./yuangao.php",{caozuo:"shangchuan",yuangao:yuangao},function(yg){
 			//showDetail(yg);
 			listYuangao(0);
 		});
@@ -30,13 +30,16 @@
 	$("#lc_anniu").click(cz_anniu);
 	function cz_shanchu(){
 		var _id = $("#liucheng").data("_id");
-		console.log($(this).parents("#liuchengItem"));
-		postJson("yuangaos.php",{deleteId:_id},function(res){
+		postJson("yuangao.php",{caozuo:"shanchu",_id:_id},function(res){
 			listYuangao(0);
 		});
 	}
 	$("#cz_shanchu").click(cz_shanchu);
 	function cz_jiegao(){
+		//接稿：增加流程项，设置基本属性
+		postJson("yuangao.php",{caozuo:"jiegao",_id:$("#liucheng").data("_id")},function(res){
+			showDetailById($("#liucheng").data("_id"));
+		});
 	}
 	$("#cz_jiegao").click(cz_jiegao);
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////

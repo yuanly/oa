@@ -9,9 +9,6 @@ $param = getJson();
 if(isset($param["_id"])){//
 	$one = coll("yuangao")->findOne(array("_id"=>$param["_id"]));
 	echo jsonEncode($one);
-}else if(isset($param["deleteId"])){
-	coll("yuangao")->update(array("_id"=>$param["deleteId"]),array('$set'=>array("zhuangtai"=>"删除")));
-	echo '{"success":true}';
 }else{//
 	$query = array("zhuangtai"=>array('$ne'=>"删除"));
 	/*
