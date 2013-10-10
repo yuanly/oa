@@ -76,17 +76,17 @@
 			</div>
 		</div>
 		<div>
-		<div id="ludan" style="width:320px;border:1px solid gray;margin-top:5px;margin-bottom:5px;padding:5px;">
-		客户：<input class="plainInput" size=4 title="客户代号"/> &nbsp;样板：<input class="plainInput" size=18 title="泰国型号"/><br/>
+		<div id="ludan" style="width:320px;border:1px solid gray;margin-top:5px;margin-bottom:5px;padding:5px;display:none">
+		客户：<input id="ld_kehu" class="plainInput" size=4 title="客户代号"/> &nbsp;样板：<input id="ld_yangban" class="plainInput" size=18 title="泰国型号"/><br/>
 		<table>
 			<tr>
 				<th style="background-color:#eee" nowrap>序号</th><th nowrap  style="background-color:#eee;width:170px">规格</th><th style="background-color:#eee" nowrap>数量</th><th style="background-color:#eee" nowrap>单位</th><th style="background-color:#fff" nowrap></th>
 			</tr>
-			<tr>
-				<td>1.</td><td>红色</td><td>200</td><td>码</td><td nowrap><span class="plainBtn" style="font-size:80%">[ - ]</span></td>
+			<tr class="ld_huowu">
+				<td id="hw_xuhao">1.</td><td id="hw_guige">红色</td><td id="hw_shuliang">200</td><td id="hw_danwei">码</td><td nowrap><span id="hw_shanchu" class="plainBtn" style="font-size:80%">[ - ]</span></td>
 			</tr>
 			<tr>
-				<td>2.</td><td><input class="plainInput" style="width:100%"></td><td><input class="plainInput" style="width:100%"></td><td><input class="plainInput" style="width:100%" value="码"></td><td nowrap><span class="plainBtn" style="font-size:78%">[ + ]</span></td>
+				<td id="ld_xuhao">1.</td><td><input id="ld_guige" class="plainInput" style="width:100%"></td><td><input id="ld_shuliang" class="plainInput" style="width:100%"></td><td><input class="plainInput" style="width:100%" id="ld_danwei" value="码" list="danweilist"></td><td nowrap><span class="plainBtn" style="font-size:78%" id="ld_tianjia">[ + ]</span></td>
 			</tr>
 		</table>
 		备注：<span class="plainBtn" style="font-size:80%">[ + ]</span>
@@ -100,5 +100,12 @@
 		</div>
 		<div id="xianshi" style="margin-top:8px"></div>
 	</div>
+		<datalist id="danweilist">
+			<option value="码"/>
+			<option value="米"/>
+			<option value="件"/>
+			<option value="KG"/>
+			<option value="张"/>
+		</datalist>
 </body>
 </html>
