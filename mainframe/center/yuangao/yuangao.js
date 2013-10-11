@@ -50,6 +50,9 @@
 		
 		$(".ld_huowu","#ludan").remove();
 		$("#ld_xuhao","#ludan").data("xuhao",1);
+		$("#ld_beizhu_xianshi").show();
+		$("#ld_beizhu").val("");
+		$("#ld_beizhu_waibu").hide();
 	}
 	$("#cz_ludan").click(cz_ludan);
 	function ld_tianjia(){
@@ -91,6 +94,11 @@
 		$("#ld_xuhao").dataInc("xuhao",-1).text($("#ld_xuhao").data("xuhao")+".");
 	}
 	$("#hw_shanchu").click(hw_shanchu);
+	function ld_beizhu(){
+		$("#ld_beizhu_waibu").show();
+		$(this).hide();
+	}
+	$("#ld_beizhu_xianshi").click(ld_beizhu);
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 		//列出原稿
 	function listYuangao(offset){
@@ -236,6 +244,5 @@
 		layout.sizePane("west",$("body").width()-$(this).width()-100);
 	});
 	
-	//var ld_editor = $("#ld_beizhu").xheditor();
 	listYuangao(0);
 });
