@@ -398,7 +398,14 @@
  {
  	return $.extend(true,{},src); 
  };
- 
+
+/*
+* 在$.data()为数值类型的情况，对值做加法操作(传负值相当减法）
+*/
+jQuery.fn.dataInc = function(name,value){
+	this.data(name,this.data(name)+value);
+	return this;
+} 
  /**
   * 在内容框中居中
   */

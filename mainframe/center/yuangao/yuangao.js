@@ -82,6 +82,15 @@
 		$("#ld_shuliang").val("");
 	}
 	$("#ld_tianjia","#ludan").click(ld_tianjia);
+	function hw_shanchu(){
+		$(this).parents("tr").remove();
+		$(".ld_huowu").each(function(n,item){
+			$("#hw_xuhao",this).data("xuhao",n+1);
+			$("#hw_xuhao",this).text((n+1)+".");
+		});
+		$("#ld_xuhao").dataInc("xuhao",-1).text($("#ld_xuhao").data("xuhao")+".");
+	}
+	$("#hw_shanchu").click(hw_shanchu);
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 		//列出原稿
 	function listYuangao(offset){
@@ -147,7 +156,7 @@
 			$("#lc_mingchen",tmpl).text(usr.user_name);
 			$("#lc_dongzuo",tmpl).text(item.dongzuo);
 			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
-			if("上传" == item.dongzuo){				
+			if("上传" == item.dongzuo){
 				if(yuangao.liucheng.length == 1){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
@@ -227,5 +236,6 @@
 		layout.sizePane("west",$("body").width()-$(this).width()-100);
 	});
 	
+	//var ld_editor = $("#ld_beizhu").xheditor();
 	listYuangao(0);
 });
