@@ -42,6 +42,46 @@
 		});
 	}
 	$("#cz_jiegao").click(cz_jiegao);
+	function cz_ludan(){
+		$("#ludan").show();
+		var danwei = $("#ld_danwei","#ludan").val();
+		$(".plainInput","#ludan").val("");
+		$("#ld_danwei","#ludan").val(danwei);
+		
+		$(".ld_huowu","#ludan").remove();
+		$("#ld_xuhao","#ludan").data("xuhao",1);
+	}
+	$("#cz_ludan").click(cz_ludan);
+	function ld_tianjia(){
+		if("" == $("#ld_guige","#ludan").val().trim()){
+			tip($(this),'货物"规格"不能为空！',1500);
+			return;
+		}
+		if("" == $("#ld_shuliang","#ludan").val().trim()){
+			tip($(this),'货物"数量"不能为空！',1500);
+			return;
+		}
+		if(isNaN(parseFloat($("#ld_shuliang").val().trim()))){
+			tip($(this),'"数量"不是有效数值！',1500);
+			return;
+		}
+		if("" == $("#ld_danwei","#ludan").val().trim()){
+			tip($(this),'货物"单位"不能为空！',1500);
+			return;
+		}
+		var huowu = tr_huowu.clone(true);
+		$("#hw_xuhao",huowu).text($("#ld_xuhao").data("xuhao")+".");
+		$("#hw_xuhao",huowu).data("xuhao",$("#ld_xuhao").data("xuhao"));
+		$("#ld_xuhao").data("xuhao",$("#ld_xuhao").data("xuhao")+1);
+		$("#hw_guige",huowu).text($("#ld_guige").val().trim());
+		$("#hw_shuliang",huowu).text($("#ld_shuliang").val().trim());
+		$("#hw_danwei",huowu).text($("#ld_danwei").val().trim());
+		$(this).parents("tr").before(huowu);
+		$("#ld_xuhao").text($("#ld_xuhao").data("xuhao")+".");
+		$("#ld_guige").val("");
+		$("#ld_shuliang").val("");
+	}
+	$("#ld_tianjia","#ludan").click(ld_tianjia);
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 		//列出原稿
 	function listYuangao(offset){
@@ -173,6 +213,7 @@
 	var caozuoTmpl = $("#lc_caozuo").detach();
 	var liuchengItem = $("#liuchengItem").detach();
 	var tr_yuangao = $(".tr_yuangao").detach();
+	var tr_huowu = $(".ld_huowu").detach();
 	
 	//$("#liucheng").liucheng(getTheUser(),{liucheng:[{userId:6,dongzuo:"上传",time:new Date().getTime()/1000}]});
 	var editor = $("#bianjikuang").myeditor(800,600).editorWritable();
