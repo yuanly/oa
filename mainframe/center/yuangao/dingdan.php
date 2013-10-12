@@ -6,22 +6,34 @@ session_start();
 checkuser();
 
 $param = getJson();
-if("shangchuan" == $param["caozuo"]){
-	$yuangao = $param["yuangao"];
-	$yuangao["shangchuanshijian"] = time();
-	$d = "YG".date("ymd",$yuangao["shangchuanshijian"]);
-	$n = coll("yuangao")->count(array("_id"=>array('$regex'=>"^".$d."")));
-	$yuangao["_id"] = $d.".".($n+1);
-	$yuangao["liucheng"] = array();
-	$yuangao["liucheng"][] = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"上传","time"=>time());
-	$yuangao["zhuangtai"] = "上传";
-	coll("yuangao")->save($yuangao);
-	echo jsonEncode($yuangao);
-}else if("shanchu" == $param["caozuo"]){	
-	coll("yuangao")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"删除")));
+if("liebiao" == $param["caozuo"]){
+	$cur = coll("dingdan")->find(array("yuangao"=>$param["_id"],"zhuangtai"=>array('$ne'=>"shanchu")))->sort(array("_id"=>1));
+	if(!$cur){
+		echo "[]";
+	}
+	$a = array();
+	foreach($cur as $dingdan){
+		$ludanliuyan = coll("liuyan")->findOne(array("hostId"=>$dingdan["_id"],"hostType"=>"dingdan","type"=>"ludanliuyan"));
+		if($ludanliuyan){
+			$dingdan["ludanbeizhu"]=$ludanliuyan["neirong"];
+		}
+		$a[] = $dingdan;
+	}
+	echo jsonEncode($a);
+}else if("ludan" == $param["caozuo"]){
+	$dingdan = $param["dingdan"];
+	$dingdan["_id"] = "DD".date("ymd",time());
+	$n = coll("dingdan")->count(array("_id"=>array('$regex'=>"^".$dingdan["_id"])));
+	$dingdan["_id"] .=".".($n+1);
+	if(isset($dingdan["beizhu"]) && $dingdan["beizhu"]){
+		$liuyan = array("hostType"=>"dingdan","hostId"=>$dingdan["_id"],"type"=>"ludanliuyan","_id"=>time(),"userId"=>(int)$_SESSION["user"]["_id"],"neirong"=>$dingdan["beizhu"]);
+		coll("liuyan")->save($liuyan);
+		unset($dingdan["beizhu"]);
+	}
+	$dingdan["zhuangtai"] = "录单";
+	coll("dingdan")->save($dingdan);
 	echo '{"success":true}';
-}else if("jiegao" == $param["caozuo"]){
-	$jiegaoliucheng = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"接稿","time"=>time());
-	coll("yuangao")->update(array("_id"=>$param["_id"]),array('$set'=>array("jiegaozhe"=>(int)$_SESSION["user"]["_id"]),'$push'=>array("liucheng"=>$jiegaoliucheng)));
+}else if("shanchu" == $param["caozuo"]){
+	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"shanchu")));
 	echo '{"success":true}';
 }
