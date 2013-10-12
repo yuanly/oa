@@ -99,6 +99,36 @@
 		$(this).hide();
 	}
 	$("#ld_beizhu_xianshi").click(ld_beizhu);
+	function tijiaodingdan(){
+		if("" == $("#ld_kehu").val().trim()){
+			tip($(this),'"客户"不能为空！',1500);
+			return;
+		}
+		if("" == $("#ld_yangban").val().trim()){
+			tip($(this),'"样板"不能为空！',1500);
+			return;
+		}
+		if($("#ld_xuhao").data("xuhao") == 1){
+			tip($(this),'货物条目不能为空！',1500);
+			return;
+		}
+		var dingdan = {yuangao:currYG._id,kehu:$("#ld_kehu").val().trim(),yangban:{taiguoxinghao:$("#ld_yangban").val().trim()},huowu:[]};
+		
+		$(".ld_huowu").each(function(n,hw){
+			var huowu = {guige:$("#hw_guige",hw).text().trim(),shuliang:$("#hw_shuliang",hw).text().trim(),danwei:$("#hw_danwei",hw).text().trim()};
+			dingdan.huowu.push(huowu);
+		});
+		if("" != $("#ld_beizhu").val().trim()){
+			dingdan.beizhu = $("#ld_beizhu").val().trim();
+		}
+		var that = $(this);
+		postJson("dingdan.php",{cmd:"ludan",dingdan:dingdan},function(res){
+			tip(that,"成功提交订单！",1500); 
+			shuaxindingdanliebiao();
+			$("#ludan").hide();
+		});
+	}
+	$("#ld_tijiaodingdan").click(tijiaodingdan);
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 		//列出原稿
 	function listYuangao(offset){
@@ -132,6 +162,7 @@
 	}
 	
 	function showDetail(yg){
+		currYG = yg;
 		$("#shangchuan").hide();
 		$("#liucheng").show().liucheng(getTheUser(),yg);
 		$("#xianshi").show().empty().html(yg.neirong).prepend("<div style='background-color:#eee'>原稿</div>");
@@ -140,7 +171,30 @@
 			$("#xianshi").append("<div id='shenjieshuoming'></div>");
 			$("#xianshi #shenjieshuoming").html(yg.shenjieshuoming);
 		}
-		//订单列表 TODO ...
+	//	shuaxindingdanliebiao();
+	}
+	function shuaxindingdanliebiao(){
+		$("#dingdanliebiao").empty();
+		postJson("dingdan.php",{cmd:"liebiao",_id:currYG._id},function(dingdans){
+			each(dingdans,function(n,dingdan){
+				var elm = $("<div style='border-bototm:1px solid gray'></div>");
+				elm.append("<b>编号：</b><div style='display:inline-block;width:50px'><a href='#'>"+dingdan._id+"</a>&nbsp;</div>");
+				elm.append("<b>客户：</b><div style='display:inline-block;width:10px'>"+dingdan.kehu+"&nbsp;</div>");
+				elm.append("<b>样板：</b><div style='display:inline-block;width:150px'>"+dingdan.yangban.taiguoxinghao+"</div><br/>");
+				each(dingdan.huowu,function(n,hw){
+					elm.append("<div style='display:inline-block;width:10px'>"+(n+1)+".&nbsp </div>");
+					elm.append("<div style='display:inline-block;width:100px'>"+hw.guige+"&nbsp;</div>");
+					elm.append("<div style='display:inline-block;width:10px'>"+hw.danwei+"</div></br>");
+				});
+				if(dingdan.beizhu){
+					elm.append("<div><b>备注：</b>"+dingdan.beizh+"</div>");
+				}
+				$("#dingdanliebiao").append(elm);
+			});
+			if(dingdans && dingdans.length>0){
+				$("#dingdanliebiao").append("<p style='background-color:#eee'>已录订单</p>");
+			}
+		});
 	}
 	function showDetailById(_id){
 		postJson("yuangaos.php",{_id:_id},function(yg){
@@ -153,6 +207,14 @@
 		$("#shangchuan").show();
 		editor.editorVal("");
 	}
+	$("#shangchuanyuangao").click(function(){shangchuanmoshi();});
+		//设置头部点击处理（放到当前面板） 
+	$("#tableheader").click(function(){
+		layout.sizePane("west",$("#yuangaotable").width()+20);
+	}); 
+	$("#detailHandle").click(function(){
+		layout.sizePane("west",$("body").width()-$(this).width()-100);
+	});
 	jQuery.fn.liucheng = function(theUser,yuangao){
 		var that = this.empty();
 		this.data("_id",yuangao._id);
@@ -221,6 +283,7 @@
 	
 	///////////////////////////////初始化/////////////////////////////////////////////
 	var limit=20;
+	var currYG = null;
 	//定义左右布局
 	var layout = $("body").layout({
 		west__size:"auto",
@@ -234,15 +297,6 @@
 	
 	//$("#liucheng").liucheng(getTheUser(),{liucheng:[{userId:6,dongzuo:"上传",time:new Date().getTime()/1000}]});
 	var editor = $("#bianjikuang").myeditor(800,600).editorWritable();
-	
-	$("#shangchuanyuangao").click(function(){shangchuanmoshi();});
-		//设置头部点击处理（放到当前面板） 
-	$("#tableheader").click(function(){
-		layout.sizePane("west",$("#yuangaotable").width()+20);
-	}); 
-	$("#detailHandle").click(function(){
-		layout.sizePane("west",$("body").width()-$(this).width()-100);
-	});
 	
 	listYuangao(0);
 });
