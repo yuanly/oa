@@ -7,7 +7,7 @@ checkuser();
 
 $param = getJson();
 if("liebiao" == $param["caozuo"]){
-	$cur = coll("dingdan")->find(array("yuangao"=>$param["_id"],"zhuangtai"=>array('$ne'=>"shanchu")))->sort(array("_id"=>1));
+	$cur = coll("dingdan")->find(array("yuangao"=>$param["_id"],"zhuangtai"=>array('$ne'=>"删除")))->sort(array("_id"=>1));
 	if(!$cur){
 		echo "[]";
 	}
@@ -34,6 +34,15 @@ if("liebiao" == $param["caozuo"]){
 	coll("dingdan")->save($dingdan);
 	echo '{"success":true}';
 }else if("shanchu" == $param["caozuo"]){
-	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"shanchu")));
+	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"删除")));
+	echo '{"success":true}';
+}else if("shenqingshenhe" == $param["caozuo"]){
+	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"申请审核")));
+	echo '{"success":true}';
+}else if("quxiaoshenhe" == $param["caozuo"]){
+	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"录单")));
+	echo '{"success":true}';
+}else if("shenhe" == $param["caozuo"]){
+	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"审核")));
 	echo '{"success":true}';
 }
