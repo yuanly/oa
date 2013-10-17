@@ -1,5 +1,6 @@
 ﻿$(function(){
 	//{_id:"20131008_1",liucheng:[{userId:3,dongzuo:"上传",time:1322}],shangchuanzhe:3,shangchuanshijian:1312322,jiegaozhe:2,zhuangtai:"上传",shenjiezhe:5,shenjieshijian:133423,neirong:"xsdf",shenjieshuoming:"dsdsdfa"}
+	//{yuangao:currYG._id,kehu:$("#ld_kehu").val().trim(),yangban:{taiguoxinghao:$("#ld_yangban").val().trim()},huowu:[]};
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function tijiaoyuangao(){
 		var yuangao = {shangchuanzhe:getTheUser()._id,neirong:editor.editorVal()};
@@ -59,11 +60,35 @@
 		$("#ld_tijiaodingdan").data("waiting",false);
 	}
 	$("#cz_ludan").click(cz_ludan);
-	
-	//接管
-	//申请审结
-	//取消申请
-	//审结 
+	function cz_jieguan(){
+		postJson("yuangao.php",{caozuo:"jieguan",_id:currYG._id},function(res){
+			showDetailById(currYG._id);
+		});
+	}
+	$("#cz_jieguan").click(cz_jieguan);
+	function cz_shenqingshenjie(){
+		postJson("yuangao.php",{caozuo:"shenqingshenjie",_id:currYG._id},function(res){
+			showDetailById(currYG._id);
+		});
+	}
+	$("#cz_shenqingshenjie").click(cz_shenqingshenjie);
+	function cz_quxiaoshenqingshenjie(){
+		postJson("yuangao.php",{caozuo:"quxiaoshenqingshenjie",_id:currYG._id},function(res){
+			showDetailById(currYG._id);
+		});
+	}
+	$("#cz_quxiaoshenqingshenjie").click(cz_quxiaoshenqingshenjie);
+	function cz_shenjie(){
+		var that = $(this);
+		postJson("yuangao.php",{caozuo:"shenjie",_id:currYG._id},function(res){
+			if(res.err == "订单未审核"){
+				tip(that,"必须审核完所有订单，才能审结原稿！",2000);
+				return;
+			}
+			showDetailById(currYG._id);
+		})
+	}
+	$("#cz_shenjie").click(cz_shenjie);
 	function ld_tianjia(){
 		if("" == $("#ld_guige","#ludan").val().trim()){
 			tip($(this),'货物"规格"不能为空！',1500);

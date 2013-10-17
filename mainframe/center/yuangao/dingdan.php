@@ -39,7 +39,7 @@ if("liebiao" == $param["caozuo"]){
 }else if("shenqingshenhe" == $param["caozuo"]){
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"申请审核")));
 	echo '{"success":true}';
-}else if("quxiaoshenhe" == $param["caozuo"]){
+}else if("quxiaoshenqing" == $param["caozuo"]){
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"录单")));
 	echo '{"success":true}';
 }else if("shenhe" == $param["caozuo"]){
