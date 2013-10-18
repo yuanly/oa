@@ -128,12 +128,12 @@ function checkuser_only(){
 }
 		
 function checkuser(){
-	if(empty($_SESSION["user_name"])){		
+	if(empty($_SESSION["user"])){		
 		//header("Location: ".docRoot()."login/login.html");
-		/*
+		
 		echo '{"redirect":"'.docRoot().'login/login.html"}';
 		exit;
-		*/
+		
 		$_SESSION['user_name'] = "root";
 		$_SESSION["user_id"] = 1;
 		$_SESSION["role"] = "root";

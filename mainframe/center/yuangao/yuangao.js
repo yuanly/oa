@@ -5,6 +5,10 @@
 	function tijiaoyuangao(){
 		var yuangao = {shangchuanzhe:getTheUser()._id,neirong:editor.editorVal()};
 		var that = $(this);
+		if("" == yuangao.neirong){
+			tip(that,"原稿内容不能为空！",1500);
+			return;
+		}
 		that.data("waiting",true);
 		postJson("./yuangao.php",{caozuo:"shangchuan",yuangao:yuangao},function(yg){
 			that.data("waiting",false);
@@ -15,6 +19,8 @@
 	$("#tijiao").click(tijiaoyuangao);
 	$(".tr_yuangao").click(function(){
 		showDetailById($(this).data("_id"));
+		$(".tr_selected").removeClass("tr_selected");
+		$(this).addClass("tr_selected");
 	});
 	//翻页处理
 	$("#prevPage").click(function(){
@@ -192,6 +198,16 @@
 		});
 	}
 	$("#lb_shenhe").click(lb_shenhe);
+	function option_weishenjie(){
+		$("#option_shangchuanshijian").val("");
+		listYuangao(0);
+	}
+	$("#option_weishenjie").change(option_weishenjie);	
+	
+	$("#option_shangchuanshijian").datepicker();
+	$("#option_shangchuanshijian").focus(function(){$("#option_weishenjie").removeAttr("checked")}).change(function(){
+		listYuangao(0);
+	});
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 		//列出原稿
 	function listYuangao(offset){
@@ -199,8 +215,17 @@
 			return;
 		}
 		$("#pager").data("offset",offset);
-		postJson("yuangaos.php",{offset:offset*limit,limit:limit,option:{"shangchuanshijian":1234,
-																																		"weishenjie":true}},function(yuangaos){
+		var isWeishenjie = false;
+		if($("#option_weishenjie").attr("checked")){
+			isWeishenjie = true;
+		}
+		var shangchuanshijian = date2Int($("#option_shangchuanshijian").val());
+		if(shangchuanshijian>0){
+			shangchuanshijian = shangchuanshijian/1000 + 24*3600;
+		}
+		var cmd = getUrl().cmd?getUrl().cmd:"";
+		postJson("yuangaos.php",{offset:offset*limit,limit:limit,option:{cmd:cmd,"shangchuanshijian":shangchuanshijian,
+																																		"weishenjie":isWeishenjie}},function(yuangaos){
 			$("#yuangaotable .tr_yuangao").remove();
 			each(yuangaos,function(n,yuangao){
 				tr = tr_yuangao.clone(true);
@@ -217,7 +242,8 @@
 				$("#yuangaotable").append(tr);
 			});
 			if(yuangaos.length>0){//将列表第一个商家显示在右边的商家详情表单
-				showDetailById(yuangaos[0]._id);
+				//showDetailById(yuangaos[0]._id);
+				$(".tr_yuangao").get(0).click();
 			}
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();
@@ -293,6 +319,7 @@
 	function shangchuanmoshi(){
 		$("#liucheng").hide();
 		$("#xianshi").hide();
+		$("#dingdanliebiao").hide();
 		$("#shangchuan").show();
 		editor.editorVal("");		
 		$("#tijiao").data("waiting",false);
@@ -322,6 +349,7 @@
 					var caozuoItem = caozuoTmpl.clone(true);
 					if(theUser._id == item.userId){
 						$("#cz_shanchu",caozuoItem).show();
+						$("#cz_jiegao",caozuoItem).show();
 						$("table",tmpl).append(caozuoItem);
 					}else{
 						$("#cz_jiegao",caozuoItem).show();

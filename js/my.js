@@ -1113,7 +1113,7 @@ jQuery.fn.dataInc = function(name,value){
  //yyyy/mm/dd字符串转成毫秒数
  function date2Int(d){
  	try{
- 		return Date.parse(d).getTime();
+ 		return Date.parse(d);
  	}
 catch(e){
  		return 0;

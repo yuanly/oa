@@ -17,31 +17,32 @@ if("shangchuan" == $param["caozuo"]){
 	$yuangao["zhuangtai"] = "上传";
 	coll("yuangao")->save($yuangao);
 	echo jsonEncode($yuangao);
-}else if("shanchu" == $param["caozuo"]){	
-	coll("yuangao")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"删除")));
+}else if("shanchu" == $param["caozuo"]){
+	coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"上传"),array('$set'=>array("zhuangtai"=>"删除")));
 	echo '{"success":true}';
 }else if("jiegao" == $param["caozuo"]){
 	$jiegaoliucheng = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"接稿","time"=>time());
-	coll("yuangao")->update(array("_id"=>$param["_id"]),array('$set'=>array("jiegaozhe"=>(int)$_SESSION["user"]["_id"]),'$push'=>array("liucheng"=>$jiegaoliucheng)));
+	coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"上传"),array('$set'=>array("jiegaozhe"=>(int)$_SESSION["user"]["_id"],"zhuangtai"=>"接稿"),'$push'=>array("liucheng"=>$jiegaoliucheng)));
 	echo '{"success":true}';
 }else if("jieguan" == $param["caozuo"]){
 	coll("yuangao")->update(array("_id"=>$param["_id"]),array('$set'=>array("jiegaozhe"=>(int)$_SESSION["user"]["_id"])));
 	coll("yuangao")->update(array("_id"=>$param["_id"],"liucheng"=>array('$elemMatch'=>array("dongzuo"=>"接稿"))),array('$set'=>array('liucheng.$.userId'=>(int)$_SESSION["user"]["_id"])));
 	echo '{"success":true}';
 }else if("shenqingshenjie" == $param["caozuo"]){
-	coll("yuangao")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"申请审结","time"=>time()))));
+	coll("yuangao")->update(array("_id"=>$param["_id"],"jiegaozhe"=>(int)$_SESSION["user"]["_id"]),array('$set'=>array("zhuangtai"=>"申请审结"),'$push'=>array("liucheng"=>array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"申请审结","time"=>time()))));
 	coll("dingdan")->update(array("yuangao"=>$param["_id"],"zhuangtai"=>"录单"),array('$set'=>array("zhuangtai"=>"申请审核")),array("multiple"=>true));
 	echo '{"success":true}';
 }else if("quxiaoshenqingshenjie" == $param["caozuo"]){
-	coll("yuangao")->update(array("_id"=>$param["_id"]),array('$pop'=>array("liucheng"=>1)));
+	coll("yuangao")->update(array("_id"=>$param["_id"],"jiegaozhe"=>(int)$_SESSION["user"]["_id"]),array('$set'=>array("zhuangtai"=>"接稿"),'$pop'=>array("liucheng"=>1)));
 	echo '{"success":true}';
 }else if("shenjie" == $param["caozuo"]){
 	$dd = coll("dingdan")->findOne(array("yuangao"=>$param["_id"],"zhuangtai"=>"申请审核"));
 	if($dd){
 		echo '{"err":"订单未审核"}';
 	}else{
-		coll("yuangao")->update(array("_id"=>$param["_id"]),array('$pop'=>array("liucheng"=>1)));
-		coll("yuangao")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"审结","time"=>time()))));
+		$time = time();
+		coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"申请审结"),array('$pop'=>array("liucheng"=>1),'$set'=>array("shenjiezhe"=>(int)$_SESSION["user"]["_id"],"shenjieshijian"=>$time,"zhuangtai"=>"审结")));
+		coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"申请审结"),array('$push'=>array("liucheng"=>array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"审结","time"=>$time))));
 		echo '{"success":true}';
 	}
 }
