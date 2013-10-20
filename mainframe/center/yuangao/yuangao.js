@@ -270,7 +270,7 @@
 				return false;
 			}		
 		});
-		$("#dingdanliebiao").empty();
+		$("#dingdanliebiao").empty().show();
 		postJson("dingdan.php",{caozuo:"liebiao",_id:currYG._id},function(dingdans){
 			each(dingdans,function(n,dingdan){
 				var elm = lb_dingdan.clone(true);
@@ -417,6 +417,8 @@
 	
 	//$("#liucheng").liucheng(getTheUser(),{liucheng:[{userId:6,dongzuo:"上传",time:new Date().getTime()/1000}]});
 	var editor = $("#bianjikuang").myeditor(800,600).editorWritable();
-	
+	if(getUrl().cmd){
+		$("#optioncontainer").hide(); 
+	}
 	listYuangao(0);
 });

@@ -27,6 +27,7 @@ if("shangchuan" == $param["caozuo"]){
 }else if("jieguan" == $param["caozuo"]){
 	coll("yuangao")->update(array("_id"=>$param["_id"]),array('$set'=>array("jiegaozhe"=>(int)$_SESSION["user"]["_id"])));
 	coll("yuangao")->update(array("_id"=>$param["_id"],"liucheng"=>array('$elemMatch'=>array("dongzuo"=>"接稿"))),array('$set'=>array('liucheng.$.userId'=>(int)$_SESSION["user"]["_id"])));
+	coll("yuangao")->update(array("_id"=>$param["_id"],"liucheng"=>array('$elemMatch'=>array("dongzuo"=>"申请审结"))),array('$set'=>array('liucheng.$.userId'=>(int)$_SESSION["user"]["_id"])));
 	echo '{"success":true}';
 }else if("shenqingshenjie" == $param["caozuo"]){
 	coll("yuangao")->update(array("_id"=>$param["_id"],"jiegaozhe"=>(int)$_SESSION["user"]["_id"]),array('$set'=>array("zhuangtai"=>"申请审结"),'$push'=>array("liucheng"=>array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"申请审结","time"=>time()))));
