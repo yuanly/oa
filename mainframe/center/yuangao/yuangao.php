@@ -46,4 +46,7 @@ if("shangchuan" == $param["caozuo"]){
 		coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"审结"),array('$push'=>array("liucheng"=>array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"审结","time"=>$time))));
 		echo '{"success":true}';
 	}
+}else if("beizhu" == $param["caozuo"]){
+	coll("yuangao")->update(array("_id"=>$param["_id"]),array('$set'=>array("beizhu"=>$param["beizhu"])));
+	echo '{"success":true}';
 }
