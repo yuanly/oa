@@ -42,8 +42,8 @@ if("shangchuan" == $param["caozuo"]){
 		echo '{"err":"订单未审核"}';
 	}else{
 		$time = time();
-		coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"申请审结"),array('$pop'=>array("liucheng"=>1),'$set'=>array("shenjiezhe"=>(int)$_SESSION["user"]["_id"],"shenjieshijian"=>$time,"zhuangtai"=>"审结")));
-		coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"申请审结"),array('$push'=>array("liucheng"=>array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"审结","time"=>$time))));
+		coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"申请审结"),array('$pop'=>array("liucheng"=>1),'$set'=>array("shenjiezhe"=>(int)$_SESSION["user"]["_id"],"shenjieshijian"=>$time,"zhuangtai"=>"审结","shenjieshuoming"=>$param["shuoming"])));
+		coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"审结"),array('$push'=>array("liucheng"=>array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"审结","time"=>$time))));
 		echo '{"success":true}';
 	}
 }

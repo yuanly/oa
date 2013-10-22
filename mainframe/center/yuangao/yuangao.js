@@ -85,14 +85,19 @@
 	}
 	$("#cz_quxiaoshenqingshenjie").click(cz_quxiaoshenqingshenjie);
 	function cz_shenjie(){
-		var that = $(this);
-		postJson("yuangao.php",{caozuo:"shenjie",_id:currYG._id},function(res){
-			if(res.err == "订单未审核"){
-				tip(that,"必须审核完所有订单，才能审结原稿！",2000);
-				return;
-			}
-			showDetailById(currYG._id);
-		})
+		$("#shenjiecontainer").show();
+		var shuoming = $("#shenjieshuoming_editor").empty().myeditor(800,200).editorWritable();
+		$("#querenshenjie").click(function(){
+			var that = $(this);
+			postJson("yuangao.php",{caozuo:"shenjie",_id:currYG._id,shuoming:shuoming.editorVal()},function(res){
+				if(res.err == "订单未审核"){
+					tip(that,"必须审核完所有订单，才能审结原稿！",2000);
+					return;
+				}
+				showDetailById(currYG._id);
+			})	
+		$("#shenjiecontainer").hide();
+		});	
 	}
 	$("#cz_shenjie").click(cz_shenjie);
 	function ld_tianjia(){
