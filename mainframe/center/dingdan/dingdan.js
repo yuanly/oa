@@ -41,6 +41,16 @@
 				tr = tr_dingdan.clone(true);
 				tr.data("_id",dingdan._id);
 				tr.find("#td_bianhao").text(dingdan._id);
+				tr.find("#td_kehu").text(dingdan.kehu);
+				if(dingdan.yangban.zhongguoxinghao){
+					tr.find("#td_yangban").text(dingdan.yangban.zhongguoxinghao);
+				}else{
+					tr.find("#td_yangban").text("("+dingdan.yangban.taiguoxinghao+")");
+				}
+				tr.find("#td_zhuangtai").text(dingdan.zhuangtai);				
+				tr.find("#td_gendanyuan").text(dingdan.gendanyuan?getUser(dingdan.gendanyuan).user_name:"");
+				tr.find("#td_gonghuoshang").text(dingdan.gonghuoshang?dingdan.gonghuoshang:"");
+				tr.find("#td_xiadanriqi").text(dingdan.xiadanriqi?new Date(dingdan.xiadanriqi*1000).format("yy/MM/dd hh:mm"):"");
 				
 				tr.css("background-color",toggle("#fff","#eee"));
 				
@@ -172,17 +182,7 @@
 						}
 					}
 				}
-			}/*else if("申请审核" == item.dongzuo){
-				var caozuoItem = caozuoTmpl.clone(true);
-				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
-				if(theUser._id == item.userId){
-						$("#cz_quxiaoshenqingshenhe",caozuoItem).show();
-						$("table",tmpl).append(caozuoItem);
-				}else{
-						$("#cz_shenhe",caozuoItem).show();
-						$("table",tmpl).append(caozuoItem);
-				}
-			}*/else if("申请审结" == item.dongzuo){
+			}else if("申请审结" == item.dongzuo){
 				var caozuoItem = caozuoTmpl.clone(true);
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				if(theUser._id == item.userId){
@@ -199,7 +199,7 @@
 	
 	///////////////////////////////初始化/////////////////////////////////////////////
 	var limit=20;
-	var currYG = null;
+	var currDD = null;
 	//定义左右布局
 	var layout = $("body").layout({
 		west__size:"auto",
@@ -208,15 +208,7 @@
 	});
 	var caozuoTmpl = $("#lc_caozuo").detach();
 	var liuchengItem = $("#liuchengItem").detach();
-	var tr_yuangao = $(".tr_yuangao").detach();
-	var tr_huowu = $(".ld_huowu").detach();
-	var lb_hw = $("#lb_hw").detach();
-	var lb_dingdan = $("#lb_dingdan").detach();
+	var tr_dingdan = $(".tr_dingdan").detach();
 	
-	//$("#liucheng").liucheng(getTheUser(),{liucheng:[{userId:6,dongzuo:"上传",time:new Date().getTime()/1000}]});
-	var editor = $("#bianjikuang").myeditor(800,600).editorWritable();
-	if(getUrl().cmd){
-		$("#optioncontainer").hide(); 
-	}
-	listYuangao(0);
+	listDingdan(0);
 });
