@@ -7,7 +7,7 @@ checkuser();
 
 $param = getJson();
 if(isset($param["_id"])){//
-	$one = coll("yuangao")->findOne(array("_id"=>$param["_id"]));
+	$one = coll("dingdan")->findOne(array("_id"=>$param["_id"]));
 	echo jsonEncode($one);
 }else{//
 	$query = array();
