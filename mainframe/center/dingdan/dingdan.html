@@ -33,6 +33,9 @@
 		.tr_selected{
 			color:red
 		}
+		.hw_cz{
+			//display:none
+		}
 	</style>
 </head>
 <body style="margin:0px;padding:0px">
@@ -61,8 +64,10 @@
 					<tr id="lc_caozuo" style="display:none" >
 						<td colspan="4" style="text-align:center;border:1px solid #ddd">
 							<span id="cz_jiedan" class="plainBtn" style="margin-right:10px;display:none">接单</span>
+							<span id="cz_jieguan" class="plainBtn" style="margin-right:10px;display:none">接管</span>
+							<span id="cz_zidan" class="plainBtn" style="margin-right:10px;display:none">子单</span>
 							<span id="cz_xiadan" class="plainBtn" style="margin-right:10px;display:none">下单</span>
-							<span id="cz_打印" class="plainBtn" style="margin-right:10px;display:none">打印</span>
+							<span id="cz_dayin" class="plainBtn" style="margin-right:10px;display:none">打印</span>
 							<span id="cz_shendan" class="plainBtn" style="margin-right:10px;display:none">审单</span>
 							<span id="cz_jie2dan" class="plainBtn" style="margin-right:10px;display:none">结单</span>
 							<span id="cz_zuofei" class="plainBtn" style="margin-right:10px;display:none">作废</span>
@@ -71,7 +76,40 @@
 				</table>
 			</div>
 		</div>
-		
+		<div id="dingdanmingxi" style="margin-top:10px">
+			<div id="fudan_out" style="display:none">
+				<div style='background-color:#eee'>父单</div>
+				<span class="plainBtn" id="fudan"></span>
+			</div>
+			<div id="zidan_out" style="display:none">
+				<div style='background-color:#eee'>子单</div>
+				<div id="zidan"></div>
+			</div>
+			<div style='background-color:#eee'>订单明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn">保存</span></div>
+			<div>
+				编号：<input type="text" id="dd_bianhao" class="plainInput" readonly size=12 />&nbsp;&nbsp;
+				原稿：<input type="text" id="dd_yuangao" class="plainInput" readonly size=12 style="cursor:pointer"/>&nbsp;&nbsp;
+				客户：<input type="text" id="dd_kehu" class="plainInput" readonly size=2 />
+			</div>
+			<div>
+				样板：<input type="text" id="dd_yangban" class="plainInput" size=56 readonly style="cursor:pointer" /><br/>
+				供货商：<input type="text" id="dd_gonghuoshang" class="plainInput" size=53 readonly />
+			</div>
+			<table id="tb_huowu">
+				<!-- 发货分拆为二级表：单号 数量 金额 以及 总计 -->
+			<tr><th>序号</th><th>规格</th><th>数量</th><th>单位</th><th>单价<font style="font-size:70%">(元)</font></th><th>金额</th><th class="delete_huowu"> </th></tr>
+			<tr class="tmpl_huowu"><td id="mx_xuhao"></td><td><input id="mx_guige" class="plainInput editable" size=36 ></td><td><input id="mx_shuliang" size=4 class="plainInput editable"></td><td><input id="mx_danwei" size=2 class="plainInput mx_danwei" list="danweilist"></td><td><input id="mx_danjia" size=4 class="plainInput mx_danjia" readonly style="cursor:pointer"></td><td id="mx_jine"></td><td class="hw_cz"><span id="shanchuhuowu" class="plainBtn delete_huowu" style="font-size:80%">[ - ]</span></td></tr>
+			<tr id="new_huowu_item"><td colspan=5 class="hw_cz"><span id="zengjiahuowu" class="plainBtn" style="font-size:80%">[ + ]</span></td></tr>
+			<tr style="font-weight:bold"><td colspan=2 align=right>总量:</td><td><span id="zongliang">33</span><span class="unit">米</span></td><td align=right>总额:</td><td><span id="zonge">22</span>元</td></tr>
+			</table> 
+			<div>
+				<div style='background-color:#eee'>备注&nbsp;&nbsp;<span id="zhankaibeizhu" class="plainBtn">展开</span><span id="yincangbeizhu" class="plainBtn" style="display:none">隐藏</span></div>
+				<div id="beizhu" style="display:none"></div>
+			</div>
+		</div>
+		<div id="liuyan">
+			<span class="plainBtn">留言</span>
+		</div>
 	</div>
 		<datalist id="danweilist">
 			<option value="码"/>

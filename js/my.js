@@ -340,6 +340,17 @@
  	}
  	return str;
  };
+ 
+/*
+* round(12.345.2)=12.35
+*/
+round = function(v,l){
+	var e = 1;
+	for(var i=0;i<l;i++){
+		e = e*10;
+	}
+	return Math.round(v*e)/e;
+}
  /*
  Date.prototype.format = function(format)
  {
@@ -398,7 +409,6 @@
  {
  	return $.extend(true,{},src); 
  };
-
 /*
 * 在$.data()为数值类型的情况，对值做加法操作(传负值相当减法）
 */
@@ -876,13 +886,47 @@ jQuery.fn.dataInc = function(name,value){
  	});
  }
  /*
+ * 下拉列表，不带输入框的选择框
+ */
+ function list(event,items,obj2str,callback){
+ 	var selector_tmpl = $('<div id="selector">\
+ 			<div id="mengban" style="position:absolute;top:0px;left:0px;width:100%;height:100%;z-index:100;background-color:rgba(250,250,255,.4);"></div>\
+ 			<div id="panel" style="position:absolute;z-index:101;background-color:white;padding:5px;border:1px solid gray">\
+ 				<table></table>\
+ 				<div style="text-align:center"><span style="color:blue;cursor:pointer;" id="guanbi">关闭</span></div>\
+ 			</div>\
+ 		</div>');	
+ 	$("body").append(selector_tmpl);
+ 	var panel = selector_tmpl.find("#panel");
+ 	panel.find("table").empty();
+ 	each(items,function(n,obj){
+ 		var tr = $("<tr></tr>");
+ 		tr.data("background-color",toggle("#ffeeff","#eeffff"));
+ 		tr.css("background-color",tr.data("background-color")).css("cursor","pointer");
+ 		tr.append("<td>"+obj2str(obj)+"</td>");
+ 		panel.find("table").append(tr);
+ 		tr.mouseover(function(){
+ 			tr.css("background-color","yellow");
+ 		}).mouseout(function(){
+ 			tr.css("background-color",tr.data("background-color"));
+ 		}).click(function(){
+ 			selector_tmpl.remove();
+ 			callback.call(event.target,obj);
+ 		});
+ 	});
+ 	panel.find("#guanbi").click(function(){
+ 		selector_tmpl.remove();
+ 	}).mouseover(function(){$(this).css("color","red");}).mouseout(function(){$(this).css("color","blue");});
+ 	panel.css("top",event.clientY).css("left",event.clientX-panel.width()>10?event.clientX-panel.width():10);
+ }
+ /*
  * 带查询的选择框
  * event 点击事件，用来获取鼠标位置
  * getObjs(page,option,function(resp)) 获取列表对象的函数
  * fields 字符串数据，指定需要显示的对象的属性
  * callback(resp) 将选中的对象返回给调用者
  */
- function setSelector(event,getObjs,fields,callback){
+ function setSelector(event,getObjs,fields,callback,option){
  		var selector_tmpl = $('<div id="selector">\
  			<div id="mengban" style="position:absolute;top:0px;left:0px;width:100%;height:100%;z-index:100;background-color:rgba(250,250,255,.4);"></div>\
  			<div id="panel" style="position:absolute;z-index:101;background-color:white;padding:5px;border:1px solid gray">\
@@ -894,6 +938,9 @@ jQuery.fn.dataInc = function(name,value){
  		
  	$("body").append(selector_tmpl);
  	var panel = selector_tmpl.find("#panel");
+ 	if(option){
+ 		panel.find("#option").val(option);
+ 	}
  	panel.find("#pager").data("page",0);
  	panel.find("#option").changex(function(){
  		panel.find("#pager").data("page",0);
@@ -907,7 +954,7 @@ jQuery.fn.dataInc = function(name,value){
  				tr.data("background-color",toggle("#ffeeff","#eeffff"));
  				tr.css("background-color",tr.data("background-color")).css("cursor","pointer");
  				each(fields,function(m,field){
- 					tr.append("<td>"+obj[field]+"</td>");
+ 					tr.append("<td>"+getField(obj,field)+"</td>");
  				});
  				panel.find("table").append(tr);
  				tr.mouseover(function(){
@@ -931,6 +978,18 @@ jQuery.fn.dataInc = function(name,value){
  	}).mouseover(function(){$(this).css("color","red");}).mouseout(function(){$(this).css("color","blue");});
  	panel.css("top",event.clientY).css("left",event.clientX-panel.width()>10?event.clientX-panel.width():10);
  }
+ //getFields(dingdan,"shangjia.mingchen");
+ function getField(obj,fields){
+ 	return _getField(obj,fields.split("."));
+ }
+ function _getField(obj,fields){
+ 		var ret = obj;
+ 		for(var i=0;i<fields.length;i++){
+ 			ret = ret[fields[i]];
+ 		}
+ 		return ret;
+ }
+ 
  /*
  * 带输入框的选择框
  * 
