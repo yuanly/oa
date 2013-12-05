@@ -345,6 +345,9 @@
 * round(12.345.2)=12.35
 */
 round = function(v,l){
+	if(isNaN(v)){
+		return 0;
+	}
 	var e = 1;
 	for(var i=0;i<l;i++){
 		e = e*10;
@@ -1225,7 +1228,7 @@ catch(e){
  	   		}
  	 };
  	var that = this;
- 	this.empty().css("width","100%").attr("align","center").css("margin-top","20px").css("border","1px solid gray");
+ 	this.empty().css("width","100%").attr("align","center").css("margin-top","80px").css("border","1px solid gray");
  	this.append("<div><span id='ly_liuyan' class='plainBtn'>留言</span></div>");
  	this.append("<div id='ly_editor' style='display:none'><textarea></textarea></div>");
  	this.append("<table id='ly_liebiao' style='font-size:14px;color:#008000;margin:10px'></table>");
@@ -1291,7 +1294,13 @@ catch(e){
 				tr.find("#d_name").text(getUser(ly.userId).user_name);
 				tr.find("#d_date").text(new Date(ly._id*1000).format("yyyy-MM-dd"));
 				tr.find("#d_time").text(new Date(ly._id*1000).format("hh:mm:ss"));
-				tr.find("#d_content").text(ly.neirong);
+				
+				if(ly.neirong.length>100){
+					tr.find("#d_content").html(ly.neirong.truncate(100)+"<span class='plainBtn'>...[+]</span>");
+				}else{
+					tr.find("#d_content").html(ly.neirong);
+				}	
+				tr.find("#d_content").click(function(){$(this).html(ly.neirong)});
  				$("#ly_liebiao",that).append(tr);	
 			});
 

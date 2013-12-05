@@ -24,6 +24,7 @@ function post(url, data, success) {
 		async : true,
 		success: success,
 		error : function(jqxhr, status, exText){
+			console.log(JSON.stringify(jqxhr));
 			console.log("服务器异常， 请稍后重试！");
 		}
 	});
