@@ -524,7 +524,7 @@ function _hanshuku_(){}
 	}
 	
 	///////////////////////////////初始化/////////////////////////////////////////////
-	function _chushihua_(){}
+	function _chushihua_(){} 
 	var limit=20;
 	var currDD = null;
 	var kebianji=false;
