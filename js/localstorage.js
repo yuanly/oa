@@ -14,6 +14,14 @@ function getTheUser(){
 		return null;
 	}
 }
+//返回最近访问客户
+function getKehus(){
+		try{
+		return JSON.parse(localStorage.getItem("kehus"));
+	}catch(e){
+		return [];
+	}
+}
 /*仅用于登录的时候记录上次选中的用户，该用户未必是登录用户。*/
 function getLastUser(){
 	try{

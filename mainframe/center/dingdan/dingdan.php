@@ -41,7 +41,9 @@ if("jiedan" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("xiadan" == $param["caozuo"]){
 	$xiadan  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"下单","time"=>time());
-	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$xiadan),'$set'=>array("zhuangtai"=>"下单")));
+	$dingdan = coll("dingdan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$xiadan),'$set'=>array("xiadanshijian"=>time(),"zhuangtai"=>"下单")));
+	coll("kehu")->update(array("_id"=>$dingdan["kehu"]),array('$set'=>array("access"=>time())),true,false);
+	coll("vendor")->update(array("_id"=>$dingdan["gonghuoshang"]["_id"]),array('$set'=>array("access"=>time())));
 	echo '{"success":true}';
 }else if("shendan" == $param["caozuo"]){
 	$shendan  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"审单","time"=>time());

@@ -22,6 +22,12 @@
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	var kehus = getKehus();
+	kehus.unshift("客户");
+	$("#th_kehu").myselector(kehus).bind("input",function(){listDingdan(0);});
+	var users = getUsers();users.unshift({"user_name":"跟单员","_id":"-1"});
+	$("#th_gendanyuan").myselector(users,"user_name","_id").bind("input",function(){listDingdan(0);});
+	$("#th_zhuangtai").myselector(["状态","录单","审核","接单","下单","审单","结单","作废"]).bind("input",function(){listDingdan(0);});
 	$("#fangqi").click(function(){
 		showDetailById(currDD._id);
 	});
@@ -66,6 +72,20 @@
 	}
 	$(".tr_dingdan").click(sel_dingdan);
 	function sel_yangban(event){
+		var limit = 20;
+		setSelector(event,function(page,option,callback){
+				postJson("yangban.php",{offset:page*limit,limit:limit,option:option},function(yangbans){
+					callback(yangbans);
+				});
+			},["_id","taiguoxinghao","zhongguoxinghao","shangjia.mingchen","zhuangtai"],function(yangban){
+				currDD.yangban = yangban;
+				currDD.gonghuoshang = yangban.shangjia;
+				$(this).val(yangban.zhongguoxinghao+"("+yangban.taiguoxinghao+")");
+				$("#dd_gonghuoshang").val(yangban.shangjia.mingchen);
+				$(".unit").text(yangban.danwei);
+			},currDD.yangban.taiguoxinghao);
+	}
+	function sel_yangban2(event){//TODO ...
 		var limit = 20;
 		setSelector(event,function(page,option,callback){
 				postJson("yangban.php",{offset:page*limit,limit:limit,option:option},function(yangbans){

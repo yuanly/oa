@@ -20,9 +20,14 @@ $result["background"] = getBackgrounds();
 //$result["roll"] = getRollingImg();
 //获取企业文化标语；
 $result["cul"] = getCulture();
+$result["kehu"] = getKehu();
 //print_r($result);
 echo jsonEncode($result);
 
+function getKehu(){
+	$cur = coll("kehu")->find()->sort(array("access"=>-1))->limit(20);
+	return cur2obj($cur);
+}
 function getUsers(){
 	//$cur = userColl()->find(array("ban"=>array('$exists'=>false)),array("password"=>0));
 	$cur = userColl()->find(array(),array("password"=>0));

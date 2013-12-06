@@ -11,6 +11,7 @@
 				}
 			});
 			localStorage.setItem("users",JSON.stringify(content.users));
+			localStorage.setItem("kehus",JSON.stringify(content.kehu));
 			//设置当前用户
 			var lastUser = getLastUser();
 			

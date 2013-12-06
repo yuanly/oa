@@ -38,7 +38,8 @@ if("liebiao" == $param["caozuo"]){
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"删除")));
 	echo '{"success":true}';
 }else if("shenqingshenhe" == $param["caozuo"]){
-	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"申请审核")));
+	$dingdan = coll("dingdan")->findAndModify(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"申请审核")));
+	coll("kehu")->update(array("_id"=>$dingdan["kehu"]),array('$set'=>array("access"=>time())),true,false);
 	echo '{"success":true}';
 }else if("quxiaoshenqing" == $param["caozuo"]){
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"录单")));

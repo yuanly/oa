@@ -928,6 +928,7 @@ jQuery.fn.dataInc = function(name,value){
  * getObjs(page,option,function(resp)) 获取列表对象的函数
  * fields 字符串数据，指定需要显示的对象的属性
  * callback(resp) 将选中的对象返回给调用者
+ * option 过滤输入框的初始值
  */
  function setSelector(event,getObjs,fields,callback,option){
  		var selector_tmpl = $('<div id="selector">\
@@ -1154,6 +1155,8 @@ jQuery.fn.dataInc = function(name,value){
  		list.append(option);
  	});
  	$("body").append(list);
+ 	this.dblclick(function(){$(this).val("")});
+ 	return this;
  }
  jQuery.fn.userSelector = function(){
  	var listId = this.attr("id")+"_list";
