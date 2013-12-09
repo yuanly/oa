@@ -85,21 +85,28 @@
 				$(".unit").text(yangban.danwei);
 			},currDD.yangban.taiguoxinghao);
 	}
-	function sel_yangban2(event){//TODO ...
+	function sel_yangban2(event){
 		var limit = 20;
 		setSelector(event,function(page,option,callback){
 				postJson("yangban.php",{offset:page*limit,limit:limit,option:option},function(yangbans){
 					callback(yangbans);
 				});
 			},["_id","taiguoxinghao","zhongguoxinghao","shangjia.mingchen","zhuangtai"],function(yangban){
-				currDD.yangban = yangban;
-				currDD.gonghuoshang = yangban.shangjia;
-				$(this).val(yangban.zhongguoxinghao+"("+yangban.taiguoxinghao+")");
-				$("#dd_gonghuoshang").val(yangban.shangjia.mingchen);
-				$(".unit").text(yangban.danwei);
-			},currDD.yangban.taiguoxinghao);
+				$("#th_yangban").val(yangban.taiguoxinghao);
+			},"",function(){$("#th_yangban").val("样板");});
 	}
-	//$("#dd_yangban").click(sel_yangban);
+	$("#th_yangban").click(sel_yangban2);
+	function sel_gonghuoshang(event){
+		var limit = 20;
+		setSelector(event,function(page,option,callback){
+				postJson("gonghuoshang.php",{offset:page*limit,limit:limit,option:option},function(gonghuoshangs){
+					callback(gonghuoshangs);
+				});
+			},["_id","mingchen","dianhua","dizhi"],function(gonghuoshang){
+				$("#th_gonghuoshang").val(gonghuoshang.mingchen);
+			},"",function(){$("#th_gonghuoshang").val("供货商");});
+	}
+	$("#th_gonghuoshang").click(sel_gonghuoshang);
 	function sel_danjia(event){
 		if(!currDD.yangban._id){
 			tip($(this),"请先选定样板！",1500);
@@ -339,10 +346,11 @@ function _hanshuku_(){}
 				tr.find("#td_bianhao").text(dingdan._id);
 				tr.find("#td_kehu").text(dingdan.kehu);
 				if(dingdan.yangban){
+					var yb = "("+dingdan.yangban.taiguoxinghao+")";
 					if(dingdan.yangban.zhongguoxinghao){
-						tr.find("#td_yangban").text(dingdan.yangban.zhongguoxinghao);
+						tr.find("#td_yangban").text(dingdan.yangban.zhongguoxinghao+yb);
 					}else{
-						tr.find("#td_yangban").text("("+dingdan.yangban.taiguoxinghao+")");
+						tr.find("#td_yangban").text(yb);
 					}
 				}
 				tr.find("#td_zhuangtai").text(dingdan.zhuangtai);				

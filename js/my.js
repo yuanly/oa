@@ -929,8 +929,9 @@ jQuery.fn.dataInc = function(name,value){
  * fields 字符串数据，指定需要显示的对象的属性
  * callback(resp) 将选中的对象返回给调用者
  * option 过滤输入框的初始值
+ * guangbicallback 点击关闭时回调
  */
- function setSelector(event,getObjs,fields,callback,option){
+ function setSelector(event,getObjs,fields,callback,option,guangbicallback){
  		var selector_tmpl = $('<div id="selector">\
  			<div id="mengban" style="position:absolute;top:0px;left:0px;width:100%;height:100%;z-index:100;background-color:rgba(250,250,255,.4);"></div>\
  			<div id="panel" style="position:absolute;z-index:101;background-color:white;padding:5px;border:1px solid gray">\
@@ -979,6 +980,7 @@ jQuery.fn.dataInc = function(name,value){
  	}).mouseover(function(){$(this).css("color","red");}).mouseout(function(){$(this).css("color","blue");});
  	panel.find("#guanbi").click(function(){
  		selector_tmpl.remove();
+ 		guangbicallback()
  	}).mouseover(function(){$(this).css("color","red");}).mouseout(function(){$(this).css("color","blue");});
  	panel.css("top",event.clientY).css("left",event.clientX-panel.width()>10?event.clientX-panel.width():10);
  }
