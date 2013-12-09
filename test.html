@@ -1,19 +1,62 @@
-<html><head></head>
-<body>
-<table>
-<tr><td>
-<div>
-	<input type="date" style="border:0px;border-bottom:1px solid gray" />
-	<p/>	
-	<select style="-webkit-appearance:none">
-		<option>a</option>
-	</select>
-<div style="white-space:nowrap;width:12em;overflow:hidden;border:1px solid #000000">
-	This is some long text that will not fit in the box
-	
+<html>
+	<head>
+	<script type="text/javascript">
+		function arc(cxt,s,e,color){
+			cxt.fillStyle=color;
+			cxt.beginPath();
+			while(s>2){s=s-2;}
+			while(e>2){e=e-2;}
+			cxt.arc(150,150,150,Math.PI*s,Math.PI*e);
+			cxt.lineTo(150,150);
+			cxt.closePath();
+			cxt.fill();	
+		}
+		function draw(cxt,deg){
+			arc(cxt,deg+0,deg+0.2,"#FF0FF0");
+			arc(cxt,deg+0.2,deg+0.5,"#0BEE0F");
+			arc(cxt,deg+0.5,deg+0.8,"#0FA00F");
+			arc(cxt,deg+0.8,deg+1.2,"#604F30");
+			arc(cxt,deg+1.2,deg+1.6,"#908F20");
+			arc(cxt,deg+1.6,deg+2,"#E0FA00");
+			 
+			cxt.fillStyle="#cc9900";
+			cxt.beginPath();
+			cxt.arc(150,150,30,Math.PI*0,Math.PI*2);
+			cxt.lineTo(150,150);
+			cxt.closePath();
+			cxt.fill();
+			
+			
+			cxt.fillStyle="#000";
+			cxt.textBaseline="middle";
+			cxt.translate(150,150);
+			cxt.rotate(20*Math.PI/180);
+			cxt.font="15px Arial";
+			cxt.textAlign="right";
+			cxt.fillText("Hello World ",150,0);			
+			cxt.rotate(60*Math.PI/180);
+			cxt.fillText("Hello World ",150,0);			
+		}
+	function onload(){
+		var c=document.getElementById("myCanvas");
+		var cxt=c.getContext("2d");
+		draw(cxt,0);		
+		var d = 0;
+		function rotate(){
+			d += 0.04;
+			if(d>2){d=d-2}
+			draw(cxt,d);		
+		}
+		//setInterval(rotate,20);
+	}
+	</script>
+	</head>
+<body onload=onload()>
+
+<div style="width:300px;height:300px;-webkit-transform:rotate(0deg)">
+<canvas id="myCanvas" width="300" height="300" style="border:1px solid #c3c3c3;">
+	Your browser does not support the canvas element.
+</canvas>
 </div>
-</div>
-</td></tr>
-</table>
 </body>
 </html>
