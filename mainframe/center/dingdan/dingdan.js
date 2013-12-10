@@ -26,7 +26,16 @@
 	kehus.unshift("客户");
 	$("#th_kehu").myselector(kehus).bind("input",function(){listDingdan(0);});
 	var users = getUsers();users.unshift({"user_name":"跟单员","_id":"-1"});
-	$("#th_gendanyuan").myselector(users,"user_name","_id").bind("input",function(){listDingdan(0);});
+	$("#th_gendanyuan").myselector(users,"_id","user_name").bind("input",function(){
+		listDingdan(0);
+		var v = $(this).val();
+		each(users,function(i,u){
+			if(u._id == v){
+				$("#th_gendanyuan").val(u.user_name);
+				return false;
+			}
+		}); 
+	});
 	$("#th_zhuangtai").myselector(["状态","录单","审核","接单","下单","审单","结单","作废"]).bind("input",function(){listDingdan(0);});
 	$("#fangqi").click(function(){
 		showDetailById(currDD._id);
@@ -83,7 +92,7 @@
 				$(this).val(yangban.zhongguoxinghao+"("+yangban.taiguoxinghao+")");
 				$("#dd_gonghuoshang").val(yangban.shangjia.mingchen);
 				$(".unit").text(yangban.danwei);
-			},currDD.yangban.taiguoxinghao);
+			},(currDD.yangban)?currDD.yangban.taiguoxinghao:"");
 	}
 	function sel_yangban2(event){
 		var limit = 20;
@@ -93,6 +102,7 @@
 				});
 			},["_id","taiguoxinghao","zhongguoxinghao","shangjia.mingchen","zhuangtai"],function(yangban){
 				$("#th_yangban").val(yangban.taiguoxinghao);
+				listDingdan(0);
 			},"",function(){$("#th_yangban").val("样板");});
 	}
 	$("#th_yangban").click(sel_yangban2);
@@ -104,6 +114,8 @@
 				});
 			},["_id","mingchen","dianhua","dizhi"],function(gonghuoshang){
 				$("#th_gonghuoshang").val(gonghuoshang.mingchen);
+				$("#th_gonghuoshang").data("ghsId",gonghuoshang._id);
+				listDingdan(0);
 			},"",function(){$("#th_gonghuoshang").val("供货商");});
 	}
 	$("#th_gonghuoshang").click(sel_gonghuoshang);
@@ -331,6 +343,31 @@ function _hanshuku_(){}
 		$(".editable").attr("readonly",true);
 		beizhuEditor.editorReadonly();
 	}
+	//解释查询条件
+	function getOptions(){
+		var ret = {};
+		var kh = $("#th_kehu").val().trim();
+		if("" != kh && "客户" != kh){
+			ret.kehu = kh;
+		}
+		var yb = $("#th_yangban").val().trim();
+		if("" != yb && "样板" != yb){
+			ret.yangban = yb;
+		} 
+		var zt = $("#th_zhuangtai").val().trim();
+		if("" != zt && "状态" != zt){
+			ret.zhuangtai = zt;
+		}
+		var gdy = $("#th_gendanyuan").val().trim();
+		if("" != gdy && "-1" != gdy && "跟单员" != gdy){
+			ret.gendanyuan = gdy;
+		}
+		var ghs = $("#th_gonghuoshang").val().trim();
+		if("" != ghs && "供货商" != ghs){
+			ret.gonghuoshang = $("#th_gonghuoshang").data("ghsId");
+		}
+		return ret;
+	}
 		//列出原稿
 	function listDingdan(offset){
 		if(offset<0){
@@ -338,7 +375,8 @@ function _hanshuku_(){}
 		}
 		$("#pager").data("offset",offset);
 		var cmd = getUrl().cmd?getUrl().cmd:"";
-		postJson("dingdans.php",{offset:offset*limit,limit:limit,option:{cmd:cmd}},function(dingdans){
+		var option = $.extend({cmd:cmd},getOptions());
+		postJson("dingdans.php",{offset:offset*limit,limit:limit,option:option},function(dingdans){
 			$("#dingdantable .tr_dingdan").remove();
 			each(dingdans,function(n,dingdan){
 				tr = tr_dingdan.clone(true);

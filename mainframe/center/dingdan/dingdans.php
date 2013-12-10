@@ -26,6 +26,22 @@ if(isset($param["_id"])){//
 	}else if("wode" == $cmd){
 		$query["gendanyuan"] = (String)$_SESSION["user"]["_id"];
 	}
+	
+		if(isset($param["option"]["kehu"])){
+			$query["kehu"] = $param["option"]["kehu"];
+		}
+		if(isset($param["option"]["yangban"])){
+			$query["yangban.taiguoxinghao"] = $param["option"]["yangban"];
+		}
+		if(isset($param["option"]["zhuangtai"])){
+			$query["zhuangtai"] = $param["option"]["zhuangtai"];
+		}
+		if(isset($param["option"]["gendanyuan"])){
+			$query["gendanyuan"] = $param["option"]["gendanyuan"];
+		}
+		if(isset($param["option"]["gonghuoshang"])){
+			$query["gonghuoshang._id"] = $param["option"]["gonghuoshang"];
+		}
 	$cur = coll("dingdan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	
 	echo  cur2json($cur);
