@@ -1,19 +1,95 @@
-<html><head></head>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+		<script src="./jquery-1.9.1.js"></script>
+	</head>
+	<style>
+		.spiece{
+			position:relative;
+			text-align:right;
+			font-weight:bold;
+			font-size:20px;
+			line-height:20px
+		}
+		.line{
+			background-color:blue;
+			position:relative;
+			height:1px
+		}
+	</style>
+	<script>
+		$(function(){
+			var intervalId=null;
+			var deg = 0;
+			var delta = 10;
+			var speed = 35;
+			rotate = function(){
+				if(Math.random()>0.5){
+					delta -= 0.01; 
+				}else if(Math.random()>0.5){
+					delta -= 0.02; 
+				}else{
+					delta -= 0.03; 
+				}
+				deg+=delta;
+				if(deg>360){
+					deg = deg-360;
+				} 
+				$("#out").css("transform","rotate("+deg+"deg)");  
+				if(delta < 0){
+					clearInterval(intervalId);
+				} 
+			} 
+			 
+			$("#start").click(function(){
+				deg = 0
+				delta = 10;
+				if(intervalId != null){
+					clearInterval(intervalId);
+				}
+				intervalId = setInterval(rotate,speed);
+			});   
+			$("#out2").css("transform","rotate(-90deg)");
+			$("#line1").css("transform","rotate(-67.5deg)");
+			$("#out3").css("transform","rotate(-45deg)");
+			$("#line2").css("transform","rotate(-22.5deg)");
+			$("#line3").css("transform","rotate(22.5deg)");
+			$("#out5").css("transform","rotate(45deg)");
+			$("#line4").css("transform","rotate(67.5deg)");
+			$("#out6").css("transform","rotate(90deg)");
+			$("#line5").css("transform","rotate(112.5deg)");
+			$("#out7").css("transform","rotate(135deg)");
+			$("#line6").css("transform","rotate(157.5deg)");
+			$("#out8").css("transform","rotate(180deg)");
+			$("#line7").css("transform","rotate(202.5deg)");
+			$("#out9").css("transform","rotate(225deg)");  
+		});	
+	</script>
 <body>
-<table>
-<tr><td>
-<div>
-	<input type="date" style="border:0px;border-bottom:1px solid gray" />
-	<p/>	
-	<select style="-webkit-appearance:none">
-		<option>a</option>
-	</select>
-<div style="white-space:nowrap;width:12em;overflow:hidden;border:1px solid #000000">
-	This is some long text that will not fit in the box
+	<input type="button" value="start" id="start" />
+	<div id="out" style="border:1px solid blue;width:502px;height:502px;border-radius:250px">
+		<!--
+		<img id="dish" src="img/zhuanpan.png" style="width:500px;height:500px;" />
+		<img id="pointer" src="img/arrow-down.png"/ style="width:10px;height:100px;position:relative;top:-400px;left:-260px;">
+		-->
+		<div id="out2" class="spiece" style="top:240px;">一等奖</div>
+		<div id="line1" class="line" style="top:230px;"></div>
+		<div id="out3"  class="spiece"  style="top:219px;">安慰奖</div>
+		<div id="line2" class="line" style="top:209px;"></div>		
+		<div id="out4"  class="spiece"  style="top:198px;">二等奖</div>
+		<div id="line3" class="line" style="top:188px;"></div>
+		<div id="out5"  class="spiece"  style="top:177px;">再接再厉</div>
+		<div id="line4" class="line" style="top:167px;"></div>
+		<div id="out6"  class="spiece"  style="top:156px;">安慰奖</div>
+		<div id="line5" class="line" style="top:146px;"></div>
+		<div id="out7"  class="spiece"  style="top:135px;">三等奖</div>
+		<div id="line6" class="line" style="top:125px;"></div>		
+		<div id="out8"  class="spiece"  style="top:114px;">再接再厉</div>
+		<div id="line7" class="line" style="top:104px;"></div>		
+		<div id="out9"  class="spiece"  style="top:93px;">安慰奖</div>
+		<!-- div id="line8" class="line" style="top:83px;"></div -->
+	</div>
 	
-</div>
-</div>
-</td></tr>
-</table>
+	
 </body>
 </html>
