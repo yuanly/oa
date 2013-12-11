@@ -23,6 +23,12 @@ if(isset($param["_id"])){//
 	}else if("jie2dan" == $cmd){
 		$query["zhuangtai"] = "审单";
 		$query["gendanyuan"] = (String)$_SESSION["user"]["_id"];
+	}else if("dengzidan" == $cmd){
+		$query["zhuangtai"] = "子单";
+		$query["gendanyuan"] = (String)$_SESSION["user"]["_id"];
+	}else if("dengban" == $cmd){
+		$query["zhuangtai"] = "等版";
+		$query["gendanyuan"] = (String)$_SESSION["user"]["_id"];
 	}else if("wode" == $cmd){
 		$query["gendanyuan"] = (String)$_SESSION["user"]["_id"];
 	}

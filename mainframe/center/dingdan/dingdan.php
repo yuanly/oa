@@ -29,16 +29,24 @@ if("jiedan" == $param["caozuo"]){
 	$liuyan = array("_id"=>time(),"hostType"=>"dingdan","hostId"=>$param["_id"],"type"=>"caozuorizhi","userId"=>(String)$_SESSION["user"]["_id"],"neirong"=>"接管：".jsonEncode($dingdan));
 	coll("liuyan")->save($liuyan);
 	echo '{"success":true}';
-}else if("zidan" == $param["caozuo"]){
-	$dingdan = coll("dingdan")->findOne(array("_id"=>$param["_id"]),array("yuangao"=>1,"kehu"=>1,"gendanyuan"=>1,"zhangtai"=>1,"huowu"=>1,"liucheng"=>1));
+}else if("ludan" == $param["caozuo"]){
+	$dingdan = coll("dingdan")->findOne(array("_id"=>$param["_id"]),array("yuangao"=>1,"kehu"=>1,"gendanyuan"=>1,"zhuangtai"=>1,"huowu"=>1,"liucheng"=>1));
 	$count = coll("dingdan")->count(array("_id"=>array('$regex'=>"^".$dingdan["_id"])));
 	$dingdan["fudan"] = $dingdan["_id"];
 	$dingdan["_id"] = $dingdan["_id"]."_".$count;
+	$liucheng = $dingdan["liucheng"];
+	$dingdan["liucheng"] = array();
+	foreach($liucheng as $i=>$v){
+		$dingdan["liucheng"][] = $v;
+		if($v["dongzuo"] == "接单"){
+			break;
+		}
+	}
 	coll("dingdan")->save($dingdan);
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("zidan"=>$dingdan["_id"])));
 	$liuyan = array("_id"=>time(),"hostType"=>"dingdan","hostId"=>$dingdan["_id"],"type"=>"caozuorizhi","userId"=>(String)$_SESSION["user"]["_id"],"neirong"=>"生成子单：".jsonEncode($dingdan));
 	coll("liuyan")->save($liuyan);
-	echo '{"success":true}';
+	echo '{"success":true,"id":'.$dingdan["_id"].'}';
 }else if("xiadan" == $param["caozuo"]){
 	$xiadan  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"下单","time"=>time());
 	$dingdan = coll("dingdan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$xiadan),'$set'=>array("xiadanshijian"=>time(),"zhuangtai"=>"下单")));
@@ -56,5 +64,13 @@ if("jiedan" == $param["caozuo"]){
 }else if("zuofei" == $param["caozuo"]){
 	$shendan  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$shendan),'$set'=>array("zhuangtai"=>"作废")));
+	echo '{"success":true}';
+}else if("dengban" == $param["caozuo"]){
+	$dengban  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"等版","time"=>time());
+	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$dengban),'$set'=>array("zhuangtai"=>"等版")));
+	echo '{"success":true}';
+}else if("zidan" == $param["caozuo"]){
+	$zidan  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"子单","time"=>time());
+	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zidan),'$set'=>array("zhuangtai"=>"子单")));
 	echo '{"success":true}';
 }
