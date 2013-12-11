@@ -55,10 +55,11 @@
 				<tr id="tableheader">
 					<th nowrap>编号</th>
 					<th nowrap><input id="th_kehu" class="plainTh" value="客户" style="width:35px"/></th>
-					<th nowrap><input id="th_yangban" class="plainTh" value="样板" style="width:35px"/></th>
+					<th nowrap><input id="th_yangban" class="plainTh" value="样板" style="width:35px;cursor:pointer;"/></th>
 					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:35px"/></th>
 					<th nowrap><input id="th_gendanyuan" class="plainTh" value="跟单员" style="width:50px"/></th>
-					<th nowrap>供货商</th><th nowrap>下单日期</th>
+					<th nowrap><input id="th_gonghuoshang" class="plainTh" value="供货商" style="width:50px;cursor:pointer"/></th>
+					<th nowrap>下单日期</th>
 				</tr>
 				<tr class="tr_dingdan">
 					<td id="td_bianhao"></td><td id="td_kehu"></td><td id="td_yangban"></td><td id="td_zhuangtai"></td><td id="td_gendanyuan"></td><td id="td_gonghuoshang"></td><td id="td_xiadanriqi"></td>
@@ -107,7 +108,7 @@
 				客户：<input type="text" id="dd_kehu" class="plainInput" readonly size=2 />
 			</div>
 			<div>
-				样板：<input type="text" id="dd_yangban" class="plainInput" size=56 readonly style="cursor:pointer" /><br/>
+				样板：<input type="text" id="dd_yangban" class="plainInput" size=56 readonly style="cursor:pointer" /><span class="plainBtn">找版</span><br/>
 				供货商：<input type="text" id="dd_gonghuoshang" class="plainInput" size=53 readonly />
 			</div>
 			<table id="tb_huowu">
