@@ -1,156 +1,137 @@
 <html>
 	<head>
-<<<<<<< HEAD
-		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-		<script src="./jquery-1.9.1.js"></script>
-	</head>
-	<style>
-		.spiece{
-			position:relative;
-			text-align:right;
-			font-weight:bold;
-			font-size:20px;
-			line-height:20px
-		}
-		.line{
-			background-color:blue;
-			position:relative;
-			height:1px
-		}
-	</style>
-	<script>
-		$(function(){
-			var intervalId=null;
-			var deg = 0;
-			var delta = 10;
-			var speed = 35;
-			rotate = function(){
-				if(Math.random()>0.5){
-					delta -= 0.01; 
-				}else if(Math.random()>0.5){
-					delta -= 0.02; 
-				}else{
-					delta -= 0.03; 
-				}
-				deg+=delta;
-				if(deg>360){
-					deg = deg-360;
-				} 
-				$("#out").css("transform","rotate("+deg+"deg)");  
-				if(delta < 0){
-					clearInterval(intervalId);
-				} 
-			} 
-			 
-			$("#start").click(function(){
-				deg = 0
-				delta = 10;
-				if(intervalId != null){
-					clearInterval(intervalId);
-				}
-				intervalId = setInterval(rotate,speed);
-			});   
-			$("#out2").css("transform","rotate(-90deg)");
-			$("#line1").css("transform","rotate(-67.5deg)");
-			$("#out3").css("transform","rotate(-45deg)");
-			$("#line2").css("transform","rotate(-22.5deg)");
-			$("#line3").css("transform","rotate(22.5deg)");
-			$("#out5").css("transform","rotate(45deg)");
-			$("#line4").css("transform","rotate(67.5deg)");
-			$("#out6").css("transform","rotate(90deg)");
-			$("#line5").css("transform","rotate(112.5deg)");
-			$("#out7").css("transform","rotate(135deg)");
-			$("#line6").css("transform","rotate(157.5deg)");
-			$("#out8").css("transform","rotate(180deg)");
-			$("#line7").css("transform","rotate(202.5deg)");
-			$("#out9").css("transform","rotate(225deg)");  
-		});	
-	</script>
-<body>
-	<input type="button" value="start" id="start" />
-	<div id="out" style="border:1px solid blue;width:502px;height:502px;border-radius:250px">
-		<!--
-		<img id="dish" src="img/zhuanpan.png" style="width:500px;height:500px;" />
-		<img id="pointer" src="img/arrow-down.png"/ style="width:10px;height:100px;position:relative;top:-400px;left:-260px;">
-		-->
-		<div id="out2" class="spiece" style="top:240px;">一等奖</div>
-		<div id="line1" class="line" style="top:230px;"></div>
-		<div id="out3"  class="spiece"  style="top:219px;">安慰奖</div>
-		<div id="line2" class="line" style="top:209px;"></div>		
-		<div id="out4"  class="spiece"  style="top:198px;">二等奖</div>
-		<div id="line3" class="line" style="top:188px;"></div>
-		<div id="out5"  class="spiece"  style="top:177px;">再接再厉</div>
-		<div id="line4" class="line" style="top:167px;"></div>
-		<div id="out6"  class="spiece"  style="top:156px;">安慰奖</div>
-		<div id="line5" class="line" style="top:146px;"></div>
-		<div id="out7"  class="spiece"  style="top:135px;">三等奖</div>
-		<div id="line6" class="line" style="top:125px;"></div>		
-		<div id="out8"  class="spiece"  style="top:114px;">再接再厉</div>
-		<div id="line7" class="line" style="top:104px;"></div>		
-		<div id="out9"  class="spiece"  style="top:93px;">安慰奖</div>
-		<!-- div id="line8" class="line" style="top:83px;"></div -->
-	</div>
-	
-	
-=======
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<script src="js/jquery-1.9.1.js"></script>
 	<script type="text/javascript">
-		function arc(cxt,s,e,color){
-			cxt.fillStyle=color;
-			cxt.beginPath();
+		$(function(){ 
+			var cfg={clientWidth:document.body.clientWidth,clientHeight:document.body.clientHeight};
+			cfg.piece=[{percent:5,bgColor:"#FF0FF0",txt:"一等奖 "},
+				{percent:20,bgColor:"#0BEE0F",txt:"再接再厉 ",txtColor:"brown"},
+				{percent:10,bgColor:"#0BE0EF",txt:"二等奖 ",txtColor:"black"},
+				{percent:18,bgColor:"#F0BEE0",txt:"再接再厉 ",txtColor:"black"},
+				{percent:15,bgColor:"#0EBE0F",txt:"三等奖 ",txtColor:"black"},
+				{percent:12,bgColor:"#0B0EEF",txt:"再接再厉 ",txtColor:"black"},
+				{percent:15,bgColor:"#0EBFE0",txt:"三等奖 ",txtColor:"black"},
+				{percent:5,bgColor:"#E0F0BE",txt:"再接再厉 ",txtColor:"black"}];
+			cfg.centerColor="#cc9900";
+			if(cfg.clientWidth>cfg.clientHeight){
+				cfg.width = cfg.clientHeight;
+				$("#dishDiv").css("width",cfg.width+"px").css("height",cfg.width+"px");
+				$("#dishCanvas").css("width",cfg.width+"px").css("height",cfg.width+"px");
+				$("#dishDiv").css("left",(cfg.clientWidth-cfg.width)/2+"px");
+				$("#pointerCanvas").attr("width",cfg.clientWidth).attr("height",20);
+			}else{
+				cfg.width = cfg.clientWidth;
+				$("#dishDiv").css("width",cfg.width+"px").css("height",cfg.width+"px");
+				$("#dishCanvas").css("width",cfg.width+"px").css("height",cfg.width+"px");
+				$("#dishDiv").css("top",(cfg.clientHeight-cfg.width)/2+"px");
+				$("#pointerCanvas").css("top",(cfg.clientHeight-cfg.width)/2+"px").attr("width",cfg.clientWidth).attr("height",20);
+			}
+			pointer(cfg);
+			dish(cfg);	
+		});
+
+		function dish(cfg){
+			var c=document.getElementById("dishCanvas");
+			var ctx=c.getContext("2d");
+			ctx.translate(500,500);
+			draw(cfg,ctx,0);
+		}
+		/*
+		* ctx: canvas context
+		* s: start angle
+		* e: end angle
+		* color: background-color
+		* txt: text
+		* txtColor: text color
+		*/
+		function arc(ctx,s,e,color,txt,txtColor){
+			ctx.fillStyle=color;
+			ctx.beginPath();
 			while(s>2){s=s-2;}
 			while(e>2){e=e-2;}
-			cxt.arc(150,150,150,Math.PI*s,Math.PI*e);
-			cxt.lineTo(150,150);
-			cxt.closePath();
-			cxt.fill();	
+			ctx.arc(0,0,500,Math.PI*s,Math.PI*e);
+			ctx.lineTo(0,0);
+			ctx.closePath();
+			ctx.fill();	
+			
+			if(txt){
+				if(txtColor){
+					ctx.fillStyle=txtColor;
+				}else{
+					ctx.fillStyle="#000";
+				}
+				ctx.textBaseline="middle";
+				ctx.rotate(Math.PI*(s+e)/2);
+				ctx.font="45px Arial";
+				ctx.textAlign="right";
+				ctx.fillText(txt,500,0);
+				ctx.rotate(-Math.PI*(s+e)/2);
+			}
 		}
-		function draw(cxt,deg){
-			arc(cxt,deg+0,deg+0.2,"#FF0FF0");
-			arc(cxt,deg+0.2,deg+0.5,"#0BEE0F");
-			arc(cxt,deg+0.5,deg+0.8,"#0FA00F");
-			arc(cxt,deg+0.8,deg+1.2,"#604F30");
-			arc(cxt,deg+1.2,deg+1.6,"#908F20");
-			arc(cxt,deg+1.6,deg+2,"#E0FA00");
+		function arc1(ctx,sAngle,piece){
+			var eAngle = sAngle+2*piece.percent/100;
+			arc(ctx,sAngle,eAngle,piece.bgColor,piece.txt,piece.txtColor);
+			return eAngle;
+		}
+		function draw(cfg,ctx,deg){
+			var sAngle = deg-0.5;
+			$.each(cfg.piece,function(i,piece){
+				sAngle = arc1(ctx,sAngle,piece);
+			});
+			if(sAngle<2){
+				arc(ctx,sAngle,1.5,"#eee"); 
+			}
 			 
-			cxt.fillStyle="#cc9900";
-			cxt.beginPath();
-			cxt.arc(150,150,30,Math.PI*0,Math.PI*2);
-			cxt.lineTo(150,150);
-			cxt.closePath();
-			cxt.fill();
-			
-			
-			cxt.fillStyle="#000";
-			cxt.textBaseline="middle";
-			cxt.translate(150,150);
-			cxt.rotate(20*Math.PI/180);
-			cxt.font="15px Arial";
-			cxt.textAlign="right";
-			cxt.fillText("Hello World ",150,0);			
-			cxt.rotate(60*Math.PI/180);
-			cxt.fillText("Hello World ",150,0);			
+			ctx.fillStyle=cfg.centerColor;
+			ctx.beginPath();
+			ctx.arc(0,0,150,Math.PI*0,Math.PI*2);
+			ctx.lineTo(0,0);
+			ctx.closePath();
+			ctx.fill();
+				
+		}
+		function pointer(cfg){
+			var c=document.getElementById("pointerCanvas");
+			var ctx=c.getContext("2d");
+			ctx.fillStyle="#FF0000";
+			ctx.moveTo(cfg.clientWidth/2-5,0);
+			ctx.beginPath();
+			ctx.lineTo(cfg.clientWidth/2,20);
+			ctx.lineTo(cfg.clientWidth/2+5,0);
+			ctx.lineTo(cfg.clientWidth/2-5,0);
+			ctx.closePath(); 
+			ctx.fill();
 		}
 	function onload(){
+		pointer();
 		var c=document.getElementById("myCanvas");
-		var cxt=c.getContext("2d");
-		draw(cxt,0);		
+		var ctx=c.getContext("2d");
+		draw(ctx,0);		
 		var d = 0;
 		function rotate(){
 			d += 0.04;
 			if(d>2){d=d-2}
-			draw(cxt,d);		
+			draw(ctx,d);		
 		}
 		//setInterval(rotate,20);
 	}
 	</script>
+	<style>
+		*{
+			margin:0px;
+			padding:0px
+		}
+	</style>
 	</head>
-<body onload=onload()>
-
-<div style="width:300px;height:300px;-webkit-transform:rotate(0deg)">
-<canvas id="myCanvas" width="300" height="300" style="border:1px solid #c3c3c3;">
+<body>
+<canvas id="pointerCanvas" width="1000" height="20" style="position:absolute;z-index:100;border:0px solid #c3c3c3;">
 	Your browser does not support the canvas element.
 </canvas>
-</div>
->>>>>>> 54c0b4562092087bac925b3c74921c394f356c79
+<div id="dishDiv" style="position:relative;background-color:gray;height:300px;-webkit-transform:rotate(0deg);">
+<canvas id="dishCanvas" width="1000" height="1000" style="border:0px solid #c3c3c3;">
+	Your browser does not support the canvas element.
+</canvas>
+</div> 
 </body>
 </html>
