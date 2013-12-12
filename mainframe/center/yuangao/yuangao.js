@@ -229,7 +229,7 @@
 	});
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 		//列出原稿
-	function listYuangao(offset){
+	function listYuangao(offset,showId){
 		if(offset<0){
 			return;
 		}
@@ -260,8 +260,9 @@
 				
 				$("#yuangaotable").append(tr);
 			});
-			if(yuangaos.length>0){//将列表第一个商家显示在右边的商家详情表单
-				//showDetailById(yuangaos[0]._id);
+			if(showId){
+				showDetailById(showId);
+			}else if(yuangaos.length>0){//将列表第一个商家显示在右边的商家详情表单
 				$(".tr_yuangao").get(0).click();
 			}
 			//调整左侧宽度以便显示完整的列表
@@ -433,5 +434,5 @@
 		$("#optioncontainer").hide(); 
 	}
 	
-	listYuangao(0);
+	listYuangao(0,getUrl().showId);
 });
