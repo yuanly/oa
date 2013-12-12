@@ -1,27 +1,58 @@
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-		<script src="./jquery-1.9.1.js"></script>
-	</head>
-	<style>
-		.spiece{
-			position:relative;
-			text-align:right;
-			font-weight:bold;
-			font-size:20px;
-			line-height:20px
-		}
-		.line{
-			background-color:blue;
-			position:relative;
-			height:1px
-		}
-	</style>
-	<script>
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<script src="js/jquery-1.9.1.js"></script>
+	<script type="text/javascript"> 
+		var setting = true;
+		var intervalId=null;
 		$(function(){
-			var intervalId=null;
+			var cfg={clientWidth:document.body.clientWidth,clientHeight:document.body.clientHeight};
+			if(setting){
+				cfg.clientWidth = cfg.clientWidth/2;
+			}
+			cfg.piece=[{percent:5,bgColor:"#FF0FF0",txt:"一等奖 "},
+				{percent:20,bgColor:"#0BEE0F",txt:"再接再厉 ",txtColor:"brown"},
+				{percent:10,bgColor:"#0BE0EF",txt:"二等奖 ",txtColor:"black"},
+				{percent:18,bgColor:"#F0BEE0",txt:"再接再厉 ",txtColor:"black"},
+				{percent:15,bgColor:"#0EBE0F",txt:"三等奖 ",txtColor:"black"},
+				{percent:12,bgColor:"#0B0EEF",txt:"再接再厉 ",txtColor:"black"},
+				{percent:15,bgColor:"#0EBFE0",txt:"三等奖 ",txtColor:"black"},
+				{percent:5,bgColor:"#E0F0BE",txt:"再接再厉 ",txtColor:"black"}];
+			cfg.centerColor = "#cc9900";
+			cfg.outCircleColor = "#FFA500";
+			cfg.middleCircleColor = "#fdd017";
+			run(cfg);			 
+			if(setting){
+				set(cfg);
+			}
+			
+		});
+		function run(cfg){
+			if(intervalId != null){
+				clearInterval(intervalId);
+			}
+			$("#dishDiv").empty().append('<canvas id="dishCanvas" width="1000" height="1000" style="border:0px solid #c3c3c3;">Your browser does not support the canvas element.</canvas>');
+			if(cfg.clientWidth>cfg.clientHeight){
+				cfg.width = cfg.clientHeight;
+				$("#dishDiv").css("width",cfg.width+"px").css("height",cfg.width+"px");
+				$("#dishCanvas").css("width",cfg.width+"px").css("height",cfg.width+"px");
+				$("#dishDiv").css("left",(cfg.clientWidth-cfg.width)/2+"px");
+				$("#pointerCanvas").attr("width",cfg.clientWidth).attr("height",20);
+			}else{
+				cfg.width = cfg.clientWidth;
+				$("#dishDiv").css("width",cfg.width+"px").css("height",cfg.width+"px");
+				$("#dishCanvas").css("width",cfg.width+"px").css("height",cfg.width+"px");
+				$("#dishDiv").css("top",(cfg.clientHeight-cfg.width)/2+"px");
+				$("#pointerCanvas").css("top",(cfg.clientHeight-cfg.width)/2+"px").attr("width",cfg.clientWidth).attr("height",20);
+			}
+			$("#dishDiv").css("border-radius",cfg.width/2+"px").css("transform","rotate(0deg)"); 
+			$("#msgDiv").css("top",cfg.clientHeight/2-65+"px").css("width",cfg.clientWidth+"px").hide();
+			pointer(cfg);
+			dish(cfg);	
+			
 			var deg = 0;
-			var delta = 10;
+			var sDelta = 15;
+			var delta = 7;
 			var speed = 35;
 			rotate = function(){
 				if(Math.random()>0.5){
@@ -35,61 +66,218 @@
 				if(deg>360){
 					deg = deg-360;
 				} 
-				$("#out").css("transform","rotate("+deg+"deg)");  
+				$("#dishDiv").css("transform","rotate("+deg+"deg)");  
 				if(delta < 0){
 					clearInterval(intervalId);
+					showResult(cfg.piece,deg/360*100);
 				} 
 			} 
 			 
-			$("#start").click(function(){
-				deg = 0
-				delta = 10;
+				var strong = 30;
+			$("#dishDiv").mousedown(function(){
+				strong = 30;
+				$("#dishDiv").css("transform","rotate(0deg)"); 
+				$("#msgDiv").show();
+				if(intervalId != null){
+					clearInterval(intervalId);
+				}
+				intervalId = setInterval(function(){ 
+					if(strong < 100){
+						strong += 1;
+					}
+					delta = sDelta * strong/100;
+					$("#msg").text(strong + "%");
+					},200);
+			}).mouseup(function(){
+				$("#msgDiv").hide();
+				deg = 0;
+				if(delta < sDelta/3){
+					delta = sDelta/3;
+				}
 				if(intervalId != null){
 					clearInterval(intervalId);
 				}
 				intervalId = setInterval(rotate,speed);
-			});   
-			$("#out2").css("transform","rotate(-90deg)");
-			$("#line1").css("transform","rotate(-67.5deg)");
-			$("#out3").css("transform","rotate(-45deg)");
-			$("#line2").css("transform","rotate(-22.5deg)");
-			$("#line3").css("transform","rotate(22.5deg)");
-			$("#out5").css("transform","rotate(45deg)");
-			$("#line4").css("transform","rotate(67.5deg)");
-			$("#out6").css("transform","rotate(90deg)");
-			$("#line5").css("transform","rotate(112.5deg)");
-			$("#out7").css("transform","rotate(135deg)");
-			$("#line6").css("transform","rotate(157.5deg)");
-			$("#out8").css("transform","rotate(180deg)");
-			$("#line7").css("transform","rotate(202.5deg)");
-			$("#out9").css("transform","rotate(225deg)");  
-		});	
+			});
+			$("#msgDiv").mouseup(function(){$("#dishDiv").mouseup()});
+		}
+		function showResult(pieces,deg){
+			deg = 100 - deg; 
+			var sa = 0;
+			for(var i in pieces){
+				if(deg>sa){
+					sa += pieces[i].percent;
+				}else{
+					if(i>0){
+						i -= 1;
+					}
+					break;
+				}
+			} 
+			$("#msg").text(pieces[i].txt);
+			$("#msgDiv").show();
+		}
+		function dish(cfg){
+			var c=document.getElementById("dishCanvas");
+			var ctx=c.getContext("2d");
+			ctx.translate(500,500);
+			draw(cfg,ctx,0);
+		}
+		/*
+		* ctx: canvas context
+		* s: start angle
+		* e: end angle
+		* color: background-color
+		* txt: text
+		* txtColor: text color
+		*/
+		function arc(ctx,s,e,color,txt,txtColor){
+			ctx.fillStyle=color;
+			ctx.beginPath();
+			ctx.shadowBlur=1;
+			while(s>2){s=s-2;}
+			while(e>2){e=e-2;}
+			ctx.arc(0,0,480,Math.PI*s,Math.PI*e);
+			ctx.lineTo(0,0);
+			ctx.closePath();
+			ctx.fill();	
+			
+			if(txt){
+				if(txtColor){
+					ctx.fillStyle=txtColor;
+				}else{
+					ctx.fillStyle="#000";
+				}
+				ctx.textBaseline="middle";
+				ctx.rotate(Math.PI*(s+e)/2);
+				ctx.font="45px Arial";
+				ctx.textAlign="right";
+				ctx.shadowBlur=2;
+				ctx.fillText(txt,480,0);
+				ctx.rotate(-Math.PI*(s+e)/2);
+			}
+		}
+		function arc1(ctx,sAngle,piece){
+			var eAngle = sAngle+2*piece.percent/100;
+			arc(ctx,sAngle,eAngle,piece.bgColor,piece.txt,piece.txtColor);
+			return eAngle;
+		}
+		function draw(cfg,ctx,deg){
+			ctx.shadowColor="black";
+			
+			ctx.shadowBlur=10;
+			//ctx.fillStyle="#FFA500";
+			ctx.fillStyle = cfg.outCircleColor;
+			ctx.beginPath();
+			ctx.arc(0,0,495,Math.PI*0,Math.PI*2);
+			ctx.lineTo(0,0);
+			ctx.closePath();
+			ctx.fill();
+			
+			var sAngle = deg-0.5;
+			$.each(cfg.piece,function(i,piece){
+				sAngle = arc1(ctx,sAngle,piece);
+			});
+			/*
+			if(sAngle<2){
+				arc(ctx,sAngle,1.5,"#eee"); 
+			}
+			 */
+			ctx.shadowBlur=20;
+			//ctx.fillStyle="#fdd017";
+			ctx.fillStyle=cfg.middleCircleColor;
+			ctx.beginPath();
+			ctx.arc(0,0,150,Math.PI*0,Math.PI*2);
+			ctx.lineTo(0,0);
+			ctx.closePath();
+			ctx.fill();
+			
+			ctx.shadowBlur=0; 
+			ctx.fillStyle=cfg.centerColor;
+			ctx.beginPath();
+			ctx.arc(0,0,120,Math.PI*0,Math.PI*2);
+			ctx.lineTo(0,0);
+			ctx.closePath();
+			ctx.fill();
+			 
+			ctx.textBaseline="middle"; 
+			ctx.textAlign="center"; 
+			ctx.font="85px Arial";
+			ctx.fillStyle="#fff";
+			ctx.shadowBlur=20;
+			ctx.fillText("开始",0,0); 
+				
+		}
+		function pointer(cfg){
+			var c=document.getElementById("pointerCanvas");
+			var ctx=c.getContext("2d");
+			ctx.fillStyle="#FF0000";
+			ctx.moveTo(cfg.clientWidth/2-5,0);
+			ctx.beginPath();
+			ctx.lineTo(cfg.clientWidth/2,20);
+			ctx.lineTo(cfg.clientWidth/2+5,0);
+			ctx.lineTo(cfg.clientWidth/2-5,0);
+			ctx.closePath(); 
+			ctx.fill();
+		} 
+		function set(cfg){
+			$("#setDiv").css("left",cfg.clientWidth+"px").css("top","0px");
+			
+			$("#outCircleColor").val(cfg.outCircleColor)
+			$("#middleCircleColor").val(cfg.middleCircleColor)
+			$("#centerColor").val(cfg.centerColor)
+			
+			
+			$("#shanchu").click(function(){
+				$(this).parents("tr").remove();
+				});
+			var moban = $(".piece").detach();
+			$("#tianjia").click(function(){
+					$("#pieces").append(moban.clone(true));
+				});
+			$.each(cfg.piece,function(i,p){
+				var piece = moban.clone(true);
+				piece.find("#quanzhong").val(p.percent);
+				piece.find("#dise").val(p.bgColor);
+				piece.find("#wenben").val(p.txt);
+				piece.find("#zise").val(p.txtColor);
+				$("#pieces").append(piece);
+				});
+			$("#btnRun").click(function(){
+				cfg.outCircleColor=$("#outCircleColor").val();
+				cfg.middleCircleColor=$("#middleCircleColor").val();
+				cfg.centerColor=$("#centerColor").val();
+				run(cfg)
+			});
+		}
 	</script>
+	<style>
+		*{
+			margin:0px;
+			padding:0px
+		}
+	</style>
+	</head>
 <body>
-	<input type="button" value="start" id="start" />
-	<div id="out" style="border:1px solid blue;width:502px;height:502px;border-radius:250px">
-		<!--
-		<img id="dish" src="img/zhuanpan.png" style="width:500px;height:500px;" />
-		<img id="pointer" src="img/arrow-down.png"/ style="width:10px;height:100px;position:relative;top:-400px;left:-260px;">
-		-->
-		<div id="out2" class="spiece" style="top:240px;">一等奖</div>
-		<div id="line1" class="line" style="top:230px;"></div>
-		<div id="out3"  class="spiece"  style="top:219px;">安慰奖</div>
-		<div id="line2" class="line" style="top:209px;"></div>		
-		<div id="out4"  class="spiece"  style="top:198px;">二等奖</div>
-		<div id="line3" class="line" style="top:188px;"></div>
-		<div id="out5"  class="spiece"  style="top:177px;">再接再厉</div>
-		<div id="line4" class="line" style="top:167px;"></div>
-		<div id="out6"  class="spiece"  style="top:156px;">安慰奖</div>
-		<div id="line5" class="line" style="top:146px;"></div>
-		<div id="out7"  class="spiece"  style="top:135px;">三等奖</div>
-		<div id="line6" class="line" style="top:125px;"></div>		
-		<div id="out8"  class="spiece"  style="top:114px;">再接再厉</div>
-		<div id="line7" class="line" style="top:104px;"></div>		
-		<div id="out9"  class="spiece"  style="top:93px;">安慰奖</div>
-		<!-- div id="line8" class="line" style="top:83px;"></div -->
-	</div>
-	
-	
+	<div id="msgDiv" style="position:absolute;z-index:100;width:100%;text-align:center;display:none"><div style="display:inline-block;opacity:.8;color:#9f000f;font-size:45px;text-shadow: -1px 2px 3px #000;" id="msg">30%</div></div>
+<canvas id="pointerCanvas" width="1000" height="20" style="position:absolute;z-index:100;border:0px solid #c3c3c3;">
+	Your browser does not support the canvas element.
+</canvas>
+<div id="dishDiv" style="position:relative;height:300px;cursor:pointer;">
+
+</div> 
+<div id="setDiv" style="border:1px solid black;position:absolute;"> 
+	<br/>
+	外框底色：<input id="outCircleColor" type="color"/><br/>
+	中框底色：<input id="middleCircleColor" type="color"/><br/>
+	中心底色：<input id="centerColor" type="color"/><br/>
+	<table id="pieces">
+		<tr><th>权重</th><th>底色</th><th>文本</th><th>字色</th><th></th></tr> 
+		<tr class="piece"><td><input id="quanzhong" type="number" min="1" max="100" /></td><td><input id="dise" type="color" /></td><td><input id="wenben" type="text" size=12/></td><td><input id="zise" type="color" /></td><td><input type="button" id="shanchu" value="删除"/></td></tr>
+	</table>
+	<input type="button" value="添加" id="tianjia"/>
+	<br/>
+	<div style="text-align:center"><input type="button" id="btnRun" value="重置转盘" /></div>
+</div>
 </body>
 </html>

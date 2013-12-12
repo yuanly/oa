@@ -27,10 +27,80 @@
 				$("#dishDiv").css("top",(cfg.clientHeight-cfg.width)/2+"px");
 				$("#pointerCanvas").css("top",(cfg.clientHeight-cfg.width)/2+"px").attr("width",cfg.clientWidth).attr("height",20);
 			}
+			$("#dishDiv").css("border-radius",cfg.width/2+"px");
+			$("#msgDiv").css("top",cfg.clientHeight/2-65+"px");
 			pointer(cfg);
 			dish(cfg);	
+			
+			var intervalId=null;
+			var deg = 0;
+			var sDelta = 15;
+			var delta = 7;
+			var speed = 35;
+			rotate = function(){
+				if(Math.random()>0.5){
+					delta -= 0.01; 
+				}else if(Math.random()>0.5){
+					delta -= 0.02; 
+				}else{
+					delta -= 0.03; 
+				}
+				deg+=delta;
+				if(deg>360){
+					deg = deg-360;
+				} 
+				$("#dishDiv").css("transform","rotate("+deg+"deg)");  
+				if(delta < 0){
+					clearInterval(intervalId);
+					showResult(cfg.piece,deg/360*100);
+				} 
+			} 
+			 
+				var strong = 30;
+			$("#dishDiv").mousedown(function(){
+				strong = 30;
+				$("#dishDiv").css("transform","rotate(0deg)"); 
+				$("#msgDiv").show();
+				if(intervalId != null){
+					clearInterval(intervalId);
+				}
+				intervalId = setInterval(function(){ 
+					if(strong < 100){
+						strong += 1;
+					}
+					delta = sDelta * strong/100;
+					$("#msg").text(strong + "%");
+					},200);
+			}).mouseup(function(){
+				$("#msgDiv").hide();
+				deg = 0;
+				if(delta < sDelta/3){
+					delta = sDelta/3;
+				}
+				if(intervalId != null){
+					clearInterval(intervalId);
+				}
+				intervalId = setInterval(rotate,speed);
+			});
+			$("#msgDiv").mouseup(function(){$("#dishDiv").mouseup()});
+			 
 		});
-
+		function showResult(pieces,deg){
+			deg = 100 - deg; 
+			var sa = 0;
+			for(var i in pieces){
+				if(deg>sa){
+					sa += pieces[i].percent;
+				}else{
+					if(i>0){
+						i -= 1;
+					}
+					break;
+				}
+			} 
+			$("#msg").text(pieces[i].txt);
+			$("#msgDiv").show();
+		}
 		function dish(cfg){
 			var c=document.getElementById("dishCanvas");
 			var ctx=c.getContext("2d");
@@ -48,9 +118,10 @@
 		function arc(ctx,s,e,color,txt,txtColor){
 			ctx.fillStyle=color;
 			ctx.beginPath();
+			ctx.shadowBlur=1;
 			while(s>2){s=s-2;}
 			while(e>2){e=e-2;}
-			ctx.arc(0,0,500,Math.PI*s,Math.PI*e);
+			ctx.arc(0,0,480,Math.PI*s,Math.PI*e);
 			ctx.lineTo(0,0);
 			ctx.closePath();
 			ctx.fill();	
@@ -65,7 +136,8 @@
 				ctx.rotate(Math.PI*(s+e)/2);
 				ctx.font="45px Arial";
 				ctx.textAlign="right";
-				ctx.fillText(txt,500,0);
+				ctx.shadowBlur=2;
+				ctx.fillText(txt,480,0);
 				ctx.rotate(-Math.PI*(s+e)/2);
 			}
 		}
@@ -75,20 +147,47 @@
 			return eAngle;
 		}
 		function draw(cfg,ctx,deg){
+			ctx.shadowColor="black";
+			
+			ctx.shadowBlur=10;
+			ctx.fillStyle="#FFA500";
+			ctx.beginPath();
+			ctx.arc(0,0,495,Math.PI*0,Math.PI*2);
+			ctx.lineTo(0,0);
+			ctx.closePath();
+			ctx.fill();
+			
 			var sAngle = deg-0.5;
 			$.each(cfg.piece,function(i,piece){
 				sAngle = arc1(ctx,sAngle,piece);
 			});
+			/*
 			if(sAngle<2){
 				arc(ctx,sAngle,1.5,"#eee"); 
 			}
-			 
-			ctx.fillStyle=cfg.centerColor;
+			 */
+			ctx.shadowBlur=20;
+			ctx.fillStyle="#fdd017";
 			ctx.beginPath();
 			ctx.arc(0,0,150,Math.PI*0,Math.PI*2);
 			ctx.lineTo(0,0);
 			ctx.closePath();
 			ctx.fill();
+			
+			ctx.shadowBlur=0; 
+			ctx.fillStyle=cfg.centerColor;
+			ctx.beginPath();
+			ctx.arc(0,0,120,Math.PI*0,Math.PI*2);
+			ctx.lineTo(0,0);
+			ctx.closePath();
+			ctx.fill();
+			 
+			ctx.textBaseline="middle"; 
+			ctx.textAlign="center"; 
+			ctx.font="85px Arial";
+			ctx.fillStyle="#fff";
+			ctx.shadowBlur=20;
+			ctx.fillText("¿ªÊ¼",0,0); 
 				
 		}
 		function pointer(cfg){
@@ -102,20 +201,7 @@
 			ctx.lineTo(cfg.clientWidth/2-5,0);
 			ctx.closePath(); 
 			ctx.fill();
-		}
-	function onload(){
-		pointer();
-		var c=document.getElementById("myCanvas");
-		var ctx=c.getContext("2d");
-		draw(ctx,0);		
-		var d = 0;
-		function rotate(){
-			d += 0.04;
-			if(d>2){d=d-2}
-			draw(ctx,d);		
-		}
-		//setInterval(rotate,20);
-	}
+		} 
 	</script>
 	<style>
 		*{
@@ -125,10 +211,11 @@
 	</style>
 	</head>
 <body>
+	<div id="msgDiv" style="position:absolute;z-index:100;width:100%;text-align:center;display:none"><div style="display:inline-block;opacity:.8;color:#9f000f;font-size:45px;text-shadow: -1px 2px 3px #000;" id="msg">30%</div></div>
 <canvas id="pointerCanvas" width="1000" height="20" style="position:absolute;z-index:100;border:0px solid #c3c3c3;">
 	Your browser does not support the canvas element.
 </canvas>
-<div id="dishDiv" style="position:relative;background-color:gray;height:300px;-webkit-transform:rotate(0deg);">
+<div id="dishDiv" style="position:relative;height:300px;cursor:pointer;">
 <canvas id="dishCanvas" width="1000" height="1000" style="border:0px solid #c3c3c3;">
 	Your browser does not support the canvas element.
 </canvas>
