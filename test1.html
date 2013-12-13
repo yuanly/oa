@@ -3,6 +3,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 	<script src="js/jquery-1.9.1.js"></script>
 	<script type="text/javascript"> 
+		 String.prototype.trim = function()
+		 {
+		     return this.replace(/(^\s*)|(\s*$)/g, "");
+		 };
+		 
 		var setting = true;
 		var intervalId=null;
 		$(function(){
@@ -10,7 +15,7 @@
 			if(setting){
 				cfg.clientWidth = cfg.clientWidth/2;
 			}
-			cfg.piece=[{percent:5,bgColor:"#FF0FF0",txt:"一等奖 "},
+			cfg.pieces=[{percent:5,bgColor:"#FF0FF0",txt:"一等奖 "},
 				{percent:20,bgColor:"#0BEE0F",txt:"再接再厉 ",txtColor:"brown"},
 				{percent:10,bgColor:"#0BE0EF",txt:"二等奖 ",txtColor:"black"},
 				{percent:18,bgColor:"#F0BEE0",txt:"再接再厉 ",txtColor:"black"},
@@ -69,7 +74,7 @@
 				$("#dishDiv").css("transform","rotate("+deg+"deg)");  
 				if(delta < 0){
 					clearInterval(intervalId);
-					showResult(cfg.piece,deg/360*100);
+					showResult(cfg.pieces,deg/360*100);
 				} 
 			} 
 			 
@@ -175,7 +180,7 @@
 			ctx.fill();
 			
 			var sAngle = deg-0.5;
-			$.each(cfg.piece,function(i,piece){
+			$.each(cfg.pieces,function(i,piece){
 				sAngle = arc1(ctx,sAngle,piece);
 			});
 			/*
@@ -232,13 +237,14 @@
 				$(this).parents("tr").remove();
 				});
 			$("#charu").click(function(){
-				$(this).parents("tr").clone(true).insertBefore($(this).parents("tr"));
+				var np = $(this).parents("tr").clone(true).insertBefore($(this).parents("tr"));
+				np.find("#quanzhong").val("");np.find("#wenben").val("");
 				});
 			var moban = $(".piece").detach();
 			$("#tianjia").click(function(){
 					$("#pieces").append(moban.clone(true));
 				});
-			$.each(cfg.piece,function(i,p){
+			$.each(cfg.pieces,function(i,p){
 				var piece = moban.clone(true);
 				piece.find("#quanzhong").val(p.percent);
 				piece.find("#dise").val(p.bgColor);
@@ -246,7 +252,54 @@
 				piece.find("#zise").val(p.txtColor);
 				$("#pieces").append(piece);
 				});
+			function checkQuanzhong(){
+				var ret = true;
+				var sum = 0;
+				var f;
+				$(".piece").each(function(i){
+					f = parseFloat($(this).find("#quanzhong").val());
+					if(isNaN(f) || f<=0 || f>100){
+						alert("权重必须是0~100之间的有效实数！");
+						ret = false;
+						return false;
+					}
+					sum += f;
+				});
+				if(sum != 100){
+					alert("权重总和必须等于100！");
+					ret = false;
+				}
+				return ret;
+			}
+			function checkWenben(){
+				var ret = true;
+				$(".piece").each(function(i){
+					if($(this).find("#wenben").val().trim() == ""){
+						alert("文本不能留空！");
+						ret = false;
+						return false;
+					}
+				});
+				return ret;
+			}
+			function getPieces(){
+				var ret = [];
+				$(".piece").each(function(i){
+					var piece = {};
+					piece.percent = parseFloat($(this).find("#quanzhong").val());
+					piece.bgColor = $(this).find("#dise").val();
+					piece.txt = $(this).find("#wenben").val();
+					piece.txtColor = $(this).find("#zise").val();
+					ret.push(piece);
+				});
+				return ret;
+			}
 			$("#btnRun").click(function(){
+				if(!checkQuanzhong() || !checkWenben()){
+					return;
+				};
+				cfg.pieces = getPieces();
+				console.log(cfg.pieces);
 				cfg.outCircleColor=$("#outCircleColor").val();
 				cfg.middleCircleColor=$("#middleCircleColor").val();
 				cfg.centerColor=$("#centerColor").val();
@@ -271,9 +324,10 @@
 </div> 
 <div id="setDiv" style="border:1px solid black;position:absolute;"> 
 	<br/>
-	外框底色：<input id="outCircleColor" type="color"/><br/>
-	中框底色：<input id="middleCircleColor" type="color"/><br/>
-	中心底色：<input id="centerColor" type="color"/><br/>
+	<table>
+		<tr><td>外框底色&nbsp;</td><td>中框底色&nbsp;</td><td>中心底色</td></tr>
+		<tr><td><input id="outCircleColor" type="color"/></td><td><input id="middleCircleColor" type="color"/></td><td><input id="centerColor" type="color"/></td></tr>
+	</table><br/>
 	<table id="pieces">
 		<tr><th>权重</th><th>底色</th><th>文本</th><th>字色</th><th></th></tr> 
 		<tr class="piece"><td><input id="quanzhong" type="number" min="1" max="100" /></td><td><input id="dise" type="color" /></td><td><input id="wenben" type="text" size=12/></td><td><input id="zise" type="color" /></td><td><input type="button" id="shanchu" value="删除"/><input type="button" id="charu" value="插入"/></td></tr>
