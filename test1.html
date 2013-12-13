@@ -60,7 +60,7 @@
 			var delta = 7;
 			var speed = 35;
 			rotate = function(){
-				if(Math.random()>0.5){
+				if(Math.random()>0.7){
 					delta -= 0.01; 
 				}else if(Math.random()>0.5){
 					delta -= 0.02; 
@@ -78,9 +78,9 @@
 				} 
 			} 
 			 
-				var strong = 30;
+				var strong = 50;
 			$("#dishDiv").mousedown(function(){
-				strong = 30;
+				strong = 50;
 				$("#dishDiv").css("transform","rotate(0deg)"); 
 				$("#msgDiv").show();
 				if(intervalId != null){
@@ -315,7 +315,7 @@
 	</style>
 	</head>
 <body>
-	<div id="msgDiv" style="position:absolute;z-index:100;width:100%;text-align:center;display:none"><div style="display:inline-block;opacity:.8;color:#9f000f;font-size:45px;text-shadow: -1px 2px 3px #000;" id="msg">30%</div></div>
+	<div id="msgDiv" style="position:absolute;z-index:100;width:100%;text-align:center;display:none"><div style="display:inline-block;opacity:.8;color:#9f000f;font-size:45px;text-shadow: -1px 2px 3px #000;" id="msg">50%</div></div>
 <canvas id="pointerCanvas" width="1000" height="20" style="position:absolute;z-index:100;border:0px solid #c3c3c3;">
 	Your browser does not support the canvas element.
 </canvas>
