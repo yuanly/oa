@@ -22,6 +22,12 @@
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("#dd_yuangao").click(function(){
+		if($(this).val().trim() == ""){
+			return;
+		}
+		window.open("../yuangao/yuangao.html?showId="+$(this).val().trim(),"_blank")
+	});
 	var kehus = getKehus();
 	kehus.unshift("客户");
 	$("#th_kehu").myselector(kehus).bind("input",function(){listDingdan(0);});
@@ -381,7 +387,7 @@ function _hanshuku_(){}
 		return ret;
 	}
 		//列出原稿
-	function listDingdan(offset){
+	function listDingdan(offset,showId){
 		if(offset<0){
 			return;
 		}
@@ -414,7 +420,9 @@ function _hanshuku_(){}
 				}
 				$("#dingdantable").append(tr);
 			});
-			if(dingdans.length>0){
+			if(showId){
+				showDetailById(showId);
+			}else if(dingdans.length>0){
 				$(".tr_dingdan").get(0).click();
 			}
 			//调整左侧宽度以便显示完整的列表
@@ -631,6 +639,6 @@ function _hanshuku_(){}
 	var tmpl_huowu = $(".tmpl_huowu").detach();
 	
 	var liuyanElm = $("#liuyan").liuyan({hostType:"yangban",});
-	listDingdan(0);
+	listDingdan(0,getUrl().showId);
 	
 });

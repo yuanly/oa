@@ -18,6 +18,9 @@
 			listYuangao(0);			
 		});
 	}
+	$("#lb_bianhao").click(function(){
+		window.open("../dingdan/dingdan.html?showId="+$(this).text(),"_blank");
+	});
 	$("#tijiao").click(tijiaoyuangao);
 	$(".tr_yuangao").click(function(){
 		showDetailById($(this).data("_id"));
@@ -274,7 +277,7 @@
 		currYG = yg;
 		$("#shangchuan").hide();
 		$("#liucheng").show().liucheng(getTheUser(),yg);
-		$("#xianshi").show().empty().html(yg.neirong).prepend("<div style='background-color:#eee'>原稿</div>");
+		$("#xianshi").show().empty().html(yg.neirong).prepend("<div style='background-color:#eee'>原稿&nbsp;&nbsp;"+yg._id+"</div>");
 		if(yg.shenjieshuoming){
 			$("#xianshi").append("<p style='background-color:#eee'>备注</p>");
 			$("#xianshi").append("<div id='xs_beizhu'></div>");
