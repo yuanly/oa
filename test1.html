@@ -231,6 +231,9 @@
 			$("#shanchu").click(function(){
 				$(this).parents("tr").remove();
 				});
+			$("#charu").click(function(){
+				$(this).parents("tr").clone(true).insertBefore($(this).parents("tr"));
+				});
 			var moban = $(".piece").detach();
 			$("#tianjia").click(function(){
 					$("#pieces").append(moban.clone(true));
@@ -273,7 +276,7 @@
 	中心底色：<input id="centerColor" type="color"/><br/>
 	<table id="pieces">
 		<tr><th>权重</th><th>底色</th><th>文本</th><th>字色</th><th></th></tr> 
-		<tr class="piece"><td><input id="quanzhong" type="number" min="1" max="100" /></td><td><input id="dise" type="color" /></td><td><input id="wenben" type="text" size=12/></td><td><input id="zise" type="color" /></td><td><input type="button" id="shanchu" value="删除"/></td></tr>
+		<tr class="piece"><td><input id="quanzhong" type="number" min="1" max="100" /></td><td><input id="dise" type="color" /></td><td><input id="wenben" type="text" size=12/></td><td><input id="zise" type="color" /></td><td><input type="button" id="shanchu" value="删除"/><input type="button" id="charu" value="插入"/></td></tr>
 	</table>
 	<input type="button" value="添加" id="tianjia"/>
 	<br/>
