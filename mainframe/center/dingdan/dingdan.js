@@ -333,12 +333,17 @@
 		});
 	}
 	$("#cz_zidan").click(cz_zidan);
+	function showYangban(){
+		if(currDD.yangban._id){
+			window.open("../sample/sample.html?showId="+currDD.yangban._id,"_blank");
+		}
+	}
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 function _hanshuku_(){}
 	function editable(){
 		editing = true;
 		$("#bianji").hide();
-		$("#dd_yangban").click(sel_yangban);
+		$("#dd_yangban").unbind("click").click(sel_yangban);
 		$(".mx_danjia").click(sel_danjia);
 		$("#baocun").show();
 		$("#fangqi").show();
@@ -352,7 +357,7 @@ function _hanshuku_(){}
 		if(kebianji){
 			$("#bianji").show();
 		}
-		$("#dd_yangban").unbind("click");
+		$("#dd_yangban").unbind("click").click(showYangban);
 		$(".mx_danjia").unbind("click");
 		$("#baocun").hide();
 		$("#fangqi").hide();

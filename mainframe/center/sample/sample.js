@@ -56,7 +56,7 @@
 	});
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 	//列出样板
-	function listYangban(offset){
+	function listYangban(offset,showId){
 		if(offset<0){
 			return;
 		}
@@ -86,7 +86,9 @@
 				}
 				$("#sampletable").append(tr);
 			});
-			if(samples.length>0){//将列表第一个商家显示在右边的商家详情表单
+			if(showId){
+				showDetail(showId);
+			}else if(samples.length>0){//将列表第一个商家显示在右边的商家详情表单
 				showDetail(samples[0]["_id"]);
 			}
 			//调整左侧宽度以便显示完整的列表
@@ -247,7 +249,7 @@
 		layout.sizePane("west",$("body").width()-$(this).width()-100);
 	});
 	//列出样板
-	listYangban(0);
+	listYangban(0,getUrl().showId);
 	
 	var liuyanElm = $("#liuyan").liuyan({hostType:"yangban",});
 	//liuyanElm.setOption({hostId:"123"});
