@@ -58,7 +58,7 @@
 	});
 	//获取并显示商家列表
 	var tr_vendor = $(".tr_vendor").detach();
-	listVendors(0);
+	listVendors(0,getUrl().showId);
 
 
 	//处理“编辑”按钮
@@ -134,7 +134,7 @@
 		layout.sizePane("west",$("body").width()-$(this).width()-100);
 	});
 	//列出商家
-	function listVendors(offset){
+	function listVendors(offset,showId){
 		if(offset<0){
 			return;
 		}
@@ -151,7 +151,9 @@
 				tr.css("background-color",toggle("#deedde","#dedeed"));
 				$("#vendortable").append(tr);
 			});
-			if(vendors.length>0){//将列表第一个商家显示在右边的商家详情表单
+			if(showId){
+				showDetail(showId);
+			}else if(vendors.length>0){//将列表第一个商家显示在右边的商家详情表单
 				showDetail(vendors[0]["_id"]);
 			}
 		});

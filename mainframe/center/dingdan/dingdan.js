@@ -46,15 +46,18 @@
 	$("#fangqi").click(function(){
 		showDetailById(currDD._id);
 	});
+	$("#beizhuzhaiyao").click(function(){$("#zhankaibeizhu").click()});
 	$("#zhankaibeizhu").click(function(){
 		$("#beizhu").show();
 		$(this).hide();
 		$("#yincangbeizhu").show();
+		$("#beizhuzhaiyao").hide();
 	});
 	$("#yincangbeizhu").click(function(){
 		$("#beizhu").hide();
 		$(this).hide();
 		$("#zhankaibeizhu").show();
+		$("#beizhuzhaiyao").show();
 	});
 	//翻页处理
 	$("#prevPage").click(function(){
@@ -183,6 +186,7 @@
 	}
 	$("#mx_shuliang").change(shuliangchange);
 	$("#bianji").click(editable);
+	
 	function baocun(){
 		//form2obj
 		var hws = [];
@@ -217,6 +221,12 @@
 		
 		currDD.huowu = hws;
 		currDD.beizhu = beizhuEditor.editorVal();
+		beizhuEditor.editorVal(currDD.beizhu);
+		if(currDD.beizhu.trim()!=""){
+			$("#beizhuzhaiyao").html(currDD.beizhu.truncate(40)+"<span class='plainBtn'>...[+]</span>");
+		}else{
+			$("#beizhuzhaiyao").empty();
+		}
 		postJson("dingdan.php",{caozuo:"baocun",dingdan:currDD},function(){
 			readonly();
 		});
@@ -334,10 +344,16 @@
 	}
 	$("#cz_zidan").click(cz_zidan);
 	function showYangban(){
-		if(currDD.yangban._id){
+		if(currDD.yangban && currDD.yangban._id){
 			window.open("../sample/sample.html?showId="+currDD.yangban._id,"_blank");
 		}
 	}
+	function showGonghuoshang(){
+		if(currDD.gonghuoshang && currDD.gonghuoshang._id){
+			window.open("../vendor/vendor.html?showId="+currDD.gonghuoshang._id,"_blank");
+		}
+	}
+	$("#dd_gonghuoshang").click(showGonghuoshang);
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 function _hanshuku_(){}
 	function editable(){
@@ -469,9 +485,9 @@ function _hanshuku_(){}
 			$("#dd_yangban").val("");
 		}
 		if(dd.gonghuoshang){
-			$("#dd_gonghuoshang").val(dd.gonghuoshang.mingchen);
+			$("#dd_gonghuoshang").val(dd.gonghuoshang.mingchen).css("cursor","pointer");
 		}else{
-			$("#dd_gonghuoshang").val("");
+			$("#dd_gonghuoshang").val("").css("cursor","default");
 		}
 		$(".tmpl_huowu").remove();
 		for(var i=0;i<dd.huowu.length;i++){
@@ -489,6 +505,11 @@ function _hanshuku_(){}
 		huizong();
 		//$("#beizhu").html(dd.beizhu);
 		beizhuEditor.editorVal(dd.beizhu);
+		if(currDD.beizhu.trim()!=""){
+			$("#beizhuzhaiyao").html(dd.beizhu.truncate(40)+"<span class='plainBtn'>...[+]</span>");0
+		}else{
+			$("#beizhuzhaiyao").empty();
+		}
 		liuyanElm.shuaxinliebiao({hostId:currDD._id,hostType:"dingdan"});
 		readonly();
 		if(kebianji){
