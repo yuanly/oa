@@ -1,6 +1,7 @@
-<html>
+ï»¿<html>
 	<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<script src="js/jquery-1.9.1.js"></script>
 	<script type="text/javascript"> 
 		 String.prototype.trim = function()
@@ -9,30 +10,39 @@
 		 };
 		 
 		var setting = true;
+		if("Win32" != navigator.platform){
+			setting = false;
+		}
 		var intervalId=null;
 		$(function(){
 			var cfg={clientWidth:document.body.clientWidth,clientHeight:document.body.clientHeight};
 			if(setting){
 				cfg.clientWidth = cfg.clientWidth/2;
 			}
-			cfg.pieces=[{percent:5,bgColor:"#FF0FF0",txt:"Ò»µÈ½± "},
-				{percent:20,bgColor:"#0BEE0F",txt:"ÔÙ½ÓÔÙÀ÷ ",txtColor:"brown"},
-				{percent:10,bgColor:"#0BE0EF",txt:"¶şµÈ½± ",txtColor:"black"},
-				{percent:18,bgColor:"#F0BEE0",txt:"ÔÙ½ÓÔÙÀ÷ ",txtColor:"black"},
-				{percent:15,bgColor:"#0EBE0F",txt:"ÈıµÈ½± ",txtColor:"black"},
-				{percent:12,bgColor:"#0B0EEF",txt:"ÔÙ½ÓÔÙÀ÷ ",txtColor:"black"},
-				{percent:15,bgColor:"#0EBFE0",txt:"ÈıµÈ½± ",txtColor:"black"},
-				{percent:5,bgColor:"#E0F0BE",txt:"ÔÙ½ÓÔÙÀ÷ ",txtColor:"black"}];
+			cfg.pieces=[{percent:5,bgColor:"#FF0FF0",txt:"ä¸€ç­‰å¥– "},
+				{percent:20,bgColor:"#0BEE0F",txt:"å†æ¥å†å‰ ",txtColor:"brown"},
+				{percent:10,bgColor:"#0BE0EF",txt:"äºŒç­‰å¥– ",txtColor:"black"},
+				{percent:18,bgColor:"#F0BEE0",txt:"å†æ¥å†å‰ ",txtColor:"black"},
+				{percent:15,bgColor:"#0EBE0F",txt:"ä¸‰ç­‰å¥– ",txtColor:"black"},
+				{percent:12,bgColor:"#0B0EEF",txt:"å†æ¥å†å‰ ",txtColor:"black"},
+				{percent:15,bgColor:"#0EBFE0",txt:"ä¸‰ç­‰å¥– ",txtColor:"black"},
+				{percent:5,bgColor:"#E0F0BE",txt:"å†æ¥å†å‰ ",txtColor:"black"}];
 			cfg.centerColor = "#cc9900";
 			cfg.outCircleColor = "#FFA500";
 			cfg.middleCircleColor = "#fdd017";
-			run(cfg);			 
 			if(setting){
 				set(cfg);
+			}else{
+				$("#setDiv").hide();
 			}
-			
+			//run(cfg);
+			setTimeout(function(){run(cfg)},600);
 		});
 		function run(cfg){
+			cfg.clientWidth=document.body.clientWidth;cfg.clientHeight=document.body.clientHeight;
+			if(setting){
+				cfg.clientWidth = cfg.clientWidth/2;
+			}
 			if(intervalId != null){
 				clearInterval(intervalId);
 			}
@@ -58,11 +68,12 @@
 			var deg = 0;
 			var sDelta = 15;
 			var delta = 7;
-			var speed = 35;
-			rotate = function(){
-				if(Math.random()>0.7){
+			var speed = 30; 
+			rotate = function(){ 
+				var r = Math.random();
+				if(r>0.6){
 					delta -= 0.01; 
-				}else if(Math.random()>0.5){
+				}else if(r>0.3){
 					delta -= 0.02; 
 				}else{
 					delta -= 0.03; 
@@ -74,37 +85,54 @@
 				$("#dishDiv").css("transform","rotate("+deg+"deg)");  
 				if(delta < 0){
 					clearInterval(intervalId);
-					showResult(cfg.pieces,deg/360*100);
+					showResult(cfg.pieces,deg/360*100); 
 				} 
 			} 
 			 
 				var strong = 50;
-			$("#dishDiv").mousedown(function(){
-				strong = 50;
-				$("#dishDiv").css("transform","rotate(0deg)"); 
-				$("#msgDiv").show();
-				if(intervalId != null){
-					clearInterval(intervalId);
+				if(navigator.platform=="Win32"){
+					$("#dishCanvas").mousedown(function(event){
+						 event.stopPropagation();
+						strong = 50;
+						$("#dishDiv").css("transform","rotate(0deg)"); 
+						$("#msgDiv").show();
+						if(intervalId != null){
+							clearInterval(intervalId);
+						}
+						intervalId = setInterval(function(){ 
+							if(strong < 100){
+								strong += 1;
+							}
+							$("#msg").text(strong + "%");
+							},200); 
+					}).mouseup(function(){
+						$("#msgDiv").hide();
+						deg = 0;
+						if(delta < sDelta/3){
+							delta = sDelta/3;
+						}
+						if(intervalId != null){
+							clearInterval(intervalId);
+						}
+						delta = sDelta * strong/100;
+						sDelta = sDelta * (Math.random()* 0.3+1);
+						intervalId = setInterval(rotate,speed);
+					});
+					$("#msgDiv").mouseup(function(){$("#dishCanvas").mouseup()});
+				}else{
+					$("#dishCanvas").click(function(){
+						deg = 0;
+						if(delta < sDelta/3){
+							delta = sDelta/3;
+						}
+						if(intervalId != null){
+							clearInterval(intervalId);
+						}
+						delta = sDelta * strong/100;
+						sDelta = sDelta * (Math.random()* 0.3+1);
+						intervalId = setInterval(rotate,speed);
+					});
 				}
-				intervalId = setInterval(function(){ 
-					if(strong < 100){
-						strong += 1;
-					}
-					delta = sDelta * strong/100;
-					$("#msg").text(strong + "%");
-					},200);
-			}).mouseup(function(){
-				$("#msgDiv").hide();
-				deg = 0;
-				if(delta < sDelta/3){
-					delta = sDelta/3;
-				}
-				if(intervalId != null){
-					clearInterval(intervalId);
-				}
-				intervalId = setInterval(rotate,speed);
-			});
-			$("#msgDiv").mouseup(function(){$("#dishDiv").mouseup()});
 		}
 		function showResult(pieces,deg){
 			deg = 100 - deg; 
@@ -210,7 +238,7 @@
 			ctx.font="85px Arial";
 			ctx.fillStyle="#fff";
 			ctx.shadowBlur=20;
-			ctx.fillText("¿ªÊ¼",0,0); 
+			ctx.fillText("å¼€å§‹",0,0); 
 				
 		}
 		function pointer(cfg){
@@ -259,14 +287,14 @@
 				$(".piece").each(function(i){
 					f = parseFloat($(this).find("#quanzhong").val());
 					if(isNaN(f) || f<=0 || f>100){
-						alert("È¨ÖØ±ØĞëÊÇ0~100Ö®¼äµÄÓĞĞ§ÊµÊı£¡");
+						alert("æƒé‡å¿…é¡»æ˜¯0~100ä¹‹é—´çš„æœ‰æ•ˆå®æ•°ï¼");
 						ret = false;
 						return false;
 					}
 					sum += f;
 				});
 				if(sum != 100){
-					alert("È¨ÖØ×ÜºÍ±ØĞëµÈÓÚ100£¡");
+					alert("æƒé‡æ€»å’Œå¿…é¡»ç­‰äº100ï¼");
 					ret = false;
 				}
 				return ret;
@@ -275,7 +303,7 @@
 				var ret = true;
 				$(".piece").each(function(i){
 					if($(this).find("#wenben").val().trim() == ""){
-						alert("ÎÄ±¾²»ÄÜÁô¿Õ£¡");
+						alert("æ–‡æœ¬ä¸èƒ½ç•™ç©ºï¼");
 						ret = false;
 						return false;
 					}
@@ -305,6 +333,11 @@
 				cfg.centerColor=$("#centerColor").val();
 				run(cfg)
 			});
+			$("#btnHide").click(function(){
+				$("#setDiv").hide();
+				cfg.clientWidth=document.body.clientWidth;cfg.clientHeight=document.body.clientHeight;
+				run(cfg);
+			});
 		}
 	</script>
 	<style>
@@ -325,16 +358,16 @@
 <div id="setDiv" style="border:1px solid black;position:absolute;"> 
 	<br/>
 	<table>
-		<tr><td>Íâ¿òµ×É«&nbsp;</td><td>ÖĞ¿òµ×É«&nbsp;</td><td>ÖĞĞÄµ×É«</td></tr>
+		<tr><td>å¤–æ¡†åº•è‰²&nbsp;</td><td>ä¸­æ¡†åº•è‰²&nbsp;</td><td>ä¸­å¿ƒåº•è‰²</td></tr>
 		<tr><td><input id="outCircleColor" type="color"/></td><td><input id="middleCircleColor" type="color"/></td><td><input id="centerColor" type="color"/></td></tr>
 	</table><br/>
 	<table id="pieces">
-		<tr><th>È¨ÖØ</th><th>µ×É«</th><th>ÎÄ±¾</th><th>×ÖÉ«</th><th></th></tr> 
-		<tr class="piece"><td><input id="quanzhong" type="number" min="1" max="100" /></td><td><input id="dise" type="color" /></td><td><input id="wenben" type="text" size=12/></td><td><input id="zise" type="color" /></td><td><input type="button" id="shanchu" value="É¾³ı"/><input type="button" id="charu" value="²åÈë"/></td></tr>
+		<tr><th>æƒé‡</th><th>åº•è‰²</th><th>æ–‡æœ¬</th><th>å­—è‰²</th><th></th></tr> 
+		<tr class="piece"><td><input id="quanzhong" type="number" min="1" max="100" /></td><td><input id="dise" type="color" /></td><td><input id="wenben" type="text" size=12/></td><td><input id="zise" type="color" /></td><td><input type="button" id="shanchu" value="åˆ é™¤"/><input type="button" id="charu" value="æ’å…¥"/></td></tr>
 	</table>
-	<input type="button" value="Ìí¼Ó" id="tianjia"/>
+	<input type="button" value="æ·»åŠ " id="tianjia"/>
 	<br/>
-	<div style="text-align:center"><input type="button" id="btnRun" value="ÖØÖÃ×ªÅÌ" /></div>
-</div>
+	<div style="text-align:center"><input type="button" id="btnRun" value="é‡ç½®è½¬ç›˜" />&nbsp;<input type="button" id="btnHide" value="éšè—è®¾ç½®" /></div>
+</div> 
 </body>
 </html>
