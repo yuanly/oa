@@ -172,8 +172,8 @@
 				jine = jine+f;
 			}
 		});		
-		$("#zongliang").text(zongliang);
-		$("#zonge").text(jine);
+		$("#zongliang").text(round(zongliang,2));
+		$("#zonge").text(round(jine,2));
 	} 
 	function shuliangchange(){
 		var parent = $(this).parents("tr");

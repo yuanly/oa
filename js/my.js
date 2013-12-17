@@ -342,7 +342,7 @@
  };
  
 /*
-* round(12.345.2)=12.35
+* round(12.345,2)=12.35
 */
 round = function(v,l){
 	if(isNaN(v)){
