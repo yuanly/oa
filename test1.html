@@ -88,50 +88,40 @@
 					showResult(cfg.pieces,deg/360*100); 
 				} 
 			} 
-			 
+			var  down =function(event){ 
+					strong = 50;
+					$("#dishDiv").css("transform","rotate(0deg)"); 
+					$("#msgDiv").show();
+					if(intervalId != null){
+						clearInterval(intervalId);
+					}
+					intervalId = setInterval(function(){ 
+						if(strong < 100){
+							strong += 1;
+						}
+						$("#msg").text(strong + "%");
+						},200); 
+				}
+			var	up = function(){
+					$("#msgDiv").hide();
+					deg = 0;
+					if(delta < sDelta/3){
+						delta = sDelta/3;
+					}
+					if(intervalId != null){
+						clearInterval(intervalId);
+					}
+					delta = sDelta * strong/100;
+					sDelta = sDelta * (Math.random()* 0.3+1);
+					intervalId = setInterval(rotate,speed);
+				}
 				var strong = 50;
-				if(navigator.platform=="Win32"){
-					$("#dishCanvas").mousedown(function(event){
-						 event.stopPropagation();
-						strong = 50;
-						$("#dishDiv").css("transform","rotate(0deg)"); 
-						$("#msgDiv").show();
-						if(intervalId != null){
-							clearInterval(intervalId);
-						}
-						intervalId = setInterval(function(){ 
-							if(strong < 100){
-								strong += 1;
-							}
-							$("#msg").text(strong + "%");
-							},200); 
-					}).mouseup(function(){
-						$("#msgDiv").hide();
-						deg = 0;
-						if(delta < sDelta/3){
-							delta = sDelta/3;
-						}
-						if(intervalId != null){
-							clearInterval(intervalId);
-						}
-						delta = sDelta * strong/100;
-						sDelta = sDelta * (Math.random()* 0.3+1);
-						intervalId = setInterval(rotate,speed);
-					});
-					$("#msgDiv").mouseup(function(){$("#dishCanvas").mouseup()});
+				if(navigator.platform=="Win32"){ 
+					$("#dishCanvas").mousedown(down).mouseup(up);
+					$("#msgDiv").mousedown(down).mouseup(up);
 				}else{
-					$("#dishCanvas").click(function(){
-						deg = 0;
-						if(delta < sDelta/3){
-							delta = sDelta/3;
-						}
-						if(intervalId != null){
-							clearInterval(intervalId);
-						}
-						delta = sDelta * strong/100;
-						sDelta = sDelta * (Math.random()* 0.3+1);
-						intervalId = setInterval(rotate,speed);
-					});
+					$("#dishCanvas").bind("touchstart",down).bind("touchend",up)
+					$("#msgDiv").bind("touchstart",down).bind("touchend",up)
 				}
 		}
 		function showResult(pieces,deg){
@@ -336,6 +326,7 @@
 			$("#btnHide").click(function(){
 				$("#setDiv").hide();
 				cfg.clientWidth=document.body.clientWidth;cfg.clientHeight=document.body.clientHeight;
+				setting = false;
 				run(cfg);
 			});
 		}
@@ -345,10 +336,18 @@
 			margin:0px;
 			padding:0px
 		}
+		.disable_text{
+		   -moz-user-select: none; /*火狐*/
+		   -webkit-user-select: none;  /*webkit浏览器*/
+		   -ms-user-select: none;   /*IE10*/
+		   -khtml-user-select: none; /*早期浏览器*/
+			-o-user-select: none;
+		   user-select: none;
+		}
 	</style>
 	</head>
 <body>
-	<div id="msgDiv" style="position:absolute;z-index:100;width:100%;text-align:center;display:none"><div style="display:inline-block;opacity:.8;color:#9f000f;font-size:45px;text-shadow: -1px 2px 3px #000;" id="msg">50%</div></div>
+	<div id="msgDiv" style="position:absolute;z-index:100;width:100%;text-align:center;display:none"><div class="disable_text" style="display:inline-block;opacity:.8;color:#9f000f;font-size:45px;text-shadow: -1px 2px 3px #000;" id="msg">50%</div></div>
 <canvas id="pointerCanvas" width="1000" height="20" style="position:absolute;z-index:100;border:0px solid #c3c3c3;">
 	Your browser does not support the canvas element.
 </canvas>
