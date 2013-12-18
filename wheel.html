@@ -89,17 +89,18 @@
 				} 
 			} 
 			var  down =function(event){ 
-					strong = 50;
-					$("#dishDiv").css("transform","rotate(0deg)"); 
-					$("#msgDiv").show();
 					if(intervalId != null){
 						clearInterval(intervalId);
 					}
+					strong = 50;
+					$("#dishDiv").css("transform","rotate(0deg)"); 
+					$("#msg").text("力量:"+strong + "%");
+					$("#msgDiv").show();
 					intervalId = setInterval(function(){ 
 						if(strong < 100){
 							strong += 1;
 						}
-						$("#msg").text(strong + "%");
+						$("#msg").text("力量:"+strong + "%");
 						},200); 
 				}
 			var	up = function(){
@@ -111,8 +112,7 @@
 					if(intervalId != null){
 						clearInterval(intervalId);
 					}
-					delta = sDelta * strong/100;
-					sDelta = sDelta * (Math.random()* 0.3+1);
+					delta = sDelta * (Math.random()* 0.3+1) * strong/100; 
 					intervalId = setInterval(rotate,speed);
 				}
 				var strong = 50;
@@ -347,7 +347,7 @@
 	</style>
 	</head>
 <body>
-	<div id="msgDiv" style="position:absolute;z-index:100;width:100%;text-align:center;display:none"><div class="disable_text" style="display:inline-block;opacity:.8;color:#9f000f;font-size:45px;text-shadow: -1px 2px 3px #000;" id="msg">50%</div></div>
+	<div id="msgDiv" style="position:absolute;z-index:100;width:100%;text-align:center;display:none"><div class="disable_text" style="display:inline-block;opacity:.8;color:#9f000f;font-size:45px;text-shadow: -1px 2px 3px #000;" id="msg">力量:50%</div></div>
 <canvas id="pointerCanvas" width="1000" height="20" style="position:absolute;z-index:100;border:0px solid #c3c3c3;">
 	Your browser does not support the canvas element.
 </canvas>
