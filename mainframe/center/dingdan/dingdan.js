@@ -516,6 +516,7 @@ function _hanshuku_(){}
 			$("#bianji").show();
 		}
 	}
+	/*
 	function shuaxindingdanliebiao(){
 		var jiegaozheid = null;
 		each(currYG.liucheng,function(n,liucheng){
@@ -565,6 +566,7 @@ function _hanshuku_(){}
 			}
 		});
 	}
+	*/
 	function showDetailById(_id){
 		postJson("dingdans.php",{_id:_id},function(dd){
 			showDetail(dd);			
