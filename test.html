@@ -1,224 +1,37 @@
-<html>
+锘�<html>
 	<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link type="text/css" rel="stylesheet" href="css/ui-lightness/jquery-ui-1.10.2.custom.css" />	 
+	
 	<script src="js/jquery-1.9.1.js"></script>
+	<script src="js/jquery-ui-1.10.2.custom.js"></script>
+	<script src="js/ui.datepicker-zh-CN.js"></script>
 	<script type="text/javascript">
 		$(function(){ 
-			var cfg={clientWidth:document.body.clientWidth,clientHeight:document.body.clientHeight};
-			cfg.piece=[{percent:5,bgColor:"#FF0FF0",txt:"一等奖 "},
-				{percent:20,bgColor:"#0BEE0F",txt:"再接再厉 ",txtColor:"brown"},
-				{percent:10,bgColor:"#0BE0EF",txt:"二等奖 ",txtColor:"black"},
-				{percent:18,bgColor:"#F0BEE0",txt:"再接再厉 ",txtColor:"black"},
-				{percent:15,bgColor:"#0EBE0F",txt:"三等奖 ",txtColor:"black"},
-				{percent:12,bgColor:"#0B0EEF",txt:"再接再厉 ",txtColor:"black"},
-				{percent:15,bgColor:"#0EBFE0",txt:"三等奖 ",txtColor:"black"},
-				{percent:5,bgColor:"#E0F0BE",txt:"再接再厉 ",txtColor:"black"}];
-			cfg.centerColor="#cc9900";
-			if(cfg.clientWidth>cfg.clientHeight){
-				cfg.width = cfg.clientHeight;
-				$("#dishDiv").css("width",cfg.width+"px").css("height",cfg.width+"px");
-				$("#dishCanvas").css("width",cfg.width+"px").css("height",cfg.width+"px");
-				$("#dishDiv").css("left",(cfg.clientWidth-cfg.width)/2+"px");
-				$("#pointerCanvas").attr("width",cfg.clientWidth).attr("height",20);
-			}else{
-				cfg.width = cfg.clientWidth;
-				$("#dishDiv").css("width",cfg.width+"px").css("height",cfg.width+"px");
-				$("#dishCanvas").css("width",cfg.width+"px").css("height",cfg.width+"px");
-				$("#dishDiv").css("top",(cfg.clientHeight-cfg.width)/2+"px");
-				$("#pointerCanvas").css("top",(cfg.clientHeight-cfg.width)/2+"px").attr("width",cfg.clientWidth).attr("height",20);
+			function date2id(d){//2013/12/12 131212
+				return d.substring(2,4)+d.substring(5,7)+d.substr(8)
 			}
-			$("#dishDiv").css("border-radius",cfg.width/2+"px");
-			$("#msgDiv").css("top",cfg.clientHeight/2-65+"px");
-			pointer(cfg);
-			dish(cfg);	
+			$( "#datepicker" ).datepicker().change(function(){$(this).val("FHD"+date2id($(this).val()))});
 			
-			var intervalId=null;
-			var deg = 0;
-			var sDelta = 15;
-			var delta = 7;
-			var speed = 35;
-			rotate = function(){
-				if(Math.random()>0.5){
-					delta -= 0.01; 
-				}else if(Math.random()>0.5){
-					delta -= 0.02; 
-				}else{
-					delta -= 0.03; 
-				}
-				deg+=delta;
-				if(deg>360){
-					deg = deg-360;
-				} 
-				$("#dishDiv").css("transform","rotate("+deg+"deg)");  
-				if(delta < 0){
-					clearInterval(intervalId);
-					showResult(cfg.piece,deg/360*100);
-				} 
-			} 
-			 
-				var strong = 30;
-			$("#dishDiv").mousedown(function(){
-				strong = 30;
-				$("#dishDiv").css("transform","rotate(0deg)"); 
-				$("#msgDiv").show();
-				if(intervalId != null){
-					clearInterval(intervalId);
-				}
-				intervalId = setInterval(function(){ 
-					if(strong < 100){
-						strong += 1;
-					}
-					delta = sDelta * strong/100;
-					$("#msg").text(strong + "%");
-					},200);
-			}).mouseup(function(){
-				$("#msgDiv").hide();
-				deg = 0;
-				if(delta < sDelta/3){
-					delta = sDelta/3;
-				}
-				if(intervalId != null){
-					clearInterval(intervalId);
-				}
-				intervalId = setInterval(rotate,speed);
-			});
-			$("#msgDiv").mouseup(function(){$("#dishDiv").mouseup()});
-			 
 		});
-		function showResult(pieces,deg){
-			deg = 100 - deg; 
-			var sa = 0;
-			for(var i in pieces){
-				if(deg>sa){
-					sa += pieces[i].percent;
-				}else{
-					if(i>0){
-						i -= 1;
-					}
-					break;
-				}
-			} 
-			$("#msg").text(pieces[i].txt);
-			$("#msgDiv").show();
-		}
-		function dish(cfg){
-			var c=document.getElementById("dishCanvas");
-			var ctx=c.getContext("2d");
-			ctx.translate(500,500);
-			draw(cfg,ctx,0);
-		}
-		/*
-		* ctx: canvas context
-		* s: start angle
-		* e: end angle
-		* color: background-color
-		* txt: text
-		* txtColor: text color
-		*/
-		function arc(ctx,s,e,color,txt,txtColor){
-			ctx.fillStyle=color;
-			ctx.beginPath();
-			ctx.shadowBlur=1;
-			while(s>2){s=s-2;}
-			while(e>2){e=e-2;}
-			ctx.arc(0,0,480,Math.PI*s,Math.PI*e);
-			ctx.lineTo(0,0);
-			ctx.closePath();
-			ctx.fill();	
-			
-			if(txt){
-				if(txtColor){
-					ctx.fillStyle=txtColor;
-				}else{
-					ctx.fillStyle="#000";
-				}
-				ctx.textBaseline="middle";
-				ctx.rotate(Math.PI*(s+e)/2);
-				ctx.font="45px Arial";
-				ctx.textAlign="right";
-				ctx.shadowBlur=2;
-				ctx.fillText(txt,480,0);
-				ctx.rotate(-Math.PI*(s+e)/2);
-			}
-		}
-		function arc1(ctx,sAngle,piece){
-			var eAngle = sAngle+2*piece.percent/100;
-			arc(ctx,sAngle,eAngle,piece.bgColor,piece.txt,piece.txtColor);
-			return eAngle;
-		}
-		function draw(cfg,ctx,deg){
-			ctx.shadowColor="black";
-			
-			ctx.shadowBlur=10;
-			ctx.fillStyle="#FFA500";
-			ctx.beginPath();
-			ctx.arc(0,0,495,Math.PI*0,Math.PI*2);
-			ctx.lineTo(0,0);
-			ctx.closePath();
-			ctx.fill();
-			
-			var sAngle = deg-0.5;
-			$.each(cfg.piece,function(i,piece){
-				sAngle = arc1(ctx,sAngle,piece);
-			});
-			/*
-			if(sAngle<2){
-				arc(ctx,sAngle,1.5,"#eee"); 
-			}
-			 */
-			ctx.shadowBlur=20;
-			ctx.fillStyle="#fdd017";
-			ctx.beginPath();
-			ctx.arc(0,0,150,Math.PI*0,Math.PI*2);
-			ctx.lineTo(0,0);
-			ctx.closePath();
-			ctx.fill();
-			
-			ctx.shadowBlur=0; 
-			ctx.fillStyle=cfg.centerColor;
-			ctx.beginPath();
-			ctx.arc(0,0,120,Math.PI*0,Math.PI*2);
-			ctx.lineTo(0,0);
-			ctx.closePath();
-			ctx.fill();
-			 
-			ctx.textBaseline="middle"; 
-			ctx.textAlign="center"; 
-			ctx.font="85px Arial";
-			ctx.fillStyle="#fff";
-			ctx.shadowBlur=20;
-			ctx.fillText("开始",0,0); 
-				
-		}
-		function pointer(cfg){
-			var c=document.getElementById("pointerCanvas");
-			var ctx=c.getContext("2d");
-			ctx.fillStyle="#FF0000";
-			ctx.moveTo(cfg.clientWidth/2-5,0);
-			ctx.beginPath();
-			ctx.lineTo(cfg.clientWidth/2,20);
-			ctx.lineTo(cfg.clientWidth/2+5,0);
-			ctx.lineTo(cfg.clientWidth/2-5,0);
-			ctx.closePath(); 
-			ctx.fill();
-		} 
 	</script>
 	<style>
 		*{
 			margin:0px;
 			padding:0px
 		}
+		.plainInput{
+			margin-left:0px;
+			padding-left:0px;
+			border-top:0px;
+			border-right:0px;
+			border-bottom:1px solid gray;
+			border-left:0px;
+			color:#660033
+    }
 	</style>
 	</head>
 <body>
-	<div id="msgDiv" style="position:absolute;z-index:100;width:100%;text-align:center;display:none"><div style="display:inline-block;opacity:.8;color:#9f000f;font-size:45px;text-shadow: -1px 2px 3px #000;" id="msg">30%</div></div>
-<canvas id="pointerCanvas" width="1000" height="20" style="position:absolute;z-index:100;border:0px solid #c3c3c3;">
-	Your browser does not support the canvas element.
-</canvas>
-<div id="dishDiv" style="position:relative;height:300px;cursor:pointer;">
-<canvas id="dishCanvas" width="1000" height="1000" style="border:0px solid #c3c3c3;">
-	Your browser does not support the canvas element.
-</canvas>
-</div> 
+<p>Date: <input type="text" class="plainInput" id="datepicker" value="缂栧彿"></p>
 </body>
 </html>

@@ -14,29 +14,39 @@
 			setting = false;
 		}
 		var intervalId=null;
-		$(function(){
-			var cfg={clientWidth:document.body.clientWidth,clientHeight:document.body.clientHeight};
-			if(setting){
-				cfg.clientWidth = cfg.clientWidth/2;
+		var id=null;
+		function getCfgFromServer(callback){
+			id=getUrlParameter("id");
+			/*
+			if(!id){
+				$("body").empty().text("参数错误！");
+				return;
 			}
+			*/
+			//TODO 调服务器，根据id获取转盘配置。然后调用回调函数。替换掉下面这段：
+			var cfg = {};
 			cfg.pieces=[{percent:5,bgColor:"#FF0FF0",txt:"一等奖 "},
-				{percent:20,bgColor:"#0BEE0F",txt:"再接再厉 ",txtColor:"brown"},
-				{percent:10,bgColor:"#0BE0EF",txt:"二等奖 ",txtColor:"black"},
-				{percent:18,bgColor:"#F0BEE0",txt:"再接再厉 ",txtColor:"black"},
-				{percent:15,bgColor:"#0EBE0F",txt:"三等奖 ",txtColor:"black"},
-				{percent:12,bgColor:"#0B0EEF",txt:"再接再厉 ",txtColor:"black"},
-				{percent:15,bgColor:"#0EBFE0",txt:"三等奖 ",txtColor:"black"},
-				{percent:5,bgColor:"#E0F0BE",txt:"再接再厉 ",txtColor:"black"}];
-			cfg.centerColor = "#cc9900";
-			cfg.outCircleColor = "#FFA500";
-			cfg.middleCircleColor = "#fdd017";
-			if(setting){
-				set(cfg);
-			}else{
-				$("#setDiv").hide();
-			}
-			//run(cfg);
-			setTimeout(function(){run(cfg)},600);
+					{percent:20,bgColor:"#0BEE0F",txt:"再接再厉 ",txtColor:"brown"},
+					{percent:10,bgColor:"#0BE0EF",txt:"二等奖 ",txtColor:"black"},
+					{percent:18,bgColor:"#F0BEE0",txt:"再接再厉 ",txtColor:"black"},
+					{percent:15,bgColor:"#0EBE0F",txt:"三等奖 ",txtColor:"black"},
+					{percent:12,bgColor:"#0B0EEF",txt:"再接再厉 ",txtColor:"black"},
+					{percent:15,bgColor:"#0EBFE0",txt:"三等奖 ",txtColor:"black"},
+					{percent:5,bgColor:"#E0F0BE",txt:"再接再厉 ",txtColor:"black"}];
+				cfg.centerColor = "#cc9900";
+				cfg.outCircleColor = "#FFA500";
+				cfg.middleCircleColor = "#fdd017";
+			callback(cfg);
+		}
+		$(function(){
+			getCfgFromServer(function(cfg){
+				if(setting){
+					set(cfg);
+				}else{
+					$("#setDiv").hide();
+				}
+				setTimeout(function(){run(cfg)},600);
+			});
 		});
 		function run(cfg){
 			cfg.clientWidth=document.body.clientWidth;cfg.clientHeight=document.body.clientHeight;
@@ -244,6 +254,10 @@
 			ctx.fill();
 		} 
 		function set(cfg){
+			cfg.clientWidth=document.body.clientWidth;cfg.clientHeight=document.body.clientHeight;
+			if(setting){
+				cfg.clientWidth = cfg.clientWidth/2;
+			}
 			$("#setDiv").css("left",cfg.clientWidth+"px").css("top","0px");
 			
 			$("#outCircleColor").val(cfg.outCircleColor)
@@ -329,6 +343,31 @@
 				setting = false;
 				run(cfg);
 			});
+			$("#btnSave").click(function(event){
+				//TODO 	把cfg通过接口保存到后台 ...
+				
+				$("body").append("<div id='saveTip' style='position:absolute;background-color:yellow'>保存成功！</div>")
+				$("#saveTip").css("top",event.clientY).css("left",event.clientX);
+				setTimeout(function(){$("#saveTip").remove();},1000);
+			});
+		}
+		function getUrlParameter(key){
+			if(-1==location.href.indexOf("?")){
+				return null;
+			}
+			var j = location.href.indexOf(key+"=");
+			if(-1 == j){
+				return null;
+			}
+			j += key.length+1;
+			var i = location.href.substr(j).indexOf("&");
+			var ret = "";
+			if(-1 == i){
+				ret = location.href.substr(j);
+			}else{
+				ret = location.href.substring(j,j+i);
+			}
+			return decodeURIComponent(ret).trim();
 		}
 	</script>
 	<style>
@@ -366,7 +405,7 @@
 	</table>
 	<input type="button" value="添加" id="tianjia"/>
 	<br/>
-	<div style="text-align:center"><input type="button" id="btnRun" value="重置转盘" />&nbsp;<input type="button" id="btnHide" value="隐藏设置" /></div>
+	<div style="text-align:center"><input type="button" id="btnRun" value="重置转盘" />&nbsp;<input type="button" id="btnSave" value="保存设置" />&nbsp;<input type="button" id="btnHide" value="隐藏设置" /></div>
 </div> 
 </body>
 </html>
