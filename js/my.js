@@ -1170,7 +1170,9 @@ jQuery.fn.dataInc = function(name,value){
  	//this.bind("input",function(){console.log($("#"+listId+" option:selected"))});
  	$("body").append(list);
  }
-
+	function date2id(d){//2013/12/12 131212
+		return d.substring(2,4)+d.substring(5,7)+d.substr(8)
+	}
  function int2Date(i){
  	if("undefined" == typeof i){
  		return "";

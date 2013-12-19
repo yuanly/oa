@@ -14,6 +14,31 @@
 		fuhezhe:3,
 		shouhuoriqi:1232
 	}
+	规格         单位  单价   金额          订单号         规格           数量  单位 单价 金额
+-----------  ----  ----- -------      ----------   ---------------   ------ ---- ---- ----
+       数量：----- 件数：------       ----------   ---------------   ------ ---- ---- ----
+       数量：----- 件数：------
+备注：-------------------------------------------------------------------------------------
+
+发货单：
+上传原单 录单 对单 等待付款 已付款 已收货 复核
+
+编号（基于日期，FHD131217.2）
+供货商（名称 _id）
+货物（金额)（从订单关联而来，逐件登记，方便后面做柜单。规格*长度*件数 单价 金额）
+运费，其他费用
+总额
+备注 
+转账流水
+留言
+
+要考虑加工订单，原料直接发到加工厂。只要要付费就要生成发货单
+
+
+验货单
+柜单（给伍伦的柜单需要人工估算实际成本）
+
+给订单加上成本栏（非必填）
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
@@ -101,7 +126,7 @@ function _hanshuku_(){}
 	}
 	
 	function showDetailById(_id){
-		postJson("fahuodan.php",{_id:_id},function(dd){
+		postJson("fahuodan.php",{caozuo:"getbyid",_id:_id},function(dd){
 			showDetail(dd);			
 		});
 	}
@@ -117,11 +142,11 @@ function _hanshuku_(){}
 			$("#lc_mingchen",tmpl).text(usr.user_name);
 			$("#lc_dongzuo",tmpl).text(item.dongzuo);
 			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
-			if("审核" == item.dongzuo){
+			if("上传" == item.dongzuo){
 				if((fahuodan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
-					$("#cz_jiedan",caozuoItem).show();
+					$("#cz_ludan",caozuoItem).show();
 					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("接单" == item.dongzuo){
@@ -188,8 +213,9 @@ function _hanshuku_(){}
 	var caozuoTmpl = $("#lc_caozuo").detach();
 	var liuchengItem = $("#liuchengItem").detach();
 	var tr_fahuodan = $(".tr_fahuodan").detach();
-	var tmpl_huowu = $(".tmpl_huowu").detach();
+//	var tmpl_huowu = $(".tmpl_huowu").detach();
 	
+	$("#th_bianhao").datepicker().change(function(){$(this).val("FHD"+date2id($(this).val()))});
 	var liuyanElm = $("#liuyan").liuyan({hostType:"yangban",});
 	listfahuodan(0,getUrl().showId);
 	

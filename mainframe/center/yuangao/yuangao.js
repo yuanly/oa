@@ -3,6 +3,7 @@
 	//shangchuanzhe:3,shangchuanshijian:1312322,jiegaozhe:2,zhuangtai:"上传",shenjiezhe:5,
 	//shenjieshijian:133423,neirong:"xsdf",shenjieshuoming:"dsdsdfa"}
 	//{yuangao:currYG._id,kehu:$("#ld_kehu").val().trim(),yangban:{taiguoxinghao:$("#ld_yangban").val().trim()},huowu:[]};
+	//原稿有时候有泰国编号！！！TODO 
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function tijiaoyuangao(){
 		var yuangao = {shangchuanzhe:getTheUser()._id,neirong:editor.editorVal()};
