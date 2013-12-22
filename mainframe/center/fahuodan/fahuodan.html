@@ -103,25 +103,29 @@
 				总额：<input type="text" id="fhd_zonge" class="plainInput" readonly size=10 />元，
 				转账流水：<input type="text" id="fhd_zhuanzhangliushui" class="plainInput" size=50 readonly />
 			</div>
-			<table id="tb_huowu">
-			<tr><th>序号</th><th>件数</th><th>规格</th><th>数量</th><th>单位</th><th>单价<font style="font-size:70%">(元)</font></th><th>金额</th><th class="delete_huowu"> </th></tr>
-			<tr class="tmpl_huowu">
-				<td id="mx_xuhao"></td>
-				<td><input id="mx_jianshu" class="plainInput editable" size=4 ></td>
-				<td><input id="mx_guige" class="plainInput editable" size=36 ></td>
-				<td><input id="mx_shuliang" size=4 class="plainInput editable"></td>
-				<td><input id="mx_danwei" size=2 class="plainInput mx_danwei" list="danweilist"></td>
-				<td><input id="mx_danjia" size=4 class="plainInput mx_danjia" readonly style="cursor:pointer"></td>
-				<td id="mx_jine"></td>
-				<td class="hw_cz"><span id="shanchuhuowu" class="plainBtn delete_huowu" style="font-size:80%">[ - ]</span></td></tr>
-			<tr></tr>
-			<tr id="new_huowu_item"><td colspan=5 class="hw_cz"><span id="zengjiahuowu" class="plainBtn" style="font-size:80%">[ + ]</span></td></tr>
-			</table> 
-			<div>
-				<div style='background-color:#eee'>备注&nbsp;&nbsp;<span id="zhankaibeizhu" class="plainBtn">展开</span><span id="yincangbeizhu" class="plainBtn" style="display:none">隐藏</span></div>
-				<div id="beizhu" style="display:none"></div>
-				<div id="beizhuzhaiyao" ></div>
-			</div>
+			<table class="huowu">
+				<tr style="vertical-align:top">
+					<td>
+						<table id="huowu">
+							<tr><th>规格</th><th>单位</th><th>单价</th><th>金额</th></tr>
+							<tr>
+									<td><input id="mx_guige" class="plainInput editable" size=36 ></td>
+									<td><input id="mx_danwei" size=2 class="plainInput mx_danwei" list="danweilist"></td>
+									<td><input id="mx_danjia" size=4 class="plainInput mx_danjia" readonly style="cursor:pointer"></td>
+									<td id="mx_jine"></td>
+							</tr>
+							<tr><td colspan=4>1</td></tr>
+						</table>
+					</td>
+					<td>
+						<table id="dingdan">
+							<tr><th>订单号</th><th>规格</th><th>数量</th><th>单位</th><th>单价</th><th>金额</th></tr>
+							<tr><td>订单号</td><td>规格</td><td>数量</td><td>单位</td><td>单价</td><td>金额</td></tr>
+						</table>
+					</td>
+				</tr>
+				<tr><td colspan=2>备注：<span id="beizhu"></span></td></tr>
+			</table>
 		</div>
 		<div id="liuyan" style="margin-top:150px">
 			<span class="plainBtn">留言</span>

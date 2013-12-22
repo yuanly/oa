@@ -4,7 +4,10 @@
 		liucheng:[{userId:3,dongzuo:"录单",time:1322}],
 		zhuangtai:"录单",
 		gonghuoshang:{_id:"SJ131110",mingche:"大大"},
-		huowu:[{guige:"xxx",shuliang:23,jianshu:2,danwei:"码",danjia:23.1,jine:232.1}...]},
+		huowu:[
+			{guige:"xxx",danwei:"码",danjia:23.1,beizhu:"xxx",mingxi:[{shuliang:23,jianshu:2},...],dingdan:[{_id:"xx",guige:"xx",}shuliang:22,danwei:"xx",danjia:22]}
+			...
+		],
 		yunfei:23.2,
 		qitafei:[{beizhu:"xxx",jine:22}],
 		neirong:"xxx",
