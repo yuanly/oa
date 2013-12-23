@@ -871,19 +871,20 @@ jQuery.fn.dataInc = function(name,value){
  	}
  }
  //商家选择。把input元素设置成支持弹出商家选择框的控件
- jQuery.fn.xuanzeshangjia = function(vendors_php){
+ jQuery.fn.xuanzeshangjia = function(vendors_php,callback){
  	if(!vendors_php){
  		vendors_php = "../vendor/vendors.php";
  	}	
  	this.click(function(event){
  		var limit = 20;
- 		setSelector(event,function(page,option,callback){
+ 		setSelector(event,function(page,option,callback1){
  				postJson(vendors_php,{offset:page*limit,limit:limit,option:option},function(vendors){
- 					callback(vendors);
+ 					callback1(vendors);
  				});
  			},["_id","mingchen"],function(vendor){
  				$(this).val(vendor.mingchen);
  				$(this).data("shangjia",vendor);
+ 				callback(vendor);
  			}
  		);
  	});
