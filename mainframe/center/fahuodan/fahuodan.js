@@ -45,6 +45,39 @@
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	function sel_huowu(){
+		console.log($(this).data("dingdanId"));
+		$("#sel_ctnr").hide();
+	}
+	$(".tmpl_huowu").click(sel_huowu);
+	function guanbi_sel_huowu(){
+		$("#sel_huowu").hide();
+	}
+	$("#guanbi_sel_huowu").click(guanbi_sel_huowu);
+	function zhankai(event){
+		postJson("../dingdan/dingdans.php",{_id:$(this).parents("tr").data("_id")},function(dd){
+			var tb_huowu = $("#sel_huowu").find("table");
+			tb_huowu.find(".tmpl_huowu").remove();
+			for(var i=0;i<dd.huowu.length;i++){
+				var huowu = tmpl_huowu.clone(true);
+				huowu.data("huowu",dd.huowu);huowu.data("dingdanId",dd._id);
+				huowu.find("#mx_xuhao").text(i);
+				huowu.find("#mx_guige").text(dd.huowu[i].guige);
+				huowu.find("#mx_shuliang").text(dd.huowu[i].shuliang);
+				huowu.find("#mx_danwei").text(dd.huowu[i].danwei);
+				huowu.find("#mx_danjia").text(dd.huowu[i].danjia);
+				huowu.find("#mx_jine").text(round(dd.huowu[i].shuliang*dd.huowu[i].danjia,2));
+				huowu.css("background-color",toggle("#fff","#eee"));
+				tb_huowu.append(huowu);
+			}
+		});
+		$("#sel_huowu").show().css("top",event.clientY-40);
+	}
+	$("#zhankai").click(zhankai);
+	function sel_dingdan_pager(){
+		list_sel_dingdan($("#sel_dingdan_pager").data("offset")+1);
+	}
+	$("#sel_dingdan_pager").click(sel_dingdan_pager);
 	function guanbi_sel_dingdan(){
 		$("#sel_ctnr").hide();
 	}
@@ -79,7 +112,6 @@
 				} 
 				$("#sel_dingdan").append(tr);
 			});
-			console.log($("#sel_dingdan").find("tr").length);
 		});
 	}
 	function tianjiadingdanhuowu(){
@@ -279,7 +311,7 @@ function _hanshuku_(){}
 	var liuchengItem = $("#liuchengItem").detach();
 	var tr_fahuodan = $(".tr_fahuodan").detach();
 	var tr_seldingdan = $("#sel_dingdan tr").detach();
-//	var tmpl_huowu = $(".tmpl_huowu").detach();
+	var tmpl_huowu = $(".tmpl_huowu").detach();
 	
 	$("#th_bianhao").datepicker().change(function(){$(this).val("FHD"+date2id($(this).val()))});
 	var liuyanElm = $("#liuyan").liuyan({hostType:"yangban",});
