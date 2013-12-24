@@ -46,7 +46,16 @@
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
 	function sel_huowu(){
-		console.log($(this).data("dingdanId"));
+		var huowu = $(this).data("huowu");
+		console.log(huowu);
+		var tr_huowu = dingdanhuowu.clone(true);
+		tr_huowu.find("#dingdanhao").text($(this).data("dingdanId"));
+		tr_huowu.find("#guige1").text(huowu.guige);
+		tr_huowu.find("#shuliang1").text(huowu.shuliang);
+		tr_huowu.find("#danwei1").text(huowu.danwei);
+		tr_huowu.find("#danjia1").text(huowu.danjia);
+		tr_huowu.find("#jine1").text(huowu.danwei*huowu.danjia);
+		$("#tb_dingdan").append(tr_huowu);
 		$("#sel_ctnr").hide();
 	}
 	$(".tmpl_huowu").click(sel_huowu);
@@ -60,7 +69,7 @@
 			tb_huowu.find(".tmpl_huowu").remove();
 			for(var i=0;i<dd.huowu.length;i++){
 				var huowu = tmpl_huowu.clone(true);
-				huowu.data("huowu",dd.huowu);huowu.data("dingdanId",dd._id);
+				huowu.data("huowu",dd.huowu[i]);huowu.data("dingdanId",dd._id);
 				huowu.find("#mx_xuhao").text(i);
 				huowu.find("#mx_guige").text(dd.huowu[i].guige);
 				huowu.find("#mx_shuliang").text(dd.huowu[i].shuliang);
@@ -312,6 +321,7 @@ function _hanshuku_(){}
 	var tr_fahuodan = $(".tr_fahuodan").detach();
 	var tr_seldingdan = $("#sel_dingdan tr").detach();
 	var tmpl_huowu = $(".tmpl_huowu").detach();
+	var dingdanhuowu = $(".dingdanhuowu").detach();
 	
 	$("#th_bianhao").datepicker().change(function(){$(this).val("FHD"+date2id($(this).val()))});
 	var liuyanElm = $("#liuyan").liuyan({hostType:"yangban",});
