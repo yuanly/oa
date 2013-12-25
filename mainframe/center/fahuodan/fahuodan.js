@@ -15,7 +15,8 @@
 		ludanzhe:1,
 		duidanzhe:2,
 		fuhezhe:3,
-		shouhuoriqi:1232
+		shouhuoriqi:1232,
+		cunfangdi:"xxx"
 	}
 	规格         单位  单价   金额          订单号         规格           数量  单位 单价 金额
 -----------  ----  ----- -------      ----------   ---------------   ------ ---- ---- ----
@@ -34,7 +35,7 @@
 备注 
 转账流水
 留言
-
+存放地
 要考虑加工订单，原料直接发到加工厂。只要要付费就要生成发货单
 
 
@@ -45,17 +46,38 @@
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	function jisuanjine(){
+		
+	}
+	$(".jinetrigger").click(jisuanjine);
+	function shanchuhuowu(){
+		$(this).parents(".huowu").remove();
+	}
+	$("#shanchuhuowu").click(shanchuhuowu);
+	function tianjiahuowu(){
+		$(this).before(table_huowu.clone(true));
+	}
+	$("#tianjiahuowu").click(tianjiahuowu);
+	$(".list").dblclick(function(){$(this).val("");});
+	function showDingdan(){
+		window.open("../dingdan/dingdan.html?showId="+$(this).text(),"_blank");
+	}
+	$("#dingdanhao").click(showDingdan);
 	function sel_huowu(){
 		var huowu = $(this).data("huowu");
-		console.log(huowu);
 		var tr_huowu = dingdanhuowu.clone(true);
 		tr_huowu.find("#dingdanhao").text($(this).data("dingdanId"));
 		tr_huowu.find("#guige1").text(huowu.guige);
 		tr_huowu.find("#shuliang1").text(huowu.shuliang);
 		tr_huowu.find("#danwei1").text(huowu.danwei);
 		tr_huowu.find("#danjia1").text(huowu.danjia);
-		tr_huowu.find("#jine1").text(huowu.danwei*huowu.danjia);
-		$("#tb_dingdan").append(tr_huowu);
+		tr_huowu.find("#jine1").text(huowu.shuliang*huowu.danjia);
+		currHuowu.find("#tr_tianjiadingdanhuowu").before(tr_huowu);
+		if("" === currHuowu.find("#mx_guige").val().trim()){
+			currHuowu.find("#mx_guige").val(huowu.guige);
+			currHuowu.find("#mx_danwei").val(huowu.danwei);
+			currHuowu.find("#mx_danjia").val(huowu.danjia);
+		}
 		$("#sel_ctnr").hide();
 	}
 	$(".tmpl_huowu").click(sel_huowu);
@@ -64,7 +86,8 @@
 	}
 	$("#guanbi_sel_huowu").click(guanbi_sel_huowu);
 	function zhankai(event){
-		postJson("../dingdan/dingdans.php",{_id:$(this).parents("tr").data("_id")},function(dd){
+		//postJson("../dingdan/dingdans.php",{_id:$(this).parents("tr").data("_id")},function(dd){
+		postJson("../dingdan/dingdans.php",{_id:$(this).data("_id")},function(dd){
 			var tb_huowu = $("#sel_huowu").find("table");
 			tb_huowu.find(".tmpl_huowu").remove();
 			for(var i=0;i<dd.huowu.length;i++){
@@ -82,7 +105,8 @@
 		});
 		$("#sel_huowu").show().css("top",event.clientY-40);
 	}
-	$("#zhankai").click(zhankai);
+	//$("#zhankai").click(zhankai);<td><span class="plainBtn" id="zhankai">[展开]</span>
+	$(".tmpl_dingdan").click(zhankai)
 	function sel_dingdan_pager(){
 		list_sel_dingdan($("#sel_dingdan_pager").data("offset")+1);
 	}
@@ -128,6 +152,7 @@
 			tip($(this),"必须先选定供货商！",1500);
 			return;
 		}
+		currHuowu = $(this).parents(".huowu");
 		$("#sel_ctnr").show().center().css("top","50px");
 		if($("#sel_dingdan").find("tr").length == 0){
 			list_sel_dingdan(0);
@@ -322,6 +347,8 @@ function _hanshuku_(){}
 	var tr_seldingdan = $("#sel_dingdan tr").detach();
 	var tmpl_huowu = $(".tmpl_huowu").detach();
 	var dingdanhuowu = $(".dingdanhuowu").detach();
+	var currHuowu = null;
+	var table_huowu = $(".huowu").clone(true);
 	
 	$("#th_bianhao").datepicker().change(function(){$(this).val("FHD"+date2id($(this).val()))});
 	var liuyanElm = $("#liuyan").liuyan({hostType:"yangban",});
