@@ -110,12 +110,15 @@
 						<table id="huowu">
 							<tr><th>规格</th><th>单位</th><th>单价</th><th>金额</th></tr>
 							<tr>
-									<td><input id="mx_guige" class="plainInput editable" size=36 ></td>
-									<td><input id="mx_danwei" size=2 class="plainInput mx_danwei list" list="danweilist"></td>
-									<td><input id="mx_danjia" size=4 class="plainInput mx_danjia jinetrigger" readonly style="cursor:pointer"></td>
+									<td><input id="mx_guige" class="plainInput hw_edit" size=36  ></td>
+									<td><input id="mx_danwei" size=2 class="plainInput hw_edit mx_danwei list"  list="danweilist"></td>
+									<td><input id="mx_danjia" size=4 class="plainInput mx_danjia hw_edit jinetrigger"  ></td>
 									<td id="mx_jine"></td>
 							</tr>
-							<tr><td colspan=4>数量：<input class="plainInput jinetrigger" size=4 />件数：<input class="plainInput jinetrigger" size=4 /></td></tr>
+							<tr><td colspan=4>
+								<div id="shuliangjianshu" class="shuliangjianshu">数量：<input class="plainInput jinetrigger hw_edit shuliang" size=4 />件数：<input class="plainInput jinetrigger hw_edit jianshu" size=4 /><span class="plainBtn" id="shanchujianshu">[-]</span></div>
+								<span class="plainBtn" id="zengjiajianshu">[+]</span>
+							</td></tr>
 						</table>
 					</td>
 					<td>
