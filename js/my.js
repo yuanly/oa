@@ -882,9 +882,10 @@ jQuery.fn.dataInc = function(name,value){
  					callback1(vendors);
  				});
  			},["_id","mingchen"],function(vendor){
- 				$(this).val(vendor.mingchen);
+ 				$(this).val(vendor.mingchen)
  				$(this).data("shangjia",vendor);
  				callback(vendor);
+ 				$(this).change();
  			}
  		);
  	});

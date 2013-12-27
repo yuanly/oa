@@ -1,4 +1,15 @@
-﻿$(function(){
+﻿/*
+{
+	_id:"xxx",
+	mingchen:"xxx",
+	dianhua:"xxx",
+	dizhi:"xxxx",
+	beizhu:"xxx",
+	yanhuodizhi:"xxx"
+}
+*/
+
+$(function(){
 	var currVendor = null;
 	var limit = 20;
 	//定义左右布局
@@ -128,9 +139,6 @@
 		layout.sizePane("west",$("#vendortable").width()+20);
 	});
 	$("#detailheader").click(function(){
-		console.log($("body").width());
-		console.log($(this).width());
-		console.log($("body").width()-$(this).width()-100);
 		layout.sizePane("west",$("body").width()-$(this).width()-100);
 	});
 	//列出商家
@@ -177,6 +185,7 @@
 		$("#mingchen").val(vendor.mingchen);
 		$("#dianhua").val(vendor.dianhua);
 		$("#dizhi").val(vendor.dizhi);
+		$("#yanhuodizhi").val(vendor.yanhuodizhi?vendor.yanhuodizhi:"");
 		$("#beizhu2").html(vendor.beizhu);
 	//	$("#beizhu").val(vendor.beizhu);
 	}
@@ -188,6 +197,7 @@
 			vendor.mingchen = $("#mingchen").val().trim();
 			vendor.dianhua = $("#dianhua").val().trim();
 			vendor.dizhi = $("#dizhi").val().trim();
+			vendor.yanhuodizhi = $("#yanhuodizhi").val().trim();
 			vendor.beizhu = $("#beizhu").val().trim();
 			return vendor;
 	}

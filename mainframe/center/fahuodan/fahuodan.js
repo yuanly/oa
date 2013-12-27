@@ -8,15 +8,14 @@
 			{guige:"xxx",danwei:"码",danjia:23.1,beizhu:"xxx",mingxi:[{shuliang:23,jianshu:2},...],dingdan:[{_id:"xx",guige:"xx",}shuliang:22,danwei:"xx",danjia:22]}
 			...
 		],
-		yunfei:23.2,
-		qitafei:[{beizhu:"xxx",jine:22}],
+		qitafei:[{shuoming:"xxx",jine:22}],
 		neirong:"xxx",
 		zhuanzhang:"xxx",
 		ludanzhe:1,
 		duidanzhe:2,
 		fuhezhe:3,
 		shouhuoriqi:1232,
-		cunfangdi:"xxx"
+		yanhuodizhi:"xxx"
 	}
 	规格         单位  单价   金额          订单号         规格           数量  单位 单价 金额
 -----------  ----  ----- -------      ----------   ---------------   ------ ---- ---- ----
@@ -29,13 +28,13 @@
 
 编号（基于日期，FHD131217.2）
 供货商（名称 _id）
+验货场所：（每个厂家增加验货场所）
 货物（金额)（从订单关联而来，逐件登记，方便后面做柜单。规格*长度*件数 单价 金额）
 运费，其他费用
 总额
 备注 
 转账流水
 留言
-存放地
 要考虑加工订单，原料直接发到加工厂。只要要付费就要生成发货单
 
 
@@ -43,13 +42,36 @@
 柜单（给伍伦的柜单需要人工估算实际成本）
 
 给订单加上成本栏（非必填）
+
+验货改成无纸方式，先用手机或ipad下载发货单到本地html5存储（提供远程访问下载），验货结果以录音、拍照、录像等方式记录（用天天记事 evernote等工具，最后同步到网上）。
+这是努力方向，但暂时先不借助外部服务，外部服务不是很可靠。打印一个表里面只有编号和验货结果/备注，货物详细信息留在手机里；验货结果拍照上传，再让某人确认。
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("#shanchuqita").click(function(){
+		$(this).parents(".qitafeiyong").remove();
+		jisuanzonge();
+	});
+	$("#qita_jine").change(function(){
+		jisuanzonge();	
+	});
+	function zengjiaqitafeiyong(){
+		$(this).before(tmpl_qitafeiyong.clone(true));
+	}
+	$("#zengjiaqitafeiyong").click(zengjiaqitafeiyong)
 	function jisuanzonge(){
 		var ze = 0;
 		$(".huowu").each(function(i,huowu){
 			ze += parseFloat($(huowu).find("#mx_jine").text());
+			if(isNaN(ze)){
+				return false;
+			}
+		});
+		if(isNaN(ze)){
+			return;
+		}
+		$(".qitafeiyong").each(function(i,feiyong){
+			ze += parseFloat($(feiyong).find("#qita_jine").val());
 			if(isNaN(ze)){
 				return false;
 			}
@@ -252,7 +274,16 @@
 		$(this).addClass("tr_selected");
 	}
 	$(".tr_fahuodan").click(sel_fahuodan);
-
+	function setYanhuodizhi(){
+		postJson("../vendor/vendors.php",{_id:currFHD.gonghuoshang._id},function(vendor){
+			if(vendor.yanhuodizhi){
+				$("#fhd_yanhuodizhi").val(vendor.yanhuodizhi);
+			}else{
+				$("#fhd_yanhuodizhi").val("");
+			}
+		});
+	}
+	$("#fhd_gonghuoshang").change(setYanhuodizhi);
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 function _hanshuku_(){}
 	function readonly(){
@@ -307,8 +338,10 @@ function _hanshuku_(){}
 		$("#fhd_gonghuoshang").css("cursor","default").unbind("click").val(currFHD.gonghuoshang?currFHD.gonghuoshang.mingchen:"");
 		zonge();
 	}
+	
 	function edit(){
 		editing = true;
+		$("#fhd_yanhuodizhi").removeAttr("readonly");
 		$(".hw_edit").removeAttr("readonly");
 		$("#bianji").hide();$("#fangqi").show();$("#baocun").show();
  		$("#fhd_gonghuoshang").css("cursor","pointer").xuanzeshangjia("",function(vendor){
@@ -319,6 +352,8 @@ function _hanshuku_(){}
 		currFHD = fhd;
 		$("#liucheng").show().liucheng(getTheUser(),fhd);
 		$("#fhd_bianhao").val(currFHD._id);
+		$("#fhd_gonghuoshang").val(currFHD.gonghuoshang?currFHD.gonghuoshang.mingchen:"");
+		$("#fhd_yanhuodizhi").val(currFHD.yanhuodizhi?currFHD.yanhuodizhi:"");
 		readOnly();
 	}
 	
@@ -392,6 +427,7 @@ function _hanshuku_(){}
 	var currHuowu = null;
 	var table_huowu = $(".huowu").clone(true);
 	var tmpl_shuliangjianshu = $("#shuliangjianshu").clone(true);
+	var tmpl_qitafeiyong = $(".qitafeiyong").detach();
 	
 	$("#th_bianhao").datepicker().change(function(){$(this).val("FHD"+date2id($(this).val()))});
 	var liuyanElm = $("#liuyan").liuyan({hostType:"yangban",});
