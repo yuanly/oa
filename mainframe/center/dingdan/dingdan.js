@@ -234,6 +234,7 @@
 	$("#baocun").click(baocun);
 	var beizhuEditor = $("#beizhu").myeditor(700,300);
 	beizhuEditor.editorReadonly();
+	
 	$(".mx_danwei").dblclick(function(){
 		$(this).val("");
 		});
