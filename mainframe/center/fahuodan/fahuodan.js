@@ -49,8 +49,9 @@
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
 	function baocun(){
-		if(("#fhd_zonge").val().trim() == ""){
-			tip(("#fhd_zonge"),"无法计算总额，请确保所有栏目有效！",1500);
+		jisuanzonge();
+		if($("#fhd_zonge").val().trim() == ""){
+			tip($("#fhd_zonge"),"无法计算总额，请确保所有栏目有效！",1500);
 			return;
 		}
 		if($("#fhd_yanhuodizhi").val().trim() != ""){
@@ -62,52 +63,59 @@
 		var huowu = [];
 		$(".huowu").each(function(i,hw){
 		 	var item = {};
-		 	item.guige = hw.find("#mx_guige").val().trim();
+		 	item.guige = $(hw).find("#mx_guige").val().trim();
 		 	if("" == item.guige){
-		 		tip(mingxi.find("#mx_guige"),"规格不能为空！",2000);
+		 		tip($(hw).find("#mx_guige"),"规格不能为空！",2000);
 		 		huowu = [];
 		 		return false;
 		 	}
-		 	item.danwei = hw.find("#mx_danwei").val().trim();
-		 	item.danjia = hw.find("#mx_danjia").val().trim();
-		 	var mingxi = [];
-		 	hw.find(".shuliangjianshu").each(function(j,mingxi){
+		 	item.danwei = $(hw).find("#mx_danwei").val().trim();
+		 	item.danjia = $(hw).find("#mx_danjia").val().trim();
+		 	var mingxis = [];
+		 	$(hw).find(".shuliangjianshu").each(function(j,mingxi){
 		 		var mx = {};
-		 		mx.shuliang = mingxi.find(".shuliang").val().trim();
+		 		mx.shuliang = $(mingxi).find(".shuliang").val().trim();
 		 		if(mx.shuliang == ""){
-		 			tip(mingxi.find(".shuliang"),"数量不能为空！",2000);
+		 			tip($(mingxi).find(".shuliang"),"数量不能为空！",2000);
 		 			mingxi = [];
 		 			return false;
 		 		}
-		 		mx.jianshu = mingxi.find(".jianshu").val().trim();
+		 		mx.jianshu = $(mingxi).find(".jianshu").val().trim();
 		 		if(mx.jianshu == ""){
-		 			tip(mingxi.find(".jianshu"),"件数不能为空！",2000);
+		 			tip($(mingxi).find(".jianshu"),"件数不能为空！",2000);
 		 			mingxi = [];
 		 			return false;
 		 		}
-		 		mingxi.push(mx);
+		 		mingxis.push(mx);
 		 	});
-		 	if(mingxi.length == 0){
+		 	if(mingxis.length == 0){
 		 		huowu = [];
 		 		return false;
 		 	}
-		 	item.mingxi = mingxi;
+		 	item.mingxi = mingxis;
 		 	var dingdan = [];
-		 	hw.find(".dingdanhuowu").each(function(i,ddhw){
-		 		dingdan.push(ddhw.data("huowu"));
+		 	$(hw).find(".dingdanhuowu").each(function(i,ddhw){
+		 		dingdan.push($(ddhw).data("huowu"));
 		 	});
 		 	if(dingdan.length>0){
 		 		item.dingdan = dingdan;
 		 	}
-		 	item.beizhu = hw.find("#beizhu").val().trim();
+		 	item.beizhu = $(hw).find("#beizhu").val().trim();
 		 	huowu.push(item);
 		});
 		if(huowu.length == 0){
 			return;
 		}
+		currFHD.huowu = huowu;
 		var qita = [];
 		$(".qitafeiyong").each(function(i,feiyong){
-			
+			var qtfy = {};
+			qtfy.shuoming = $(feiyong).find("#qita_shuoming").val().trim();
+			if("" == qtfy.shuoming){
+					tip($(feiyong).find("#qita_shuoming"),"费用说明不能为空！",2000);
+		 			return false;
+			}
+			qtfy.jine = $(feiyong).find("#qita_jine").val().trim();
 		});
 		if(qita.length>0){
 			currFHD.qitafei = qita;
@@ -201,6 +209,7 @@
 	function sel_huowu(){
 		var huowu = $(this).data("huowu");
 		var tr_huowu = dingdanhuowu.clone(true);
+		tr_huowu.data("huowu",huowu);
 		tr_huowu.find("#dingdanhao").text($(this).data("dingdanId"));
 		tr_huowu.find("#guige1").text(huowu.guige);
 		tr_huowu.find("#shuliang1").text(huowu.shuliang);
