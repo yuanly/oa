@@ -889,6 +889,7 @@ jQuery.fn.dataInc = function(name,value){
  			}
  		);
  	});
+ 	return this;
  }
  /*
  * 下拉列表，不带输入框的选择框
@@ -982,7 +983,9 @@ jQuery.fn.dataInc = function(name,value){
  	}).mouseover(function(){$(this).css("color","red");}).mouseout(function(){$(this).css("color","blue");});
  	panel.find("#guanbi").click(function(){
  		selector_tmpl.remove();
- 		guangbicallback()
+ 		if(guangbicallback){
+	 		guangbicallback()
+	 	}
  	}).mouseover(function(){$(this).css("color","red");}).mouseout(function(){$(this).css("color","blue");});
  	panel.css("top",event.clientY).css("left",event.clientX-panel.width()>10?event.clientX-panel.width():10);
  }
