@@ -506,10 +506,18 @@ function _hanshuku_(){}
 		huizong();
 		//$("#beizhu").html(dd.beizhu);
 		beizhuEditor.editorVal(dd.beizhu);
-		if(currDD.beizhu.trim()!=""){
+		if(currDD.beizhu && currDD.beizhu.trim()!=""){
 			$("#beizhuzhaiyao").html(dd.beizhu.truncate(40)+"<span class='plainBtn'>...[+]</span>");0
 		}else{
 			$("#beizhuzhaiyao").empty();
+		}
+		if(dd.fahuodans){
+			$("#fahuodanDiv").show();
+			each(dd.fahuodans,function(i,fhd){
+				$("#fahuodanDiv").append('<span class="plainBtn" style="margin-fight:10px">'+fhd+'</span>');
+			});
+		}else{
+			$("#fahuodanDiv").hide();
 		}
 		liuyanElm.shuaxinliebiao({hostId:currDD._id,hostType:"dingdan"});
 		readonly();
