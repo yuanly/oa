@@ -1,0 +1,178 @@
+﻿<html>
+	<head>
+	<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=0"> 
+	<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
+<link rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen">
+	<title>发货单管理</title>
+	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
+	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+	<script src="../../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+	<script src="../../../js/my.js" type="text/javascript"></script>
+	<script src="../../../js/localstorage.js" type="text/javascript"></script>
+	<script src="../../../js/server.js" type="text/javascript"></script>
+	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+	<script src="../../../js/jquery.layout-latest.js" type="text/javascript"></script>
+	<script src="../../../js/ui.datepicker-zh-CN.js" type="text/javascript"></script>
+	<script type="text/javascript" src="fahuodan.js"></script>
+	<style>  
+		th{
+			background-color:#99ccff;
+		}
+		.tmpl_dingdan:hover,.tmpl_huowu:hover,.tr_fahuodan:hover{
+			color:brown;
+		}
+		.tr_fahuodan{
+			white-space:nowrap; 
+			cursor:pointer;
+		}
+		
+		.tr_selected{
+			color:red
+		}
+		.plainTh{			
+			margin-left:0px;
+			padding-left:0px;
+			border-top:0px;
+			border-right:0px;
+			border-bottom:1px solid gray;
+			border-left:0px;
+			font-size:16px;
+			font-weight:bold;
+			background-color:#99ccff
+		}
+		.hw_cz{
+		}
+	</style>
+</head>
+<body style="margin:0px;padding:0px">
+	<div class="ui-layout-west">
+		<div>
+			<table id="fahuodantable"  style="min-width:500px;">
+				<tr id="tableheader">
+					<th nowrap><input id="th_bianhao" class="plainTh" value="编号" style="width:120px;cursor:pointer"/></th>
+					<th nowrap><input id="th_gonghuoshang" class="plainTh" value="供货商" style="width:50px;cursor:pointer"/></th>
+					<th nowrap><input id="th_ludanzhe" class="plainTh" value="录单者" style="width:50px"/></th>
+					<th nowrap><input id="th_duidanzhe" class="plainTh" value="对单者" style="width:50px;cursor:pointer;"/></th>
+					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:35px"/></th>
+					<th nowrap>收货日期</th>
+					<th nowrap><input id="th_fuhezhe" class="plainTh" value="复核者" style="width:50px"/></th>
+				</tr>
+				<tr class="tr_fahuodan">
+					<td id="td_bianhao"></td><td id="td_gonghuoshang"></td><td id="td_ludanzhe"></td><td id="td_duidanzhe"></td><td id="td_zhuangtai"></td><td id="td_shouhuoriqi"></td><td id="td_fuhezhe"></td>
+				</tr>
+			</table>	
+			<div id="pager"><span id="prevPage" class="plainBtn">上一页</span> <span id="nextPage" class="plainBtn">下一页</span></div>
+		</div>
+	</div>
+	<div class="ui-layout-center">
+		<table><tr><td nowrap>
+		<div id="liucheng">
+			<div id="liuchengItem" style="display:inline-block;border:1px solid #ddd;background-color:#fcfcfc">
+				<table>
+					<tr>
+						<td style="font-size:30px" id="lc_bianhao">2</td>
+						<td><div><img id="lc_touxiang" src="/oa/logo/noface.jpg" style="width:48px;height:48px;border-radius:25px;"/></div></td>
+						<td><span style="font-size:12px" id="lc_mingchen">袁立宇</span>&nbsp;&nbsp;<span style="font-weight:bolder" id="lc_dongzuo">上传</span><div style="font-size:12px" id="lc_shijian">2013-10-3 15:59</div></td><td style="cursor:pointer"><img id="lc_anniu" src="../../../img/up.png" style="display:none"/></td>
+					</tr>
+					<tr id="lc_caozuo" style="display:none" >
+						<td colspan="4" style="text-align:center;border:1px solid #ddd">
+							<span id="cz_ludan" class="plainBtn" style="margin-right:10px;display:none">录单</span>
+							<span id="cz_shenqingduidan" class="plainBtn" style="margin-right:10px;display:none">申请对单</span>
+							<span id="cz_quxiaoshenqingduidan" class="plainBtn" style="margin-right:10px;display:none">取消申请</span>
+							<span id="cz_duidan" class="plainBtn" style="margin-right:10px;display:none">对单</span>
+							<span id="cz_fukuan" class="plainBtn" style="margin-right:10px;display:none">付款</span>
+							<span id="cz_fahuo" class="plainBtn" style="margin-right:10px;display:none">发货</span>
+							<span id="cz_fuhe" class="plainBtn" style="margin-right:10px;display:none">复核</span>
+							<span id="cz_zuofei" class="plainBtn" style="margin-right:10px;display:none">作废</span>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</td></tr></table>
+		<div id="fahuodanmingxi" style="margin-top:10px">
+			<div style='background-color:#eee'>发货单明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn" style="display:none">保存</span></div>
+			<div>
+				编号：<input type="text" id="fhd_bianhao" class="plainInput" readonly size=12 />，
+				总额：<input type="text" id="fhd_zonge" class="plainInput" readonly size=5 style="text-align:center"/>元，
+				转账流水：<input type="text" id="fhd_zhuanzhangliushui" class="plainInput" size=10 readonly /><br/>
+				供货商：<input type="text" id="fhd_gonghuoshang" class="plainInput" size=30 readonly />，
+				验货地址：<input type="text" id="fhd_yanhuodizhi" class="plainInput" size=35 readonly />
+			</div>
+			<table class="huowu">
+				<tr style="vertical-align:top">
+					<td>
+						<table id="huowu">
+							<tr><th>规格</th><th>单位</th><th>单价</th><th>金额</th></tr>
+							<tr>
+									<td><input id="mx_guige" class="plainInput hw_edit" size=36  ></td>
+									<td><input id="mx_danwei" size=2 class="plainInput hw_edit mx_danwei list"  list="danweilist" style="text-align:center"></td>
+									<td><input id="mx_danjia" size=4 class="plainInput mx_danjia hw_edit jinetrigger" style="text-align:center" ></td>
+									<td id="mx_jine" style="text-align:center"></td>
+							</tr>
+							<tr><td colspan=4>
+								<div id="shuliangjianshu" class="shuliangjianshu">数量：<input class="plainInput jinetrigger hw_edit shuliang" size=4 />件数：<input class="plainInput jinetrigger hw_edit jianshu" size=4 /><span class="plainBtn" id="shanchujianshu">[-]</span></div>
+								<span class="plainBtn" id="zengjiajianshu">[+]</span>
+							</td></tr>
+						</table>
+					</td>
+					<td>
+						<table id="tb_dingdan" style="background-color:#f8f8f8">
+							<tr><th>订单号</th><th>规格</th><th>数量</th><th>单位</th><th>单价</th><th>金额</th><th></th></tr>
+							<tr nowrap class="dingdanhuowu" ><td id="dingdanhao" style="cursor:pointer;color:brown">订单号</td><td id="guige1">规格</td><td id="shuliang1">数量</td><td id="danwei1">单位</td><td id="danjia1">单价</td><td id="jine1">金额</td><td nowrap ><span class="plainBtn">[-]</span></td></tr>
+							<tr id="tr_tianjiadingdanhuowu"><td><span class="plainBtn" id="tianjiadingdanhuowu">[+]</span></td></tr>
+						</table>
+					</td>
+				</tr>
+				<tr><td colspan=2>备注：<input id="beizhu" class="plainInput" style="width:100%"/></td></tr>
+				<tr><td colspan=2><span class="plainBtn" id="shanchuhuowu">[-删除货物]</span></td></tr>
+			</table>
+			<span class="plainBtn" id="tianjiahuowu">[+添加货物]</span>
+			<div id="qita_div">
+				<div style="background-color:#99ccff;margin-top:10px">其他费用</div>
+				<div class="qitafeiyong">说明：<input class="plainInput" id="qita_shuoming" value="运输费" /> 金额：<input id="qita_jine" class="plainInput" size=5 /><span class="plainBtn" id="shanchuqita">[-]</span></div>
+				<span class="plainBtn" id="zengjiaqitafeiyong">[+]</span>
+			</div>
+		</div>
+		<div>
+			<div style='background-color:#eee;margin-bottom:5px'>原单</div>
+			<div id="yuandan" ></div>
+		</div>
+		<div id="liuyan" style="margin-top:150px">
+			<span class="plainBtn">留言</span>
+		</div>
+	</div>
+		<datalist id="danweilist">
+			<option value="码"/>
+			<option value="米"/>
+			<option value="件"/>
+			<option value="KG"/>
+			<option value="张"/>
+		</datalist>
+	<div style="display:none;position:absolute;z-index:100;border:1px solid gray;background-color:white;" id="sel_ctnr">
+		<div style="width:100%;background-color:#99ccff;text-align:center">选择订单货物</div>
+		<div style="padding:10px;min-width:600px">
+			<div>
+					<div style="text-align:right"><span class="plainBtn" id="guanbi_sel_dingdan">关闭</span></div>
+					<table id="sel_dingdan">
+						<tr class="tmpl_dingdan" style="cursor:pointer"><td id="td_bianhao">1</td><td id="td_kehu"></td><td id="td_yangban"></td><td id="td_zhuangtai"></td><td id="td_gendanyuan"></td><td id="td_gonghuoshang"></td></td></tr>
+					</table>
+					<div style="text-align:right"><span class="plainBtn" id="sel_dingdan_pager">更多...</span></div>
+			</div>
+			<div id="sel_huowu" style="display:none;position:absolute;z-index:101;background-color:#fff;border:1px solid gray">
+				<table>
+					<tr><th>序号</th><th>规格</th><th>数量</th><th>单位</th><th>单价<font style="font-size:70%">(元)</font></th><th>金额</th></tr>
+					<tr class="tmpl_huowu" style="cursor:pointer"><td id="mx_xuhao"></td><td id="mx_guige"></td><td id="mx_shuliang"></td><td id="mx_danwei"></td><td id="mx_danjia"></td><td id="mx_jine"></td></tr>
+				</table>
+				<div style="text-align:center"><span class="plainBtn" id="guanbi_sel_huowu">关闭</span></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
