@@ -5,7 +5,7 @@
 		zhuangtai:"录单",
 		gonghuoshang:{_id:"SJ131110",mingchen:"大大"},
 		huowu:[
-			{guige:"xxx",danwei:"码",danjia:23.1,beizhu:"xxx",mingxi:[{shuliang:23,jianshu:2},...],dingdan:[{_id:"xx",guige:"xx",}shuliang:22,danwei:"xx",danjia:22]}
+			{guige:"xxx",danwei:"码",danjia:23.1,beizhu:"xxx",mingxi:[{shuliang:23,jianshu:2,yanhuodan,"xx",zhuangguidan:"xx",yanhuoliuyan:"xxx"},...],dingdan:[{_id:"xx",guige:"xx",}shuliang:22,danwei:"xx",danjia:22]}
 			...
 		],
 		qitafei:[{shuoming:"xxx",jine:22}],
@@ -48,6 +48,29 @@
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	function chaifen(){
+		var hw = $(this).parents("#shuliangjianshu");
+		var total = parseInt(hw.find(".jianshu").val()); 
+		ask2(null,"请输入要拆出来的件数：",function(res){
+			var pattern=/^[1-9][0-9]*$/;
+			if(!pattern.test(res.trim())){
+				tip(null,"必须为正整数！",1500);
+				return false;
+			}
+			var jian = parseInt(res);
+			if(jian >= total){
+				tip(btn,"必须小于"+total,1500);
+				return false;
+			}
+			var hw1 = hw.clone(true);
+			hw.find(".jianshu").val(total - jian);
+			hw1.find(".jianshu").val(jian);
+			hw1.find("#yanhuodan").val("").hide();
+			hw1.find("#zhuangguidan").val("").hide();
+			hw.after(hw1);
+		});
+	}
+	$("#chai").click(chaifen);
 	function baocun(){
 		jisuanzonge();
 		if($("#fhd_zonge").val().trim() == ""){
@@ -451,7 +474,13 @@ function _hanshuku_(){}
 			$("#qita_div").show();
 		}
 		$("#fahuodanmingxi").find(".plainBtn").hide();
-		$("#bianji").show();$("#fangqi").hide();$("#baocun").hide();
+		if(kebianji){
+			$("#bianji").show();
+		}
+		if(kechaifen){
+			$("#chaifen").show();
+		}
+		$("#fangqi").hide();$("#baocun").hide();
 	}
 	
 	function edit(){
@@ -485,6 +514,12 @@ function _hanshuku_(){}
 				var mxDiv = tmpl_shuliangjianshu.clone(true);
 				mxDiv.find(".shuliang").val(mx.shuliang);
 				mxDiv.find(".jianshu").val(mx.jianshu);
+				if(mx.yanhuodan){
+					mxDiv.find("#yanhuodan").text(mx.yanhuodan).show();
+				}
+				if(mx.zhuangguidan){
+					mxDiv.find("#zhuangguidan").text(mx.zhuangguidan).show();
+				}
 				hwDiv.find("#zengjiajianshu").before(mxDiv);
 			});
 			hwDiv.find("#beizhu").val(huowu.beizhu);
@@ -540,11 +575,14 @@ function _hanshuku_(){}
 				$("table",tmpl).append(caozuoItem);
 			}else if("录单" == item.dongzuo){
 				if((fahuodan.liucheng.length - 1) == n && theUser._id == item.userId){
-					$("#bianji").show();
+					kebianji = true;
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
 					$("#cz_shenqingduidan",caozuoItem).show();
 					$("table",tmpl).append(caozuoItem);
+				}
+				if((fahuodan.liucheng.length - 1) > n){
+					kechaifen = true;
 				}
 			}else if("申请对单" == item.dongzuo){
 				if((fahuodan.liucheng.length - 1) == n){
@@ -604,7 +642,8 @@ function _hanshuku_(){}
 	function _chushihua_(){} 
 	var limit=20;
 	var currFHD = null;
-	var kebianji=false;
+	var kebianji = false;
+	var kechaifen = false;
 	var editing = false;
 	//定义左右布局
 	var layout = $("body").layout({

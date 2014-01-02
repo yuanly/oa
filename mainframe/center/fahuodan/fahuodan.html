@@ -97,7 +97,7 @@
 		</div>
 	</td></tr></table>
 		<div id="fahuodanmingxi" style="margin-top:10px">
-			<div style='background-color:#eee'>发货单明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn" style="display:none">保存</span></div>
+			<div style='background-color:#eee'>发货单明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="chaifen" class="plainBtn" style="display:none">拆分</span><span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn" style="display:none">保存</span>&nbsp;&nbsp;<span id="fenchai" class="plainBtn">分拆</span></div>
 			<div>
 				编号：<input type="text" id="fhd_bianhao" class="plainInput" readonly size=12 />，
 				总额：<input type="text" id="fhd_zonge" class="plainInput" readonly size=5 style="text-align:center"/>元，
@@ -117,7 +117,14 @@
 									<td id="mx_jine" style="text-align:center"></td>
 							</tr>
 							<tr><td colspan=4>
-								<div id="shuliangjianshu" class="shuliangjianshu">数量：<input class="plainInput jinetrigger hw_edit shuliang" size=4 />件数：<input class="plainInput jinetrigger hw_edit jianshu" size=4 /><span class="plainBtn" id="shanchujianshu">[-]</span></div>
+								<div id="shuliangjianshu" class="shuliangjianshu">
+									数量：<input class="plainInput jinetrigger hw_edit shuliang" size=3 />
+									件数：<input class="plainInput jinetrigger hw_edit jianshu" size=2 />
+									<span class="plainBtn" id="yanhuodan" style="display:none"></span>
+									<span class="plainBtn" id="zhuangguidan" style="display:none"></span>
+									<span class="plainBtn1" id="chai" style="display:none1">[拆]</span>
+									<span class="plainBtn" id="shanchujianshu">[-]</span>
+								</div>
 								<span class="plainBtn" id="zengjiajianshu">[+]</span>
 							</td></tr>
 						</table>
