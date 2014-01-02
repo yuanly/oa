@@ -62,7 +62,7 @@ if("shangchuan" == $param["caozuo"]){
 	unset($fahuodan["_id"]);
 	coll("fahuodan")->update(array("_id"=>$id),array('$set'=>$fahuodan));
 	foreach($fahuodan["huowu"] as $huowu){
-		if($huowu["dingdan"]){
+		if(isset($huowu["dingdan"])){
 			foreach($huowu["dingdan"] as $dingdan){
 				coll("dingdan")->update(array("_id"=>$dingdan["dingdanId"]),array('$addToSet'=>array("fahuodans"=>$id)));
 			}

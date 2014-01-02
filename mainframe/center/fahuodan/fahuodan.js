@@ -49,6 +49,12 @@
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
 	function chaifen(){
+		$(".chai").show();
+		$("#fangqi").show();$("#baocun").show();
+		$("#chaifen").hide();
+	}
+	$("#chaifen").click(chaifen);
+	function chai(){
 		var hw = $(this).parents("#shuliangjianshu");
 		var total = parseInt(hw.find(".jianshu").val()); 
 		ask2(null,"请输入要拆出来的件数：",function(res){
@@ -59,7 +65,7 @@
 			}
 			var jian = parseInt(res);
 			if(jian >= total){
-				tip(btn,"必须小于"+total,1500);
+				tip(null,"必须小于"+total,1500);
 				return false;
 			}
 			var hw1 = hw.clone(true);
@@ -70,11 +76,15 @@
 			hw.after(hw1);
 		});
 	}
-	$("#chai").click(chaifen);
+	$("#chai").click(chai);
 	function baocun(){
 		jisuanzonge();
 		if($("#fhd_zonge").val().trim() == ""){
 			tip($("#fhd_zonge"),"无法计算总额，请确保所有栏目有效！",1500);
+			return;
+		}
+		if(!currFHD.gonghuoshang){
+			tip($("#fhd_gonghuoshang"),"供货商不能为空！",1500);
 			return;
 		}
 		if($("#fhd_yanhuodizhi").val().trim() != ""){
@@ -479,6 +489,8 @@ function _hanshuku_(){}
 		}
 		if(kechaifen){
 			$("#chaifen").show();
+		}else{
+			$("#chaifen").hide();
 		}
 		$("#fangqi").hide();$("#baocun").hide();
 	}
@@ -549,6 +561,9 @@ function _hanshuku_(){}
 	}
 	
 	function showDetailById(_id){
+		kebianji = false;
+		kechaifen = false;
+		editing = false;
 		postJson("fahuodan.php",{caozuo:"getbyid",_id:_id},function(dd){
 			showDetail(dd);			
 		});
@@ -581,9 +596,6 @@ function _hanshuku_(){}
 					$("#cz_shenqingduidan",caozuoItem).show();
 					$("table",tmpl).append(caozuoItem);
 				}
-				if((fahuodan.liucheng.length - 1) > n){
-					kechaifen = true;
-				}
 			}else if("申请对单" == item.dongzuo){
 				if((fahuodan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
@@ -596,6 +608,8 @@ function _hanshuku_(){}
 					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("对单" == item.dongzuo){ 
+				kechaifen = true;
+				console.log("hahaha");
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				var caozuoItem = caozuoTmpl.clone(true);
 				$("#cz_fukuan",caozuoItem).show();
