@@ -1,0 +1,45 @@
+﻿<html>
+	<head>
+	<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=0"> 
+	<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
+<link rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen">
+	<title>上传发货单</title>
+	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
+	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+	<script src="../../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+	<script src="../../../js/my.js" type="text/javascript"></script>
+	<script src="../../../js/localstorage.js" type="text/javascript"></script>
+	<script src="../../../js/server.js" type="text/javascript"></script>
+	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(function(){
+			var editor = $("#bianjikuang").myeditor(800,600).editorWritable();
+			function tijiaoyuangao(){
+				var fahuodan = {neirong:editor.editorVal()};
+				if("" == fahuodan.neirong){
+					tip(null,"发货单内容不能为空！",1500);
+					return;
+				} 
+				postJson("./fahuodan.php",{caozuo:"shangchuan",fahuodan:fahuodan},function(fhd){
+					window.open("fahuodan.html?cmd=chaxun","_self");
+				});
+			}
+			$("#tijiao").click(tijiaoyuangao);
+		});
+	</script>
+	<style>
+	</style>
+</head>
+<body style="margin:0px;padding:0px">
+		<div id="shangchuan" style="border:1px solid gray;width:800px;padding:5px;margin:0px auto">
+			<div id="detailHandle" style="width:100%;background-color:#eee;height:30px;margin-bottom:5px;text-align:center;line-height:30px;">上传发货单</div>
+			<div id="bianjikuang"></div>
+			<div style="text-align:center;margin-top:10px"><span class="plainBtn" id="tijiao">提交</span></div>			
+		</div>
+</body>
+</html>
