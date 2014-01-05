@@ -8,7 +8,7 @@ checkuser();
 $param = getJson();
 if("xinjian" == $param["caozuo"]){
 	$liucheng = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"新建","time"=>time());
-	$yanhuodan = array("zhuangtai"=>"新建","liucheng"=>array($liucheng));
+	$yanhuodan = array("chuangjianzhe"=>(int)$_SESSION["user"]["_id"],"zhuangtai"=>"新建","liucheng"=>array($liucheng));
 	$d = "YHD".date("ymd",time());
 	$n = coll("yanhuodan")->count(array("_id"=>array('$regex'=>"^".$d."")));
 	$yanhuodan["_id"] = $d.".".($n+1);
