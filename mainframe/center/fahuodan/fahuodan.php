@@ -55,6 +55,10 @@ if("shangchuan" == $param["caozuo"]){
 	$query = array();
 	$cur = coll("fahuodan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
+}else if("chaxunforyanhuodan" == $param["caozuo"]){
+	$query = array();
+	$cur = coll("fahuodan")->find($query,array("zhuangtai"=>1,"gonghuoshang"=>1,"huowu"=>1))->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	echo  cur2json($cur);
 }else if("baocun" == $param["caozuo"]){
 	$fahuodan = $param["fahuodan"];
 	$id = $fahuodan["_id"];

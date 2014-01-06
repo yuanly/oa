@@ -24,7 +24,7 @@
 		th{
 			background-color:#99ccff;
 		}
-		.tmpl_dingdan:hover,.tmpl_huowu:hover,.tr_yanhuodan:hover{
+		.tmpl_fahuodan:hover,.tmpl_huowu:hover,.tr_yanhuodan:hover{
 			color:brown;
 		}
 		.tr_yanhuodan{
@@ -97,13 +97,13 @@
 		<div id="yanhuodanmingxi" style="margin-top:10px">
 			<div style='background-color:#eee'>验货单明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn" style="display:none">保存</span></div>
 			<div>
-				编号：<input type="text" id="fhd_bianhao" class="plainInput" readonly size=12 />
+				编号：<input type="text" id="yhd_bianhao" class="plainInput" readonly size=12 />
 			</div>
 			<table>
 				<tr><th></th><th>发货单</th><th>规格</th><th>单位</th><th>数量</th><th>件数</th><th>注</th></tr>
 				<tr class="tr_yanhuodan" ><td><span id="charu" class="plainBtn">[+]</span><span id="shanchu" class="plainBtn">[-]</span></td><td>发货单</td><td>规格</td><td>单位</td><td>数量</td><td>件数</td><td>注</td></tr>
 			</table>
-			<span class="plainBtn" id="tianjia">[+]</span>
+			<span class="plainBtn" id="tianjiahuowu">[+]</span>
 		</div>
 		<div>
 			<div style='background-color:#eee;margin-bottom:5px'>验货手稿</div>
@@ -121,14 +121,24 @@
 			<option value="张"/>
 		</datalist>
 	<div style="display:none;position:absolute;z-index:100;border:1px solid gray;background-color:white;" id="sel_ctnr">
-		<div style="width:100%;background-color:#99ccff;text-align:center">选择订单货物</div>
+		<div style="width:100%;background-color:#99ccff;text-align:center">选择收货单货物</div>
 		<div style="padding:10px;min-width:600px">
 			<div>
-					<div style="text-align:right"><span class="plainBtn" id="guanbi_sel_dingdan">关闭</span></div>
-					<table id="sel_dingdan">
-						<tr class="tmpl_dingdan" style="cursor:pointer"><td id="td_bianhao">1</td><td id="td_kehu"></td><td id="td_yangban"></td><td id="td_zhuangtai"></td><td id="td_gendanyuan"></td><td id="td_gonghuoshang"></td></td></tr>
+					<div style="text-align:right"><input class="plainInput" id="opt_yanhuodanid"/><span class="plainBtn" id="guanbi_sel_fahuodan">关闭</span></div>
+					<table id="sel_fahuodan">
+						<tr class="tmpl_fahuodanhuowu" style="cursor:pointer">
+							<td id="td_bianhao">1</td>
+							<td id="td_zhuangtai"></td>
+							<td id="td_yanhuodan"></td>
+							<td id="td_gonghuoshang"></td>
+							<td id="td_guige"></td>
+							<td id="td_danwei"></td>
+							<td id="td_shuliang"></td>
+							<td id="td_jianshu"></td>
+							<td id="td_zhu"></td>
+						</tr>
 					</table>
-					<div style="text-align:right"><span class="plainBtn" id="sel_dingdan_pager">更多...</span></div>
+					<div style="text-align:right"><span class="plainBtn" id="sel_fahuodan_pager">更多...</span></div>
 			</div>
 			<div id="sel_huowu" style="display:none;position:absolute;z-index:101;background-color:#fff;border:1px solid gray">
 				<table>
