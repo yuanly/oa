@@ -173,10 +173,10 @@ D 标记验货单通过
 		jisuanzonge();
 	}
 	$("#shanchuhuowu").click(shanchuhuowu);
-	function tianjiahuowu(){
-		$(this).before(table_huowu.clone(true));
-	}
-	$("#tianjiahuowu").click(tianjiahuowu);
+//	function tianjiahuowu(){
+//		$(this).before(table_huowu.clone(true));
+//	}
+//	$("#tianjiahuowu").click(tianjiahuowu);
 	$(".list").dblclick(function(){$(this).val("");});
 	function showDingdan(){
 		window.open("../dingdan/dingdan.html?showId="+$(this).text(),"_blank");
@@ -243,9 +243,16 @@ D 标记验货单通过
 		}
 		$("#sel_fahuodan_pager").data("offset",offset);
 		postJson("../fahuodan/fahuodan.php",{caozuo:"chaxunforyanhuodan",offset:offset*20,limit:20,option:{cmd:"",yhdId:$("#opt_yanhuodanid").val().trim()}},function(fahuodans){
-			$("#sel_fahuodan tr").remove();
+			$(".tr_huowu").remove();
 			each(fahuodans,function(n,fahuodan){
-				tr = tr_selfahuodan.clone(true);
+				each(fahuodan.huowu,function(n1,huowu){
+					each(huowu.mingxi,function(n2,mingxi){
+						tr = tmpl_tr_huowu.clone(true);
+						tr.data("id",mingxi.id);						//发货单 货物 要有id，否则验货单没法做保存。
+						//TODO ...
+					});
+				});
+				tr = tmpl_tr_huowu.clone(true);
 				tr.data("_id",fahuodan._id);
 				tr.find("#td_bianhao").text(fahuodan._id);
 				tr.find("#td_kehu").text(fahuodan.kehu);
@@ -586,7 +593,7 @@ function _hanshuku_(){}
 	var caozuoTmpl = $("#lc_caozuo").detach();
 	var liuchengItem = $("#liuchengItem").detach();
 	var tr_yanhuodan = $(".tr_yanhuodan").detach();
-	var tr_seldingdan = $("#sel_fahuodan tr").detach();
+	var tmpl_tr_huowu = $(".tr_huowu").detach();
 	var tmpl_huowu = $(".tmpl_huowu").detach();
 	var dingdanhuowu = $(".dingdanhuowu").detach();
 	var currHuowu = null;

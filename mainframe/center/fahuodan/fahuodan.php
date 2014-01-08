@@ -10,6 +10,7 @@ if("shangchuan" == $param["caozuo"]){
 	$shangchuanliucheng = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"上传","time"=>time());
 	$fahuodan = $param["fahuodan"];
 	$fahuodan["zhuangtai"] = "上传";
+	$fahuodan["lastId"] = 0;
 	$fahuodan["liucheng"][] = $shangchuanliucheng;
 	$d = "FHD".date("ymd",time());
 	$n = coll("fahuodan")->count(array("_id"=>array('$regex'=>"^".$d."")));

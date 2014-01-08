@@ -15,7 +15,8 @@
 		duidanzhe:2,
 		fuhezhe:3,
 		shouhuoriqi:1232,
-		yanhuodizhi:"xxx"
+		yanhuodizhi:"xxx",
+		lastId:x
 	}
 	规格         单位  单价   金额          订单号         规格           数量  单位 单价 金额
 -----------  ----  ----- -------      ----------   ---------------   ------ ---- ---- ----
@@ -74,6 +75,8 @@
 			hw1.find(".jianshu").val(jian);
 			hw1.find("#yanhuodan").val("").hide();
 			hw1.find("#zhuangguidan").val("").hide();
+			currFHD.lastId++;
+			hw1.data("id",currFHD.lastId);
 			hw.after(hw1);
 		});
 	}
@@ -122,9 +125,10 @@
 		 		mx.jianshu = $(mingxi).find(".jianshu").val().trim();
 		 		if(mx.jianshu == ""){
 		 			tip($(mingxi).find(".jianshu"),"件数不能为空！",2000);
-		 			mingxi = [];
+		 			mingxi = []; 
 		 			return false;
 		 		}
+		 		mx.id = $(mingxi).data("id");
 		 		mingxis.push(mx);
 		 	});
 		 	if(mingxis.length == 0){
@@ -226,7 +230,10 @@
 	}
 	$(".jinetrigger").change(jisuanjine);
 	function zengjiajianshu(){
-		$(this).before(tmpl_shuliangjianshu.clone(true));
+		var js = tmpl_shuliangjianshu.clone(true);
+		currFHD.lastId ++;
+		js.data("id",currFHD.lastId);	
+		$(this).before(js);
 	}
 	$("#zengjiajianshu").click(zengjiajianshu);
 	function shanchujianshu(){
@@ -537,6 +544,7 @@ function _hanshuku_(){}
 				var mxDiv = tmpl_shuliangjianshu.clone(true);
 				mxDiv.find(".shuliang").val(mx.shuliang);
 				mxDiv.find(".jianshu").val(mx.jianshu);
+				mxDiv.data("id",mx.id);
 				if(mx.zhu){
 					mxDiv.find("#zhu").val(mx.zhu).show();
 				}
