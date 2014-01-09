@@ -246,7 +246,10 @@
 	}
 	$("#shanchuhuowu").click(shanchuhuowu);
 	function tianjiahuowu(){
-		$(this).before(table_huowu.clone(true));
+		var tb_hw = table_huowu.clone(true);
+		currFHD.lastId ++;
+		tb_hw.find("#shuliangjianshu").data("id",currFHD.lastId);
+		$(this).before(tb_hw);
 	}
 	$("#tianjiahuowu").click(tianjiahuowu);
 	$(".list").dblclick(function(){$(this).val("");});

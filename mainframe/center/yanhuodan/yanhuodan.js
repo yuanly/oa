@@ -241,44 +241,38 @@ D 标记验货单通过
 		if(offset<0){
 			return;
 		}
-		$("#sel_fahuodan_pager").data("offset",offset);
+		$("#sel_fahuodan_pager").data("offset",offset); 
 		postJson("../fahuodan/fahuodan.php",{caozuo:"chaxunforyanhuodan",offset:offset*20,limit:20,option:{cmd:"",yhdId:$("#opt_yanhuodanid").val().trim()}},function(fahuodans){
 			$(".tr_huowu").remove();
+			var i=1;
 			each(fahuodans,function(n,fahuodan){
 				each(fahuodan.huowu,function(n1,huowu){
 					each(huowu.mingxi,function(n2,mingxi){
-						tr = tmpl_tr_huowu.clone(true);
+						tr = tmpl_fahuodanhuowu.clone(true);
 						tr.data("id",mingxi.id);						//发货单 货物 要有id，否则验货单没法做保存。
-						//TODO ...
+						tr.find("#td_bianhao").text(i++);
+						tr.find("#td_zhuangtai").text(fahuodan.zhuangtai);
+						tr.find("#td_fahuodan").text(fahuodan._id);
+						tr.find("#td_gonghuoshang").text(fahuodan.gonghuoshang.mingchen);
+						tr.find("#td_guige").text(huowu.guige);
+						tr.find("#td_danwei").text(huowu.danwei);
+						tr.find("#td_shuliang").text(mingxi.shuliang);
+						tr.find("#td_jianshu").text(mingxi.jianshu);
+						tr.find("#td_zhu").text(mingxi.zhu);
+						
+						tr.css("background-color",toggle("#fff","#eee"));
+						if(fahuodan.zhuangtai == "作废"){
+							tr.css("text-decoration","line-through");
+						} 
+						$("#sel_fahuodan").append(tr);
 					});
 				});
-				tr = tmpl_tr_huowu.clone(true);
-				tr.data("_id",fahuodan._id);
-				tr.find("#td_bianhao").text(fahuodan._id);
-				tr.find("#td_kehu").text(fahuodan.kehu);
-				if(fahuodan.yangban){
-					var yb = "("+fahuodan.yangban.taiguoxinghao+")";
-					if(fahuodan.yangban.zhongguoxinghao){
-						tr.find("#td_yangban").text(fahuodan.yangban.zhongguoxinghao+yb);
-					}else{
-						tr.find("#td_yangban").text(yb);
-					}
-				}
-				tr.find("#td_zhuangtai").text(fahuodan.zhuangtai);				
-				tr.find("#td_gendanyuan").text(fahuodan.gendanyuan?getUser(fahuodan.gendanyuan).user_name:"");
-				tr.find("#td_gonghuoshang").text(fahuodan.gonghuoshang?fahuodan.gonghuoshang.mingchen:"");
-				
-				tr.css("background-color",toggle("#fff","#eee"));
-				if(fahuodan.zhuangtai == "作废"){
-					tr.css("text-decoration","line-through");
-				} 
-				$("#sel_fahuodan").append(tr);
 			});
 		});
 	}
 	function tianjiahuowu(){
 		$("#sel_ctnr").show().center().css("top","50px");
-		if($("#sel_fahuodan").find("tr").length == 0){
+		if($("#sel_fahuodan").find("tr").length == 1){
 			list_sel_fahuodan(0);
 		}
 	}
@@ -600,6 +594,7 @@ function _hanshuku_(){}
 	var table_huowu = $(".huowu").clone(true);
 	var tmpl_shuliangjianshu = $("#shuliangjianshu").clone(true);
 	var tmpl_qitafeiyong = $(".qitafeiyong").detach();
+	var tmpl_fahuodanhuowu = $(".tmpl_fahuodanhuowu").detach();
 	
 	var yuandanEditor = $("#yuandan").myeditor(700,300);
 	yuandanEditor.editorReadonly();
