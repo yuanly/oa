@@ -675,7 +675,7 @@ function _hanshuku_(){}
 	var tr_dingdan = $(".tr_dingdan").detach();
 	var tmpl_huowu = $(".tmpl_huowu").detach();
 	
-	var liuyanElm = $("#liuyan").liuyan({hostType:"yangban",});
+	var liuyanElm = $("#liuyan").liuyan({hostType:"dingdan",});
 	listDingdan(0,getUrl().showId);
 	
 });

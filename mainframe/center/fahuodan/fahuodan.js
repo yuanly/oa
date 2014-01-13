@@ -582,6 +582,7 @@ function _hanshuku_(){}
 			$("#zengjiaqitafeiyong").before(qitaDiv);
 		});
 		jisuanzonge();
+		liuyanElm.shuaxinliebiao({hostId:currFHD._id,hostType:"fahuodan"});
 		readOnly();
 	}
 	
@@ -706,7 +707,7 @@ function _hanshuku_(){}
 	yuandanEditor.editorReadonly();
 	
 	$("#th_bianhao").datepicker().change(function(){$(this).val("FHD"+date2id($(this).val()))});
-	var liuyanElm = $("#liuyan").liuyan({hostType:"yangban",});
+	var liuyanElm = $("#liuyan").liuyan({hostType:"fahuodan",});
 	listfahuodan(0,getUrl().showId);
 	
 });

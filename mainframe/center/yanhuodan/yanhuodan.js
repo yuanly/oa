@@ -7,7 +7,7 @@
  //yanhuodans:["xxx","xxx",...],//根据验货单id反查
  huowu:[{yhdId:"xx",guige:"xxx",danwei:"x",shuliang:22,jianshu:22,beizhu:"xxx"}...],
  liucheng:[制单 接单 结单 作废],
- 
+ yanhuoshougao:"xxx"
 }
 A 新建验货单 ， 分配id 选择货物 从有未分配货物且已对单且未复核未作废[对单 发货 付款]的收货单里挑选货物，可以调整次序，使得与验货员验货次序一致
 新建
@@ -22,6 +22,14 @@ D 标记验货单通过
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("#shangyi").click(function(){
+		var curr = $(this).parents(".tr_huowu");
+		var prev = curr.prev(".tr_huowu");
+		if(prev.length>0){
+			curr = curr.detach();
+			prev.before(curr);
+		}
+	});
 	function sel_huowu2(){
 		$("#sel_ctnr").hide();
 		var huowu = $(this).data("huowu");
@@ -48,80 +56,12 @@ D 标记验货单通过
 		$("#huowutable").append(tr_huowu);
 	}
 	$(".tmpl_fahuodanhuowu").click(sel_huowu2);
-	function baocun(){
-		jisuanzonge();
-		if($("#yhd_zonge").val().trim() == ""){
-			tip($("#yhd_zonge"),"无法计算总额，请确保所有栏目有效！",1500);
-			return;
-		}
-		if($("#yhd_yanhuodizhi").val().trim() != ""){
-			currYHD.yanhuodizhi = $("#yhd_yanhuodizhi").val().trim();
-		}
-		if($("#yhd_zhuanzhangliushui").val().trim() != ""){
-			currYHD.zhuanzhang = $("#yhd_zhuanzhangliushui").val().trim();
-		}
+	function baocun(){ 
 		var huowu = [];
-		$(".huowu").each(function(i,hw){
-		 	var item = {};
-		 	item.guige = $(hw).find("#mx_guige").val().trim();
-		 	if("" == item.guige){
-		 		tip($(hw).find("#mx_guige"),"规格不能为空！",2000);
-		 		huowu = [];
-		 		return false;
-		 	}
-		 	item.danwei = $(hw).find("#mx_danwei").val().trim();
-		 	item.danjia = $(hw).find("#mx_danjia").val().trim();
-		 	var mingxis = [];
-		 	$(hw).find(".shuliangjianshu").each(function(j,mingxi){
-		 		var mx = {};
-		 		mx.shuliang = $(mingxi).find(".shuliang").val().trim();
-		 		if(mx.shuliang == ""){
-		 			tip($(mingxi).find(".shuliang"),"数量不能为空！",2000);
-		 			mingxi = [];
-		 			return false;
-		 		}
-		 		mx.jianshu = $(mingxi).find(".jianshu").val().trim();
-		 		if(mx.jianshu == ""){
-		 			tip($(mingxi).find(".jianshu"),"件数不能为空！",2000);
-		 			mingxi = [];
-		 			return false;
-		 		}
-		 		mingxis.push(mx);
-		 	});
-		 	if(mingxis.length == 0){
-		 		huowu = [];
-		 		return false;
-		 	}
-		 	item.mingxi = mingxis;
-		 	var dingdan = [];
-		 	$(hw).find(".dingdanhuowu").each(function(i,ddhw){
-		 		dingdan.push($(ddhw).data("huowu"));
-		 	});
-		 	if(dingdan.length>0){
-		 		item.dingdan = dingdan;
-		 	}
-		 	item.beizhu = $(hw).find("#beizhu").val().trim();
-		 	huowu.push(item);
-		});
-		if(huowu.length == 0){
-			return;
-		}
+		$(".tr_huowu").each(function(i,hw){
+		 	huowu.push($(hw).data("huowu"));
+		}); 
 		currYHD.huowu = huowu;
-		var qita = [];
-		$(".qitafeiyong").each(function(i,feiyong){
-			var qtfy = {};
-			qtfy.shuoming = $(feiyong).find("#qita_shuoming").val().trim();
-			if("" == qtfy.shuoming){
-					tip($(feiyong).find("#qita_shuoming"),"费用说明不能为空！",2000);
-		 			return false;
-			}
-			qtfy.jine = $(feiyong).find("#qita_jine").val().trim();
-			qita.push(qtfy);
-		});
-		if(qita.length>0){
-			currYHD.qitafei = qita;
-		}
-		currYHD.neirong = yuandanEditor.editorVal();
 		postJson("yanhuodan.php",{caozuo:"baocun",yanhuodan:currYHD},function(res){
 			showDetailById(currYHD._id);
 		});		
@@ -371,7 +311,6 @@ function _hanshuku_(){}
 				hwDiv.find("#zengjiajianshu").before(mxDiv);
 			});
 			hwDiv.find("#beizhu").val(huowu.beizhu);
-			jisuanjine.call(hwDiv.find("#mx_danjia"));
 			each(huowu.dingdan,function(k,dd){
 				var tr_huowu = dingdanhuowu.clone(true);
 				tr_huowu.data("huowu",dd);
@@ -392,6 +331,7 @@ function _hanshuku_(){}
 			qitaDiv.find("#qita_jine").val(qita.jine);
 			$("#zengjiaqitafeiyong").before(qitaDiv);
 		}); 
+		liuyanElm.shuaxinliebiao({hostId:currYHD._id,hostType:"yanhuodan"});
 		readOnly();
 	}
 	
@@ -512,7 +452,7 @@ function _hanshuku_(){}
 	$("#sel_ctnr").draggable();
 	$("#th_bianhao").datepicker().change(function(){$(this).val("YHD"+date2id($(this).val()))});
 	$("#opt_yanhuodanid").datepicker();//.change(function(){$(this).val("YHD"+date2id($(this).val()))});
-	var liuyanElm = $("#liuyan").liuyan({hostType:"yangban",});
+	var liuyanElm = $("#liuyan").liuyan({hostType:"yanhuodan",});
 	listyanhuodan(0,getUrl().showId);
 	
 });

@@ -56,15 +56,6 @@ if("xinjian" == $param["caozuo"]){
 }else if("baocun" == $param["caozuo"]){
 	$yanhuodan = $param["yanhuodan"];
 	$id = $yanhuodan["_id"];
-	unset($yanhuodan["liucheng"]);
-	unset($yanhuodan["_id"]);
-	coll("yanhuodan")->update(array("_id"=>$id),array('$set'=>$yanhuodan));
-	foreach($yanhuodan["huowu"] as $huowu){
-		if($huowu["dingdan"]){
-			foreach($huowu["dingdan"] as $dingdan){
-				coll("dingdan")->update(array("_id"=>$dingdan["dingdanId"]),array('$addToSet'=>array("yanhuodans"=>$id)));
-			}
-		}
-	}
+	coll("yanhuodan")->update(array("_id"=>$id),array('$set'=>array("huowu"=>$yanhuodan["huowu"])));
 	echo '{"success":true}';
 }
