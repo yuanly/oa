@@ -106,13 +106,13 @@ D 标记验货单通过
 						tr.find("#td_bianhao").text(i++);
 						tr.find("#td_zhuangtai").text(fahuodan.zhuangtai);
 						tr.find("#td_fahuodan").text(fahuodan._id);
-						tr.find("#td_gonghuoshang").text(fahuodan.gonghuoshang.mingchen);
+						tr.find("#td_gonghuoshang").text(fahuodan.gonghuoshang?fahuodan.gonghuoshang.mingchen:"");
 						tr.find("#td_guige").text(huowu.guige);
 						tr.find("#td_danwei").text(huowu.danwei);
 						tr.find("#td_shuliang").text(mingxi.shuliang);
 						tr.find("#td_jianshu").text(mingxi.jianshu);
 						tr.find("#td_zhu").text(mingxi.zhu);
-						tr.data("huowu",{mingxiId:mingxi.id,fahuodan:fahuodan._id,gonghuoshang:fahuodan.gonghuoshang.mingchen,guige:huowu.guige,danwei:huowu.danwei,shuliang:mingxi.shuliang,jianshu:mingxi.jianshu,zhu:mingxi.zhu});
+						tr.data("huowu",{mingxiId:mingxi.id,fahuodan:fahuodan._id,gonghuoshang:fahuodan.gonghuoshang?fahuodan.gonghuoshang.mingchen:"",guige:huowu.guige,danwei:huowu.danwei,shuliang:mingxi.shuliang,jianshu:mingxi.jianshu,zhu:mingxi.zhu});
 						
 						tr.css("background-color",toggle("#fff","#eee"));
 						if(fahuodan.zhuangtai == "作废"){
@@ -133,6 +133,9 @@ D 标记验货单通过
 	$("#tianjiahuowu").click(tianjiahuowu);
 	$("#bianji").click(edit);
 	function cz_zuofei(){
+		if(!confirm("确定要作废该验货单吗？")){
+			return;
+		}
 		postJson("yanhuodan.php",{caozuo:"zuofei",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
 		});
@@ -347,6 +350,7 @@ function _hanshuku_(){}
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
 					$("#cz_shenqingshouli",caozuoItem).show();
+					$("#cz_zuofei",caozuoItem).show();
 					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("申请受理" == item.dongzuo){
@@ -363,9 +367,11 @@ function _hanshuku_(){}
 				}
 			}else if("受理" == item.dongzuo){
 				if((yanhuodan.liucheng.length - 1) == n && theUser._id == item.userId){
+					kebianji = true;
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true); 
-					$("#cz_shenqingshenhe",caozuoItem).show(); 
+					$("#cz_shenqingshenhe",caozuoItem).show();
+					$("#cz_zuofei",caozuoItem).show(); 
 					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("申请审核" == item.dongzuo){ 
