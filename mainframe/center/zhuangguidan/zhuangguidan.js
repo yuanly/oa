@@ -1,24 +1,15 @@
 ﻿$(function(){
 	/*
-验货单
+装柜单
 {
  _id:"xxx",
  zhuangtai:"xx",
- //yanhuodans:["xxx","xxx",...],//根据验货单id反查
  huowu:[{yhdId:"xx",guige:"xxx",danwei:"x",shuliang:22,jianshu:22,beizhu:"xxx"}...],
- liucheng:[制单 接单 结单 作废],
- yanhuoshougao:"xxx"
+ liucheng:[制单 接单 结单 作废]
 }
-A 新建验货单 ， 分配id 选择货物 从有未分配货物且已对单且未复核未作废[对单 发货 付款]的收货单里挑选货物，可以调整次序，使得与验货员验货次序一致
-新建
-制单 申请受理 取消申请
-B 接受验货单 进行验货，打印验货单
-受理
-C 登记验货结果 将问题货物拆分出来并备注
-申请审核 取消申请
-D 标记验货单通过 
-审核
-作废
+创建装柜单（理想情况从验货单选择货物？但有可能货物要在装柜现场验，可以从发货单选择货物？可能有货物还没发货，装柜时现场送货到装柜地点？这时候要提前做发货单。）
+打印装柜单 装柜（要对货物做分拆。已选入验货单怎么办？货物单独成表！把订单信息也带上，方便查询和统计：客户、价格、商家）
+调整装柜单 审核确认 打印给业务部门 打印给老板（带成本）
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
@@ -66,7 +57,7 @@ D 标记验货单通过
 		}); 
 		currYHD.huowu = huowu;
 		currYHD.yanhuoshougao = yuandanEditor.editorVal(); 
-		postJson("yanhuodan.php",{caozuo:"baocun",yanhuodan:currYHD},function(res){ 
+		postJson("zhuangguidan.php",{caozuo:"baocun",zhuangguidan:currYHD},function(res){ 
 			showDetailById(currYHD._id);
 		});
 	}
@@ -95,7 +86,7 @@ D 标记验货单通过
 			return;
 		}
 		$("#sel_fahuodan_pager").data("offset",offset); 
-		postJson("../fahuodan/fahuodan.php",{caozuo:"chaxunforyanhuodan",offset:offset*20,limit:20,option:{cmd:"",yhdId:$("#opt_yanhuodanid").val().trim()}},function(fahuodans){
+		postJson("../fahuodan/fahuodan.php",{caozuo:"chaxunforzhuangguidan",offset:offset*20,limit:20,option:{cmd:"",yhdId:$("#opt_zhuangguidanid").val().trim()}},function(fahuodans){
 			$(".tmpl_fahuodanhuowu").remove();
 			var i=1;
 			each(fahuodans,function(n,fahuodan){
@@ -136,59 +127,59 @@ D 标记验货单通过
 		if(!confirm("确定要作废该验货单吗？")){
 			return;
 		}
-		postJson("yanhuodan.php",{caozuo:"zuofei",_id:currYHD._id},function(res){
+		postJson("zhuangguidan.php",{caozuo:"zuofei",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
 		});
 	}
 	$("#cz_zuofei").click(cz_zuofei);
 	function cz_shouli(){
-		postJson("yanhuodan.php",{caozuo:"shouli",_id:currYHD._id},function(res){
+		postJson("zhuangguidan.php",{caozuo:"shouli",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
 		});
 	}
 	$("#cz_shouli").click(cz_shouli);
 	function cz_shenqingshenhe(){
-		postJson("yanhuodan.php",{caozuo:"shenqingshenhe",_id:currYHD._id},function(res){
+		postJson("zhuangguidan.php",{caozuo:"shenqingshenhe",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
 		});
 	}
 	$("#cz_shenqingshenhe").click(cz_shenqingshenhe);
 	function cz_quxiaoshenqingshenhe(){
-		postJson("yanhuodan.php",{caozuo:"quxiaoshenqingshenhe",_id:currYHD._id},function(res){
+		postJson("zhuangguidan.php",{caozuo:"quxiaoshenqingshenhe",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
 		})
 	}
 	$("#cz_quxiaoshenqingshenhe").click(cz_quxiaoshenqingshenhe);
 	function cz_quxiaoshenhe(){
-		postJson("yanhuodan.php",{caozuo:"quxiaoshenhe",_id:currYHD._id},function(res){
+		postJson("zhuangguidan.php",{caozuo:"quxiaoshenhe",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
 		});
 	}
 	$("#cz_quxiaoshenhe").click(cz_quxiaoshenhe);
 	function cz_quxiaoshenqingshouli(){
-		postJson("yanhuodan.php",{caozuo:"quxiaoshenqingshouli",_id:currYHD._id},function(res){
+		postJson("zhuangguidan.php",{caozuo:"quxiaoshenqingshouli",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
 		});
 	}
 	$("#cz_quxiaoshenqingshouli").click(cz_quxiaoshenqingshouli);
 	function cz_shenhe(){
-		postJson("yanhuodan.php",{caozuo:"shenhe",_id:currYHD._id},function(res){
+		postJson("zhuangguidan.php",{caozuo:"shenhe",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
 		});
 	}
 	$("#cz_shenhe").click(cz_shenhe);
 	function cz_shenqingshouli(){
-		postJson("yanhuodan.php",{caozuo:"shenqingshouli",_id:currYHD._id},function(res){
+		postJson("zhuangguidan.php",{caozuo:"shenqingshouli",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
 		});
 	}
  $("#cz_shenqingshouli").click(cz_shenqingshouli);
 	//翻页处理
 	$("#prevPage").click(function(){
-		listyanhuodan($("#pager").data("offset")-1);
+		listzhuangguidan($("#pager").data("offset")-1);
 	});
 	$("#nextPage").click(function(){
-		listyanhuodan($("#pager").data("offset")+1);
+		listzhuangguidan($("#pager").data("offset")+1);
 	});
 
 	//流程下拉按钮
@@ -202,12 +193,12 @@ D 标记验货单通过
 	}
 	$("#lc_anniu").click(cz_anniu);
 	//列表记录选择
-	function sel_yanhuodan(){
+	function sel_zhuangguidan(){
 		showDetailById($(this).data("_id"));
 		$(".tr_selected").removeClass("tr_selected");
 		$(this).addClass("tr_selected");
 	}
-	$(".tr_yanhuodan").click(sel_yanhuodan);
+	$(".tr_zhuangguidan").click(sel_zhuangguidan);
 	function setYanhuodizhi(){
 		postJson("../vendor/vendors.php",{_id:currYHD.gonghuoshang._id},function(vendor){
 			if(vendor.yanhuodizhi){
@@ -218,7 +209,7 @@ D 标记验货单通过
 		});
 	}
 	$("#yhd_gonghuoshang").change(setYanhuodizhi);
-	$("#opt_yanhuodanid").change(function(){
+	$("#opt_zhuangguidanid").change(function(){
 		var yhdId = "FHD"+date2id($(this).val());
 		$(this).val(yhdId);
 		list_sel_fahuodan(0);
@@ -231,38 +222,38 @@ function _hanshuku_(){}
 		return ret;
 	}
 		//列出原稿
-	function listyanhuodan(offset,showId){
+	function listzhuangguidan(offset,showId){
 		if(offset<0){
 			return;
 		}
 		$("#pager").data("offset",offset);
 		var cmd = getUrl().cmd?getUrl().cmd:"";
 		var option = $.extend({cmd:cmd},getOptions());
-		postJson("yanhuodan.php",{caozuo:"chaxun",offset:offset*limit,limit:limit,option:option},function(yanhuodans){
-			$("#yanhuodantable .tr_yanhuodan").remove();
-			each(yanhuodans,function(n,yanhuodan){
+		postJson("zhuangguidan.php",{caozuo:"chaxun",offset:offset*limit,limit:limit,option:option},function(zhuangguidans){
+			$("#zhuangguidantable .tr_zhuangguidan").remove();
+			each(zhuangguidans,function(n,zhuangguidan){
 				var chuangjianzhe,shoulizhe,shenhezhe;
-				chuangjianzhe = yanhuodan.chuangjianzhe?getUser(yanhuodan.chuangjianzhe).user_name:"";
-				shoulizhe = yanhuodan.shoulizhe?getUser(yanhuodan.shoulizhe).user_name:"";
-				shenhezhe = yanhuodan.shenhezhe?getUser(yanhuodan.shenhezhe).user_name:"";
-				tr = tr_yanhuodan.clone(true);
-				tr.data("_id",yanhuodan._id);
-				tr.find("#td_bianhao").text(yanhuodan._id);
+				chuangjianzhe = zhuangguidan.chuangjianzhe?getUser(zhuangguidan.chuangjianzhe).user_name:"";
+				shoulizhe = zhuangguidan.shoulizhe?getUser(zhuangguidan.shoulizhe).user_name:"";
+				shenhezhe = zhuangguidan.shenhezhe?getUser(zhuangguidan.shenhezhe).user_name:"";
+				tr = tr_zhuangguidan.clone(true);
+				tr.data("_id",zhuangguidan._id);
+				tr.find("#td_bianhao").text(zhuangguidan._id);
 				tr.find("#td_chuangjianzhe").text(chuangjianzhe);
 				tr.find("#td_shoulizhe").text(shoulizhe);
 				tr.find("#td_shenhezhe").text(shenhezhe);
-				tr.find("#td_zhuangtai").text(yanhuodan.zhuangtai);
+				tr.find("#td_zhuangtai").text(zhuangguidan.zhuangtai);
 				
 				tr.css("background-color",toggle("#fff","#eee"));
-				if(yanhuodan.zhuangtai == "作废"){
+				if(zhuangguidan.zhuangtai == "作废"){
 					tr.css("text-decoration","line-through");
 				}
-				$("#yanhuodantable").append(tr);
+				$("#zhuangguidantable").append(tr);
 			});
 			if(showId){
 				showDetailById(showId);
-			}else if(yanhuodans.length>0){
-				$(".tr_yanhuodan").get(0).click();
+			}else if(zhuangguidans.length>0){
+				$(".tr_zhuangguidan").get(0).click();
 			}
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();
@@ -280,7 +271,7 @@ function _hanshuku_(){}
 		}else{
 			$("#qita_div").show();
 		}
-		$("#yanhuodanmingxi").find(".plainBtn").hide();
+		$("#zhuangguidanmingxi").find(".plainBtn").hide();
 		if(kebianji){
 			$("#bianji").show();
 		}
@@ -291,7 +282,7 @@ function _hanshuku_(){}
 		editing = true;
 		$("#yhd_yanhuodizhi").removeAttr("readonly");
 		$(".plainInput").removeAttr("readonly");
-		$("#yanhuodanmingxi").find(".plainBtn").show();
+		$("#zhuangguidanmingxi").find(".plainBtn").show();
  		$("#yhd_gonghuoshang").css("cursor","pointer").xuanzeshangjia("",function(vendor){
  			currYHD.gonghuoshang = {_id:vendor._id,mingchen:vendor.mingchen};
  		}).attr("readonly","readonly");
@@ -323,20 +314,20 @@ function _hanshuku_(){}
 			$("#huowutable").append(tr_huowu); 
 		});
 
-		liuyanElm.shuaxinliebiao({hostId:currYHD._id,hostType:"yanhuodan"});
+		liuyanElm.shuaxinliebiao({hostId:currYHD._id,hostType:"zhuangguidan"});
 		readOnly();
 	}
 	
 	function showDetailById(_id){
-		postJson("yanhuodan.php",{caozuo:"getbyid",_id:_id},function(dd){
+		postJson("zhuangguidan.php",{caozuo:"getbyid",_id:_id},function(dd){
 			showDetail(dd);			
 		});
 	}
 
-	jQuery.fn.liucheng = function(theUser,yanhuodan){
+	jQuery.fn.liucheng = function(theUser,zhuangguidan){
 		var that = this.empty();
-		this.data("_id",yanhuodan._id);
-		each(yanhuodan.liucheng,function(n,item){
+		this.data("_id",zhuangguidan._id);
+		each(zhuangguidan.liucheng,function(n,item){
 			var tmpl = liuchengItem.clone(true);
 			$("#lc_bianhao",tmpl).text(n+1);
 			var usr = getUser(item.userId);
@@ -345,7 +336,7 @@ function _hanshuku_(){}
 			$("#lc_dongzuo",tmpl).text(item.dongzuo);
 			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
 			if("新建" == item.dongzuo){
-				if((yanhuodan.liucheng.length - 1) == n && theUser._id == item.userId){
+				if((zhuangguidan.liucheng.length - 1) == n && theUser._id == item.userId){
 					kebianji = true;
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
@@ -355,7 +346,7 @@ function _hanshuku_(){}
 				}
 			}else if("申请受理" == item.dongzuo){
 				kebianji = false;
-				if((yanhuodan.liucheng.length - 1) == n){
+				if((zhuangguidan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
 					if(theUser._id == item.userId){
@@ -366,7 +357,7 @@ function _hanshuku_(){}
 					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("受理" == item.dongzuo){
-				if((yanhuodan.liucheng.length - 1) == n && theUser._id == item.userId){
+				if((zhuangguidan.liucheng.length - 1) == n && theUser._id == item.userId){
 					kebianji = true;
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true); 
@@ -375,7 +366,7 @@ function _hanshuku_(){}
 					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("申请审核" == item.dongzuo){ 
-				if((yanhuodan.liucheng.length - 1) == n){
+				if((zhuangguidan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
 					if(theUser._id == item.userId){
@@ -386,7 +377,7 @@ function _hanshuku_(){}
 					$("table",tmpl).append(caozuoItem); 
 				} 
 			}else if("审核" == item.dongzuo){
-				if((yanhuodan.liucheng.length - 1) == n && theUser._id == item.userId){
+				if((zhuangguidan.liucheng.length - 1) == n && theUser._id == item.userId){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true); 
 					$("#cz_quxiaoshenhe",caozuoItem).show(); 
@@ -411,7 +402,7 @@ function _hanshuku_(){}
 	});
 	var caozuoTmpl = $("#lc_caozuo").detach();
 	var liuchengItem = $("#liuchengItem").detach();
-	var tr_yanhuodan = $(".tr_yanhuodan").detach();
+	var tr_zhuangguidan = $(".tr_zhuangguidan").detach();
 	var tmpl_tr_huowu = $(".tr_huowu").detach();
 	var tmpl_huowu = $(".tmpl_huowu").detach();
 	var dingdanhuowu = $(".dingdanhuowu").detach();
@@ -426,8 +417,8 @@ function _hanshuku_(){}
 	
 	$("#sel_ctnr").draggable();
 	$("#th_bianhao").datepicker().change(function(){$(this).val("YHD"+date2id($(this).val()))});
-	$("#opt_yanhuodanid").datepicker();//.change(function(){$(this).val("YHD"+date2id($(this).val()))});
-	var liuyanElm = $("#liuyan").liuyan({hostType:"yanhuodan",});
-	listyanhuodan(0,getUrl().showId);
+	$("#opt_zhuangguidanid").datepicker();//.change(function(){$(this).val("YHD"+date2id($(this).val()))});
+	var liuyanElm = $("#liuyan").liuyan({hostType:"zhuangguidan",});
+	listzhuangguidan(0,getUrl().showId);
 	
 });

@@ -4,10 +4,8 @@
 		liucheng:[{userId:3,dongzuo:"录单",time:1322}],
 		zhuangtai:"录单",
 		gonghuoshang:{_id:"SJ131110",mingchen:"大大"},
-		huowu:[
-			{guige:"xxx",danwei:"码",danjia:23.1,beizhu:"xxx",mingxi:[{shuliang:23,jianshu:2,yanhuodan,"xx",zhuangguidan:"xx",zhu:"xxx"},...],dingdan:[{_id:"xx",guige:"xx",}shuliang:22,danwei:"xx",danjia:22]}
-			...
-		],
+		huowu:["xxx","xxx",...],
+		huowumingxi:[huowu],//这个属性只返回不存储
 		qitafei:[{shuoming:"xxx",jine:22}],
 		neirong:"xxx",
 		zhuanzhang:["xxx",...]
@@ -18,6 +16,26 @@
 		yanhuodizhi:"xxx",
 		lastId:x
 	}
+	
+	huowu 的数据模型：
+	{
+		_id:"xxx",
+		gonghuoshang:"xxx",
+		guige:"xxx",
+		danwei:"码",
+		danjia:23.1,
+		shuliang:23,
+		jianshu:2,
+		fahuodan:"xx",
+		yanhuodan,"xx",
+		zhuangguidan:"xx",
+		zhu:"xxx",
+		dingdanhuowu:"xx"//DD140113.1.1 具体到指定规格的货物
+		}
+		
+	一件货物可能对应多张订单？（这种情况不多，用备注记录）
+订单货物也要有id
+
 	规格         单位  单价   金额          订单号         规格           数量  单位 单价 金额
 -----------  ----  ----- -------      ----------   ---------------   ------ ---- ---- ----
        数量：----- 件数：------       ----------   ---------------   ------ ---- ---- ----
