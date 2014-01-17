@@ -187,7 +187,7 @@
 	$("#mx_shuliang").change(shuliangchange);
 	$("#bianji").click(editable);
 	
-	function baocun(){
+	function baocun(){ 
 		//form2obj
 		var hws = [];
 		var ret = true;
@@ -213,12 +213,25 @@
 				return false;
 			}
 			huowu.danwei = $(this).find("#mx_danwei").val();
+			huowu.id=$(this).data("id");
 			hws.push(huowu);
 		});
 		if(ret == false){
 			return;
 		}
-		
+		var maxHwId=1;
+		each(hws,function(i,hw){
+			var j = hwId2Int(hw.id);
+			if(maxHwId<=j){
+				maxHwId = j +1;
+			}
+		}); 
+		each(hws,function(i,hw){
+			if(!hw.id){
+				hw.id = currDD._id+"hw"+maxHwId;
+				maxHwId ++;
+			}
+		});
 		currDD.huowu = hws;
 		currDD.beizhu = beizhuEditor.editorVal();
 		beizhuEditor.editorVal(currDD.beizhu);
@@ -357,6 +370,12 @@
 	$("#dd_gonghuoshang").click(showGonghuoshang);
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 function _hanshuku_(){}
+	function hwId2Int(hwId){
+		if(!hwId){
+			return 0;
+		}
+		return parseInt(hwId.substr(hwId.lastIndexOf("hw")+2));
+	}
 	function editable(){
 		editing = true;
 		$("#bianji").hide();
@@ -493,6 +512,7 @@ function _hanshuku_(){}
 		$(".tmpl_huowu").remove();
 		for(var i=0;i<dd.huowu.length;i++){
 			var huowu = tmpl_huowu.clone(true);
+			huowu.data("id",dd.huowu[i].id);
 			huowu.find("#mx_xuhao").text(i);
 			huowu.find("#mx_guige").val(dd.huowu[i].guige);
 			huowu.find("#mx_shuliang").val(dd.huowu[i].shuliang);

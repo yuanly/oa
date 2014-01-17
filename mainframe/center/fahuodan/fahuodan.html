@@ -116,6 +116,7 @@
 									<td><input id="mx_danjia" size=4 class="plainInput mx_danjia hw_edit jinetrigger" style="text-align:center" ></td>
 									<td id="mx_jine" style="text-align:center"></td>
 							</tr>
+							<!--
 							<tr><td colspan=4>
 								<div id="shuliangjianshu" class="shuliangjianshu" style="margin-bottom:8px">
 									数量：<input class="plainInput jinetrigger hw_edit shuliang" size=3 />
@@ -128,17 +129,31 @@
 								</div>
 								<span class="plainBtn" id="zengjiajianshu">[+]</span>
 							</td></tr>
+							-->
 						</table>
 					</td>
 					<td>
 						<table id="tb_dingdan" style="background-color:#f8f8f8">
 							<tr><th>订单号</th><th>规格</th><th>数量</th><th>单位</th><th>单价</th><th>金额</th><th></th></tr>
-							<tr nowrap class="dingdanhuowu" ><td id="dingdanhao" style="cursor:pointer;color:brown">订单号</td><td id="guige1">规格</td><td id="shuliang1">数量</td><td id="danwei1">单位</td><td id="danjia1">单价</td><td id="jine1">金额</td><td nowrap ><span class="plainBtn">[-]</span></td></tr>
+							<tr nowrap class="dingdanhuowu" ><td id="dingdanhao" style="cursor:pointer;color:brown">订单号</td><td id="guige1">规格</td><td id="shuliang1">数量</td><td id="danwei1">单位</td><td id="danjia1">单价</td><td id="jine1">金额</td><td nowrap ><span id="shanchudingdanhuowu" class="plainBtn">[-]</span></td></tr>
 							<tr id="tr_tianjiadingdanhuowu"><td><span class="plainBtn" id="tianjiadingdanhuowu">[+]</span></td></tr>
 						</table>
 					</td>
 				</tr>
-				<tr><td colspan=2>备注：<input id="beizhu" class="plainInput" style="width:100%"/></td></tr>
+				<!--<tr><td colspan=2>备注：<input id="beizhu" class="plainInput" style="width:100%"/></td></tr>-->
+				<tr><td colspan=2>
+								<div id="shuliangjianshu" class="shuliangjianshu" style="margin-bottom:8px">
+									编号：<span id="hwbianhao" style="font-size:12px;color:brown"></span>
+									，数量：<input class="plainInput jinetrigger hw_edit shuliang" size=3 />
+									，件数：<input class="plainInput jinetrigger hw_edit jianshu" size=2 />
+									<span class="zhu_ctnr">，<i>备注：</i><input class="plainInput1 zhu" id="zhu" size=32 /></span>
+									<span class="plainBtn" id="yanhuodan" style="display:none"></span>
+									<span class="plainBtn" id="zhuangguidan" style="display:none"></span>
+									<span class="plainBtn" id="shanchujianshu">[-]</span>
+									<span class="plainBtn1 chai" id="chai" style="display:none">[拆]</span>
+								</div>
+								<span class="plainBtn" id="zengjiajianshu">[+]</span>
+				</td></tr>
 				<tr><td colspan=2><span class="plainBtn" id="shanchuhuowu">[-删除货物]</span></td></tr>
 			</table>
 			<span class="plainBtn" id="tianjiahuowu">[+添加货物]</span>

@@ -25,6 +25,11 @@ if("liebiao" == $param["caozuo"]){
 	$dingdan["_id"] = "DD".date("ymd",time());
 	$n = coll("dingdan")->count(array("_id"=>array('$regex'=>"^".$dingdan["_id"])));
 	$dingdan["_id"] .=".".($n+1);
+	$i = 1;
+	foreach($dingdan["huowu"] as $k=>$huowu){
+		$dingdan["huowu"][$k]["id"] = $dingdan["_id"]."hw".$i;
+		$i ++; 
+	}
 	if(isset($dingdan["beizhu"]) && $dingdan["beizhu"]){
 		$liuyan = array("hostType"=>"dingdan","hostId"=>$dingdan["_id"],"type"=>"ludanliuyan","_id"=>time(),"userId"=>(int)$_SESSION["user"]["_id"],"neirong"=>$dingdan["beizhu"]);
 		coll("liuyan")->save($liuyan);
