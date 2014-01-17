@@ -121,6 +121,7 @@
 		var huowu = [];
 		$(".huowu").each(function(i,hw){
 			//TODO ...
+			/*
 		 	var item = {};
 		 	item.guige = $(hw).find("#mx_guige").val().trim();
 		 	if("" == item.guige){
@@ -166,6 +167,7 @@
 		 		item.dingdan = dingdan;
 		 	}
 		 	item.beizhu = $(hw).find("#beizhu").val().trim();
+		 	*/
 		 	//TODO ...
 		 	huowu.push(item);
 		});

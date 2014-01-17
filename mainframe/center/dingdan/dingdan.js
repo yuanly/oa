@@ -453,7 +453,7 @@ function _hanshuku_(){}
 				tr.find("#td_zhuangtai").text(dingdan.zhuangtai);				
 				tr.find("#td_gendanyuan").text(dingdan.gendanyuan?getUser(dingdan.gendanyuan).user_name:"");
 				tr.find("#td_gonghuoshang").text(dingdan.gonghuoshang?dingdan.gonghuoshang.mingchen:"");
-				tr.find("#td_xiadanriqi").text(dingdan.xiadanshijian?new Date(dingdan.xiadanriqi*1000).format("yy/MM/dd hh:mm"):"");
+				tr.find("#td_xiadanriqi").text(dingdan.xiadanshijian?new Date(dingdan.xiadanshijian*1000).format("yy/MM/dd hh:mm"):"");
 				
 				tr.css("background-color",toggle("#fff","#eee"));
 				if(dingdan.zhuangtai == "作废"){
