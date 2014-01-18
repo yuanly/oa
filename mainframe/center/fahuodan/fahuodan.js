@@ -13,13 +13,14 @@
 		fuhezhe:3,
 		shouhuoriqi:1232,
 		yanhuodizhi:"xxx",
-		lastId:x
+		version:34231423,//用于避免版本冲突
+		lastId:x//用于简化货物id的定义
 	}
 	
 	huowu 的数据模型：
 	{
 		_id:"xxx",//fhd_id+hw+n
-		gonghuoshang:"xxx",
+		gonghuoshang:{_id:"xxx",mingchen:"xxx"}
 		guige:"xxx",
 		danwei:"码",
 		danjia:23.1,
@@ -29,7 +30,7 @@
 		yanhuodan,"xx",
 		zhuangguidan:"xx",
 		zhu:"xxx",
-		dingdanhuowu:"xx"//DD140113.1.1 具体到指定规格的货物
+		dingdanhuowu:"xx"//DD140113.1HW1 具体到指定规格的货物
 		}
 		
 	一件货物可能对应多张订单？（这种情况不多，用备注记录）
@@ -118,58 +119,51 @@
 		if($("#fhd_zhuanzhangliushui").val().trim() != ""){
 			currFHD.zhuanzhang = $("#fhd_zhuanzhangliushui").val().trim();
 		}
+		var shuliangkong = false;
+		$(".shuliang").each(function(i,sl){
+			if($(this).val().trim() == ""){
+	 			tip($(this),"数量不能为空！",2000);
+	 			shuliangkong = true;
+	 			return false;
+	 		}
+		});
+		if(shuliangkong){
+			return;
+		}
+		var jianshukong = false;
+		$(".jianshu").each(function(i,sl){
+			if($(this).val().trim() == ""){
+	 			tip($(this),"件数不能为空！",2000);
+	 			jianshukong = true;
+	 			return false;
+	 		}
+		});
+		if(jianshukong){
+			return;
+		}
 		var huowu = [];
 		$(".huowu").each(function(i,hw){
-			//TODO ...
-			/*
-		 	var item = {};
-		 	item.guige = $(hw).find("#mx_guige").val().trim();
-		 	if("" == item.guige){
+			if("" == $(hw).find("#mx_guige").val().trim()){
 		 		tip($(hw).find("#mx_guige"),"规格不能为空！",2000);
 		 		huowu = [];
 		 		return false;
 		 	}
-		 	item.danwei = $(hw).find("#mx_danwei").val().trim();
-		 	item.danjia = $(hw).find("#mx_danjia").val().trim();
-		 	var mingxis = [];
-		 	$(hw).find(".shuliangjianshu").each(function(j,mingxi){
-		 		var mx = {};
-		 		mx.shuliang = $(mingxi).find(".shuliang").val().trim();
-		 		if(mx.shuliang == ""){
-		 			tip($(mingxi).find(".shuliang"),"数量不能为空！",2000);
-		 			mingxi = [];
-		 			return false;
-		 		}
-		 		if($(mingxi).find("#zhu").val().trim() != ""){
-		 			mx.zhu = $(mingxi).find("#zhu").val().trim();
-		 		}else{
-		 			mx.zhu = undefined;
-		 		}
-		 		mx.jianshu = $(mingxi).find(".jianshu").val().trim();
-		 		if(mx.jianshu == ""){
-		 			tip($(mingxi).find(".jianshu"),"件数不能为空！",2000);
-		 			mingxi = []; 
-		 			return false;
-		 		}
-		 		mx.id = $(mingxi).data("id");
-		 		mingxis.push(mx);
-		 	});
-		 	if(mingxis.length == 0){
-		 		huowu = [];
-		 		return false;
-		 	}
-		 	item.mingxi = mingxis;
-		 	var dingdan = [];
-		 	$(hw).find(".dingdanhuowu").each(function(i,ddhw){
-		 		dingdan.push($(ddhw).data("huowu"));
-		 	});
-		 	if(dingdan.length>0){
-		 		item.dingdan = dingdan;
-		 	}
-		 	item.beizhu = $(hw).find("#beizhu").val().trim();
-		 	*/
-		 	//TODO ...
-		 	huowu.push(item);
+			$(hw).find(".shuliangjianshu").each(function(j,mingxi){
+			 	var item = {};
+			 	item.gonghuoshang = currFHD.gonghuoshang;
+			 	item._id = mingxi.find("#hwbianhao").text().trim();
+			 	item.guige  = $(hw).find("#mx_guige").val().trim();
+			 	item.danwei = $(hw).find("#mx_danwei").val().trim();
+		 		item.danjia = $(hw).find("#mx_danjia").val().trim();
+		 		item.shuliang = $(mingxi).find(".shuliang").val().trim();
+		 		item.jianshu = $(mingxi).find(".jianshu").val().trim();
+		 		item.zhu = $(mingxi).find("#zhu").val().trim();
+		 		item.dingdanhuowu = $(hw).find(".dingdanhuowu").data("huowu").id;
+		 		item.fahuodan = currFHD._id;
+		 		item.yanhuodan = $(mingxi).find("#yanhuodan").text().trim();
+		 		item.zhuangguidan = $(mingxi).find("#zhuangguidan").text().trim();
+			 	huowu.push(item);
+			}
 		});
 		if(huowu.length == 0){
 			return;
