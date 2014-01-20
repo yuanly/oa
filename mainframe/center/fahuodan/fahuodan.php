@@ -51,6 +51,8 @@ if("shangchuan" == $param["caozuo"]){
 }else if("getbyid" == $param["caozuo"]){
 	$query = array("_id"=>$param["_id"]);
 	$fhd = coll("fahuodan")->findOne($query);
+	$cur = coll("huowu")->find(array("fahuodan"=>$param["_id"]));
+	$fhd["huowu"] = c2a($cur);
 	echo  jsonEncode($fhd);
 }else if("chaxun" == $param["caozuo"]){
 	$query = array();
@@ -67,15 +69,13 @@ if("shangchuan" == $param["caozuo"]){
 }else if("baocun" == $param["caozuo"]){
 	$fahuodan = $param["fahuodan"];
 	$id = $fahuodan["_id"];
+	coll("huowu")->remove(array("fahuodan"=>$id));
+	foreach($fahuodan["huowu"] as $huowu){
+		coll("huowu")->save($huowu);
+	}
+	unset($fahuodan["huowu"]);
 	unset($fahuodan["liucheng"]);
 	unset($fahuodan["_id"]);
 	coll("fahuodan")->update(array("_id"=>$id),array('$set'=>$fahuodan));
-	foreach($fahuodan["huowu"] as $huowu){
-		if(isset($huowu["dingdan"])){
-			foreach($huowu["dingdan"] as $dingdan){
-				coll("dingdan")->update(array("_id"=>$dingdan["dingdanId"]),array('$addToSet'=>array("fahuodans"=>$id)));
-			}
-		}
-	}
 	echo '{"success":true}';
 }

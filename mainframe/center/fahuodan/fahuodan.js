@@ -151,7 +151,7 @@
 			$(hw).find(".shuliangjianshu").each(function(j,mingxi){
 			 	var item = {};
 			 	item.gonghuoshang = currFHD.gonghuoshang;
-			 	item._id = mingxi.find("#hwbianhao").text().trim();
+			 	item._id = $(mingxi).find("#hwbianhao").text().trim();
 			 	item.guige  = $(hw).find("#mx_guige").val().trim();
 			 	item.danwei = $(hw).find("#mx_danwei").val().trim();
 		 		item.danjia = $(hw).find("#mx_danjia").val().trim();
@@ -163,7 +163,7 @@
 		 		item.yanhuodan = $(mingxi).find("#yanhuodan").text().trim();
 		 		item.zhuangguidan = $(mingxi).find("#zhuangguidan").text().trim();
 			 	huowu.push(item);
-			}
+			});
 		});
 		if(huowu.length == 0){
 			return;
@@ -517,6 +517,7 @@ function _hanshuku_(){}
 				$(this).hide();
 			}
 		});
+		$(".shanchudingdanhuowu").hide();
 		zonge();
 		if(!currFHD.qitafei){
 			$("#qita_div").hide();
@@ -546,6 +547,12 @@ function _hanshuku_(){}
  		$("#qita_div").show();
  		yuandanEditor.editorWritable();
 		$("#bianji").hide();$("#fangqi").show();$("#baocun").show();
+		$(".tianjiadingdanhuowuclz").each(function(){
+			if($(this).siblings().length>=2){
+				$(this).hide();
+			}	
+		});
+		$(".shanchudingdanhuowu").show();
 	}
 	function showDetail(fhd){
 		currFHD = fhd;
@@ -556,7 +563,43 @@ function _hanshuku_(){}
 		$("#fhd_yanhuodizhi").val(currFHD.yanhuodizhi?currFHD.yanhuodizhi:"");
 		yuandanEditor.editorVal(currFHD.neirong);
 		$(".huowu").remove();
-		each(fhd.huowu,function(i,huowu){
+		//huowu 2 huowu 根据订单货物id分簇，然后获取订单货物原始信息
+		var ddhws = [];//找出所有不同的订单货物
+		each(fhd.huowu,function(i,hw){
+			var exists = false;
+			each(ddhws,function(j,ddhw){
+				if(ddhw == hw.dingdanhuowu){
+					exists = true;
+					return false;
+				}
+			});
+			if(!exists){
+				ddhws.push(hw.dingdanhuowu);
+			}
+		});
+		var huowus = [];
+		each(ddhws,function(i,ddhwId){//转换数据结构
+			var hw = {};
+			var tempHuowu;
+			each(fhd.huowu,function(j,huowu){
+				if(huowu.dingdanhuowu == ddhwId){
+					tempHuowu = huowu;
+					var mingxi = {};
+					hw.mingxi = [];
+					mingxi.shuliang = huowu.shuliang;
+					mingxi.jianshu = huowu.jianshu;
+					mingxi.zhu = huowu.zhu;
+					mingxi._id = huowu._id;
+					hw.mingxi.push(mingxi);
+				}
+			});
+			hw.guige = tempHuowu.guige;
+			hw.danwei = tempHuowu.danwei;
+			hw.danjia = tempHuowu.danjia;
+			hw.dingdanhuowu = ddhwId;
+			huowus.push(hw);
+		});
+		each(huowus,function(i,huowu){
 			var hwDiv = table_huowu.clone(true);
 			hwDiv.find("#mx_guige").val(huowu.guige);
 			hwDiv.find("#mx_danwei").val(huowu.danwei);
@@ -566,6 +609,7 @@ function _hanshuku_(){}
 				var mxDiv = tmpl_shuliangjianshu.clone(true);
 				mxDiv.find(".shuliang").val(mx.shuliang);
 				mxDiv.find(".jianshu").val(mx.jianshu);
+				mxDiv.find("#hwbianhao").text(mx._id);
 				mxDiv.data("id",mx.id);
 				if(mx.zhu){
 					mxDiv.find("#zhu").val(mx.zhu).show();
@@ -580,10 +624,10 @@ function _hanshuku_(){}
 			});
 			hwDiv.find("#beizhu").val(huowu.beizhu);
 			jisuanjine.call(hwDiv.find("#mx_danjia"));
-			each(huowu.dingdan,function(k,dd){
+			postJson("../dingdan/dingdan.php",{caozuo:"gethuowubyid",huowuId:huowu.dingdanhuowu},function(dd){
 				var tr_huowu = dingdanhuowu.clone(true);
 				tr_huowu.data("huowu",dd);
-				tr_huowu.find("#dingdanhao").text(dd.dingdanId);
+				tr_huowu.find("#dingdanhao").text(dd.id.substring(0,dd.id.indexOf("hw")));
 				tr_huowu.find("#guige1").text(dd.guige);
 				tr_huowu.find("#shuliang1").text(dd.shuliang);
 				tr_huowu.find("#danwei1").text(dd.danwei);

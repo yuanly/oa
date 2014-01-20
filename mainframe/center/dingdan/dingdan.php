@@ -74,4 +74,13 @@ if("jiedan" == $param["caozuo"]){
 	$zidan  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"子单","time"=>time());
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zidan),'$set'=>array("zhuangtai"=>"子单")));
 	echo '{"success":true}';
+}else if("gethuowubyid" == $param["caozuo"]){
+	$dingdan  = coll("dingdan")->findOne(array("huowu.id"=>$param["huowuId"]));
+	foreach($dingdan["huowu"] as $huowu){
+		if($huowu["id"] == $param["huowuId"]){
+			echo jsonEncode($huowu);
+			exit;
+		}
+	}
+	echo '{"success":false}';
 }
