@@ -93,12 +93,12 @@
 				return false;
 			}
 			var hw1 = hw.clone(true);
+			currFHD.lastId ++;
+			hw1.find("#hwbianhao").text(currFHD._id+"HW"+currFHD.lastId);
 			hw.find(".jianshu").val(total - jian);
 			hw1.find(".jianshu").val(jian);
 			hw1.find("#yanhuodan").val("").hide();
-			hw1.find("#zhuangguidan").val("").hide();
-			currFHD.lastId++;
-			hw1.data("id",currFHD.lastId);
+			hw1.find("#zhuangguidan").val("").hide(); 
 			hw.after(hw1);
 		});
 	}
@@ -225,7 +225,7 @@
 		}
 	}
 	function jisuanjine(){
-		var tb = $(this).parents("#huowu");
+		var tb = $(this).parents(".huowu");
 		var danjia = parseFloat(tb.find("#mx_danjia").val());
 		if(isNaN(danjia)){
 			return;
@@ -286,7 +286,8 @@
 		tr_huowu.find("#shuliang1").text(huowu.shuliang);
 		tr_huowu.find("#danwei1").text(huowu.danwei);
 		tr_huowu.find("#danjia1").text(huowu.danjia);
-		tr_huowu.find("#jine1").text(huowu.shuliang*huowu.danjia);
+		tr_huowu.find("#jine1").text(round(huowu.shuliang*huowu.danjia,2));
+		tr_huowu.find("#shanchudingdanhuowu").show();
 		currHuowu.find("#tr_tianjiadingdanhuowu").before(tr_huowu).hide();
 		currHuowu.find("#mx_guige").val(huowu.guige);
 		currHuowu.find("#mx_danwei").val(huowu.danwei);
@@ -554,8 +555,18 @@ function _hanshuku_(){}
 		});
 		$(".shanchudingdanhuowu").show();
 	}
+	function hwid2int(hwid){
+		return parseInt(hwid.substr(hwid.indexOf("HW")+2));
+	}
 	function showDetail(fhd){
 		currFHD = fhd;
+		currFHD.lastId = 0;
+		each(fhd.huowu,function(i,hw){
+			var hwid = hwid2int(hw._id);
+			if(currFHD.lastId < hwid){
+				currFHD.lastId = hwid + 1;
+			}
+		});
 		$("#liucheng").show().liucheng(getTheUser(),fhd);
 		$("#fhd_bianhao").val(currFHD._id);
 		$("#fhd_zhuanzhangliushui").val(currFHD.zhuanzhang?currFHD.zhuanzhang:"");
@@ -581,11 +592,11 @@ function _hanshuku_(){}
 		each(ddhws,function(i,ddhwId){//转换数据结构
 			var hw = {};
 			var tempHuowu;
+			hw.mingxi = [];
 			each(fhd.huowu,function(j,huowu){
 				if(huowu.dingdanhuowu == ddhwId){
 					tempHuowu = huowu;
 					var mingxi = {};
-					hw.mingxi = [];
 					mingxi.shuliang = huowu.shuliang;
 					mingxi.jianshu = huowu.jianshu;
 					mingxi.zhu = huowu.zhu;
@@ -632,7 +643,7 @@ function _hanshuku_(){}
 				tr_huowu.find("#shuliang1").text(dd.shuliang);
 				tr_huowu.find("#danwei1").text(dd.danwei);
 				tr_huowu.find("#danjia1").text(dd.danjia);
-				tr_huowu.find("#jine1").text(dd.shuliang*dd.danjia);
+				tr_huowu.find("#jine1").text(round(dd.shuliang*dd.danjia,2));
 				hwDiv.find("#tr_tianjiadingdanhuowu").before(tr_huowu);
 			});
 			$("#tianjiahuowu").before(hwDiv);	
