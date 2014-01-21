@@ -83,51 +83,42 @@ D 标记验货单通过
 	$("#dingdanhao").click(showDingdan);  
 	 
 	function sel_fahuodan_pager(){
-		list_sel_fahuodan($("#sel_fahuodan_pager").data("offset")+1);
+		list_sel_huowu($("#sel_fahuodan_pager").data("offset")+1);
 	}
 	$("#sel_fahuodan_pager").click(sel_fahuodan_pager);
 	function guanbi_sel_fahuodan(){
 		$("#sel_ctnr").hide();
 	}
 	$("#guanbi_sel_fahuodan").click(guanbi_sel_fahuodan);
-	function list_sel_fahuodan(offset){
+	function list_sel_huowu(offset){
 		if(offset<0){
 			return;
 		}
 		$("#sel_fahuodan_pager").data("offset",offset); 
-		postJson("../fahuodan/fahuodan.php",{caozuo:"chaxunforyanhuodan",offset:offset*20,limit:20,option:{cmd:"",yhdId:$("#opt_yanhuodanid").val().trim()}},function(fahuodans){
+		postJson("yanhuodan.php",{caozuo:"chaxunhuowu",offset:offset*20,limit:20,option:{cmd:"",fhdId:$("#opt_yanhuodanid").val().trim()}},function(huowus){
 			$(".tmpl_fahuodanhuowu").remove();
-			var i=1;
-			each(fahuodans,function(n,fahuodan){
-				each(fahuodan.huowu,function(n1,huowu){
-					each(huowu.mingxi,function(n2,mingxi){
-						tr = tmpl_fahuodanhuowu.clone(true);
-						tr.data("id",mingxi.id);						//发货单 货物 要有id，否则验货单没法做保存。
-						tr.find("#td_bianhao").text(i++);
-						tr.find("#td_zhuangtai").text(fahuodan.zhuangtai);
-						tr.find("#td_fahuodan").text(fahuodan._id);
-						tr.find("#td_gonghuoshang").text(fahuodan.gonghuoshang?fahuodan.gonghuoshang.mingchen:"");
-						tr.find("#td_guige").text(huowu.guige);
-						tr.find("#td_danwei").text(huowu.danwei);
-						tr.find("#td_shuliang").text(mingxi.shuliang);
-						tr.find("#td_jianshu").text(mingxi.jianshu);
-						tr.find("#td_zhu").text(mingxi.zhu);
-						tr.data("huowu",{mingxiId:mingxi.id,fahuodan:fahuodan._id,gonghuoshang:fahuodan.gonghuoshang?fahuodan.gonghuoshang.mingchen:"",guige:huowu.guige,danwei:huowu.danwei,shuliang:mingxi.shuliang,jianshu:mingxi.jianshu,zhu:mingxi.zhu});
-						
-						tr.css("background-color",toggle("#fff","#eee"));
-						if(fahuodan.zhuangtai == "作废"){
-							tr.css("text-decoration","line-through");
-						} 
-						$("#sel_fahuodan").append(tr);
-					});
+			each(huowus,function(i,huowu){
+				tr = tmpl_fahuodanhuowu.clone(true);
+				tr.find("#td_huowubianhao").text(huowu._id);
+				tr.find("#td_gonghuoshang").text(huowu.gonghuoshang?huowu.gonghuoshang.mingchen:"");
+				tr.find("#td_guige").text(huowu.guige);
+				tr.find("#td_danwei").text(huowu.danwei);
+				tr.find("#td_shuliang").text(huowu.shuliang);
+				tr.find("#td_jianshu").text(huowu.jianshu);
+				tr.find("#td_zhu").text(huowu.zhu);
+				each(huowu.yanhuodan,function(i,yanhuodan){
+					tr.find("#td_yanhuodan").append("<span>"+yanhuodan+"</span>&nbsp;");
 				});
+				tr.data("huowu",huowu);
+				tr.css("background-color",toggle("#fff","#eee"));
+				$("#sel_fahuodan").append(tr);
 			});
 		});
 	}
 	function tianjiahuowu(){
 		$("#sel_ctnr").show().center().css("top","50px");
 		if($("#sel_fahuodan").find("tr").length == 1){
-			list_sel_fahuodan(0);
+			list_sel_huowu(0);
 		}
 	}
 	$("#tianjiahuowu").click(tianjiahuowu);
@@ -221,7 +212,7 @@ D 标记验货单通过
 	$("#opt_yanhuodanid").change(function(){
 		var yhdId = "FHD"+date2id($(this).val());
 		$(this).val(yhdId);
-		list_sel_fahuodan(0);
+		list_sel_huowu(0);
 	});
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 function _hanshuku_(){}

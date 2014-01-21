@@ -4,7 +4,7 @@
 		liucheng:[{userId:3,dongzuo:"录单",time:1322}],
 		zhuangtai:"录单",
 		gonghuoshang:{_id:"SJ131110",mingchen:"大大"},
-		huowu:["xxx","xxx",...],//这个只用于存储//客户端看到的是[huowu]
+		huowu:[huowu],//这个需要从huowu collection关联查询获取，不在fahuodan collection保存
 		qitafei:[{shuoming:"xxx",jine:22}],
 		neirong:"xxx",
 		zhuanzhang:["xxx",...]
@@ -27,7 +27,7 @@
 		shuliang:23,
 		jianshu:2,
 		fahuodan:"xx",
-		yanhuodan,"xx",
+		yanhuodan,["xx","xx"...],
 		zhuangguidan:"xx",
 		zhu:"xxx",
 		dingdanhuowu:"xx"//DD140113.1HW1 具体到指定规格的货物
@@ -160,7 +160,9 @@
 		 		item.zhu = $(mingxi).find("#zhu").val().trim();
 		 		item.dingdanhuowu = $(hw).find(".dingdanhuowu").data("huowu").id;
 		 		item.fahuodan = currFHD._id;
-		 		item.yanhuodan = $(mingxi).find("#yanhuodan").text().trim();
+		 		//item.yanhuodan = $(mingxi).find("#yanhuodan").text().trim();
+		 		item.yanhuodan = [];
+		 		$(mingxi).find(".yanhuodanId").each(function(){item.yanhuodan.push($(this).text}));
 		 		item.zhuangguidan = $(mingxi).find("#zhuangguidan").text().trim();
 			 	huowu.push(item);
 			});
@@ -626,7 +628,10 @@ function _hanshuku_(){}
 					mxDiv.find("#zhu").val(mx.zhu).show();
 				}
 				if(mx.yanhuodan){
-					mxDiv.find("#yanhuodan").text(mx.yanhuodan).show();
+					//mxDiv.find("#yanhuodan").text(mx.yanhuodan).show();
+					each(mx.yanhuodan,function(i,yanhuodan){
+						mxDiv.find("#yanhuodan").append("&nbsp;<span class='yanhuodanId'>"+yanhuodan+"</span>");
+					});
 				}
 				if(mx.zhuangguidan){
 					mxDiv.find("#zhuangguidan").text(mx.zhuangguidan).show();

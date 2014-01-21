@@ -100,10 +100,10 @@
 				编号：<input type="text" id="yhd_bianhao" class="plainInput" readonly size=12 />
 			</div>
 			<table id="huowutable">
-				<tr><th></th><th>发货单</th><th>供货商</th><th>规格</th><th>单位</th><th>数量</th><th>件数</th><th>注</th></tr>
+				<tr><th></th><th>货物编号</th><th>供货商</th><th>规格</th><th>单位</th><th>数量</th><th>件数</th><th>注</th></tr>
 				<tr class="tr_huowu" >
 					<td><span id="shanchuhuowu" class="plainBtn" title="删除货物">[-]</span>&nbsp;<span id="shangyi" class="plainBtn" title="上移">[↑]</span></td>
-					<td id="td_fahuodan" style="cursor:pointer;color:brown">发货单</td>
+					<td id="td_huowubianhao" style="cursor:pointer;color:brown">发货单</td>
 					<td id="td_gonghuoshang">供货商</td>
 					<td id="td_guige">规格</td>
 					<td id="td_danwei">单位</td>
@@ -134,17 +134,17 @@
 			<div>
 					<table style="width:100%"><tr><td style="text-align:left"><input class="plainInput" id="opt_yanhuodanid"/></td><td style="text-align:right"><span class="plainBtn" id="guanbi_sel_fahuodan">关闭</span></td></tr></table>
 					<table id="sel_fahuodan">
-						<tr><th></th><th>状态</th><th>发货单号</th><th>供货商</th><th>规格</th><th>单位</th><th>数量</th><th>件数</th><th>备注</th></tr>
+						<tr><th></th><th>货物编号</th><th>供货商</th><th>规格</th><th>单位</th><th>数量</th><th>件数</th><th>备注</th><th>验货单</th></tr>
 						<tr class="tmpl_fahuodanhuowu" style="cursor:pointer">
-							<td id="td_bianhao">1</td>
 							<td id="td_zhuangtai"></td>
-							<td id="td_fahuodan"></td>
+							<td id="td_huowubianhao"></td>
 							<td id="td_gonghuoshang"></td>
 							<td id="td_guige"></td>
 							<td id="td_danwei"></td>
 							<td id="td_shuliang"></td>
 							<td id="td_jianshu"></td>
 							<td id="td_zhu"></td>
+							<td id="td_yanhuodan"></td>
 						</tr>
 					</table>
 					<div style="text-align:right"><span class="plainBtn" id="sel_fahuodan_pager">更多...</span></div>

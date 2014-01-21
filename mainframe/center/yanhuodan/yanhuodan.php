@@ -56,4 +56,12 @@ if("xinjian" == $param["caozuo"]){
 	$id = $yanhuodan["_id"];
 	coll("yanhuodan")->update(array("_id"=>$id),array('$set'=>array("huowu"=>$yanhuodan["huowu"],"yanhuoshougao"=>$yanhuodan["yanhuoshougao"])));
 	echo '{"success":true}';
+}else if("chaxunhuowu" == $param["caozuo"]){
+	$fhdId = $param["option"]["fhdId"];
+	$query = array();
+	if($fhdId){
+		$query = array("_id"=>array('$lt'=>$fhdId));
+	}
+	$cur = coll("huowu")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	echo  cur2json($cur);
 }
