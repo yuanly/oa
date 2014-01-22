@@ -22,8 +22,9 @@ D 标记验货单通过
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
-	$("#huowutable").find("#td_fahuodan").click(function(){
-		window.open("../fahuodan/fahuodan.html?showId="+$(this).text(),"_blank");
+	$("#huowutable").find("#td_huowubianhao").click(function(){ 
+		var showId = $(this).text().substr(0,$(this).text().indexOf("HW"));
+		window.open("../fahuodan/fahuodan.html?showId="+showId,"_blank");
 	});
 	$("#shangyi").click(function(){
 		var curr = $(this).parents(".tr_huowu");
@@ -38,7 +39,7 @@ D 标记验货单通过
 		var huowu = $(this).data("huowu");
 		var duplicate = false;
 		$(".tr_huowu").each(function(i,hw){ 
-			if(huowu.mingxiId == $(hw).data("huowu").mingxiId){
+			if(huowu._id == $(hw).data("huowu")._id){
 				duplicate = true;
 				return false;
 			}
@@ -50,7 +51,7 @@ D 标记验货单通过
 		var tr_huowu = tmpl_tr_huowu.clone(true);
 		tr_huowu.data("huowu",huowu);
 		tr_huowu.find("#td_fahuodan").text(huowu.fahuodan);
-		tr_huowu.find("#td_gonghuoshang").text(huowu.gonghuoshang);
+		tr_huowu.find("#td_gonghuoshang").text(huowu.gonghuoshang.mingchen);
 		tr_huowu.find("#td_guige").text(huowu.guige);
 		tr_huowu.find("#td_danwei").text(huowu.danwei);
 		tr_huowu.find("#td_shuliang").text(huowu.shuliang);
@@ -59,7 +60,7 @@ D 标记验货单通过
 		$("#huowutable").append(tr_huowu);
 	}
 	$(".tmpl_fahuodanhuowu").click(sel_huowu2);
-	function baocun(){ 
+	function baocun(){
 		var huowu = [];
 		$(".tr_huowu").each(function(i,hw){
 		 	huowu.push($(hw).data("huowu"));
@@ -304,8 +305,8 @@ function _hanshuku_(){}
 		each(yhd.huowu,function(i,huowu){
 			var tr_huowu = tmpl_tr_huowu.clone(true);
 			tr_huowu.data("huowu",huowu);
-			tr_huowu.find("#td_fahuodan").text(huowu.fahuodan);
-			tr_huowu.find("#td_gonghuoshang").text(huowu.gonghuoshang);
+			tr_huowu.find("#td_huowubianhao").text(huowu._id);
+			tr_huowu.find("#td_gonghuoshang").text(huowu.gonghuoshang.mingchen);
 			tr_huowu.find("#td_guige").text(huowu.guige);
 			tr_huowu.find("#td_danwei").text(huowu.danwei);
 			tr_huowu.find("#td_shuliang").text(huowu.shuliang);

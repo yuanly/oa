@@ -162,7 +162,7 @@
 		 		item.fahuodan = currFHD._id;
 		 		//item.yanhuodan = $(mingxi).find("#yanhuodan").text().trim();
 		 		item.yanhuodan = [];
-		 		$(mingxi).find(".yanhuodanId").each(function(){item.yanhuodan.push($(this).text}));
+		 		$(mingxi).find(".yanhuodanId").each(function(){item.yanhuodan.push($(this).text);});
 		 		item.zhuangguidan = $(mingxi).find("#zhuangguidan").text().trim();
 			 	huowu.push(item);
 			});
