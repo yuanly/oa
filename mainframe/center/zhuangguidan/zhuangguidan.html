@@ -7,7 +7,7 @@
 	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
 	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
 <link rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen">
-	<title>验货单管理</title>
+	<title>装柜单管理</title>
 	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
 	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
 	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
@@ -19,15 +19,15 @@
 	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
 	<script src="../../../js/jquery.layout-latest.js" type="text/javascript"></script>
 	<script src="../../../js/ui.datepicker-zh-CN.js" type="text/javascript"></script>
-	<script type="text/javascript" src="yanhuodan.js"></script>
+	<script type="text/javascript" src="zhuangguidan.js"></script>
 	<style>  
 		th{
 			background-color:#99ccff;
 		}
-		.tmpl_fahuodanhuowu:hover,.tmpl_huowu:hover,.tr_yanhuodan:hover{
+		.tmpl_fahuodanhuowu:hover,.tmpl_huowu:hover,.tr_zhuangguidan:hover{
 			color:brown;
 		}
-		.tr_yanhuodan{
+		.tr_zhuangguidan{
 			white-space:nowrap; 
 			cursor:pointer;
 		}
@@ -53,16 +53,22 @@
 <body style="margin:0px;padding:0px">
 	<div class="ui-layout-west">
 		<div>
-			<table id="yanhuodantable"  style="min-width:500px;">
+			<table id="zhuangguidantable"  style="min-width:500px;">
 				<tr id="tableheader">
 					<th nowrap><input id="th_bianhao" class="plainTh" value="编号" style="width:120px;cursor:pointer"/></th>
+					<th nowrap><input id="th_guihao" class="plainTh" value="柜号" style="width:120px;cursor:pointer"/></th>
 					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:35px"/></th>
-					<th nowrap><input id="th_chuangjianzhe" class="plainTh" value="创建者" style="width:50px;cursor:pointer"/></th>
-					<th nowrap><input id="th_shoulizhe" class="plainTh" value="受理者" style="width:50px"/></th>
+					<th nowrap><input id="th_zhuangguizhe" class="plainTh" value="装柜者" style="width:50px;cursor:pointer"/></th>
+					<th nowrap><input id="th_zhuangguiriqi" class="plainTh" value="装柜日期" style="width:50px"/></th>
 					<th nowrap><input id="th_shenhezhe" class="plainTh" value="审核者" style="width:50px;cursor:pointer;"/></th>
 				</tr>
-				<tr class="tr_yanhuodan">
-					<td id="td_bianhao"></td><td id="td_zhuangtai"></td><td id="td_chuangjianzhe"></td><td id="td_shoulizhe"></td><td id="td_shenhezhe"></td></td>
+				<tr class="tr_zhuangguidan">
+					<td id="td_bianhao"></td>
+					<td id="td_guihao"></td>
+					<td id="td_zhuangtai"></td>
+					<td id="td_zhuangguizhe"></td>
+					<td id="td_zhuangguiriqi"></td>
+					<td id="td_shenhezhe"></td></td>
 				</tr>
 			</table>	
 			<div id="pager"><span id="prevPage" class="plainBtn">上一页</span> <span id="nextPage" class="plainBtn">下一页</span></div>
@@ -80,22 +86,24 @@
 					</tr>
 					<tr id="lc_caozuo" style="display:none" >
 						<td colspan="4" style="text-align:center;border:1px solid #ddd">
-							<span id="cz_shenqingshouli" class="plainBtn" style="margin-right:10px;display:none">申请受理</span>
-							<span id="cz_quxiaoshenqingshouli" class="plainBtn" style="margin-right:10px;display:none">取消申请</span>
-							<span id="cz_shouli" class="plainBtn" style="margin-right:10px;display:none">受理</span>
+							<span id="cz_zhidan" class="plainBtn" style="margin-right:10px;display:none">制单</span>
+							<span id="cz_zhuangguidayin" class="plainBtn" style="margin-right:10px;display:none">装柜打印</span>
+							<span id="cz_yinzhuanggui" class="plainBtn" style="margin-right:10px;display:none">已装柜</span>
 							<span id="cz_shenqingshenhe" class="plainBtn" style="margin-right:10px;display:none">申请审核</span>
-							<span id="cz_quxiaoshenqingshenhe" class="plainBtn" style="margin-right:10px;display:none">取消申请</span>
+							<span id="cz_huitui" class="plainBtn" style="margin-right:10px;display:none">回退</span>
 							<span id="cz_shenhe" class="plainBtn" style="margin-right:10px;display:none">审核</span>
 							<span id="cz_quxiaoshenhe" class="plainBtn" style="margin-right:10px;display:none">取消审核</span>
 							<span id="cz_zuofei" class="plainBtn" style="margin-right:10px;display:none">作废</span>
+							<span id="cz_chengbendayin" class="plainBtn" style="margin-right:10px;display:none">成本打印</span>
+							<span id="cz_yewudayin" class="plainBtn" style="margin-right:10px;display:none">业务打印</span>
 						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
 	</td></tr></table>
-		<div id="yanhuodanmingxi" style="margin-top:10px">
-			<div style='background-color:#eee'>验货单明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn" style="display:none">保存</span></div>
+		<div id="zhuangguidanmingxi" style="margin-top:10px">
+			<div style='background-color:#eee'>装柜单明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn" style="display:none">保存</span></div>
 			<div>
 				编号：<input type="text" id="yhd_bianhao" class="plainInput" readonly size=12 />
 			</div>
@@ -132,7 +140,7 @@
 		<div style="width:100%;background-color:#99ccff;text-align:center;">选择发货单货物</div>
 		<div style="padding:10px;min-width:600px">
 			<div>
-					<table style="width:100%"><tr><td style="text-align:left"><input class="plainInput" id="opt_yanhuodanid"/></td><td style="text-align:right"><span class="plainBtn" id="guanbi_sel_fahuodan">关闭</span></td></tr></table>
+					<table style="width:100%"><tr><td style="text-align:left"><input class="plainInput" id="opt_zhuangguidanid"/></td><td style="text-align:right"><span class="plainBtn" id="guanbi_sel_fahuodan">关闭</span></td></tr></table>
 					<table id="sel_fahuodan">
 						<tr><th></th><th>状态</th><th>发货单号</th><th>供货商</th><th>规格</th><th>单位</th><th>数量</th><th>件数</th><th>备注</th></tr>
 						<tr class="tmpl_fahuodanhuowu" style="cursor:pointer">
