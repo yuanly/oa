@@ -63,7 +63,9 @@ D 标记验货单通过
 	function baocun(){
 		var huowu = [];
 		$(".tr_huowu").each(function(i,hw){
-		 	huowu.push($(hw).data("huowu"));
+			var obj = $(hw).data("huowu");
+			obj.yhdIdx = i;
+		 	huowu.push(obj);
 		}); 
 		currYHD.huowu = huowu;
 		currYHD.yanhuoshougao = yuandanEditor.editorVal(); 

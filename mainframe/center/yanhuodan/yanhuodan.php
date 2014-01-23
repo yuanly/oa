@@ -50,11 +50,17 @@ if("xinjian" == $param["caozuo"]){
 }else if("getbyid" == $param["caozuo"]){
 	$query = array("_id"=>$param["_id"]);
 	$fhd = coll("yanhuodan")->findOne($query);
+	$cur = coll("huowu")->find(array("yanhuodan"=>$param["_id"]))->sort(array("yhdIdx"=>1));
+	$zgd["huowu"] = c2a($cur);
 	echo  jsonEncode($fhd);
 }else if("baocun" == $param["caozuo"]){
-	$yanhuodan = $param["yanhuodan"];
-	$id = $yanhuodan["_id"];
-	coll("yanhuodan")->update(array("_id"=>$id),array('$set'=>array("huowu"=>$yanhuodan["huowu"],"yanhuoshougao"=>$yanhuodan["yanhuoshougao"])));
+	$yanhuodan = $param["yanhuodan"];	
+	coll("huowu")->update(array("yanhuodan"=>$yanhuodan["_id"]),array('$pull'=>array("yanhuodan"=>$yanhuodan["_id"])),array("multiple"=>true));
+	foreach($yanhuodan["huowu"] as $huowu){
+		coll("huowu")->update(array("_id"=>$huowu["_id"]),array('$push'=>array("yanhuodan"=>$yanhuodan["_id"]),'$set'=>array("yhdIdx"=>$huowu["yhdIdx"])));
+	}
+	unset($yanhuodan["huowu"]);
+	coll("yanhuodan")->save($yanhuodan);
 	echo '{"success":true}';
 }else if("chaxunhuowu" == $param["caozuo"]){
 	$fhdId = $param["option"]["fhdId"];
