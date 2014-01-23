@@ -7,16 +7,16 @@ checkuser();
 
 $param = getJson();
 if("xinjian" == $param["caozuo"]){
-	$liucheng = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"新建","time"=>time());
-	$yanhuodan = array("chuangjianzhe"=>(int)$_SESSION["user"]["_id"],"zhuangtai"=>"新建","liucheng"=>array($liucheng));
-	$d = "YHD".date("ymd",time());
-	$n = coll("yanhuodan")->count(array("_id"=>array('$regex'=>"^".$d."")));
-	$yanhuodan["_id"] = $d.".".($n+1);
-	coll("yanhuodan")->save($yanhuodan);
+	$liucheng = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"制单","time"=>time());
+	$zhuangguidan = array("chuangjianzhe"=>(int)$_SESSION["user"]["_id"],"zhuangtai"=>"制单","liucheng"=>array($liucheng));
+	$d = "ZGD".date("ymd",time());
+	$n = coll("zhuangguidan")->count(array("_id"=>array('$regex'=>"^".$d."")));
+	$zhuangguidan["_id"] = $d.".".($n+1);
+	coll("zhuangguidan")->save($zhuangguidan);
 	echo '{"success":true}';
 }else if("chaxun" == $param["caozuo"]){
 	$query = array();
-	$cur = coll("yanhuodan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	$cur = coll("zhuangguidan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("shenqingshouli" == $param["caozuo"]){
 	$liucheng  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"申请受理","time"=>time());
@@ -49,7 +49,7 @@ if("xinjian" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("getbyid" == $param["caozuo"]){
 	$query = array("_id"=>$param["_id"]);
-	$fhd = coll("yanhuodan")->findOne($query);
+	$fhd = coll("zhuangguidan")->findOne($query);
 	echo  jsonEncode($fhd);
 }else if("baocun" == $param["caozuo"]){
 	$yanhuodan = $param["yanhuodan"];
