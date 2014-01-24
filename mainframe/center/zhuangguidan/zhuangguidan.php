@@ -20,32 +20,32 @@ if("xinjian" == $param["caozuo"]){
 	echo  cur2json($cur);
 }else if("shenqingshouli" == $param["caozuo"]){
 	$liucheng  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"申请受理","time"=>time());
-	$yanhuodan = coll("yanhuodan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"申请受理")));
+	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"申请受理")));
 	echo '{"success":true}';
 }else if("huitui" == $param["caozuo"]){
 	coll("zhuangguidan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"制单"),'$pop'=>array("liucheng"=>1),'$unset'=>array("jiaodanzhe"=>1)));
 	echo '{"success":true}';
 }else if("zuofei" == $param["caozuo"]){
 	$zuofeiliucheng  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
-	$yanhuodan = coll("yanhuodan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"作废")));
+	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"作废")));
 	echo '{"success":true}';
 }else if("jiaodan" == $param["caozuo"]){
 	$liucheng  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"交单","time"=>time());
-	$yanhuodan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"交单","jiaodanzhe"=>(int)$_SESSION["user"]["_id"])));
+	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"交单","jiaodanzhe"=>(int)$_SESSION["user"]["_id"])));
 	echo '{"success":true}';
 }else if("shenqingshenhe" == $param["caozuo"]){
 	$zuofeiliucheng  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"申请审核","time"=>time());
-	$yanhuodan = coll("yanhuodan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"申请审核")));
+	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"申请审核")));
 	echo '{"success":true}';
 }else if("quxiaoshenqingshenhe" == $param["caozuo"]){
-	coll("yanhuodan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"受理"),'$pop'=>array("liucheng"=>1)));
+	coll("zhuangguidan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"受理"),'$pop'=>array("liucheng"=>1)));
 	echo '{"success":true}';
 }else if("shenhe" == $param["caozuo"]){
-	$zuofeiliucheng = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"审核","time"=>time());
-	$yanhuodan = coll("yanhuodan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"审核")));
+	$liucheng = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"审核","time"=>time());
+	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"审核","shenhezhe"=>(int)$_SESSION["user"]["_id"])));
 	echo '{"success":true}';
 }else if("quxiaoshenhe" == $param["caozuo"]){
-	coll("yanhuodan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"申请审核"),'$pop'=>array("liucheng"=>1)));
+	coll("zhuangguidan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"申请审核"),'$unset'=>array("shenhezhe"=>1),'$pop'=>array("liucheng"=>1)));
 	echo '{"success":true}';
 }else if("getbyid" == $param["caozuo"]){
 	$query = array("_id"=>$param["_id"]);
