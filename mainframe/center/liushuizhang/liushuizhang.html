@@ -102,24 +102,21 @@
 		</div>
 	</td></tr></table>
 		<div id="liushuizhangmingxi" style="margin-top:10px">
-			<div style='background-color:#eee'>装柜单明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn" style="display:none">保存</span></div>
+			<div style='background-color:#eee'>流水账明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn" style="display:none">保存</span></div>
 			<div>
-				编号：<input type="text" id="lsz_bianhao" class="plainInput" readonly size=12 />&nbsp;柜号：<input type="text" id="lsz_guihao" class="plainInput" style="font-size:16px;font-weight:bolder;color:brown" readonly size=2 />&nbsp;装柜日期：<input type="text" id="lsz_zhuangguiriqi" class="plainInput" style="cursor:pointer" readonly size=6 />
+				流水号：<input type="text" id="lsz_liushuihao" class="plainInput" readonly size=12 />，金额：<input type="text" id="lsz_jine" class="plainInput" readonly size=6 />元，付款日期：<input type="text" id="lsz_fukuanriqi" class="plainInput" style="cursor:pointer" readonly size=8 />，科目：<input type="text" id="lsz_kemu" class="plainInput" style="cursor:pointer" readonly size=8 />
 			</div>
-			<table id="huowutable">
-				<tr><th></th><th>货物编号</th><th>供货商</th><th>规格</th><th>单位</th><th>数量</th><th>件数</th><th>验货单</th><th>注</th></tr>
-				<tr class="tr_huowu" >
-					<td><span id="shanchuhuowu" class="plainBtn" title="删除货物">[-]</span>&nbsp;<span id="shangyi" class="plainBtn" title="上移">[↑]</span></td>
-					<td id="td_huowubianhao" style="cursor:pointer;color:brown">发货单</td>
-					<td id="td_gonghuoshang">供货商</td>
-					<td id="td_guige">规格</td>
-					<td id="td_danwei">单位</td>
-					<td id="td_shuliang">数量</td>
-					<td id="td_jianshu">件数</td>
-					<td id="td_yanhuodan"></td>
-					<td id="td_zhu">注</td></tr>
+			<table>
+				<tr><td><div style="border:1px solid gray">
+					付款方：<br/>
+					账户：
+				</div></td><td><div style="border:1px solid gray">
+					收款方：<br/>
+					账户：
+				</div></td></tr>
 			</table>
-			<span class="plainBtn" id="tianjiahuowu" title="添加货物">[+]</span>
+			备注：
+			<div></div>
 		</div>
 		<div id="liuyan" style="margin-top:150px">
 			<span class="plainBtn">留言</span>
