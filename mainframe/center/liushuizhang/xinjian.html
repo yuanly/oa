@@ -1,0 +1,22 @@
+﻿<html>
+	<head>
+	<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=0"> 
+	<title>新建流水账</title>
+	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../../../js/server.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(function(){
+			postJson("./liushuizhang.php",{caozuo:"xinjian"},function(fhd){
+				window.open("liushuizhang.html?cmd=chaxun","_self");
+			});		
+		});
+	</script>
+	<style>
+	</style>
+</head>
+<body style="margin:0px;padding:0px">
+	这个页面不需要停留，直接自动跳转。
+</body>
+</html>
