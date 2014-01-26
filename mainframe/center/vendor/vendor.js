@@ -1,4 +1,5 @@
 ﻿/*
+TODO 把商家并到联系人collections中，作为特定类型的联系人！
 {
 	_id:"xxx",
 	mingchen:"xxx",

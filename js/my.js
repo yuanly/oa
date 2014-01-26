@@ -997,6 +997,9 @@ jQuery.fn.dataInc = function(name,value){
  		var ret = obj;
  		for(var i=0;i<fields.length;i++){
  			ret = ret[fields[i]];
+ 			if(!ret){
+ 				return "";
+ 			}
  		}
  		return ret;
  }
