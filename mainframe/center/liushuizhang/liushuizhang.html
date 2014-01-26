@@ -104,53 +104,43 @@
 		<div id="liushuizhangmingxi" style="margin-top:10px">
 			<div style='background-color:#eee'>流水账明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn" style="display:none">保存</span></div>
 			<div>
-				流水号：<input type="text" id="lsz_liushuihao" class="plainInput" readonly size=12 />，金额：<input type="text" id="lsz_jine" class="plainInput" readonly size=6 />元，付款日期：<input type="text" id="lsz_fukuanriqi" class="plainInput" style="cursor:pointer" readonly size=8 />，科目：<input type="text" id="lsz_kemu" class="plainInput" style="cursor:pointer" readonly size=8 />
+				流水号：<input type="text" id="lsz_liushuihao" class="plainInput1" readonly size=12 />，金额：<input type="text" id="lsz_jine" class="plainInput" readonly size=6 />元，付款日期：<input type="text" id="lsz_fukuanriqi" class="plainInput" style="cursor:pointer" readonly size=8 />，科目：<input type="text" id="lsz_kemu" class="plainInput list" style="cursor:pointer" readonly list=kemulist size=8 />
 			</div>
 			<table>
-				<tr><td><div style="border:1px solid gray">
-					付款方：<br/>
-					账户：
-				</div></td><td><div style="border:1px solid gray">
-					收款方：<br/>
-					账户：
+				<tr><td><div style="border:1px solid gray;padding:5px">
+					付款方：<input type="text" id="lsz_fukuanfang" class="plainInput" style="cursor:pointer" readonly size=24 /><br/>
+					账户：<input type="text" id="lsz_fukuanfangzhanghu" class="plainInput" style="font-size:14px;cursor:pointer" readonly size=48 />
+				</div></td><td><div style="border:1px solid gray;padding:5px">
+					收款方：<input type="text" id="lsz_shoukuanfang" class="plainInput" style="cursor:pointer" readonly size=24 /><br/>
+					账户：<input type="text" id="lsz_shoukuanfangzhanghu" class="plainInput" style="font-size:14px;cursor:pointer" readonly size=48 />
 				</div></td></tr>
 			</table>
-			备注：
-			<div></div>
+			<div style="margin-top:5px">
+				备注：<br/>
+				<div id="beizhu"></div>
+			</div>
 		</div>
 		<div id="liuyan" style="margin-top:150px">
 			<span class="plainBtn">留言</span>
 		</div>
 	</div>
-		<datalist id="danweilist">
-			<option value="码"/>
-			<option value="米"/>
-			<option value="件"/>
-			<option value="KG"/>
-			<option value="张"/>
+		<datalist id="kemulist">
+			<option value="货款"/>
+			<option value="开票"/>
+			<option value="泰国进账"/>
+			<option value="薪金"/>
+			<option value="办公费"/>
+			<option value="社保"/>
+			<option value="租金"/>
+			<option value="运费"/>
+			<option value="活动费"/>
+			<option value="银行手续费"/>
+			<option value="代付"/>
+			<option value="利息"/>
+			<option value="贷款"/>
+			<option value="还贷"/>
+			<option value="个人消费"/>
+			<option value="其他"/>
 		</datalist>
-	<div style="display:none;position:absolute;z-index:100;border:1px solid gray;background-color:white;" id="sel_ctnr">
-		<div style="width:100%;background-color:#99ccff;text-align:center;">选择发货单货物</div>
-		<div style="padding:10px;min-width:600px">
-			<div>
-					<table style="width:100%"><tr><td style="text-align:left"><input class="plainInput" id="opt_huowuId"/></td><td style="text-align:right"><span class="plainBtn" id="guanbi_sel_fahuodan">关闭</span></td></tr></table>
-					<table id="sel_fahuodan">
-						<tr><th></th><th>货物编号</th><th>供货商</th><th>规格</th><th>单位</th><th>数量</th><th>件数</th><th>备注</th><th>验货单</th></tr>
-						<tr class="tmpl_fahuodanhuowu" style="cursor:pointer">
-							<td id="td_zhuangtai"></td>
-							<td id="td_huowubianhao"></td>
-							<td id="td_gonghuoshang"></td>
-							<td id="td_guige"></td>
-							<td id="td_danwei"></td>
-							<td id="td_shuliang"></td>
-							<td id="td_jianshu"></td>
-							<td id="td_zhu"></td>
-							<td id="td_yanhuodan"></td>
-						</tr>
-					</table>
-					<div style="text-align:right"><span class="plainBtn" id="sel_fahuodan_pager">更多...</span></div>
-			</div> 
-		</div>
-	</div>
 </body>
 </html>
