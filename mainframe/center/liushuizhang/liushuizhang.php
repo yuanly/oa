@@ -38,17 +38,10 @@ if("xinjian" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("getbyid" == $param["caozuo"]){
 	$query = array("_id"=>$param["_id"]);
-	$zgd = coll("liushuizhang")->findOne($query);
-	$cur = coll("huowu")->find(array("liushuizhang"=>$param["_id"]))->sort(array("zgdIdx"=>1));
-	$zgd["huowu"] = c2a($cur);
-	echo  jsonEncode($zgd);
+	$lsz = coll("liushuizhang")->findOne($query);
+	echo  jsonEncode($lsz);
 }else if("baocun" == $param["caozuo"]){
 	$liushuizhang = $param["liushuizhang"];	
-	coll("huowu")->update(array("liushuizhang"=>$liushuizhang["_id"]),array('$unset'=>array("liushuizhang"=>1)),array("multiple"=>true));
-	foreach($liushuizhang["huowu"] as $huowu){
-		coll("huowu")->update(array("_id"=>$huowu["_id"]),array('$set'=>array("liushuizhang"=>$liushuizhang["_id"],"zgdIdx"=>$huowu["zgdIdx"])));
-	}
-	unset($liushuizhang["huowu"]);
 	coll("liushuizhang")->save($liushuizhang);
 	echo '{"success":true}';
 }

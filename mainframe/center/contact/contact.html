@@ -52,8 +52,10 @@
 	<div class="ui-layout-center">
 		<table align=center style="margin-top:20px;line-height:40px;padding:10px;padding-top:2px;border:1px solid #ddd">
 			<tr id="detailheader" style="background-color:#eee;line-height:25px;"><td align=center ><span id="bianji" class="plainBtn">编辑</span><span id="tijiao" class="plainBtn  cBianJi">提交</span></td></tr>
-			<tr><td><span>编号：<span><div id="bianhao" style="color:#660033;display:inline-block;width:65px;text-decoration:underline">【新增】</div><span style="margin-left:10px">名称：</span><input id="mingchen" class="plainInput handwrite" readonly  type="text" size=16/><span style="margin-left:10px">商家：</span><input id="shangjia" class="plainInput" readonly  type="text" size=27 style="cursor:pointer"/><span style="margin-left:20px">岗位：</span><input id="gangwei" class="plainInput" type="text" size=8 readonly style="cursor:pointer" /></td></tr>
+			<tr><td><span>编号：<span><div id="bianhao" style="color:#660033;display:inline-block;width:65px;text-decoration:underline">【新增】</div>类型：<input type="text" class="plainInput list" id="leixing" size=4 list="leixinglist" readonly />&nbsp;&nbsp;<span style="margin-left:10px">名称：</span><input id="mingchen" class="plainInput handwrite" readonly  type="text" size=16/></td></tr>
+				<tr><td>商家：<input id="shangjia" class="plainInput" readonly  type="text" size=32 style="cursor:pointer"/><span style="margin-left:20px">职务：</span><input id="zhiwu" class="plainInput list" list="zhiwulist" type="text" size=8 readonly style="cursor:pointer" /></td></tr>
 			<tr><td><span>地址：</span><input id="dizhi" class="plainInput handwrite" type="text" style="width:650px" readonly /></td></tr>
+			<tr><td>验货地址：<input id="yanhuodizhi" class="plainInput" type="text"  style="width:615px" readonly /></td></tr>
 			<tr><td>
 				<div style="vertical-align:top;">
 					电话：
@@ -68,7 +70,7 @@
 					帐户：
 					<div id="zhanghuliebiao" style="display:inline-block;font-size:80%">
 						<div id="zhanghu_tmpl" class="zhanghu" style="line-height:20px;margin-bottom:15px" >
-							银行：<input id="yinhang" type="text" class="plainInput yinhang" size=20 style="cursor:pointer" readonly />
+							银行：<input id="yinhang" type="text" class="plainInput yinhang list" list="yinhanglist" size=20 style="cursor:pointer" readonly />
 							网点：<input id="wangdian" type="text" class="plainInput handwrite" size=40 /><br/>
 							户名：<input id="huming" type="text" class="plainInput handwrite" size=20 />
 							帐号：<input id="zhanghao" type="text" class="plainInput handwrite" size=40 />
@@ -87,5 +89,40 @@
 			</td></tr>
 		</table>
 	</div>
+		<datalist id="leixinglist">
+			<option value="个人"/>
+			<option value="商家"/>
+		</datalist>
+		<datalist id="zhiwulist">
+			<option value="老板"/>
+			<option value="老板娘"/>
+			<option value="司机"/>
+			<option value="经理"/>
+			<option value="主管"/>
+			<option value="财务"/>
+			<option value="销售"/>
+			<option value="业务"/>
+			<option value="跟单"/>
+			<option value="小弟"/>
+			<option value="小妹"/>
+			<option value="仓管"/>
+			<option value="职员"/>
+		</datalist>
+		<datalist id="yinhanglist">
+			<option value="农业银行"/>
+			<option value="建设银行"/>
+			<option value="工商银行"/>
+			<option value="中国银行"/>
+			<option value="光大银行"/>
+			<option value="交通银行"/>
+			<option value="平安银行"/>
+			<option value="商业银行"/>
+			<option value="农商银行"/>
+			<option value="招商银行"/>
+			<option value="广发银行"/>
+			<option value="民生银行"/>
+			<option value="中信银行"/>
+			<option value="邮政储蓄银行"/>
+		</datalist>
 </body>
 </html>

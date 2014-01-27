@@ -1,4 +1,21 @@
-﻿$(function(){
+﻿/*
+{
+	_id:"xx",
+	access:111232,
+	mingcheng:"xxx",
+	dizhi:"xxx",
+	beizhu:"xxx",
+	dianhualiebiao:[],
+	zhanghuliebiao:[],
+	shangjia:{_id:"xx",mingcheng:"xx"},	//如果是商家类型，则填自己
+	leixing:"xx",//geren（个人） shangjia（商家）
+	yanyuodizhi:"xxx",//商家才需要
+	zhiwu:"xxx"//个人才需要
+}
+商家作为特殊的联系人。
+*/
+
+$(function(){
 	var currContact = null;
 	var limit = 20;
 	//定义左右布局
@@ -18,11 +35,11 @@
 	});
 	//银行选中
 	//$("#zhanghu_tmpl > #yinhang").click(function(event){
-	function yinhangclickhandler(event){
-		setSelector2(event,["农业银行","建设银行","工商银行","光大银行","商业银行","农商银行","交通银行","中国银行"],function(yinhang){
-			$(this).val(yinhang);
-		});
-	}
+//	function yinhangclickhandler(event){
+//		setSelector2(event,["农业银行","建设银行","工商银行","光大银行","商业银行","农商银行","交通银行","中国银行"],function(yinhang){
+//			$(this).val(yinhang);
+//		});
+//	}
 
 		//设置记录点击处理，在模板被剥离前。
 	$(".tr_contact").click(function(){
@@ -31,7 +48,7 @@
 	var tr_contact = $(".tr_contact").detach();
 	//剥离动态模板。注：剥离必须在以上事件设置之后进行。
 	var telTmpl = $("#tel_tmpl").detach();
-	$(".yinhang").click(yinhangclickhandler);
+//$(".yinhang").click(yinhangclickhandler);
 	var zhanghuTmpl = $("#zhanghu_tmpl").detach();
 	
 	//编辑器定义 “图片”和“地图”按钮
@@ -104,12 +121,12 @@
 			}
 		);
 	}
-	//岗位选择
-	function gangweiclickhandler(event){
-		setSelector2(event,["司机","老板","财务","业务","经理"],function(gangwei){
-			$("#gangwei").val(gangwei);
-		});
-	}
+//	//岗位选择
+//	function zhiwuclickhandler(event){
+//		setSelector2(event,["司机","老板","财务","业务","经理"],function(zhiwu){
+//			$("#zhiwu").val(zhiwu);
+//		});
+//	}
 	//将contact对象设置到表单 支持空联系人（即新增联系人）
 	function obj2form(contact){
 		currContact = contact;
@@ -125,7 +142,7 @@
 		}else{
 			$("#shangjia").val("");
 		}
-		$("#gangwei").vals(contact.gangwei);
+		$("#zhiwu").vals(contact.zhiwu);
 		$("#dizhi").vals(contact.dizhi);
 		$("#beizhu").vals(contact.beizhu);
 		$("#beizhu2").html(contact.beizhu);
@@ -164,7 +181,7 @@
 		$(".jia").show();
 		
 		$("#shangjia").click(shangjiaclickhandler);
-		$("#gangwei").click(gangweiclickhandler);
+//		$("#zhiwu").click(zhiwuclickhandler);
 		$(".yinhang").click(yinhangclickhandler);
 	}
 	//进入只读状态 
@@ -175,7 +192,7 @@
 		$("#bianji").show();
 		$("#tijiao").hide();
 		$("#shangjia").unbind("click");
-		$("#gangwei").unbind("click");
+		$("#zhiwu").unbind("click");
 		$(".yinhang").unbind("click");
 		$(".jian").hide();
 		$(".jia").hide();
@@ -197,7 +214,7 @@
 				contact.shangjia._id = $("#shangjia").data("shangjia")._id;
 				contact.shangjia.mingchen = $("#shangjia").data("shangjia").mingchen;
 			}
-			contact.gangwei = $("#gangwei").val().trim();
+			contact.zhiwu = $("#zhiwu").val().trim();
 			contact.dizhi = $("#dizhi").val().trim();
 			contact.beizhu = $("#beizhu").val().trim();
 			if($("#dianhualiebiao").find(".tel").length>0){ 
