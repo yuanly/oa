@@ -7,15 +7,14 @@ checkuser();
 
 $contact = getJson();
 if(isset($contact["_id"])){//ÐÞ¸Ä
-	$_id = (int)$contact["_id"];
+	$_id = $contact["_id"];
 	unset($contact["_id"]);
 	$contact["access"] = time();
 	//var_dump($contact);
-	coll("contact")->update(array("_id"=>$_id),array('$set'=>$contact));
-	
+	coll("contact")->update(array("_id"=>$_id),array('$set'=>$contact));	
 	echo '{"success":true}';
 }else{//ÐÂÔö
-	$contact["_id"] = (int)getId("contact");
+	$contact["_id"] = "LXR".getId("contact");
 	$contact["access"] = time();
 	coll("contact")->save($contact);
 	echo '{"success":true}';

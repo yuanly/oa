@@ -2,12 +2,12 @@
 {
 	_id:"xx",
 	access:111232,
-	mingcheng:"xxx",
+	mingchen:"xxx",
 	dizhi:"xxx",
 	beizhu:"xxx",
 	dianhualiebiao:[],
 	zhanghuliebiao:[],
-	shangjia:{_id:"xx",mingcheng:"xx"},	//如果是商家类型，则填自己
+	shangjia:{_id:"xx",mingchen:"xx"},	//如果是商家类型，则填自己
 	leixing:"xx",//geren（个人） shangjia（商家）
 	yanyuodizhi:"xxx",//商家才需要
 	zhiwu:"xxx"//个人才需要
@@ -49,7 +49,6 @@ $(function(){
 	//剥离动态模板。注：剥离必须在以上事件设置之后进行。
 	var telTmpl = $("#tel_tmpl").detach();
 //$(".yinhang").click(yinhangclickhandler);
-	var zhanghuTmpl = $("#zhanghu_tmpl").detach();
 	
 	//编辑器定义 “图片”和“地图”按钮
 		 var plugins={
@@ -106,27 +105,25 @@ $(function(){
 	$("#jiazhanghu").click(function(){
 		 var zh = zhanghuTmpl.clone(true);
 		 zh.find(".handwrite").removeAttr("readonly");
+		 zh.find(".yinhang").removeAttr("readonly");
 		$(this).before(zh);
 	});
 	//商家选择
 	function shangjiaclickhandler(event){
 		var limit = 20;
 		setSelector(event,function(page,option,callback){
-				postJson("../vendor/vendors.php",{offset:page*limit,limit:limit,option:option},function(vendors){
+				postJson("lianxiren.php",{caozuo:"chashangjia",offset:page*limit,limit:limit,option:option},function(vendors){
 					callback(vendors);
 				});
 			},["_id","mingchen"],function(vendor){
 				$("#shangjia").val(vendor.mingchen);
 				$("#shangjia").data("shangjia",vendor);
+				if("" == $("#dizhi").val().trim()){
+					$("#dizhi").vals(vendor.dizhi);
+				}
 			}
 		);
-	}
-//	//岗位选择
-//	function zhiwuclickhandler(event){
-//		setSelector2(event,["司机","老板","财务","业务","经理"],function(zhiwu){
-//			$("#zhiwu").val(zhiwu);
-//		});
-//	}
+	} 
 	//将contact对象设置到表单 支持空联系人（即新增联系人）
 	function obj2form(contact){
 		currContact = contact;
@@ -135,14 +132,21 @@ $(function(){
 		}else{
 			$("#bianhao").text("【新增】");
 		};
+		$("#leixing").vals(contact.leixing);
 		$("#mingchen").vals(contact.mingchen);
 		if(contact.shangjia){
-			$("#shangjia").vals(contact.shangjia.mingchen);
 			$("#shangjia").data("shangjia",contact.shangjia);
-		}else{
-			$("#shangjia").val("");
+			$("#shangjia").vals(contact.shangjia.mingchen);
 		}
 		$("#zhiwu").vals(contact.zhiwu);
+		$("#yanhuodizhi").vals(contact.yanhuodizhi);
+		if("个人" == contact.leixing){
+			$("#tr_geren").show();
+			$("#tr_shangjia").hide();
+		}else if("商家" == contact.leixing){
+			$("#tr_geren").hide();
+			$("#tr_shangjia").show();
+		}
 		$("#dizhi").vals(contact.dizhi);
 		$("#beizhu").vals(contact.beizhu);
 		$("#beizhu2").html(contact.beizhu);
@@ -154,10 +158,8 @@ $(function(){
 			tel.find("input").val(dianhua);
 			$("#dianhualiebiao").append(tel);
 		});
-		$("#dianhualiebiao").append(jiadianhua);
+		$("#dianhualiebiao").append(jiadianhua);		
 		
-		
-		var jiazhanghu = $("#jiazhanghu").detach();
 		$("#zhanghuliebiao").empty();
 		each(contact.zhanghuliebiao,function(n,zhanghu){
 			var zh = zhanghuTmpl.clone(true);
@@ -167,9 +169,15 @@ $(function(){
 			zh.find("#zhanghao").val(zhanghu.zhanghao);
 			$("#zhanghuliebiao").append(zh);
 		});
-		$("#zhanghuliebiao").append(jiazhanghu);
-		
+		$("#zhanghuliebiao").append(jiazhanghu);		
 	}
+	$("#leixing").bind("input",function(){
+		if("个人" == $(this).val()){
+			$("#tr_geren").show();$("#tr_shangjia").hide();
+		}else if("商家" == $(this).val()){
+			$("#tr_geren").hide();$("#tr_shangjia").show();
+		}
+	});
 	//进入编辑状态。
 	function editContact(){
 		$(".handwrite").removeAttr("readonly"); 
@@ -177,12 +185,11 @@ $(function(){
 		$("#taContainer").show();
 		$("#bianji").hide();
 		$("#tijiao").show();
+		$("#fangqi").show();
 		$(".jian").show();
 		$(".jia").show();
-		
-		$("#shangjia").click(shangjiaclickhandler);
-//		$("#zhiwu").click(zhiwuclickhandler);
-		$(".yinhang").click(yinhangclickhandler);
+		$(".plainInput").removeAttr("readonly");
+		$("#shangjia").click(shangjiaclickhandler); 
 	}
 	//进入只读状态 
 	function readonlyContact(){
@@ -191,30 +198,41 @@ $(function(){
 		$("#taContainer").hide();
 		$("#bianji").show();
 		$("#tijiao").hide();
+		$("#fangqi").hide();
 		$("#shangjia").unbind("click");
 		$("#zhiwu").unbind("click");
 		$(".yinhang").unbind("click");
 		$(".jian").hide();
 		$(".jia").hide();
 	}
-		//新增联系人
-	$("#newContact").click(function(){
+	function newContact(){
 		obj2form({})
 		editContact();
-	});
+	}
+		//新增联系人
+	$("#newContact").click(newContact);
 	//将表单的内容转换为contact对象
 	function form2obj(){
 			var contact = {};
 			if("【新增】"!=$("#bianhao").text()){
 				contact._id = $("#bianhao").text().trim();
 			}
+			contact.leixing = $("#leixing").val().trim();
 			contact.mingchen = $("#mingchen").val().trim();
-			if($("#shangjia").data("shangjia")){
-				contact.shangjia = {};
-				contact.shangjia._id = $("#shangjia").data("shangjia")._id;
-				contact.shangjia.mingchen = $("#shangjia").data("shangjia").mingchen;
+			if("商家" == contact.leixing){
+				contact.yanhuodizhi = $("#yanhuodizhi").val().trim();
+				contact.zhiwu = undefined;contact.shangjia = undefined;
+				contact.shangjia = {_id:contact._id,mingchen:contact.mingchen};
+			}else if("个人" == contact.leixing){
+				contact.yanhuodizhi = undefined;
+				contact.zhiwu = $("#zhiwu").val().trim();
+				var sj = $("#shangjia").data("shangjia");
+				if(sj){
+					contact.shangjia = {_id:sj._id,mingchen:sj.mingchen};
+				}else{
+					contact.shangjia = undefined;
+				}
 			}
-			contact.zhiwu = $("#zhiwu").val().trim();
 			contact.dizhi = $("#dizhi").val().trim();
 			contact.beizhu = $("#beizhu").val().trim();
 			if($("#dianhualiebiao").find(".tel").length>0){ 
@@ -303,6 +321,13 @@ $(function(){
 			$("#tableheader").click();
 		});
 	}
+	$("#fangqi").click(function(){
+		if("【新增】" != $("#bianhao").text().trim()){
+			showDetail($("#bianhao").text().trim());	
+		}else{
+			$("#newContact").click();
+		}
+	});
 		//显示指定商家详情
 	function showDetail(_id){
 		postJson("contacts.php",{_id:_id},function(contact){
@@ -334,4 +359,7 @@ $(function(){
 	});
 	
 	
+	$(".list").dblclick(function(){$(this).val("");});
+	var zhanghuTmpl = $("#zhanghu_tmpl").detach();
+	var jiazhanghu = $("#jiazhanghu").detach();
 });
