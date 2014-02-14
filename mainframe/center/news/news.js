@@ -167,9 +167,20 @@ $(function(){
 		$("#getMore").data("type",null);
 	});
 	
+	$("#genggai").click(function(){
+		if($("#type2").val() == currNews.type){
+			tip($(this),"请先设置为不同的类型！",1500);
+		}else{
+			postJson("news.php",{caozuo:"gaileixing",_id:currNews._id,leixing:$("#type2").val()},function(vendors){
+				tip($(this),"更改消息类型成功！",1500);
+			});
+		}
+	});
 	$("#shanchu").click(function(){
 		ask(null,"一旦删除将无法恢复，真的要删除该消息吗？",function(){
-			console.log("imhere");
+				postJson("news.php",{caozuo:"shanchu",_id:currNews._id},function(vendors){
+					getnews(0,null);
+				});
 		});
 	});
 	//消息列表
@@ -241,6 +252,11 @@ var louceng=2;
 var currNews = null;
 function setNewsDetail(theNew){
 	currNews = theNew;
+	if(currNews.user != getTheUser()._id){
+		$("#ownerAction").hide();
+	}else{
+		$("#ownerAction").show();
+	}
 	try{
 		$(".ui-layout-center > #fabuxiaoxi").remove();
 		$("#newsDetailContainer").show();
@@ -248,6 +264,7 @@ function setNewsDetail(theNew){
 		var first_tr = $("#newsDetail #first_tr").clone();
 		$("#newsDetail table").empty();
 		$("#d_title").text(theNew.title); 
+		$("#type2").val(theNew.type);
 		first_tr.find("#d_name").text(getUserName(theNew.user));
 		first_tr.find("#d_date").text(new Date(theNew.time*1000).format("yyyy-MM-dd"));
 		first_tr.find("#d_time").text(new Date(theNew.time*1000).format("hh:mm:ss"));

@@ -26,7 +26,21 @@
 <div class="ui-layout-center">
 	<div id="newsDetailContainer">
 		<div id="newsDetail">
-			<div style="width:100%;text-align:center;"><span style="font-weight:bold;line-height:35px;padding:5 10px;font-size:16px;background-color:#4178B0;color:white" id="d_title">title</span>&nbsp;<span style="color:blue;font-size:0.5em;cursor:pointer" id="shanchu" >【删除】</span></div>
+			<div style="width:100%;text-align:center;">
+				<span style="font-weight:bold;line-height:35px;padding:5 10px;font-size:16px;background-color:#4178B0;color:white" id="d_title">title</span>
+				<div id="ownerAction">
+					<span style="color:blue;font-size:0.5em;cursor:pointer" id="shanchu" >【删除】</span>				
+				类型:<select id="type2">
+			<option value="消息">消息</option>
+			<option value="重要">重要</option>
+			<option value="确认版">确认版</option>
+			<option value="客户找">客户找</option>
+			<option value="急货">急货</option>
+			<option value="问题货">问题货</option>
+			<option value="教训">教训</option>
+		</select> <span class="plainBtn" title="更改消息类型" id="genggai">更改</span>
+		</div>
+			</div>
 			<table style="font-size:14px;color:#008000;">
 				<tr id="first_tr">
 				<td style="vertical-align:top">
