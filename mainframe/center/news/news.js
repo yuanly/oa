@@ -7,6 +7,8 @@ news:
   "_id" : 10,
   "user" : 1,
   "time" : 1379070598,
+  "read":2,
+  "reply":2,
   "last":13322
 }
 newsReply:
@@ -151,15 +153,25 @@ $(function(){
 	});
 	//消息列表过滤按钮
 	$(".filterBtn").click(function(){
+		$("#allNews").css("color","black");
+		$(".filterBtn").css("color","black");
+		$(this).css("color","white");
 		getnews(0,$(this).text());
 		$("#getMore").data("type",$(this).text());
 	})
 	
 	$("#allNews").click(function(){
+		$(".filterBtn").css("color","black");
+		$(this).css("color","white");
 		getnews(0,null);
 		$("#getMore").data("type",null);
 	});
 	
+	$("#shanchu").click(function(){
+		ask(null,"一旦删除将无法恢复，真的要删除该消息吗？",function(){
+			console.log("imhere");
+		});
+	});
 	//消息列表
 	getnews(0,null);	
 });
@@ -198,7 +210,7 @@ function new2tr(theNew){
 function getnews(page,type){
 	server.getnews(page,type,function(news){ 
 		if(news instanceof Array){
-			$("#newslist").empty();
+			$("#newslist").empty(); 
 			for(i=0;i<news.length;i++){
 				try{
 				$("#newslist").append(new2tr(news[i]));
@@ -216,6 +228,7 @@ function getnews(page,type){
 function setNewsReplyTr(reply){
 	var tr = $("#newsDetail #first_tr").clone();
 	tr.attr("id","");
+	tr.find("#louceng").text(louceng++);
 	tr.find("#d_name").text(getUserName(reply.user));
 	tr.find("#d_date").text(new Date(reply.time*1000).format("yyyy-MM-dd"));
 	tr.find("#d_time").text(new Date(reply.time*1000).format("hh:mm:ss"));
@@ -223,7 +236,11 @@ function setNewsReplyTr(reply){
 	tr.find("#d_content").html(reply.content); 
 	return tr;
 }
+
+var louceng=2;
+var currNews = null;
 function setNewsDetail(theNew){
+	currNews = theNew;
 	try{
 		$(".ui-layout-center > #fabuxiaoxi").remove();
 		$("#newsDetailContainer").show();
@@ -238,6 +255,7 @@ function setNewsDetail(theNew){
 		first_tr.find("#d_content").html(theNew.content);
 		$("#newsDetail table").append(first_tr);
 		//show replies
+		louceng=2;
 		server.getNewsReplies(theNew._id,function(replies){  
 			for(var i = 0; i<replies.length; i++){
 				var tr = setNewsReplyTr(replies[i]); 

@@ -491,7 +491,7 @@ jQuery.fn.dataInc = function(name,value){
  		'<div id="ask_box" class="circle_border_8" style="background-color:white;border:5px solid #ddd;padding:10px;">\
  			<table>\
  				<tr style="vertical-align:top">\
- 					<td><img src="./img/help.png"style="vertical-align:-7px;margin-right:10px"/></td>\
+ 					<td><img src="'+getDocRoot()+'img/help.png" style="vertical-align:-7px;margin-right:10px"/></td>\
  					<td><span id="msg_box"></span></td>\
  				</tr>\
  			</table>\
