@@ -7,6 +7,14 @@
 		bianji();
 	}
 	$("#xinzengyangban").click(xinzengyangban_handle);
+	$("#zhuangtai").dblclick(function(){
+		$(this).val("");
+		});
+	//检查是否有重复，若有重复则提示并清空
+	function bianhao_change(){
+		//TODO ...
+	}
+	$("#bianhao").change(bianhao_change);
 	//提交
 	function tijiao_handle(){
 		var yangban = form2obj();
