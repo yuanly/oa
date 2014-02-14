@@ -1,5 +1,19 @@
-﻿$(function(){
-	//{_id:"A232",taiguoxinghao:"",zhongguoxinghao:"",shangjia:{_id:1,mingchen:""},jiage:[beizhu:"",zhi:1.2],danwei:"",yijiazhe:2,yijiariqi:"2013/09/28",zhuantai:"",beizhu:""}
+﻿/*
+//
+{_id:"A232",
+	taiguoxinghao:"",
+	zhongguoxinghao:"",
+	shangjia:{_id:1,mingchen:""},
+	jiage:[beizhu:"",zhi:1.2],
+	danwei:"",
+	yijiazhe:2,
+	yijiariqi:"2013/09/28",
+	zhuantai:"",
+	beizhu:""
+}
+*/
+$(function(){
+	
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	//新增样板
 	function xinzengyangban_handle(){
