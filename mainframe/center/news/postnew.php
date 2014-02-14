@@ -9,6 +9,7 @@ $new = getJson();
 $new["_id"] = getId("news");
 $new["user"] = (int)$_SESSION["user"]["_id"];
 $new["time"] = time();
+$new["last"] = $new["time"];
 $ret = newsColl()->save($new);
 if(!$ret["err"]){
 	echo '{"success":true}';

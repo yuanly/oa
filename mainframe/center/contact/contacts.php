@@ -18,6 +18,9 @@ if(isset($param["_id"])){//特定联系人详情
 		if(!empty($param["option"]["shangjia"])){
 			$query["shangjia.mingchen"] = array('$regex'=>$param["option"]["shangjia"]);
 		}
+		if("y" == $param["option"]["onlyshangjia"]){
+			$query["leixing"] = "商家";
+		}
 	}
 	$cur = coll("contact")->find($query,array("beizhu"=>0))->sort(array("access"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	

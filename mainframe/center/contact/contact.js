@@ -101,13 +101,14 @@ $(function(){
 	$("#jiadianhua").click(function(){
 		$(this).before(telTmpl.clone(true));
 	});
-	//添加账户
-	$("#jiazhanghu").click(function(){
+	function tianjiazhanghu(){
 		 var zh = zhanghuTmpl.clone(true);
 		 zh.find(".handwrite").removeAttr("readonly");
 		 zh.find(".yinhang").removeAttr("readonly");
 		$(this).before(zh);
-	});
+	}
+	//添加账户
+	$("#jiazhanghu").click(tianjiazhanghu);
 	//商家选择
 	function shangjiaclickhandler(event){
 		var limit = 20;
@@ -124,6 +125,9 @@ $(function(){
 			}
 		);
 	} 
+	$("#jinshangjia").change(function(){
+		listContacts(0);
+		});
 	//将contact对象设置到表单 支持空联系人（即新增联系人）
 	function obj2form(contact){
 		currContact = contact;
@@ -169,7 +173,7 @@ $(function(){
 			zh.find("#zhanghao").val(zhanghu.zhanghao);
 			$("#zhanghuliebiao").append(zh);
 		});
-		$("#zhanghuliebiao").append(jiazhanghu);		
+		$("#zhanghuliebiao").append(jiazhanghu.clone(true));		
 	}
 	$("#leixing").bind("input",function(){
 		if("个人" == $(this).val()){
@@ -300,7 +304,11 @@ $(function(){
 			return;
 		}
 		$("#pager").data("offset",offset);
-		postJson("contacts.php",{offset:offset*limit,limit:limit,option:{"shangjia":$("#shangjiaoption").data("lastValue"),"mingchen":$("#mingchenoption").data("lastValue")}},function(contacts){
+		var onlyshangjia = "n";
+		if($("#jinshangjia").attr("checked")){
+			onlyshangjia="y";
+		}
+		postJson("contacts.php",{offset:offset*limit,limit:limit,option:{"onlyshangjia":onlyshangjia,"shangjia":$("#shangjiaoption").data("lastValue"),"mingchen":$("#mingchenoption").data("lastValue")}},function(contacts){
 			$("#contacttable .tr_contact").remove();
 			each(contacts,function(n,contact){
 				tr = tr_contact.clone(true);
@@ -309,7 +317,7 @@ $(function(){
 				tr.find("#td_mingchen").text(contact.mingchen);
 				tr.find("#td_dianhua").text(showdianhuas(contact.dianhualiebiao));
 				if(contact.shangjia){
-					tr.find("#td_shangjia").text(contact.shangjia.mingchen);
+					tr.find("#td_shangjia").text(contact.shangjia.mingchen).attr("title",contact.shangjia.mingchen);
 				}
 				tr.css("background-color",toggle("#deedde","#dedeed"));
 				$("#contacttable").append(tr);

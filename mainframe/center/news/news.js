@@ -1,4 +1,24 @@
-﻿var new_tr;
+﻿/*
+news:
+{
+  "title" : "test",
+  "type" : "消息",
+  "content" : "aafafafa倒萨是否",
+  "_id" : 10,
+  "user" : 1,
+  "time" : 1379070598,
+  "last":13322
+}
+newsReply:
+{
+  "newId" : 10,
+  "content" : "asdf &nbsp;adf撒旦法发",
+  "_id" : 3,
+  "user" : 1,
+  "time" : 1379070608
+}
+*/
+var new_tr;
 var currNew = null;
 $(function(){
 	 //编辑器定义  “图片”和“地图”按钮
@@ -52,7 +72,7 @@ $(function(){
 	})
 	//“提交”消息按钮 新增 回复
 	$("#submitNew").click(function(){
-		if("回复消息" == $("#dialog #handle_name").text()){
+		if("回复消息" == $("#handle_name").text()){ 
 			var reply ={newId:currNew._id,content:$("#editor").val().trim()};
 			if("" == reply.content){
 				ask3(null,"不能发空回复！")
@@ -163,7 +183,7 @@ function new2tr(theNew){
 	if(!theNew.updateTime){
 		theNew.updateTime = theNew.time;
 	}
-	tr.find("#updatetime").text(new Date(theNew.time*1000).format("yyyy-MM-dd hh:mm:ss"));
+	tr.find("#updatetime").text(new Date(theNew.last*1000).format("yyyy-MM-dd hh:mm:ss"));
 	tr.find("#readcount").text(theNew.read?theNew.read:0);
 	tr.find("#replycount").text(theNew.reply?theNew.reply:0);
 	

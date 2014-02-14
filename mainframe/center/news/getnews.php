@@ -7,8 +7,8 @@ $pagesize = 20;
 $page = $_REQUEST["page"];
 $type = $_REQUEST["type"];
 if($type){
-	$news = newsColl()->find(array("type"=>$type))->sort(array("time"=>-1))->skip($page * $pagesize)->limit($pagesize);
+	$news = newsColl()->find(array("type"=>$type))->sort(array("last"=>-1))->skip($page * $pagesize)->limit($pagesize);
 }else{
-	$news = newsColl()->find()->sort(array("time"=>-1))->skip($page * $pagesize)->limit($pagesize);	
+	$news = newsColl()->find()->sort(array("last"=>-1))->skip($page * $pagesize)->limit($pagesize);	
 } 
 echo json_encode(c2a($news));
