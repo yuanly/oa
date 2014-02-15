@@ -26,7 +26,10 @@ $(function(){
 		});
 	//检查是否有重复，若有重复则提示并清空
 	function bianhao_change(){
-		//TODO ...
+		var bh = $(this).val().trim(); 
+		if(bh != "" && currSample != null && bh != currSample._id){
+			postJson();//TODO ...	
+		}
 	}
 	$("#bianhao").change(bianhao_change);
 	//提交
@@ -244,6 +247,7 @@ $(function(){
 	} 
 	///////////////////////////////初始化/////////////////////////////////////////////
 	var limit = 20;
+	var currSample=null;
 	//定义左右布局
 	var layout = $("body").layout({
 		west__size:"auto",
