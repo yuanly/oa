@@ -17,6 +17,7 @@ $(function(){
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	//新增样板
 	function xinzengyangban_handle(){
+		currSample = null;
 		obj2form({});
 		bianji();
 	}
@@ -26,30 +27,42 @@ $(function(){
 		});
 	//检查是否有重复，若有重复则提示并清空
 	function bianhao_change(){
-		var bh = $(this).val().trim(); 
-		if(bh != "" && currSample != null && bh != currSample._id){
-			postJson();//TODO ...	
+		var bh = $("#bianhao").val().trim(); 
+		if(bh != "" && (currSample == null || bh != currSample._id)){
+			postJson("samples.php",{"caozuo":"sfchongfu","bianhao":bh},function(res){
+				if(res.chongfu){
+					$("#bianhao").val("");
+					tip($("#bianhao"),"编号重复，请重置！",1500);
+				}
+			});
 		}
 	}
 	$("#bianhao").change(bianhao_change);
 	//提交
 	function tijiao_handle(){
 		var yangban = form2obj();
-		if(!yangban._id){
-			tip(null,"样板编号不能为空！",1500);
-			return;
-		}
 		if(!yangban.zhongguoxinghao){
 			tip(null,"中国型号不能为空！",1500);
 			return;
 		}
-		postJson("sample.php",yangban,function(res){
-			if(res.success == true){
-				obj2form(yangban);
-				zhidu();
-				tip(null,"成功提交样板信息！",3000);
+		postJson("samples.php",{"caozuo":"sfchongfu","bianhao":bh},function(res){
+			if(res.chongfu){
+				$("#bianhao").val("");
+				tip($("#bianhao"),"编号重复，请重置！",1500);
 			}else{
-				ask3(null,res.err);
+				if(!yangban._id){
+					tip(null,"样板编号不能为空！",1500);
+					return;
+				}
+				postJson("sample.php",yangban,function(res){
+					if(res.success == true){
+						obj2form(yangban);
+						zhidu();
+						tip(null,"成功提交样板信息！",3000);
+					}else{
+						ask3(null,res.err);
+					}
+				});
 			}
 		});
 	}

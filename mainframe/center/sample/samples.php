@@ -15,6 +15,13 @@ if(isset($param["_id"])){//
 		}
 	}
 	echo jsonEncode($one);
+}else if(isset($param["caozuo"]) && "sfchongfu" == $param["caozuo"]){
+	$one = coll("yangban")->findOne(array("_id"=>$param["bianhao"]));
+	if($one){
+		echo '{"chongfu":true}';
+	}else{
+		echo '{"chongfu":false}';
+	}
 }else{//
 	$query = array();
 	if(!empty($param["option"])){
