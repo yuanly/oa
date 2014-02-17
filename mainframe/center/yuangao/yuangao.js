@@ -285,6 +285,7 @@
 			$("#xianshi #xs_beizhu").html(yg.beizhu);
 		}
 		shuaxindingdanliebiao();
+		liuyanElm.shuaxinliebiao({hostId:currYG._id,hostType:"yuangao"});
 	}
 	function shuaxindingdanliebiao(){
 		var jiegaozheid = null;
@@ -438,5 +439,6 @@
 		$("#optioncontainer").hide(); 
 	}
 	
+	var liuyanElm = $("#liuyan").liuyan({hostType:"yuangao",});
 	listYuangao(0,getUrl().showId);
 });
