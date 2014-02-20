@@ -13,11 +13,12 @@
 		kehu:"C",
 		yangban:{_id:"YB223",taiguoxinghao:"xxx",zhongguoxinghao:""},
 		gonghuoshang:{_id:"SJ131110",mingche:"大大"},
+		lianxiren:12,
 		gendanyuan:3,
 		xiadanshijian:13223,
 		beizhu:"xxx",
 		fudan:"fudanid",
-		zidan:["zidanid"]
+		zidan:["zidanid"],
 		huowu:[{guige:"xxx",shuliang:23,danwei:"KG"}...]}		
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
@@ -89,6 +90,17 @@
 		$(this).addClass("tr_selected");
 	}
 	$(".tr_dingdan").click(sel_dingdan);
+	$("#dd_lianxiren").click(sel_lianxiren);
+	function sel_lianxiren(event){
+		var limit = 20;
+		setSelector(event,function(page,option,callback){
+				postJson("dingdan.php",{"caozuo":"lianxiren",offset:page*limit,limit:limit,option:option},function(lianxirens){
+					callback(lianxirens);
+				});
+			},["_id","taiguoxinghao","mingchen","shangjia.mingchen"],function(lianxiren){
+				console.log(lianxiren);
+			},"1");
+	}
 	function sel_yangban(event){
 		var limit = 20;
 		setSelector(event,function(page,option,callback){

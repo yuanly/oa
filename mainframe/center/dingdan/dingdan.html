@@ -107,19 +107,19 @@
 				<div id="zidan"></div>
 			</div>
 			<div style='background-color:#eee'>订单明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn">保存</span></div>
-			<div>
-				编号：<input type="text" id="dd_bianhao" class="plainInput" readonly size=12 />&nbsp;&nbsp;
-				原稿：<input type="text" id="dd_yuangao" class="plainInput" readonly size=12 style="cursor:pointer"/>&nbsp;&nbsp;
-				客户：<input type="text" id="dd_kehu" class="plainInput" readonly size=2 />
+			<div style="width:500px">
+				编号：<input type="text" id="dd_bianhao" class="plainInput" readonly size=16 />&nbsp;&nbsp;
+				原稿：<input type="text" id="dd_yuangao" class="plainInput" readonly size=16 style="cursor:pointer"/>&nbsp;&nbsp;
+				客户：<input type="text" id="dd_kehu" class="plainInput" readonly size=7 />
 			</div>
-			<div>
-				样板：<input type="text" id="dd_yangban" class="plainInput" size=56 readonly style="cursor:pointer" /><br/>
-				供货商：<input type="text" id="dd_gonghuoshang" class="plainInput" size=43 readonly />
+			<div style="width:500px">
+				样板：<input type="text" id="dd_yangban" class="plainInput" size=69 readonly style="cursor:pointer" /><br/>
+				供货商：<input type="text" id="dd_gonghuoshang" class="plainInput" size=40 readonly />
 				联系人：<input type="text" id="dd_lianxiren" class="plainInput" size=10 readonly />
 			</div>
 			<table id="tb_huowu">
 				<!-- 发货分拆为二级表：单号 数量 金额 以及 总计 -->
-			<tr><th>序号</th><th>规格</th><th>数量</th><th>单位</th><th>单价<font style="font-size:70%">(元)</font></th><th>金额</th><th class="delete_huowu"> </th></tr>
+			<tr><th nowrap>序号</th><th nowrap>规格</th><th nowrap>数量</th><th nowrap>单位</th><th nowrap>单价<font style="font-size:70%">(元)</font></th><th nowrap>金额</th><th class="delete_huowu"> </th></tr>
 			<tr class="tmpl_huowu"><td id="mx_xuhao"></td><td><input id="mx_guige" class="plainInput editable" size=36 ></td><td><input id="mx_shuliang" size=4 class="plainInput editable"></td><td><input id="mx_danwei" size=2 class="plainInput mx_danwei" list="danweilist"></td><td><input id="mx_danjia" size=4 class="plainInput mx_danjia" readonly style="cursor:pointer"></td><td id="mx_jine"></td><td class="hw_cz"><span id="shanchuhuowu" class="plainBtn delete_huowu" style="font-size:80%">[ - ]</span></td></tr>
 			<tr id="new_huowu_item"><td colspan=5 class="hw_cz"><span id="zengjiahuowu" class="plainBtn" style="font-size:80%">[ + ]</span></td></tr>
 			<tr style="font-weight:bold"><td colspan=2 align=right>总量:</td><td><span id="zongliang">33</span><span class="unit">米</span></td><td align=right>总额:</td><td><span id="zonge">22</span>元</td></tr>

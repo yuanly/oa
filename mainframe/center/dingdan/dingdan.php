@@ -83,4 +83,5 @@ if("jiedan" == $param["caozuo"]){
 		}
 	}
 	echo '{"success":false}';
+}else if("l" == $param["caozuo"]){
 }
