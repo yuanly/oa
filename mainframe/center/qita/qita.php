@@ -7,20 +7,10 @@ checkuser();
 
 $param = getJson();
 if("getdingdanbeizhu" == $param["caozuo"]){
-	$jiedanliucheng = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time());
-	$one = coll("props")->findOne(array("key"=>"queshengbeizhu"));
-	if(!empty($one)){
-		$beizhu=$one["value"];//q缺省备注
-	}else{
-		$beizhu="";
-	}
-	$dingdan = coll("dingdan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"审核"),array('$set'=>array("zhuangtai"=>"接单","gendanyuan"=>(String)$_SESSION["user"]["_id"],"beizhu"=>$beizhu),'$push'=>array("liucheng"=>$jiedanliucheng)));
-	unset($dingdan["liucheng"]);unset($dingdan["zhuangtai"]);
-	$liuyan = array("_id"=>time(),"hostType"=>"dingdan","hostId"=>$param["_id"],"type"=>"caozuorizhi","userId"=>(String)$_SESSION["user"]["_id"],"neirong"=>"接单：".jsonEncode($dingdan));
-	coll("liuyan")->save($liuyan);
-	echo '{"success":true}';
+	$beizhu = coll("config")->findOne(array("_id"=>"dingdanbeizhu"));
+	echo jsonEncode($beizhu);
 }else if("tijiaodingdanbeizhu" == $param["caozuo"]){
-	$dingdan = $param["dingdan"];
-	coll("dingdan")->save($dingdan);
+	$beizhu = $param["beizhu"];
+	coll("config")->save(array("_id"=>"dingdanbeizhu","beizhu"=>$beizhu));
 	echo '{"success":true}';
 }
