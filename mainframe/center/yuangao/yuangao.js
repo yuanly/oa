@@ -266,6 +266,7 @@
 			});
 			if(showId){
 				showDetailById(showId);
+				layout.close("west");
 			}else if(yuangaos.length>0){//将列表第一个商家显示在右边的商家详情表单
 				$(".tr_yuangao").get(0).click();
 			}

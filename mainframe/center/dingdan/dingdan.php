@@ -8,9 +8,9 @@ checkuser();
 $param = getJson();
 if("jiedan" == $param["caozuo"]){
 	$jiedanliucheng = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time());
-	$one = coll("props")->findOne(array("key"=>"queshengbeizhu"));
+	$one = coll("config")->findOne(array("_id"=>"dingdanbeizhu"));
 	if(!empty($one)){
-		$beizhu=$one["value"];//q缺省备注
+		$beizhu=$one["beizhu"];//q缺省备注
 	}else{
 		$beizhu="";
 	}
@@ -83,5 +83,11 @@ if("jiedan" == $param["caozuo"]){
 		}
 	}
 	echo '{"success":false}';
-}else if("l" == $param["caozuo"]){
+}else if("lianxiren" == $param["caozuo"]){
+	$query  = array("leixing"=>"个人");
+	if(""!=$param["option"]){
+		$query = array("leixing"=>"个人","mingchen"=>array('$regex'=>$param["option"]));
+	}
+	$cur = coll("contact")->find($query)->skip($param["offset"])->limit($param["limit"]);
+	echo  cur2json($cur);
 }

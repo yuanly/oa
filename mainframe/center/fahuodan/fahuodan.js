@@ -497,6 +497,7 @@ function _hanshuku_(){}
 			});
 			if(showId){
 				showDetailById(showId);
+				layout.close("west");
 			}else if(fahuodans.length>0){
 				$(".tr_fahuodan").get(0).click();
 			}

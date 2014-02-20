@@ -255,6 +255,7 @@ function _hanshuku_(){}
 			});
 			if(showId){
 				showDetailById(showId);
+				layout.close("west");
 			}else if(yanhuodans.length>0){
 				$(".tr_yanhuodan").get(0).click();
 			}

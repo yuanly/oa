@@ -132,6 +132,7 @@ $(function(){
 			});
 			if(showId){
 				showDetail(showId);
+				layout.close("west");
 			}else if(samples.length>0){//将列表第一个商家显示在右边的商家详情表单
 				showDetail(samples[0]["_id"]);
 			}

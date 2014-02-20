@@ -183,6 +183,7 @@ function _hanshuku_(){}
 			});
 			if(showId){
 				showDetailById(showId);
+				layout.close("west");
 			}else if(liushuizhangs.length>0){
 				$(".tr_liushuizhang").get(0).click();
 			}

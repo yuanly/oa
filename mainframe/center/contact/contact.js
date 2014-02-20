@@ -94,8 +94,7 @@ $(function(){
 	    var editor = $("#beizhu").xheditor({plugins:plugins,
 				tools:'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,Removeformat,|,Align,List,Outdent,Indent,|,Link,Unlink,Img,Hr,Emot,Table,|,Preview,Print,Fullscreen,|,map,|,pic,|,attach,|',
 				width:700,height:200});
-	//列出商家
-	listContacts(0);
+
 	
 	//添加电话
 	$("#jiadianhua").click(function(){
@@ -299,7 +298,7 @@ $(function(){
 		return s;
 	}
 		//列出商家
-	function listContacts(offset){
+	function listContacts(offset,showId){
 		if(offset<0){
 			return;
 		}
@@ -322,8 +321,13 @@ $(function(){
 				tr.css("background-color",toggle("#deedde","#dedeed"));
 				$("#contacttable").append(tr);
 			});
-			if(contacts.length>0){//将列表第一个商家显示在右边的商家详情表单
-				showDetail(contacts[0]["_id"]);
+			if(showId){
+				showDetail(showId);
+				layout.close("west");
+			}else{
+				if(contacts.length>0){//将列表第一个商家显示在右边的商家详情表单
+					showDetail(contacts[0]["_id"]);
+				}
 			}
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();
@@ -370,4 +374,7 @@ $(function(){
 	$(".list").dblclick(function(){$(this).val("");});
 	var zhanghuTmpl = $("#zhanghu_tmpl").detach();
 	var jiazhanghu = $("#jiazhanghu").detach();
+
+	//列出商家
+	listContacts(0,getUrl().showId);
 });
