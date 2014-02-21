@@ -13,4 +13,18 @@ if("getdingdanbeizhu" == $param["caozuo"]){
 	$beizhu = $param["beizhu"];
 	coll("config")->save(array("_id"=>"dingdanbeizhu","beizhu"=>$beizhu));
 	echo '{"success":true}';
+}else if("lianxirenliebiao" == $param["caozuo"]){
+	$query  = array("leixing"=>"商家");
+	if(""!=$param["option"]){
+		$query = array("leixing"=>"商家","mingchen"=>array('$regex'=>$param["option"]));
+	}
+	$cur = coll("contact")->find($query)->skip($param["offset"])->limit($param["limit"]);
+	echo  cur2json($cur);
+}else if("getzhongtai" == $param["caozuo"]){
+	$zhongtai = coll("config")->findOne(array("_id"=>"zhongtai"));
+	echo jsonEncode($zhongtai);
+}else if("savezhongtai" == $param["caozuo"]){
+	$zhongtai = $param["zhongtai"];
+	coll("config")->save(array("_id"=>"zhongtai","zhongtai"=>$zhongtai));
+	echo '{"success":true}';
 }

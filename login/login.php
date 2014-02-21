@@ -30,9 +30,12 @@ function getKehu(){
 }
 function getUsers(){
 	//$cur = userColl()->find(array("ban"=>array('$exists'=>false)),array("password"=>0));
-	$cur = userColl()->find(array(),array("password"=>0));
+	//$cur = userColl()->find(array(),array("password"=>0));
+	$zhongtai = coll("config")->findOne("_id"=>"zhongtai");
+	$cur = coll("contact")->find(array("shangjia._id"=>$zhongtai["_id"]),array("bg"=>1,"photo"=>1,"role"=>1));
 	$rows = cur2obj($cur);
 	foreach($rows as &$value){
+		$value["user_name"] = $value["mingchen"];
 		if(!isset($value["photo"])){
 			$value["photo"] = "../logo/noface.jpg";
 		}

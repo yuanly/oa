@@ -9,8 +9,10 @@ $usr = getJson();
 if(isset($usr["_id"])){//修改
 	$_id = $usr["_id"];
 	unset($usr["_id"]);
-	userColl()->update(array("_id"=>$_id),array('$set'=>$usr));
-}else{//新增
+	coll("contact")->update(array("_id"=>$_id),array('$set'=>$usr));
+}
+/*
+else{//新增
 	//先确保名称不重复
 	if(userColl()->findOne(array("user_name"=>$usr["user_name"]))){
 		echo '{"err":"用户名已存在！"}';
@@ -20,3 +22,4 @@ if(isset($usr["_id"])){//修改
 	userColl()->save($usr);
 	echo '{"success":true}';
 }
+*/

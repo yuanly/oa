@@ -30,12 +30,39 @@
 					tip($("#tijiaodingdanbeizhu"),"提交成功",1500);
 				});
 			});
+			function sel_zhongtai(event){
+				var limit = 20;
+				setSelector(event,function(page,option,callback){
+						postJson("qita.php",{"caozuo":"lianxirenliebiao",offset:page*limit,limit:limit,option:option.trim()},function(lianxirens){
+							callback(lianxirens);
+						});
+					},["_id","taiguoxinghao","mingchen","shangjia.mingchen"],function(lianxiren){
+						postJson("qita.php",{caozuo:"savezhongtai",zhongtai:{_id:lianxiren._id,mingchen:lianxiren.mingchen}},function(zhongtai){
+							$("#zhongtai").val(lianxiren.mingchen);
+						});
+					},"");
+			}
+			postJson("qita.php",{"caozuo":"getzhongtai"},function(res){
+				if(res.zhongtai && res.zhongtai.mingchen){
+					$("#zhongtai").val(res.zhongtai.mingchen);
+				}else{
+					$("#zhongtai").click(sel_zhongtai);
+				}
+			});
+			if(getTheUser().role == "root"){
+				$("#zhongtai").unbind("click").click(sel_zhongtai);
+			}
 		});	
 	</script>
 	<style>
 	</style>	
 </head>
 <body style="margin:0px;padding:0px">
+	<br/>
+	<div align=center >
+	选定公司资料：<input type=text class="plainInput" id="zhongtai" style="cursor:pointer"/>
+	</div>
+	<hr/>
 	<div>
 		<h3 align=center >缺省订单备注</h3>
 		<div id="dingdanbeizhu" align=center>

@@ -21,8 +21,10 @@ if (!check_user(urldecode($user_id), $password)){
 function check_user($user_id, $password){
 	unset($_SESSION["rand"]);
 	unset($_SESSION["no_access_ctrl"]);
-	$doc = userColl()->findOne(array("_id"=>(int)$user_id));
+	//$doc = userColl()->findOne(array("_id"=>(int)$user_id));
+	$doc = coll("contact")->findOne(array("_id"=>(int)$user_id));
 	if($doc && $doc["password"]==$password){
+		$doc["user_name"]=$doc["mingchen"];
 		$_SESSION['user']=$doc;
 		return true;		
 	}

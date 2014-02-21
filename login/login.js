@@ -1,4 +1,7 @@
-﻿		$(function(){
+﻿/*
+第一次运行，需执行初始化脚本：http://localhost:81/oa/mainframe/center/contact/init.php
+*/
+		$(function(){
 			//从服务器获取全部用户信息
 			var content = server.loginPage();
 			each(content.users,function(n,usr){

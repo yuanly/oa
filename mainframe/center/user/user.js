@@ -1,4 +1,17 @@
-﻿
+﻿/*
+得写个东西初始化：http://localhost:81/oa/mainframe/center/contact/init.php
+先添加中泰公司（联系人）；
+再添加超级管理员（root，也是联系人）；
+然后系统才能进入正常模式。
+{
+  "_id" : 1,
+  "bg" : "landscape",
+  "password" : "1",
+  "photo" : 4,
+  "role" : "root",
+  "user_name" : "袁立宇"
+}
+*/
 			$(function(){
 				var theUser = getTheUser();
 				//设置背景风格
