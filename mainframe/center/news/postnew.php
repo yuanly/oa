@@ -7,7 +7,7 @@ checkuser();
 
 $new = getJson();
 $new["_id"] = getId("news");
-$new["user"] = (int)$_SESSION["user"]["_id"];
+$new["user"] = $_SESSION["user"]["_id"];
 $new["time"] = time();
 $new["last"] = $new["time"];
 $new["read"] = 0;

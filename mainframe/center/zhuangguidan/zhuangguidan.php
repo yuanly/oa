@@ -7,8 +7,8 @@ checkuser();
 
 $param = getJson();
 if("xinjian" == $param["caozuo"]){
-	$liucheng = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"制单","time"=>time());
-	$zhuangguidan = array("chuangjianzhe"=>(int)$_SESSION["user"]["_id"],"zhuangtai"=>"制单","liucheng"=>array($liucheng));
+	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"制单","time"=>time());
+	$zhuangguidan = array("chuangjianzhe"=>$_SESSION["user"]["_id"],"zhuangtai"=>"制单","liucheng"=>array($liucheng));
 	$d = "ZGD".date("ymd",time());
 	$n = coll("zhuangguidan")->count(array("_id"=>array('$regex'=>"^".$d."")));
 	$zhuangguidan["_id"] = $d.".".($n+1);
@@ -19,30 +19,30 @@ if("xinjian" == $param["caozuo"]){
 	$cur = coll("zhuangguidan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("shenqingshouli" == $param["caozuo"]){
-	$liucheng  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"申请受理","time"=>time());
+	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请受理","time"=>time());
 	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"申请受理")));
 	echo '{"success":true}';
 }else if("huitui" == $param["caozuo"]){
 	coll("zhuangguidan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"制单"),'$pop'=>array("liucheng"=>1),'$unset'=>array("jiaodanzhe"=>1)));
 	echo '{"success":true}';
 }else if("zuofei" == $param["caozuo"]){
-	$zuofeiliucheng  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
+	$zuofeiliucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
 	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"作废")));
 	echo '{"success":true}';
 }else if("jiaodan" == $param["caozuo"]){
-	$liucheng  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"交单","time"=>time());
-	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"交单","jiaodanzhe"=>(int)$_SESSION["user"]["_id"])));
+	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"交单","time"=>time());
+	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"交单","jiaodanzhe"=>$_SESSION["user"]["_id"])));
 	echo '{"success":true}';
 }else if("shenqingshenhe" == $param["caozuo"]){
-	$zuofeiliucheng  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"申请审核","time"=>time());
+	$zuofeiliucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请审核","time"=>time());
 	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"申请审核")));
 	echo '{"success":true}';
 }else if("quxiaoshenqingshenhe" == $param["caozuo"]){
 	coll("zhuangguidan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"受理"),'$pop'=>array("liucheng"=>1)));
 	echo '{"success":true}';
 }else if("shenhe" == $param["caozuo"]){
-	$liucheng = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"审核","time"=>time());
-	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"审核","shenhezhe"=>(int)$_SESSION["user"]["_id"])));
+	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审核","time"=>time());
+	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"审核","shenhezhe"=>$_SESSION["user"]["_id"])));
 	echo '{"success":true}';
 }else if("quxiaoshenhe" == $param["caozuo"]){
 	coll("zhuangguidan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"申请审核"),'$unset'=>array("shenhezhe"=>1),'$pop'=>array("liucheng"=>1)));

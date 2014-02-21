@@ -10,6 +10,7 @@ if(isset($usr["_id"])){//修改
 	$_id = $usr["_id"];
 	unset($usr["_id"]);
 	coll("contact")->update(array("_id"=>$_id),array('$set'=>$usr));
+	echo '{"success":true}';
 }
 /*
 else{//新增

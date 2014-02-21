@@ -1,12 +1,14 @@
-<?php
+О╩©<?php
 //error_log("Location: ".docRoot()."login/login.html",3,"d:/err.log");
 
 include("../../../util.php");
 
 if(coll("contact")->count()>0){
-	echo "ряЁУй╪╩╞ё║";
-}elsee{
-	coll("contact")->save(array("_id"=>"LXR0","mingchen"=>"жпл╘╩╙бв╫ЬЁЖ©зспоч╧╚к╬","leixing"=>"ил╪р"));
-	coll("contact")->save(array("_id"=>"LXR1","mingchen"=>"т╛а╒сН","leixing"=>"╦Жхк","role"=>"root","password"=>"1","shangjia"=>array("_id"=>"LXR0","mingchen"=>"жпл╘╩╙бв╫ЬЁЖ©зспоч╧╚к╬")));
-	echo "ЁУй╪╩╞мЙЁиё║";
+	echo "Е╥╡Е┬²Е╖▀Е▄√О╪│";
+}else{
+	coll("contact")->save(array("_id"=>"LXR0","mingchen"=>"Д╦╜ФЁ╟Е█▌Д╪╕Х©⌡Е┤╨Е▐ёФ°┴И≥░Е┘╛Е▐╦","leixing"=>"Е∙├Е╝╤"));
+	coll("contact")->save(array("_id"=>"LXR1","mingchen"=>"Х╒│Г╚▀Е╝┤","leixing"=>"Д╦╙Д╨╨","role"=>"root","password"=>"1","shangjia"=>array("_id"=>"LXR0","mingchen"=>"Д╦╜ФЁ╟Е█▌Д╪╕Х©⌡Е┤╨Е▐ёФ°┴И≥░Е┘╛Е▐╦")));
+	$zhongtai = coll("contact")->findOne(array("_id"=>"LXR0"));
+	coll("config")->save(array("_id"=>"zhongtai","zhongtai"=>$zhongtai));
+	echo "Е┬²Е╖▀Е▄√Е╝▄Ф┬░О╪│";
 }

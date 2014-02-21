@@ -7,7 +7,7 @@ checkuser();
 
 $param = getJson();
 if("jiedan" == $param["caozuo"]){
-	$jiedanliucheng = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time());
+	$jiedanliucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time());
 	$one = coll("config")->findOne(array("_id"=>"dingdanbeizhu"));
 	if(!empty($one)){
 		$beizhu=$one["beizhu"];//q缺省备注
@@ -48,30 +48,30 @@ if("jiedan" == $param["caozuo"]){
 	coll("liuyan")->save($liuyan);
 	echo '{"success":true,"id":'.$dingdan["_id"].'}';
 }else if("xiadan" == $param["caozuo"]){
-	$xiadan  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"下单","time"=>time());
+	$xiadan  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"下单","time"=>time());
 	$dingdan = coll("dingdan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$xiadan),'$set'=>array("xiadanshijian"=>time(),"zhuangtai"=>"下单")));
 	//coll("kehu")->update(array("_id"=>$dingdan["kehu"]),array('$set'=>array("access"=>time())),true,false);
 	coll("kehu")->update(array("_id"=>$dingdan["kehu"]),array('$set'=>array("access"=>time())),array("upsert"=>true));
 	coll("vendor")->update(array("_id"=>$dingdan["gonghuoshang"]["_id"]),array('$set'=>array("access"=>time())));
 	echo '{"success":true}';
 }else if("shendan" == $param["caozuo"]){
-	$shendan  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"审单","time"=>time());
+	$shendan  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审单","time"=>time());
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$shendan),'$set'=>array("zhuangtai"=>"审单")));
 	echo '{"success":true}';
 }else if("jie2dan" == $param["caozuo"]){
-	$shendan  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"结单","time"=>time());
+	$shendan  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"结单","time"=>time());
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$shendan),'$set'=>array("zhuangtai"=>"结单")));
 	echo '{"success":true}';
 }else if("zuofei" == $param["caozuo"]){
-	$shendan  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
+	$shendan  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$shendan),'$set'=>array("zhuangtai"=>"作废")));
 	echo '{"success":true}';
 }else if("dengban" == $param["caozuo"]){
-	$dengban  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"等版","time"=>time());
+	$dengban  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"等版","time"=>time());
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$dengban),'$set'=>array("zhuangtai"=>"等版")));
 	echo '{"success":true}';
 }else if("zidan" == $param["caozuo"]){
-	$zidan  = array("userId"=>(int)$_SESSION["user"]["_id"],"dongzuo"=>"子单","time"=>time());
+	$zidan  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"子单","time"=>time());
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zidan),'$set'=>array("zhuangtai"=>"子单")));
 	echo '{"success":true}';
 }else if("gethuowubyid" == $param["caozuo"]){

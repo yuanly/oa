@@ -41,8 +41,11 @@
 					$("#submit").show();
 					$(this).hide();
 					$("#handle").text("编辑用户");
-					$("#newUser").hide();
-					$("#moreUser").hide();
+					if(theUser.role == "root"){
+						$("#selRole").removeAttr("disabled");
+					}
+					//$("#newUser").hide();
+					//$("#moreUser").hide();
 				});
 				//更改密码
 				$("#changepassword").click(function(){
@@ -75,6 +78,7 @@
      		            }); 
      			uploader1._button.getInput().click();
 				});
+				/*
 				//新增用户
 				$("#newUser").click(function(){
 					$("#handle").text("新增用户");
@@ -91,6 +95,7 @@
 					$("#enableEdit").hide();
 					$(this).hide();
 				});
+				*/
 				//提交
 				$("#submit").click(function(){
 					var usr = {};
@@ -106,7 +111,7 @@
 						tip(null,"用户名称不能为空！",3);
 						return;
 					}
-					usr.user_name = $("#userName").val().trim();
+					//usr.user_name = $("#userName").val().trim();
 					usr.role = $("#selRole").val();
 					usr.bg = $("#selBg").val();
 					if($("#portrait").data("imgId")){
@@ -120,6 +125,7 @@
 						if(res.success){
 							if("编辑用户" == $("#handle").text()){
 								tip(null,"成功更改用户信息！",3);
+								setTimeout(function(){location.reload();},500);
 							}else{
 								tip(null,"成功新增用户！",3);
 							}

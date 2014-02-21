@@ -5,7 +5,7 @@ checkuser();
 
 $reply = getJson();
 $reply["_id"] = getId("newsReply");
-$reply["user"] = (int)$_SESSION["user"]["_id"];
+$reply["user"] = $_SESSION["user"]["_id"];
 $reply["time"] = time();
 $ret = newsReplyColl()->save($reply);
 if(!$ret["err"]){

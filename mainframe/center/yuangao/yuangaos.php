@@ -14,9 +14,9 @@ if(isset($param["_id"])){//
 	if("jiegao" == $param["option"]["cmd"]){
 		$query = array("zhuangtai"=>"上传");
 	}else if("ludan" == $param["option"]["cmd"]){
-		$query = array("zhuangtai"=>"接稿","jiegaozhe"=>(int)$_SESSION["user"]["_id"]);
+		$query = array("zhuangtai"=>"接稿","jiegaozhe"=>$_SESSION["user"]["_id"]);
 	}else if("shenjie" == $param["option"]["cmd"]){
-		$query = array("zhuangtai"=>"申请审结","jiegaozhe"=>array('$ne'=>(int)$_SESSION["user"]["_id"]));
+		$query = array("zhuangtai"=>"申请审结","jiegaozhe"=>array('$ne'=>$_SESSION["user"]["_id"]));
 	}else if($param["option"]["weishenjie"]){
 		$query = array("zhuangtai"=>array('$in'=>array("上传","接稿","申请审结")));//排除“删除”和“审结”
 	}else if($param["option"]["shangchuanshijian"]){

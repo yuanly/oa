@@ -140,6 +140,8 @@ $(function(){
 		if(contact.shangjia){
 			$("#shangjia").data("shangjia",contact.shangjia);
 			$("#shangjia").vals(contact.shangjia.mingchen);
+		}else{
+			$("#shangjia").vals("");
 		}
 		$("#zhiwu").vals(contact.zhiwu);
 		$("#yanhuodizhi").vals(contact.yanhuodizhi);
@@ -216,7 +218,7 @@ $(function(){
 	$("#newContact").click(newContact);
 	//将表单的内容转换为contact对象
 	function form2obj(){
-			var contact = {};
+			var contact = currContact;
 			if("【新增】"!=$("#bianhao").text()){
 				contact._id = $("#bianhao").text().trim();
 			}
@@ -230,7 +232,7 @@ $(function(){
 				contact.yanhuodizhi = undefined;
 				contact.zhiwu = $("#zhiwu").val().trim();
 				var sj = $("#shangjia").data("shangjia");
-				if(sj){
+				if(sj && ""!=$("#shangjia").val().trim()){
 					contact.shangjia = {_id:sj._id,mingchen:sj.mingchen};
 				}else{
 					contact.shangjia = undefined;
