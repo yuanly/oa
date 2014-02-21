@@ -1092,7 +1092,9 @@ jQuery.fn.dataInc = function(name,value){
  	   			t:'插入图片',
  	   			e:function(){
  	   				//editor.pasteHTML("<img src='../img/attach.jpg'/>");
- 	   				editor.showModal("上传本地图片","<div id='file-uploader-demo2'></div>",120,50,function(){});
+ 	   				var _this=this;
+ 	   				//editor.showModal("上传本地图片","<div id='file-uploader-demo2'></div>",120,50,function(){});
+ 	   				_this.showModal("上传本地图片","<div id='file-uploader-demo2'></div>",120,50,function(){});
  	   				 var uploader1 = new qq.FileUploader({
  	   		                element: $("#file-uploader-demo2")[0],
  	   		                action: r+'uploader/server/up.php',
@@ -1101,10 +1103,12 @@ jQuery.fn.dataInc = function(name,value){
  	   		                onComplete: function(id, fileName, respJson){
  	   		                	//{"id":16,"success":true}
  	   		                	var src = r+"uploader/server/down.php?id="+respJson.id;
- 	   		                	editor.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:"+(w-20)+"px'/></a>");
+ 	   		                	//editor.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:"+(w-20)+"px'/></a>");
+ 	   		                	_this.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:"+(w-20)+"px'/></a>");
  	   		                },
  	   		            });
- 	   				editor.removeModal();
+ 	   				//editor.removeModal();
+ 	   				_this.removeModal();
  	   				 uploader1._button.getInput().click();
  	   			}
  	   		},
@@ -1292,7 +1296,7 @@ catch(e){
 				$("#ly_gengduo",that).show();
 			}
  			$("#ly_liebiao",that).empty();
- 			each(liuyans,function(n,ly){ 				
+ 			each(liuyans,function(n,ly){
  				var tr = $('<tr>\
  				<td style="vertical-align:top">\
  					<div style="display:inline-block;border:3px solid #fff;width:50px;height:50px;border-radius:28px;box-shadow:0px 2px 1px rgba(128,128,128,.5);">\
@@ -1321,7 +1325,8 @@ catch(e){
 			});
 
 		});
- 	}
+ 	};
+	this.clearliuyan = function(){$("#ly_liebiao",that).empty();};
  	this.shuaxinliebiao = function(option){
  		if(option){
  			opt = $.extend(opt,option);

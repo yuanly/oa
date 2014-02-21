@@ -349,6 +349,7 @@
 		$("#shangchuan").show();
 		editor.editorVal("");		
 		$("#tijiao").data("waiting",false);
+		liuyanElm.clearliuyan();
 	}
 	$("#shangchuanyuangao").click(function(){shangchuanmoshi();});
 		//设置头部点击处理（放到当前面板） 
@@ -433,13 +434,12 @@
 	var lb_dingdan = $("#lb_dingdan").detach();
 	
 	//$("#liucheng").liucheng(getTheUser(),{liucheng:[{userId:6,dongzuo:"上传",time:new Date().getTime()/1000}]});
-	var editor = $("#bianjikuang").myeditor(800,600).editorWritable();
-	
 	var beizhueditor = $("#beizhu_editor").myeditor(800,200).editorWritable();
+	
 	if(getUrl().cmd){
 		$("#optioncontainer").hide(); 
 	}
-	
 	var liuyanElm = $("#liuyan").liuyan({hostType:"yuangao",});
 	listYuangao(0,getUrl().showId);
+	var editor = $("#bianjikuang").myeditor(800,600).editorWritable();
 });
