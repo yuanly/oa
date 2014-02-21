@@ -396,7 +396,7 @@
 							$("#cz_ludan",caozuoItem).show();
 							$("#cz_shenqingshenhe",caozuoItem).show();
 							$("#cz_shenqingshenjie",caozuoItem).show();
-							$("#cz_beizhu",caozuoItem).show();
+							//$("#cz_beizhu",caozuoItem).show();
 							$("table",tmpl).append(caozuoItem);
 						}
 					}

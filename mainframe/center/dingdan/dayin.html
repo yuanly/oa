@@ -34,36 +34,51 @@
 	<script>
 		$(function(){
 			if(navigator.userAgent.indexOf("Chrome")>0){
-				tip(null,"请按CTRL+P打印页面...",1500);
+				tip(null,"请按CTRL+P打印页面...",100);
 			}else{
 				tip(null,"注意！你用的不是Chrome浏览器。你可以通过浏览器的打印页面功能打印订单，但有可能布局受到影响。",1500);
 			}
+			postJson("dingdans.php",{_id:getUrl().showId},function(dd){
+				$("#dingdanhao").text(dd._id);
+				var today = new Date();
+				$("#riqi").text(today.getFullYear()+"年"+(today.getMonth()+1)+"月"+today.getDate()+"日");
+				$("#gendanyuan").text(getUser(dd.gendanyuan).user_name);
+				postJson("../contact/contacts.php",{_id:dd.gendanyuan},function(user){
+					each(user.dianhualiebiao,function(dianhua){
+						$("#gendanyuandianhua").text(dianhua);
+						return false;
+					});
+					
+					$("#gendanyuanchuanzhen").text();
+				});
+			});
 		});
 	</script>
 	</head>
 <body style="margin:0px;padding:0px">
 	<div style="">
-<div style="text-align:center;margin-top:8px;margin-bottom:12px">
-<img src="/oa/img/ct_logo.png" style="width:32px;padding-left:0px" />       <span style="padding-left:0px;font-size:32px">中泰订货单</span>
-</div>
+<table style="width:100%;text-align:center;margin-top:0px;margin-bottom:12px"><tr>
+	<td style="width:30%">&nbsp;</td>
+	<td><img src="/oa/img/ct_logo.png" style="width:32px;padding-left:0px" />       <span style="padding-left:0px;font-size:32px">中泰订货单</span></td>
+	<td style="width:30%;text-align:left;font-size:0.7em"></td></tr><table>
 <table style="width:100%">
 	<tr>
-		<td class="td2" >订单号：</td><td class="td1">DD140203</td><td class="td2">日&nbsp;&nbsp;&nbsp;&nbsp;期：</td><td colspan=3 class="td1" >2014年2月18日</td>
+		<td class="td2" >订单号：</td><td class="td1" id="dingdanhao"></td><td class="td2">日&nbsp;&nbsp;&nbsp;&nbsp;期：</td><td colspan=3 class="td1" id="riqi" nowrap></td>
 	</tr>
 	<tr>
-		<td class="td2">跟单员：</td><td class="td1">叶燕羽</td><td class="td2">电&nbsp;&nbsp;&nbsp;&nbsp;话：</td><td class="td1">34234322</td><td class="td2">传&nbsp;&nbsp;&nbsp;&nbsp;真：</td><td class="td1">34234322</td>
+		<td class="td2">跟单员：</td><td class="td1" id="gendanyuan"></td><td class="td2">电&nbsp;&nbsp;&nbsp;&nbsp;话：</td><td class="td1" id="gendanyuandianhua"></td><td class="td2">传&nbsp;&nbsp;&nbsp;&nbsp;真：</td><td class="td1" id="gendanyuanchuanzhen"></td>
 	</tr>
 	<tr>
-		<td class="td2">供货商：</td><td colspan=5 class="td1" style="padding-top:18px" >大大箱包皮革</td>
+		<td class="td2">供货商：</td><td colspan=5 class="td1" style="padding-top:18px" id="gonghuoshang"></td>
 	</tr>
 	<tr>
-		<td class="td2">联系人：</td><td class="td1">张小姐</td><td class="td2">电&nbsp;&nbsp;&nbsp;&nbsp;话：</td><td class="td1">34234322</td><td class="td2">传&nbsp;&nbsp;&nbsp;&nbsp;真：</td><td class="td1">34234322</td>
+		<td class="td2">联系人：</td><td class="td1" id="lianxiren">张小姐</td><td class="td2">电&nbsp;&nbsp;&nbsp;&nbsp;话：</td><td class="td1" id="lianxirendianhua"></td><td class="td2">传&nbsp;&nbsp;&nbsp;&nbsp;真：</td><td class="td1" id="lianxirenchuanzhen"></td>
 	</tr>
 	<tr>
-		<td class="td2">地&nbsp;&nbsp;&nbsp;&nbsp;址：</td><td colspan=5 class="td1" >花都狮岭皮革城一街23号</td>
+		<td class="td2">地&nbsp;&nbsp;&nbsp;&nbsp;址：</td><td colspan=5 class="td1" id="dizhi"></td>
 	</tr> 
 	<tr>
-		<td class="td2" style="padding-top:18px">样&nbsp;&nbsp;&nbsp;&nbsp;板：</td><td colspan=5  class="td1">环保料</td>
+		<td class="td2" style="padding-top:18px">样&nbsp;&nbsp;&nbsp;&nbsp;板：</td><td colspan=5  class="td1" id="yangban"></td>
 	</tr>
 <table>
 <table style="margin-top:15px;width:100%;border-collapse:collapse" id="mingxi">
@@ -84,14 +99,19 @@
 	</tr>		
 </table>
 <div style="margin-top:15px;">
-	备注:<br/>
+	备注:
+<hr/>
 1、协助型：时常和主角形影不离地出现，有难同当，有富同享的必备角色。<br/>
 2、给予主角正确知识和观念的辅助角色爱慕型：主角心仪的对象，通常也会是（男）女主角，对主角心境影响很大，是影响整个剧情变化的重要角色。<br/>
 3、神秘型：对主角会有明显的正面或负面影响，绝不会自己报上名来，通常他都会被神格化。<br/>
 4、竞争型：实力一定不主角先占优势，但本身会对主角的隐藏实力感到兴奋或畏惧，不会阻碍主角的进步，反而会促进主角的成长，成为足以和自己竞争的对手。<br/>
 5、陷害型：通常为了得到主角拥有的某样东西，或者是本身看主角不顺眼等不同理由，经常和主角作对，也是剧情中不可或缺的角色。
-<hr/>
 </div>
+</div>
+<div style="position:fixed;bottom:0px;margin:0px;font-size:0.75em;color:#aaa;text-align:center;width:100%;white-space: nowrap;">
+	中泰华伦进出口有限公司
+	&nbsp;地址：广州市番禺区大石镇奥林匹克花园奥园大厦1012室
+	&nbsp;电话：020-34504061
 </div>
 </body>
 </html>

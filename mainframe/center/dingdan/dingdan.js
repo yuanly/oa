@@ -351,6 +351,10 @@
 		});
 	}
 	$("#cz_jie2dan").click(cz_jie2dan);
+	function cz_dayin(){
+		window.open("dayin.html?showId="+currDD._id,"_blank");
+	}
+	$("#cz_dayin").click(cz_dayin);
 	function cz_zuofei(){
 		postJson("dingdan.php",{caozuo:"zuofei",_id:currDD._id},function(res){
 			showDetailById(currDD._id);
@@ -475,7 +479,7 @@ function _hanshuku_(){}
 				tr.find("#td_xiadanriqi").text(dingdan.xiadanshijian?new Date(dingdan.xiadanshijian*1000).format("yy/MM/dd hh:mm"):"");
 				
 				tr.css("background-color",toggle("#fff","#eee"));
-				if(dingdan.zhuangtai == "作废"){
+				if(dingdan.zhuangtai == "删除"){
 					tr.css("text-decoration","line-through");
 				}
 				$("#dingdantable").append(tr);
