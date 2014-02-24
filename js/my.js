@@ -1131,7 +1131,7 @@ jQuery.fn.dataInc = function(name,value){
  	 
  	 this.empty();
  	 this.append('\
- 	 			<div id="editor_div1" style="font-size:80%;width:'+w+'px;height:'+h+'px;border:1px solid #ede" ></div>\
+ 	 			<div id="editor_div1" style="font-size:80%;width:'+w+'px;height:'+h+'px;border:1px solid #ede;overflow:scroll" ></div>\
  				<div id="editor_div2"><textarea></textarea></div>');
  	 //编辑器设置
    var editor = this.find("textarea").xheditor({plugins:plugins,

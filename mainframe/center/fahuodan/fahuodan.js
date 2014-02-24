@@ -452,7 +452,7 @@
 	}
 	$(".tr_fahuodan").click(sel_fahuodan);
 	function setYanhuodizhi(){
-		postJson("../vendor/vendors.php",{_id:currFHD.gonghuoshang._id},function(vendor){
+		postJson("../contact/contacts.php",{_id:currFHD.gonghuoshang._id},function(vendor){
 			if(vendor.yanhuodizhi){
 				$("#fhd_yanhuodizhi").val(vendor.yanhuodizhi);
 			}else{
