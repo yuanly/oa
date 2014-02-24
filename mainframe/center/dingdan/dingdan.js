@@ -385,7 +385,7 @@
 	}
 	function showGonghuoshang(){
 		if(currDD.gonghuoshang && currDD.gonghuoshang._id){
-			window.open("../vendor/vendor.html?showId="+currDD.gonghuoshang._id,"_blank");
+			window.open("../contact/contact.html?showId="+currDD.gonghuoshang._id,"_blank");
 		}
 	}
 	$("#dd_gonghuoshang").click(showGonghuoshang);

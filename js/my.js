@@ -235,7 +235,17 @@
  		return "";	
  	}
  }
- 
+ function getPhoneNumber(strText){
+ 	  var re =  /\d+[-]{0,1}\d+/g;
+    var oArray = strText.match(re);
+    var ret = "";
+    for(var i=0; i<oArray.length; i++){
+        if(oArray[i].length>ret.length){
+        	ret = oArray[i];
+        }
+    }
+    return ret;
+	}
  String.prototype.colorHex = function(){
  	var that = this;
  	if(/^(rgb|RGB)/.test(that)){
@@ -873,12 +883,12 @@ jQuery.fn.dataInc = function(name,value){
  //商家选择。把input元素设置成支持弹出商家选择框的控件
  jQuery.fn.xuanzeshangjia = function(vendors_php,callback){
  	if(!vendors_php){
- 		vendors_php = "../vendor/vendors.php";
+ 		vendors_php = "../contact/lianxiren.php";
  	}	
  	this.click(function(event){
  		var limit = 20;
  		setSelector(event,function(page,option,callback1){
- 				postJson(vendors_php,{offset:page*limit,limit:limit,option:option},function(vendors){
+ 				postJson(vendors_php,{caozuo:"chashangjia",offset:page*limit,limit:limit,option:option},function(vendors){
  					callback1(vendors);
  				});
  			},["_id","mingchen"],function(vendor){
@@ -890,7 +900,7 @@ jQuery.fn.dataInc = function(name,value){
  		);
  	});
  	return this;
- }
+ } 
  /*
  * 下拉列表，不带输入框的选择框
  */

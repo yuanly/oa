@@ -285,7 +285,7 @@ $(function(){
  		$(this).val(jiages2str(getPrices($(this).val())));
  	});
  	var beixuan_tmpl = $("#beixuan_tmpl").detach();
- 	$("#shangjia").xuanzeshangjia();
+// 	$("#shangjia").xuanzeshangjia();
  	$("#yijiazhe").userSelector();
  	var tr_sample = $(".tr_sample").detach();
  	//设置头部点击处理（放到当前面板）

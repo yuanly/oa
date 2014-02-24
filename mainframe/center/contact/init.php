@@ -6,7 +6,9 @@ include("../../../util.php");
 if(coll("contact")->count()>0){
 	echo "已初始化！";
 }else{
+	getId("contact");
 	coll("contact")->save(array("_id"=>"LXR0","mingchen"=>"中泰华伦进出口有限公司","leixing"=>"商家"));
+	getId("contact");
 	coll("contact")->save(array("_id"=>"LXR1","mingchen"=>"袁立宇","leixing"=>"个人","role"=>"root","password"=>"1","shangjia"=>array("_id"=>"LXR0","mingchen"=>"中泰华伦进出口有限公司")));
 	$zhongtai = coll("contact")->findOne(array("_id"=>"LXR0"));
 	coll("config")->save(array("_id"=>"zhongtai","zhongtai"=>$zhongtai));
