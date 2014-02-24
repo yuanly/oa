@@ -627,6 +627,8 @@ function _hanshuku_(){}
 				mxDiv.data("id",mx.id);
 				if(mx.zhu){
 					mxDiv.find("#zhu").val(mx.zhu).show();
+				}else{
+					mxDiv.find(".zhu_ctnr").hide();
 				}
 				if(mx.yanhuodan){
 					//mxDiv.find("#yanhuodan").text(mx.yanhuodan).show();
