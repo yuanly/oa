@@ -305,17 +305,19 @@ function _hanshuku_(){}
 			$("#yuandan_ctr").show();
 		}
 		$(".tr_huowu").remove();
-		each(yhd.huowu,function(i,huowu){
-			var tr_huowu = tmpl_tr_huowu.clone(true);
-			tr_huowu.data("huowu",huowu);
-			tr_huowu.find("#td_huowubianhao").text(huowu._id);
-			tr_huowu.find("#td_gonghuoshang").text(huowu.gonghuoshang.mingchen);
-			tr_huowu.find("#td_guige").text(huowu.guige);
-			tr_huowu.find("#td_danwei").text(huowu.danwei);
-			tr_huowu.find("#td_shuliang").text(huowu.shuliang);
-			tr_huowu.find("#td_jianshu").text(huowu.jianshu);
-			tr_huowu.find("#td_zhu").text(huowu.zhu?huowu.zhu:"");
-			$("#huowutable").append(tr_huowu); 
+		postJson("yanhuodan.php",{caozuo:"huowu",_id:yhd._id},function(huowus){		
+			each(huowus,function(i,huowu){
+				var tr_huowu = tmpl_tr_huowu.clone(true);
+				tr_huowu.data("huowu",huowu);
+				tr_huowu.find("#td_huowubianhao").text(huowu._id);
+				tr_huowu.find("#td_gonghuoshang").text(huowu.gonghuoshang.mingchen);
+				tr_huowu.find("#td_guige").text(huowu.guige);
+				tr_huowu.find("#td_danwei").text(huowu.danwei);
+				tr_huowu.find("#td_shuliang").text(huowu.shuliang);
+				tr_huowu.find("#td_jianshu").text(huowu.jianshu);
+				tr_huowu.find("#td_zhu").text(huowu.zhu?huowu.zhu:"");
+				$("#huowutable").append(tr_huowu); 
+			});
 		});
 
 		liuyanElm.shuaxinliebiao({hostId:currYHD._id,hostType:"yanhuodan"});
@@ -323,8 +325,8 @@ function _hanshuku_(){}
 	}
 	
 	function showDetailById(_id){
-		postJson("yanhuodan.php",{caozuo:"getbyid",_id:_id},function(dd){
-			showDetail(dd);			
+		postJson("yanhuodan.php",{caozuo:"getbyid",_id:_id},function(yhd){
+			showDetail(yhd);
 		});
 	}
 
