@@ -67,6 +67,24 @@
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("#th_zhuangtai").bind("input",function(){listfahuodan(0);});
+	$("#th_bianhao").datepicker().change(function(){
+		$(this).val("FHD"+date2id($(this).val()));
+		listfahuodan(0);
+	});
+	function sel_gonghuoshang(event){
+		var limit = 20;
+		setSelector(event,function(page,option,callback){
+				postJson("../dingdan/dingdan.php",{caozuo:"shangjia",offset:page*limit,limit:limit,option:option},function(gonghuoshangs){
+					callback(gonghuoshangs);
+				});
+			},["_id","mingchen","dianhua","dizhi"],function(gonghuoshang){
+				$("#th_gonghuoshang").val(gonghuoshang.mingchen);
+				$("#th_gonghuoshang").data("ghsId",gonghuoshang._id);
+				listfahuodan(0);
+			},"",function(){$("#th_gonghuoshang").val("供货商");});
+	}
+	$("#th_gonghuoshang").click(sel_gonghuoshang);
 	$("#shanchudingdanhuowu").click(function(){
 		$(this).parents(".dingdanhuowu").remove();
 		$("#tr_tianjiadingdanhuowu").show();
@@ -244,6 +262,7 @@
 			tb.find("#mx_jine").text("");
 			return;
 		}
+		tb.find("#mx_shuliang").text(round(sum,2));	
 		sum = sum * danjia;
 		tb.find("#mx_jine").text(round(sum,2));
 		
@@ -391,6 +410,7 @@
 	}
 	$("#cz_duidan").click(cz_duidan);
 	function cz_fukuan(){
+		//确认已经设置转账流水
 		postJson("fahuodan.php",{caozuo:"fukuan",_id:currFHD._id},function(res){
 			showDetailById(currFHD._id);
 		});
@@ -466,9 +486,34 @@ function _hanshuku_(){}
 	//解释查询条件
 	function getOptions(){
 		var ret = {};
+		var bh = $("#th_bianhao").val().trim();
+		if("" != bh && "编号" != bh){
+			ret.bianhao = bh;
+		}
+		var ghs = $("#th_gonghuoshang").val().trim();
+		if("" != ghs && "供货商" != ghs){
+			ret.gonghuoshang = $("#th_gonghuoshang").data("ghsId");
+		}
+		var zt = $("#th_zhuangtai").val().trim();
+		if("" != zt && "状态" != zt){
+			ret.zhuangtai = zt;
+		}
 		return ret;
 	}
-		//列出原稿
+	function getOperator(fhd){
+		var ret = {ludanzhe:"",duidanzhe:"",fuhezhe:""};
+		each(fhd.liucheng,function(i,lc){
+			if(lc.dongzuo == "录单"){
+				ret.ludanzhe = getUserName(lc.userId);
+			}else if(lc.dongzuo == "对单"){
+				ret.duidanzhe = getUserName(lc.userId);
+			}else if(lc.dongzuo == "复核"){
+				ret.fuhezhe = getUserName(lc.userId);
+			}
+		});
+		return ret;
+	}
+	//列出原稿
 	function listfahuodan(offset,showId){
 		if(offset<0){
 			return;
@@ -482,12 +527,12 @@ function _hanshuku_(){}
 				tr = tr_fahuodan.clone(true);
 				tr.data("_id",fahuodan._id);
 				tr.find("#td_bianhao").text(fahuodan._id);
-				tr.find("#td_gonghuoshang").text(fahuodan.gonghuoshang?fahuodan.gonghuoshang.mingchen:"");
-				tr.find("#td_ludanzhe").text(fahuodan.ludanzhe?getUser(fahuodan.ludanzhe).user_name:"");
-				tr.find("#td_duidanzhe").text(fahuodan.duidanzhe?getUser(fahuodan.duidanzhe).user_name:"");
 				tr.find("#td_zhuangtai").text(fahuodan.zhuangtai);
-				tr.find("#td_xiadanriqi").text(fahuodan.xiadanshijian?new Date(fahuodan.xiadanriqi*1000).format("yy/MM/dd hh:mm"):"");
-				tr.find("#td_fuhezhe").text(fahuodan.fuhezhe?getUser(fahuodan.fuhezhe).user_name:"");
+				tr.find("#td_gonghuoshang").text(fahuodan.gonghuoshang?fahuodan.gonghuoshang.mingchen:"");
+				var ops = getOperator(fahuodan);
+				tr.find("#td_ludanzhe").text(ops.ludanzhe);
+				tr.find("#td_duidanzhe").text(ops.duidanzhe);
+				tr.find("#td_fuhezhe").text(ops.fuhezhe);
 				
 				tr.css("background-color",toggle("#fff","#eee"));
 				if(fahuodan.zhuangtai == "作废"){
@@ -542,6 +587,7 @@ function _hanshuku_(){}
 	
 	function edit(){
 		editing = true;
+		$(".zhu_ctnr").show();$(".zhu").show();
 		$("#fhd_yanhuodizhi").removeAttr("readonly");
 		$(".plainInput").removeAttr("readonly");
 		$("#fahuodanmingxi").find(".plainBtn").show();
@@ -787,8 +833,7 @@ function _hanshuku_(){}
 	
 	var yuandanEditor = $("#yuandan").myeditor(700,300);
 	yuandanEditor.editorReadonly();
-	
-	$("#th_bianhao").datepicker().change(function(){$(this).val("FHD"+date2id($(this).val()))});
+	 
 	var liuyanElm = $("#liuyan").liuyan({hostType:"fahuodan",});
 	listfahuodan(0,getUrl().showId);
 	

@@ -46,6 +46,8 @@
 		}
 		.hw_cz{
 		}
+		th input{
+		}
 	</style>
 </head>
 <body style="margin:0px;padding:0px">
@@ -53,12 +55,12 @@
 		<div>
 			<table id="dingdantable"  style="min-width:500px;">
 				<tr id="tableheader">
-					<th nowrap>编号</th>
-					<th nowrap><input id="th_kehu" class="plainTh" value="客户" style="width:35px"/></th>
-					<th nowrap><input id="th_yangban" class="plainTh" value="样板" style="width:35px;cursor:pointer;"/></th>
-					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:35px"/></th>
-					<th nowrap><input id="th_gendanyuan" class="plainTh" value="跟单员" style="width:50px"/></th>
-					<th nowrap><input id="th_gonghuoshang" class="plainTh" value="供货商" style="width:50px;cursor:pointer"/></th>
+					<th nowrap><input id="th_bianhao" class="plainTh" value="编号" style="width:80px;font-size:0.8em"/></th>
+					<th nowrap><input id="th_kehu" class="plainTh" value="客户" style="width:50px;font-size:0.8em"/></th>
+					<th nowrap><input id="th_yangban" class="plainTh" value="样板" style="width:80px;cursor:pointer;font-size:0.8em"/></th>
+					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:45px;	font-size:0.8em"/></th>
+					<th nowrap><input id="th_gendanyuan" class="plainTh" value="跟单员" style="width:55px;font-size:0.8em"/></th>
+					<th nowrap><input id="th_gonghuoshang" class="plainTh" value="供货商" style="width:120px;cursor:pointer;font-size:0.8em"/></th>
 					<th nowrap>下单日期</th>
 				</tr>
 				<tr class="tr_dingdan">
@@ -116,7 +118,7 @@
 				样板：<input type="text" id="dd_yangban" class="plainInput" size=69 readonly style="cursor:pointer" /><br/>
 				供货商：<input type="text" id="dd_gonghuoshang" class="plainInput" size=40 readonly />
 				联系人：<input type="text" id="dd_lianxiren" class="plainInput" size=10 readonly  style="cursor:pointer" />
-				<br/><font color=red>TODO 还要关联发货单</font>
+				 <div id="fahuodan_out" style="display:none">发货单：<span class="plainBtn" id="fhd_span" ></span></div>
 			</div>
 			<table id="tb_huowu">
 				<!-- 发货分拆为二级表：单号 数量 金额 以及 总计 -->

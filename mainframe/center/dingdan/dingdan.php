@@ -90,4 +90,16 @@ if("jiedan" == $param["caozuo"]){
 	}
 	$cur = coll("contact")->find($query)->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
+}else if("shangjia" == $param["caozuo"]){
+	$query  = array("leixing"=>"商家");
+	if(""!=$param["option"]){
+		$query = array("leixing"=>"商家","mingchen"=>array('$regex'=>$param["option"]));
+	}
+	$cur = coll("contact")->find($query)->skip($param["offset"])->limit($param["limit"]);
+	echo  cur2json($cur);
+}else if("huowu" == $param["caozuo"]){
+	//$query = array("dingdanhuowu"=>'/^'.$param["_id"].'/');
+	$query = array("dingdanhuowu"=>array('$regex'=>'^'.$param["_id"]));
+	$cur = coll("huowu")->find($query);
+	echo  cur2json($cur);
 }

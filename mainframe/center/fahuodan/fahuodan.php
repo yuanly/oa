@@ -56,6 +56,15 @@ if("shangchuan" == $param["caozuo"]){
 	echo  jsonEncode($fhd);
 }else if("chaxun" == $param["caozuo"]){
 	$query = array();
+	if(isset($param["option"]["bianhao"])){
+		$query["_id"] = array('$regex'=>'^'.$param["option"]["bianhao"]);
+	}
+	if(isset($param["option"]["gonghuoshang"])){
+		$query["gonghuoshang._id"] = $param["option"]["gonghuoshang"];
+	}
+	if(isset($param["option"]["zhuangtai"])){
+		$query["zhuangtai"] = $param["option"]["zhuangtai"];
+	}
 	$cur = coll("fahuodan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("chaxunforyanhuodan" == $param["caozuo"]){

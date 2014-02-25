@@ -70,6 +70,14 @@ getUser=function(id){
 	}
 	return null;
 }
+getUserName = function(id){
+	var user = getUser(id);
+	if(user){
+		return user.user_name;
+	}else{
+		return "";
+	}
+}
 function getUserIdByName(name){
 	var users = getAllUsers();
 	if(null == users){

@@ -56,15 +56,14 @@
 			<table id="fahuodantable"  style="min-width:500px;">
 				<tr id="tableheader">
 					<th nowrap><input id="th_bianhao" class="plainTh" value="编号" style="width:120px;cursor:pointer"/></th>
-					<th nowrap><input id="th_gonghuoshang" class="plainTh" value="供货商" style="width:50px;cursor:pointer"/></th>
-					<th nowrap><input id="th_ludanzhe" class="plainTh" value="录单者" style="width:50px"/></th>
-					<th nowrap><input id="th_duidanzhe" class="plainTh" value="对单者" style="width:50px;cursor:pointer;"/></th>
-					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:35px"/></th>
-					<th nowrap>收货日期</th>
-					<th nowrap><input id="th_fuhezhe" class="plainTh" value="复核者" style="width:50px"/></th>
+					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:55px;cursor:pointer" list="zhuangtailist"/></th>
+					<th nowrap><input id="th_gonghuoshang" class="plainTh" value="供货商" style="width:120px;cursor:pointer"/></th>
+					<th nowrap>录单者</th>
+					<th nowrap>对单者</th>
+					<th nowrap>复核者</th>
 				</tr>
 				<tr class="tr_fahuodan">
-					<td id="td_bianhao"></td><td id="td_gonghuoshang"></td><td id="td_ludanzhe"></td><td id="td_duidanzhe"></td><td id="td_zhuangtai"></td><td id="td_shouhuoriqi"></td><td id="td_fuhezhe"></td>
+					<td id="td_bianhao"></td><td id="td_zhuangtai"></td><td id="td_gonghuoshang"></td><td id="td_ludanzhe"></td><td id="td_duidanzhe"></td><td id="td_fuhezhe"></td>
 				</tr>
 			</table>	
 			<div id="pager">
@@ -166,6 +165,16 @@
 			<option value="件"/>
 			<option value="KG"/>
 			<option value="张"/>
+		</datalist>
+		<datalist id="zhuangtailist">
+			<option value="状态"/>
+			<option value="上传"/>
+			<option value="录单"/>
+			<option value="申请对单"/>
+			<option value="对单"/>
+			<option value="付款"/>
+			<option value="发货"/>
+			<option value="复核"/>
 		</datalist>
 	<div style="display:none;position:absolute;z-index:100;border:1px solid gray;background-color:white;" id="sel_ctnr">
 		<div style="width:100%;background-color:#99ccff;text-align:center">选择订单货物</div>

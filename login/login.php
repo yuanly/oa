@@ -25,8 +25,13 @@ $result["kehu"] = getKehu();
 echo jsonEncode($result);
 
 function getKehu(){
-	$cur = coll("kehu")->find()->sort(array("access"=>-1))->limit(20);
-	return cur2obj($cur);
+	//$cur = coll("kehu")->find()->sort(array("access"=>-1))->limit(20);
+	$cur = coll("dingdan")->find(array(),array("_id"=>0,"kehu"=>1))->sort(array("access"=>-1))->limit(60);
+	$res = array();
+	foreach($cur as $doc){
+		$res[] = $doc["kehu"];
+	}
+	return array_unique($res);
 }
 function getUsers(){
 	//$cur = userColl()->find(array("ban"=>array('$exists'=>false)),array("password"=>0));
