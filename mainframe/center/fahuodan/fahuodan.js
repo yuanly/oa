@@ -27,7 +27,7 @@
 		shuliang:23,
 		jianshu:2,
 		fahuodan:"xx",
-		yanhuodan,["xx","xx"...],
+		yanhuodan,{_id:"xxx",beizhu:[{time:"xxx",zhu:"xxx"},{}...]},
 		zhuangguidan:"xx",
 		zhu:"xxx",
 		dingdanhuowu:"xx"//DD140113.1HW1 具体到指定规格的货物

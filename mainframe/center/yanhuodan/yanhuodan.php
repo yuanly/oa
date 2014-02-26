@@ -54,10 +54,12 @@ if("xinjian" == $param["caozuo"]){
 	$zgd["huowu"] = c2a($cur);
 	echo  jsonEncode($fhd);
 }else if("baocun" == $param["caozuo"]){
+	//huowu:{    yanhuodan:{_id:"xxx",index:1(在验货单中的位置),zhuangtai:"待查/通过/不通过",beizhu:[{riqi:"xxx",zhu:"xxx"},{}...]},}
 	$yanhuodan = $param["yanhuodan"];	
-	coll("huowu")->update(array("yanhuodan"=>$yanhuodan["_id"]),array('$pull'=>array("yanhuodan"=>$yanhuodan["_id"])),array("multiple"=>true));
+	coll("huowu")->update(array("yanhuodan._id"=>$yanhuodan["_id"]),array('$unset'=>array("yanhuodan"=>1)),array("multiple"=>true));
 	foreach($yanhuodan["huowu"] as $huowu){
-		coll("huowu")->update(array("_id"=>$huowu["_id"]),array('$push'=>array("yanhuodan"=>$yanhuodan["_id"]),'$set'=>array("yhdIdx"=>$huowu["yhdIdx"])));
+		//yanghuodan{huowu:[{_id:"货物id",yanhuodan:{_id:"xxx",index:1,zhuangtai:"待查/通过/不通过",beizhu:[{riqi:"xxx",zhu:"xxx"},{}...]},}}]}
+		coll("huowu")->update(array("_id"=>$huowu["_id"]),array('$set'=>array("yanhuodan"=>$huowu["yanhuodan"])));
 	}
 	unset($yanhuodan["huowu"]);
 	coll("yanhuodan")->save($yanhuodan);
@@ -69,5 +71,9 @@ if("xinjian" == $param["caozuo"]){
 		$query = array("_id"=>array('$lt'=>$fhdId));
 	}
 	$cur = coll("huowu")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	echo  cur2json($cur);
+}else if("huowu" == $param["caozuo"]){
+	$query = array("yanhuodan._id"=>$param["_id"]);
+	$cur = coll("huowu")->find($query);
 	echo  cur2json($cur);
 }
