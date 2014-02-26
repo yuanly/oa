@@ -75,7 +75,7 @@
 		<table><tr><td nowrap>
 		<div id="liucheng">
 			<div id="liuchengItem" style="display:inline-block;border:1px solid #ddd;background-color:#fcfcfc">
-				<table>
+				<table id="lc_tb_in">
 					<tr>
 						<td style="font-size:30px" id="lc_bianhao">2</td>
 						<td><div><img id="lc_touxiang" src="/oa/logo/noface.jpg" style="width:48px;height:48px;border-radius:25px;"/></div></td>
@@ -83,6 +83,7 @@
 					</tr>
 					<tr id="lc_caozuo" style="display:none" >
 						<td colspan="4" style="text-align:center;border:1px solid #ddd">
+							<span id="cz_dayin" class="plainBtn" style="margin-right:10px;display:none">打印</span>
 							<span id="cz_shenqingshouli" class="plainBtn" style="margin-right:10px;display:none">申请受理</span>
 							<span id="cz_quxiaoshenqingshouli" class="plainBtn" style="margin-right:10px;display:none">取消申请</span>
 							<span id="cz_shouli" class="plainBtn" style="margin-right:10px;display:none">受理</span>
@@ -103,7 +104,7 @@
 				编号：<input type="text" id="yhd_bianhao" class="plainInput" readonly size=12 />
 			</div>
 			<table id="huowutable">
-				<tr><th></th><th>货物编号</th><th>供货商</th><th>规格</th><th>单位</th><th>数量</th><th>件数</th><th>注</th></tr>
+				<tr><th></th><th>货物编号</th><th>供货商</th><th>规格</th><th>单位</th><th>数量</th><th>件数</th><th>状态</th></tr>
 				<tr class="tr_huowu" >
 					<td><span id="shanchuhuowu" class="plainBtn" title="删除货物">[-]</span>&nbsp;<span id="shangyi" class="plainBtn" title="上移">[↑]</span></td>
 					<td id="td_huowubianhao" style="cursor:pointer;color:brown">发货单</td>
@@ -112,7 +113,11 @@
 					<td id="td_danwei">单位</td>
 					<td id="td_shuliang">数量</td>
 					<td id="td_jianshu">件数</td>
-					<td id="td_zhu">注</td></tr>
+					<td><input id="td_zhuangtai" class="plainInput" value="待查" list="zhuangtailist" size=5 ></td><td><span class="plainBtn" id="jiazhu" title="给该货物添加一条备注">[注]</span></td></tr>
+				<tr class="tr_zhu">
+					<td></td>
+					<td colspan=8 style="font-size:0.8em;color:blue" nowrap id="td_zhu"><div class="div_zhu" id="div_zhu"><span id="zhuriqi">2014-02-26</span>&nbsp;&nbsp;<input id="zhu" class="plainInput" value="" style="width:80%" /><span id="shanchubeizhu" class="plainBtn" title="删除备注">[-]</span></div></td>
+				</tr>
 			</table>
 			<span class="plainBtn" id="tianjiahuowu" title="添加货物">[+]</span>
 		</div>
@@ -130,6 +135,11 @@
 			<option value="件"/>
 			<option value="KG"/>
 			<option value="张"/>
+		</datalist>
+		<datalist id="zhuangtailist">
+			<option value="待查"/>
+			<option value="通过"/>
+			<option value="不通过"/>
 		</datalist>
 	<div style="display:none;position:absolute;z-index:100;border:1px solid gray;background-color:white;" id="sel_ctnr">
 		<div style="width:100%;background-color:#99ccff;text-align:center;">选择发货单货物</div>
