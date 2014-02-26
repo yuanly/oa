@@ -188,6 +188,10 @@ D 标记验货单通过
 		})
 	}
 	$("#cz_quxiaoshenqingshenhe").click(cz_quxiaoshenqingshenhe);
+	function dayin(){
+		window.open("dayin.html?showId="+currYHD._id,"_blank");
+	}
+	$("#cz_dayin").click(dayin);
 	function cz_quxiaoshenhe(){
 		postJson("yanhuodan.php",{caozuo:"quxiaoshenhe",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
