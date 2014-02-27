@@ -15,7 +15,22 @@ if("xinjian" == $param["caozuo"]){
 	coll("yanhuodan")->save($yanhuodan);
 	echo '{"success":true}';
 }else if("chaxun" == $param["caozuo"]){
-	$query = array();
+	$query = array();	
+	if(isset($param["option"]["bianhao"])){
+		$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
+	}
+	if(isset($param["option"]["zhuangtai"])){
+		$query["zhuangtai"] = $param["option"]["zhuangtai"];
+	}
+	if(isset($param["option"]["chuangjianzhe"])){
+		$query["chuangjianzhe"] = $param["option"]["chuangjianzhe"];
+	}
+	if(isset($param["option"]["shoulizhe"])){
+		$query["shoulizhe"] = $param["option"]["shoulizhe"];
+	}
+	if(isset($param["option"]["shenhezhe"])){
+		$query["shenhezhe"] = $param["option"]["shenhezhe"];
+	}
 	$cur = coll("yanhuodan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("shenqingshouli" == $param["caozuo"]){

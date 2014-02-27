@@ -49,7 +49,7 @@ if(isset($param["_id"])){//
 			$query["gonghuoshang._id"] = $param["option"]["gonghuoshang"];
 		}
 		if(isset($param["option"]["bianhao"])){
-			$query["_id"] = array('$regex'=>'^'.$param["option"]["bianhao"]);
+			$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
 		}
 	$cur = coll("dingdan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	

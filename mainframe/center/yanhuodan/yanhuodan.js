@@ -22,6 +22,28 @@ D 标记验货单通过
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("#th_bianhao").datepicker().change(function(){
+		$(this).val("YHD"+date2id($(this).val()));
+		listyanhuodan(0);
+	});
+	var users = getUsers();users.unshift({"user_name":"创建者"});
+	$("#th_chuangjianzhe").myselector(users,"user_name").bind("input",function(){
+		listyanhuodan(0);
+	});
+	users = getUsers();users.unshift({"user_name":"受理者"});
+	$("#th_shoulizhe").myselector(users,"user_name").bind("input",function(){
+		listyanhuodan(0);
+	});
+	users = getUsers();users.unshift({"user_name":"审核者"});
+	$("#th_shenhezhe").myselector(users,"user_name").bind("input",function(){
+		listyanhuodan(0);
+	});
+	$("#th_zhuangtai").bind("input",function(){
+		listyanhuodan(0);
+	});
+	$("#th_bianhao").bind("input",function(){
+		listyanhuodan(0);
+	});
 	$("#shanchubeizhu").click(function(){
 		$(this).parents("#div_zhu").remove();
 	});
@@ -284,9 +306,48 @@ D 标记验货单通过
 	});
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 function _hanshuku_(){}
+	function getUserIdByName(name){
+		var ret="";
+		each(getUsers(),function(i,user){
+			if(name == user.user_name){
+				ret = user._id;
+				return false;
+			}
+		});
+		return ret;
+	}
 	//解释查询条件
 	function getOptions(){
 		var ret = {};
+		var bh = $("#th_bianhao").val().trim();
+		if("" != bh && "编号" != bh){
+			ret.bianhao = bh+"0";
+		}
+		var zt = $("#th_zhuangtai").val().trim();
+		if("" != zt && "状态" != zt){
+			ret.zhuangtai = zt;
+		}
+		var cjz = $("#th_chuangjianzhe").val().trim();
+		if("" != cjz && "创建者" != cjz){
+			var id = getUserIdByName(cjz);
+			if(id){
+				ret.chuangjianzhe = id;
+			}
+		}
+		var slz = $("#th_shoulizhe").val().trim();
+		if("" != slz && "受理者" != slz){
+			var id = getUserIdByName(slz);
+			if(id){
+				ret.shoulizhe = id;
+			}
+		}
+		var shz = $("#th_shenhezhe").val().trim();
+		if("" != shz && "审核者" != shz){
+			var id = getUserIdByName(shz);
+			if(id){
+				ret.shenhezhe = id;
+			}
+		}
 		return ret;
 	}
 		//列出原稿
@@ -515,7 +576,6 @@ function _hanshuku_(){}
 	yuandanEditor.editorReadonly();
 	
 	$("#sel_ctnr").draggable();
-	$("#th_bianhao").datepicker().change(function(){$(this).val("YHD"+date2id($(this).val()))});
 	$("#opt_yanhuodanid").datepicker();//.change(function(){$(this).val("YHD"+date2id($(this).val()))});
 	var liuyanElm = $("#liuyan").liuyan({hostType:"yanhuodan",});
 	listyanhuodan(0,getUrl().showId);

@@ -57,7 +57,7 @@ if("shangchuan" == $param["caozuo"]){
 }else if("chaxun" == $param["caozuo"]){
 	$query = array();
 	if(isset($param["option"]["bianhao"])){
-		$query["_id"] = array('$regex'=>'^'.$param["option"]["bianhao"]);
+		$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
 	}
 	if(isset($param["option"]["gonghuoshang"])){
 		$query["gonghuoshang._id"] = $param["option"]["gonghuoshang"];
