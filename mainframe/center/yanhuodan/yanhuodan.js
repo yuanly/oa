@@ -188,10 +188,19 @@ D 标记验货单通过
 		})
 	}
 	$("#cz_quxiaoshenqingshenhe").click(cz_quxiaoshenqingshenhe);
-	function dayin(){
+	function cz_dayin(){
 		window.open("dayin.html?showId="+currYHD._id,"_blank");
 	}
-	$("#cz_dayin").click(dayin);
+	function cz_miyin(){
+		window.open("dayin.html?showId="+currYHD._id+"&jiami=ture","_blank");
+	}
+	function cz_miyin2(){
+		window.open("dayin.html?showId="+currYHD._id+"&shangjia=ture","_blank");
+	}
+	$("#cz_dayin").click(cz_dayin);
+	$("#cz_miyin").click(cz_miyin);
+	$("#cz_miyin2").click(cz_miyin2);
+	
 	function cz_quxiaoshenhe(){
 		postJson("yanhuodan.php",{caozuo:"quxiaoshenhe",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
@@ -226,6 +235,7 @@ D 标记验货单通过
 
 	//流程下拉按钮
 	function cz_anniu(){
+		console.log($(this).parents("#lc_tb_in").find("#lc_caozuo"));
 		$(this).parents("#lc_tb_in").find("#lc_caozuo").toggle();
 		if($(this).attr("src").indexOf("up")>-1){
 			$(this).attr("src","../../../img/down.png");
@@ -408,6 +418,8 @@ function _hanshuku_(){}
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
 					$("#cz_dayin",caozuoItem).show();
+					$("#cz_miyin",caozuoItem).show();
+					$("#cz_miyin2",caozuoItem).show();
 				if((yanhuodan.liucheng.length - 1) == n && theUser._id == item.userId){
 					kebianji = true;
 					$("#cz_shenqingshouli",caozuoItem).show();
