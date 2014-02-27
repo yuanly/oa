@@ -607,7 +607,7 @@ function _hanshuku_(){}
 	function hwid2int(hwid){
 		return parseInt(hwid.substr(hwid.indexOf("HW")+2));
 	}
-	function showDetail(fhd){
+	function showDetail(fhd){//我承认，这个实现很烂！
 		currFHD = fhd;
 		currFHD.lastId = 0;
 		each(fhd.huowu,function(i,hw){
@@ -624,7 +624,7 @@ function _hanshuku_(){}
 		yuandanEditor.editorVal(currFHD.neirong);
 		$(".huowu").remove();
 		//huowu 2 huowu 根据订单货物id分簇，然后获取订单货物原始信息
-		var ddhws = [];//找出所有不同的订单货物
+		var ddhws = [];//找出所有不同的订单货物。（订单货物是在订单中录入的货物，不同于后续的货物，一个订单货物可以对应多个货物）
 		each(fhd.huowu,function(i,hw){
 			var exists = false;
 			each(ddhws,function(j,ddhw){
@@ -645,12 +645,15 @@ function _hanshuku_(){}
 			each(fhd.huowu,function(j,huowu){
 				if(huowu.dingdanhuowu == ddhwId){
 					tempHuowu = huowu;
+					/*
 					var mingxi = {};
 					mingxi.shuliang = huowu.shuliang;
 					mingxi.jianshu = huowu.jianshu;
 					mingxi.zhu = huowu.zhu;
 					mingxi._id = huowu._id;
 					hw.mingxi.push(mingxi);
+					*/
+					hw.mingxi.push(clone(huowu));
 				}
 			});
 			hw.guige = tempHuowu.guige;
@@ -677,10 +680,8 @@ function _hanshuku_(){}
 					mxDiv.find(".zhu_ctnr").hide();
 				}
 				if(mx.yanhuodan){
-					//mxDiv.find("#yanhuodan").text(mx.yanhuodan).show();
-					each(mx.yanhuodan,function(i,yanhuodan){
-						mxDiv.find("#yanhuodan").append("&nbsp;<span class='yanhuodanId'>"+yanhuodan+"</span>");
-					});
+					mxDiv.find("#yanhuodan").text(mx.yanhuodan._id);
+					mxDiv.find("#yanhuodan").show();
 				}
 				if(mx.zhuangguidan){
 					mxDiv.find("#zhuangguidan").text(mx.zhuangguidan).show();
