@@ -55,8 +55,11 @@ D 标记验货单通过
 		}
 	});
 	function sel_huowu2(){
-		$("#sel_ctnr").hide();
 		var huowu = $(this).data("huowu");
+		if(huowu.yanhuodan){
+			tip($("#tianjiahuowu"),"该货物已选入其它验货单！",1500);
+			return ;
+		}
 		var duplicate = false;
 		$(".tr_huowu").each(function(i,hw){ 
 			if(huowu._id == $(hw).data("huowu")._id){
@@ -65,9 +68,11 @@ D 标记验货单通过
 			}
 		});
 		if(duplicate){
-			tip($("#tianjiahuowu"),"重复货物！",1500);
+			tip($("#tianjiahuowu"),"该货物已被选择！",1500);
 			return ;
 		}
+		
+		$("#sel_ctnr").hide();
 		var tr_huowu = tmpl_tr_huowu.clone(true);
 		tr_huowu.data("huowu",huowu);
 		tr_huowu.find("#td_huowubianhao").text(huowu._id);
@@ -144,9 +149,20 @@ D 标记验货单通过
 				tr.find("#td_shuliang").text(huowu.shuliang);
 				tr.find("#td_jianshu").text(huowu.jianshu);
 				tr.find("#td_zhu").text(huowu.zhu);
+				if(huowu.yanhuodan){
+					if(huowu.yanhuodan.zhuangtai=="通过"){
+						tr.find("#td_yanhuodan").html("<font color=green>"+huowu.yanhuodan._id+"</font>");
+					}else if(huowu.yanhuodan.zhuangtai=="不通过"){
+						tr.find("#td_yanhuodan").html("<font color=red>"+huowu.yanhuodan._id+"</font>");
+					}else{
+						tr.find("#td_yanhuodan").text(huowu.yanhuodan._id);
+					}					
+				}
+				/*
 				each(huowu.yanhuodan,function(i,yanhuodan){
 					tr.find("#td_yanhuodan").append("<span>"+yanhuodan+"</span>&nbsp;");
 				});
+				*/
 				tr.data("huowu",huowu);
 				tr.css("background-color",toggle("#fff","#eee"));
 				$("#sel_fahuodan").append(tr);

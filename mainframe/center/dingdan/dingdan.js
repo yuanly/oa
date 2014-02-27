@@ -41,18 +41,7 @@
 	$("#th_gendanyuan").myselector(users,"user_name").bind("input",function(){
 		listDingdan(0);
 	});
-	/*
-	$("#th_gendanyuan").myselector(users,"_id","user_name").bind("input",function(){
-		listDingdan(0);
-		var v = $(this).val();
-		each(users,function(i,u){
-			if(u._id == v){
-				$("#th_gendanyuan").val(u.user_name);
-				return false;
-			}
-		}); 
-	});
-	*/
+ 
 	$("#th_zhuangtai").myselector(["状态","录单","审核","接单","等版","子单","下单","审单","结单","作废"]).bind("input",function(){listDingdan(0);});
 	$("#fangqi").click(function(){
 		showDetailById(currDD._id);
@@ -402,12 +391,19 @@
 	$("#fhd_span").click(function(){
 		window.open("../fahuodan/fahuodan.html?showId="+$(this).text(),"_blank");
 	});
+	$("#yhd_span").click(function(){
+		window.open("../yanhuodan/yanhuodan.html?showId="+$(this).text(),"_blank");
+	});
 	function getHuowu(){
 		postJson("dingdan.php",{caozuo:"huowu",_id:currDD._id},function(huowus){
-			var fhds=[];
+			var fhds = [];
+			var yhds = [];
 			each(huowus,function(i,hw){
 				if(hw.fahuodan && fhds.indexOf(hw.fahuodan)<0){
 					fhds.push(hw.fahuodan);
+				}
+				if(hw.yanhuodan && yhds.indexOf(hw.yanhuodan._id)<0){
+					yhds.push(hw.yanhuodan._id);
 				}
 			});	
 			
@@ -418,6 +414,14 @@
 					fhd_1.text(fhd);
 					$("#fahuodan_out").append(fhd_1).append("&nbsp;");
 				});
+				if(yhds.length>0){
+					$("#fahuodan_out").append("验货单：");
+					each(yhds,function(i,yhd){
+						var yhd_1 = yhd_span.clone(true);
+						yhd_1.text(yhd);
+						$("#fahuodan_out").append(yhd_1).append("&nbsp;");
+					});
+				}
 			}else{
 				$("#fahuodan_out").hide();
 			}
@@ -772,8 +776,9 @@ function _hanshuku_(){}
 	var liuchengItem = $("#liuchengItem").detach();
 	var tr_dingdan = $(".tr_dingdan").detach();
 	var tmpl_huowu = $(".tmpl_huowu").detach();
-	
-	var fhd_span = $("#fhd_span").detach();
+	 
+	var fhd_span = $("#fhd_span").detach(); 
+	var yhd_span = $("#yhd_span").detach(); 
 	
 	var liuyanElm = $("#liuyan").liuyan({hostType:"dingdan",});
 	listDingdan(0,getUrl().showId);
