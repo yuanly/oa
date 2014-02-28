@@ -178,6 +178,7 @@
 			 	var item = {};
 			 	item.gonghuoshang = currFHD.gonghuoshang;
 			 	item._id = $(mingxi).find("#hwbianhao").text().trim();
+			 	item.kehu = $(hw).find(".dingdanhuowu").find("#kehu1").text();
 			 	item.yangban = $(hw).find("#mx_yangban").text().trim();
 			 	item.guige  = $(hw).find("#mx_guige").text().trim();
 			 	item.danwei = $(hw).find("#mx_danwei").val().trim();
@@ -310,6 +311,7 @@
 		var dd = $(this).data("dingdan");
 		var tr_huowu = dingdanhuowu.clone(true);
 		tr_huowu.data("huowu",huowu);
+//		tr_huowu.data("dingdan",dd);
 		//tr_huowu.find("#dingdanhao").text($(this).data("dingdanId"));
 		tr_huowu.find("#dingdanhao").text(huowu.id);
 		tr_huowu.find("#kehu1").text(dd.kehu);

@@ -149,10 +149,10 @@
 		if(parent.find("#mx_danwei").val().trim() != currDD.yangban.danwei){
 			tip($(this),"单位必须与样板单位一致！",1500);
 			return;
-		}
+		} 
 		list(event,currDD.yangban.jiage,function(obj){return obj.beizhu+" "+obj.zhi+"元";},function(ret){
-			parent.find("#mx_danjia").val(ret.zhi);
-			parent.find("#mx_jine").text(""+round(parseFloat(ret.zhi)*parseFloat($("#mx_shuliang").val()),2));
+			parent.find("#mx_danjia").val(ret.zhi); 
+			parent.find("#mx_jine").text(""+round(parseFloat(ret.zhi)*parseFloat(parent.find("#mx_shuliang").val()),2));
 			huizong();
 		});
 	}

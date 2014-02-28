@@ -476,7 +476,15 @@ jQuery.fn.dataInc = function(name,value){
  		$(this).val(v);
  	}
  }
- 
+ jQuery.fn.changexx = function(callback){
+ 	this.keyup(function(event){
+ 		if($(this).data("lastValue") != $(this).val()){
+ 			$(this).data("lastValue",$(this).val()) ;
+ 			callback();
+ 		}
+ 	});
+ 	return this;
+ } 
  jQuery.fn.changex = function(callback){
  	this.keyup(function(event){
  		if($(this).data("lastValue") != $(this).val().trim()){
@@ -991,13 +999,13 @@ jQuery.fn.dataInc = function(name,value){
  		panel.find("#option").val(option);
  	}
  	panel.find("#pager").data("page",0);
- 	panel.find("#option").changex(function(){
+ 	panel.find("#option").changexx(function(){
  		panel.find("#pager").data("page",0);
  		listObjs();
  	});
  	var listObjs=function(){
  		panel.find("table").empty();
- 		getObjs(panel.find("#pager").data("page"),panel.find("#option").val(),function(objs){
+ 		getObjs(panel.find("#pager").data("page"),panel.find("#option").val().trim(),function(objs){
  			each(objs,function(n,obj){
  				var tr = $("<tr></tr>");
  				tr.data("background-color",toggle("#ffeeff","#eeffff"));

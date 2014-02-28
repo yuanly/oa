@@ -107,19 +107,20 @@
 			<div style='background-color:#eee'>装柜单明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn" style="display:none">保存</span></div>
 			<div>
 				编号：<input type="text" id="zgd_bianhao" class="plainInput" readonly size=12 />&nbsp;柜号：<input type="text" id="zgd_guihao" class="plainInput" style="font-size:16px;font-weight:bolder;color:brown" readonly size=2 />&nbsp;装柜日期：<input type="text" id="zgd_zhuangguiriqi" class="plainInput" style="cursor:pointer" readonly size=6 /><br/>
-				装柜人员：<input type="text" class="plainInput" id="zhuangguirenyuan" size=49 />
+				装柜人员：<div id="zhuangguirenyuan" class="myinput"></div>
 			</div>
 			<table id="huowutable">
-				<tr><th></th><th>货物编号</th><th>客户</th><th>供货商</th><th>规格</th><th>单位</th><th>数量</th><th>件数</th><th>验货单</th><th>订单</td><th>注</th></tr>
+				<tr><th></th><th>货物编号</th><th>客户</th><th>供货商</th><th>样板</th><th>规格</th><th>数量</th><th>单位</th><th>件数</th><th>验货单</th><th>订单</td><th>注</th></tr>
 				<tr class="tr_huowu" >
 					<td nowrap><span id="shanchuhuowu" class="plainBtn" title="删除货物">[-]</span>&nbsp;<span id="shangyi" class="plainBtn" title="上移">[↑]</span></td>
 					<td id="td_huowubianhao" style="cursor:pointer;color:brown">发货单</td>
-					<td id="td_kehu"></td>
+					<td id="td_kehu" style="text-align:center"></td>
 					<td id="td_gonghuoshang">供货商</td>
+					<td id="td_yangban"></td>
 					<td id="td_guige">规格</td>
-					<td id="td_danwei">单位</td>
-					<td id="td_shuliang">数量</td>
-					<td id="td_jianshu">件数</td>
+					<td id="td_shuliang" style="text-align:center">数量</td>
+					<td id="td_danwei" style="text-align:center">单位</td>
+					<td id="td_jianshu" style="text-align:center">件数</td>
 					<td id="td_yanhuodan" style="cursor:pointer"></td>
 					<td id="td_dingdan" style="cursor:pointer"></td>
 					<td id="td_zhu">注</td></tr>

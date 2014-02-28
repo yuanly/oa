@@ -87,7 +87,9 @@
 			tr_huowu.find("#td_kehu").text(dd.kehu);
 		});
 		tr_huowu.find("#td_huowubianhao").text(huowu._id);
+		tr_huowu.find("#td_kehu").text(huowu.kehu);
 		tr_huowu.find("#td_gonghuoshang").text(huowu.gonghuoshang.mingchen);
+		tr_huowu.find("#td_yangban").text(huowu.yangban);
 		tr_huowu.find("#td_guige").text(huowu.guige);
 		tr_huowu.find("#td_danwei").text(huowu.danwei);
 		tr_huowu.find("#td_shuliang").text(huowu.shuliang);
@@ -116,7 +118,7 @@
 		currZGD.huowu = huowu;
 		currZGD.guihao = $("#zgd_guihao").val().trim();
 		currZGD.zhuangguiriqi = $("#zgd_zhuangguiriqi").val().trim();
-		currZGD.zhuangguirenyuanm = $("#zhuangguirenyuan").val().trim();
+		currZGD.zhuangguirenyuan = $("#zhuangguirenyuan").text().trim();
 		postJson("zhuangguidan.php",{caozuo:"baocun",zhuangguidan:currZGD},function(res){ 
 			showDetailById(currZGD._id);
 		});
@@ -348,6 +350,7 @@ function _hanshuku_(){}
  
 	function readOnly(){
 		editing = false;
+		$(".myinput").removeAttr("contenteditable");
 		$("#zgd_gonghuoshang").css("cursor","default").unbind("click").val(currZGD.gonghuoshang?currZGD.gonghuoshang.mingchen:"");
 		$("#zgd_yanhuodizhi").attr("readonly","readonly");
 		$(".plainInput").attr("readonly","readonly"); 
@@ -366,6 +369,7 @@ function _hanshuku_(){}
 	
 	function edit(){
 		editing = true;
+		$(".myinput").attr("contenteditable","true");
 		$("#zgd_yanhuodizhi").removeAttr("readonly");
 		$(".plainInput").removeAttr("readonly");
 		$("#zhuangguidanmingxi").find(".plainBtn").show();
@@ -381,16 +385,18 @@ function _hanshuku_(){}
 		$("#zgd_bianhao").val(currZGD._id);
 		$("#zgd_guihao").val(currZGD.guihao);
 		$("#zgd_zhuangguiriqi").val(currZGD.zhuangguiriqi);
-		$("#zhuangguirenyuan").vals(currZGD.zhuangguirenyuan);
+		$("#zhuangguirenyuan").text(currZGD.zhuangguirenyuan);
 		$(".tr_huowu").remove();
 		each(zgd.huowu,function(i,huowu){
 			var tr_huowu = tmpl_tr_huowu.clone(true);
 			tr_huowu.data("huowu",huowu);
 			tr_huowu.find("#td_huowubianhao").text(huowu._id);
+			tr_huowu.find("#td_kehu").text(huowu.kehu);
 			postJson("../dingdan/dingdans.php",{_id:getDDID(huowu.dingdanhuowu)},function(dd){
 				tr_huowu.find("#td_kehu").text(dd.kehu);
 			});
 			tr_huowu.find("#td_gonghuoshang").text(huowu.gonghuoshang.mingchen);
+			tr_huowu.find("#td_yangban").text(huowu.yangban);
 			tr_huowu.find("#td_guige").text(huowu.guige);
 			tr_huowu.find("#td_danwei").text(huowu.danwei);
 			tr_huowu.find("#td_shuliang").text(huowu.shuliang);
