@@ -870,8 +870,18 @@ jQuery.fn.dataInc = function(name,value){
  		return false;
  	}
  }
- 
-
+ //格式化样板为：“中国型号（泰国型号）”的格式
+	function formatYangban(yangban){
+		if(yangban){
+			var yb = "("+yangban.taiguoxinghao+")";
+			if(yangban.zhongguoxinghao){
+				yb = yangban.zhongguoxinghao+yb;
+			}
+			return yb;
+		}else{
+			return ""
+		}
+	}
  
  function random(max,min){
  	if(typeof min == "number"){
@@ -901,6 +911,27 @@ jQuery.fn.dataInc = function(name,value){
  	});
  	return this;
  } 
+ //上面那个适合plainInput元素，这个适合myinput元素 
+ jQuery.fn.xuanzeshangjia2 = function(vendors_php,callback){
+ 	if(!vendors_php){
+ 		vendors_php = "../contact/lianxiren.php";
+ 	}	
+ 	this.click(function(event){
+ 		var limit = 20;
+ 		setSelector(event,function(page,option,callback1){
+ 				postJson(vendors_php,{caozuo:"chashangjia",offset:page*limit,limit:limit,option:option},function(vendors){
+ 					callback1(vendors);
+ 				});
+ 			},["_id","mingchen"],function(vendor){
+ 				$(this).text(vendor.mingchen)
+ 				$(this).data("shangjia",vendor);
+ 				callback(vendor);
+ 				$(this).change();
+ 			}
+ 		);
+ 	});
+ 	return this;
+ }
  /*
  * 下拉列表，不带输入框的选择框
  */

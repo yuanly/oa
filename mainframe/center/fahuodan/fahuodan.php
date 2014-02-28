@@ -80,7 +80,9 @@ if("shangchuan" == $param["caozuo"]){
 	$id = $fahuodan["_id"];
 	coll("huowu")->remove(array("fahuodan"=>$id));
 	foreach($fahuodan["huowu"] as $huowu){
-		coll("huowu")->save($huowu);
+		$hwId = $huowu["_id"];
+		unset($huowu["_id"]);
+		coll("huowu")->update(array("_id"=>$hwId),array('$set'=>$huowu),array("upsert"=>true));
 	}
 	unset($fahuodan["huowu"]);
 	unset($fahuodan["liucheng"]);

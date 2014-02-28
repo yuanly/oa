@@ -74,7 +74,18 @@ if("jiedan" == $param["caozuo"]){
 	$zidan  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"子单","time"=>time());
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zidan),'$set'=>array("zhuangtai"=>"子单")));
 	echo '{"success":true}';
-}else if("gethuowubyid" == $param["caozuo"]){
+}else if("gethuowubyid2" == $param["caozuo"]){
+	$dingdan  = coll("dingdan")->findOne(array("huowu.id"=>$param["huowuId"]));
+	foreach($dingdan["huowu"] as $huowu){
+		if($huowu["id"] == $param["huowuId"]){
+			$huowu["kehu"] = $dingdan["kehu"];
+			$huowu["yangban"] = $dingdan["yangban"];
+			echo jsonEncode($huowu);
+			exit;
+		}
+	}
+	echo '{"success":false}';
+}else if("gethuowubyid" == $param["caozuo"]){//应该不需要了，改成gethuowubyid2，在fahuodan.js中调用
 	$dingdan  = coll("dingdan")->findOne(array("huowu.id"=>$param["huowuId"]));
 	foreach($dingdan["huowu"] as $huowu){
 		if($huowu["id"] == $param["huowuId"]){

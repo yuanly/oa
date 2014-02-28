@@ -1,3 +1,10 @@
+		.myinput{
+			display:inline-block;
+			min-width:50px;
+			font-size:0.8em;
+			border-bottom:1px solid gray;
+			color:#660033;
+		}
     .plainBtn,.plainBtn1{
     	font-size:90%;
     	color:blue
