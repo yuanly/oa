@@ -27,7 +27,7 @@ if("liebiao" == $param["caozuo"]){
 	$dingdan["_id"] .=".".($n+1);
 	$i = 1;
 	foreach($dingdan["huowu"] as $k=>$huowu){
-		$dingdan["huowu"][$k]["id"] = $dingdan["_id"]."hw".$i;
+		$dingdan["huowu"][$k]["id"] = $dingdan["_id"]."HW".$i;
 		$i ++; 
 	}
 	if(isset($dingdan["beizhu"]) && $dingdan["beizhu"]){

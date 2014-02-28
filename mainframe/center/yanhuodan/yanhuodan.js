@@ -41,9 +41,11 @@ D 标记验货单通过
 	$("#th_zhuangtai").bind("input",function(){
 		listyanhuodan(0);
 	});
+	/*
 	$("#th_bianhao").bind("input",function(){
 		listyanhuodan(0);
 	});
+	*/
 	$("#shanchubeizhu").click(function(){
 		$(this).parents("#div_zhu").remove();
 	});
@@ -160,7 +162,11 @@ D 标记验货单通过
 			return;
 		}
 		$("#sel_fahuodan_pager").data("offset",offset); 
-		postJson("yanhuodan.php",{caozuo:"chaxunhuowu",offset:offset*20,limit:20,option:{cmd:"",fhdId:$("#opt_yanhuodanid").val().trim()}},function(huowus){
+		var fhdId = $("#opt_huowuId").val().trim();
+		if(fhdId != ""){
+			fhdId += "0";
+		}
+		postJson("yanhuodan.php",{caozuo:"chaxunhuowu",offset:offset*20,limit:20,option:{cmd:"",fhdId:fhdId}},function(huowus){
 			$(".tmpl_fahuodanhuowu").remove();
 			each(huowus,function(i,huowu){
 				tr = tmpl_fahuodanhuowu.clone(true);

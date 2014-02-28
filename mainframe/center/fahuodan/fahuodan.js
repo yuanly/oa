@@ -298,7 +298,9 @@
 	$("#tianjiahuowu").click(tianjiahuowu);
 	$(".list").dblclick(function(){$(this).val("");});
 	function showDingdan(){
-		window.open("../dingdan/dingdan.html?showId="+$(this).text(),"_blank");
+		var ddhwId = $(this).text();
+		var ddId = ddhwId.substring(0,ddhwId.toUpperCase ().indexOf("HW"));
+		window.open("../dingdan/dingdan.html?showId="+ddId,"_blank");
 	}
 	$("#dingdanhao").click(showDingdan);
 	function sel_huowu(){
@@ -693,7 +695,7 @@ function _hanshuku_(){}
 			postJson("../dingdan/dingdan.php",{caozuo:"gethuowubyid",huowuId:huowu.dingdanhuowu},function(dd){
 				var tr_huowu = dingdanhuowu.clone(true);
 				tr_huowu.data("huowu",dd);
-				tr_huowu.find("#dingdanhao").text(dd.id.substring(0,dd.id.indexOf("hw")));
+				tr_huowu.find("#dingdanhao").text(dd.id);
 				tr_huowu.find("#guige1").text(dd.guige);
 				tr_huowu.find("#shuliang1").text(dd.shuliang);
 				tr_huowu.find("#danwei1").text(dd.danwei);

@@ -480,7 +480,7 @@ function _hanshuku_(){}
 		var ret = {};
 		var bh = $("#th_bianhao").val().trim();
 		if("" != bh && "编号" != bh){
-			ret.bianhao = bh;
+			ret.bianhao = bh+"0";
 		}
 		var kh = $("#th_kehu").val().trim();
 		if("" != kh && "客户" != kh){

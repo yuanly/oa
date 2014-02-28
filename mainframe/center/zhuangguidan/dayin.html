@@ -1,0 +1,52 @@
+﻿<html>
+	<head>
+	<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=0"> 
+	<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
+<link rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen">
+	<title>装柜单</title>
+	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
+	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+	<script src="../../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+	<script src="../../../js/my.js" type="text/javascript"></script>
+	<script src="../../../js/localstorage.js" type="text/javascript"></script>
+	<script src="../../../js/server.js" type="text/javascript"></script>
+	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+	<style> 
+		.myinput{
+			display:inline-block;
+			min-width:50px;
+			border-bottom:1px solid black;
+			color:#660033;
+		}
+	</style>
+	<script>
+		$(function(){
+    	$(".myinput").attr("contentEditable","true");
+		});
+	</script>
+	</head>
+<body style="margin:0px;padding:0px">
+ <div align=center>
+ 	<div style="font-size:1.2em">第<span style="font-size:1.6em" id="guihao">50</span>柜装柜清单</div>
+ 	<div style="font-size:0.7em">编号：<span style="border-bottom:1px solid black;" id="bianhao" contentEditable=true>1</span>&nbsp;&nbsp;装柜日期：<span style="border-bottom:1px solid black" id="zhuangguiriqi"></span>&nbsp;&nbsp;装柜人员：<span style="border-bottom:1px solid black" id="zhuangguirenyuan"></span></div>
+ 	test:<div class="myinput"></div>
+ </div>
+ <table style="width:100%;border-spacing:0px;border-collapse:collapse;border:1px solid;margin-top:5px;" border=1 id="tb_zhuangguidan">
+ 	<tr>
+ 		<th>编号</th><th>规格</th><th>数量</th><th>单位</th><th>件数</th><th>备注</th>
+ 	</tr>
+ 	<tr>
+ 		<td colspan=6>客户：DD 订单：DD232323.2 样板：中型(泰型) 总件数：NN </td>
+ 	</tr>
+ 	<tr>
+ 		<td>编号</td><th>规格</td><td>数量</td><td>单位</td><td>件数</td><td style="width:30%">备注</td>
+ 	</tr>
+</table>
+</body>
+</html>
