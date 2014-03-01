@@ -289,7 +289,7 @@ function _hanshuku_(){}
 		}
 		var gh = $("#th_guihao").val().trim();
 		if("" != gh && "柜号" != gh){
-			ret.zhuangtai = gh;
+			ret.guihao = gh;
 		}
 		var zt = $("#th_zhuangtai").val().trim();
 		if("" != zt && "状态" != zt){
