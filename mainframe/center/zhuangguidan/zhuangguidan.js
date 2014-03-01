@@ -66,7 +66,7 @@
 	function sel_huowu2(){
 		var huowu = $(this).data("huowu");
 		if(huowu.zhuangguidan){
-			tip(null,"该货物已被选人其它柜单！",1500);
+			tip(null,"该货物已被选人柜单！",1500);
 			return ;
 		}
 		var duplicate = false;
