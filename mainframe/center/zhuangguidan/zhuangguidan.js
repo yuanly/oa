@@ -157,6 +157,7 @@
 			each(huowus,function(i,huowu){
 				tr = tmpl_fahuodanhuowu.clone(true);
 				tr.find("#td_huowubianhao").text(huowu._id);
+				tr.find("#td_kehu").text(huowu.kehu);
 				tr.find("#td_gonghuoshang").text(huowu.gonghuoshang?huowu.gonghuoshang.mingchen:"");
 				tr.find("#td_guige").text(huowu.guige);
 				tr.find("#td_danwei").text(huowu.danwei);
@@ -391,10 +392,12 @@ function _hanshuku_(){}
 			var tr_huowu = tmpl_tr_huowu.clone(true);
 			tr_huowu.data("huowu",huowu);
 			tr_huowu.find("#td_huowubianhao").text(huowu._id);
-			tr_huowu.find("#td_kehu").text(huowu.kehu);
+			tr_huowu.find("#td_kehu").text(huowu.kehu?huowu.kehu:"");
+			/*
 			postJson("../dingdan/dingdans.php",{_id:getDDID(huowu.dingdanhuowu)},function(dd){
 				tr_huowu.find("#td_kehu").text(dd.kehu);
 			});
+			*/
 			tr_huowu.find("#td_gonghuoshang").text(huowu.gonghuoshang.mingchen);
 			tr_huowu.find("#td_yangban").text(huowu.yangban);
 			tr_huowu.find("#td_guige").text(huowu.guige);

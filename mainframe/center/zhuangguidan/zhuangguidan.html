@@ -110,11 +110,12 @@
 				装柜人员：<div id="zhuangguirenyuan" class="myinput"></div>
 			</div>
 			<table id="huowutable">
-				<tr><th></th><th>货物编号</th><th>客户</th><th>供货商</th><th>样板</th><th>规格</th><th>数量</th><th>单位</th><th>件数</th><th>验货单</th><th>订单</td><th>注</th></tr>
+				<tr><th></th><th>货物编号</th><th>客户</th><th>订单</td><th>供货商</th><th>样板</th><th>规格</th><th>数量</th><th>单位</th><th>件数</th><th>验货单</th><th>注</th></tr>
 				<tr class="tr_huowu" >
 					<td nowrap><span id="shanchuhuowu" class="plainBtn" title="删除货物">[-]</span>&nbsp;<span id="shangyi" class="plainBtn" title="上移">[↑]</span></td>
 					<td id="td_huowubianhao" style="cursor:pointer;color:brown">发货单</td>
 					<td id="td_kehu" style="text-align:center"></td>
+					<td id="td_dingdan" style="cursor:pointer"></td>
 					<td id="td_gonghuoshang">供货商</td>
 					<td id="td_yangban"></td>
 					<td id="td_guige">规格</td>
@@ -122,7 +123,6 @@
 					<td id="td_danwei" style="text-align:center">单位</td>
 					<td id="td_jianshu" style="text-align:center">件数</td>
 					<td id="td_yanhuodan" style="cursor:pointer"></td>
-					<td id="td_dingdan" style="cursor:pointer"></td>
 					<td id="td_zhu">注</td></tr>
 			</table>
 			<span class="plainBtn" id="tianjiahuowu" title="添加货物">[+]</span>
@@ -151,15 +151,16 @@
 			<div>
 					<table style="width:100%"><tr><td style="text-align:left"><input class="plainInput" id="opt_huowuId"/></td><td style="text-align:right"><span class="plainBtn" id="guanbi_sel_fahuodan">关闭</span></td></tr></table>
 					<table id="sel_fahuodan">
-						<tr><th></th><th>货物编号</th><th>供货商</th><th>规格</th><th>单位</th><th>数量</th><th>件数</th><th>备注</th><th>验货单</th><th>装柜单</th></tr>
+						<tr><th></th><th>货物编号</th><th>客户</th><th>供货商</th><th>规格</th><th>单位</th><th>数量</th><th>件数</th><th>备注</th><th>验货单</th><th>装柜单</th></tr>
 						<tr class="tmpl_fahuodanhuowu" style="cursor:pointer">
 							<td id="td_zhuangtai"></td>
 							<td id="td_huowubianhao"></td>
+							<td id="td_kehu" style="text-align:center"></td>
 							<td id="td_gonghuoshang"></td>
 							<td id="td_guige"></td>
-							<td id="td_danwei"></td>
-							<td id="td_shuliang"></td>
-							<td id="td_jianshu"></td>
+							<td id="td_danwei" style="text-align:center"></td>
+							<td id="td_shuliang" style="text-align:center"></td>
+							<td id="td_jianshu" style="text-align:center"></td>
 							<td id="td_zhu"></td>
 							<td id="td_yanhuodan"></td>
 							<td id="td_zhuangguidan"></td>
