@@ -60,13 +60,15 @@
 	$("#cz_jiegao").click(cz_jiegao);
 	function cz_ludan(){
 		$("#ludan").show();
-		var danwei = $("#ld_danwei","#ludan").val();
+		//var danwei = $("#ld_danwei","#ludan").val();
 		$(".plainInput","#ludan").val("");
-		$("#ld_danwei","#ludan").val(danwei);
+		$(".myinput","#ludan").text("");
+		//$("#ld_danwei","#ludan").val(danwei);
 		$("#ld_yangban").val("");
 		
 		$(".ld_huowu","#ludan").remove();
-		$("#ld_xuhao","#ludan").data("xuhao",1);
+		$("#tr_tianjiahuowu").before(tr_huowu.clone(true));
+		//$("#ld_xuhao","#ludan").data("xuhao",1);
 		$("#ld_beizhu_xianshi").show();
 		$("#ld_beizhu").val("");
 		$("#ld_beizhu_waibu").hide();
@@ -120,33 +122,9 @@
 	}
 	$("#cz_shenjie").click(cz_shenjie);
 	function ld_tianjia(){
-		if("" == $("#ld_guige","#ludan").text().trim()){
-			tip($(this),'货物"规格"不能为空！',1500);
-			return;
-		}
-		if("" == $("#ld_shuliang","#ludan").text().trim()){
-			tip($(this),'货物"数量"不能为空！',1500);
-			return;
-		}
-		if(isNaN(parseFloat($("#ld_shuliang").text().trim()))){
-			tip($(this),'"数量"不是有效数值！',1500);
-			return;
-		}
-		if("" == $("#ld_danwei","#ludan").val().trim()){
-			tip($(this),'货物"单位"不能为空！',1500);
-			return;
-		}
 		var huowu = tr_huowu.clone(true);
-		$("#hw_xuhao",huowu).text($("#ld_xuhao").data("xuhao")+".");
-		$("#hw_xuhao",huowu).data("xuhao",$("#ld_xuhao").data("xuhao"));
-		$("#ld_xuhao").data("xuhao",$("#ld_xuhao").data("xuhao")+1);
-		$("#hw_guige",huowu).text($("#ld_guige").text().trim());
-		$("#hw_shuliang",huowu).text($("#ld_shuliang").text().trim());
-		$("#hw_danwei",huowu).text($("#ld_danwei").val().trim());
+		huowu.find("#hw_xuhao").text($(".ld_huowu").length+1);
 		$(this).parents("tr").before(huowu);
-		$("#ld_xuhao").text($("#ld_xuhao").data("xuhao")+".");
-		$("#ld_guige").text("");
-		$("#ld_shuliang").text("");
 	}
 	$("#ld_tianjia","#ludan").click(ld_tianjia);
 	function hw_shanchu(){
@@ -175,16 +153,34 @@
 			tip($(this),'"样板"不能为空！',1500);
 			return;
 		}
-		if($("#ld_xuhao").data("xuhao") == 1){
+		if($("#ld_xuhao").data("xuhao") == 0){
 			tip($(this),'货物条目不能为空！',1500);
 			return;
 		}
 		var dingdan = {yuangao:currYG._id,kehu:$("#ld_kehu").val().trim(),yangban:{taiguoxinghao:$("#ld_yangban").text().trim()},huowu:[]};
-		
+		var ok = true;
 		$(".ld_huowu").each(function(n,hw){
-			var huowu = {guige:$("#hw_guige",hw).text().trim(),shuliang:$("#hw_shuliang",hw).text().trim(),danwei:$("#hw_danwei",hw).text().trim()};
+			var huowu = {guige:$("#hw_guige",hw).text().trim(),shuliang:$("#hw_shuliang",hw).text().trim(),danwei:$("#hw_danwei",hw).val().trim()};
+			if(huowu.guige == ""){
+				tip($(this).find("#hw_guige"),"规格不能留空！",1500);
+				ok = false;
+				return false;
+			}
+			if(!isFloat(huowu.shuliang)){
+				tip($(this).find("#hw_shuliang"),"数量不是有效数字！",1500);
+				ok = false;
+				return false;
+			}
+			if(huowu.danwei == ""){
+				tip($(this).find("#hw_danwei"),"单位不能留空！",1500);
+				ok = false;
+				return false;
+			}
 			dingdan.huowu.push(huowu);
-		});
+		}); 
+		if(!ok){
+			return false;
+		}
 		if("" != $("#ld_beizhu").val().trim()){
 			dingdan.beizhu = $("#ld_beizhu").val().trim();
 		}
@@ -274,8 +270,7 @@
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();
 		});
-	}
-	
+	} 
 	function showDetail(yg){
 		currYG = yg;
 		$("#shangchuan").hide();
@@ -285,7 +280,8 @@
 			$("#xianshi").append("<p style='background-color:#eee'>备注</p>");
 			$("#xianshi").append("<div id='xs_beizhu'></div>");
 			$("#xianshi #xs_beizhu").html(yg.beizhu);
-		}
+		} 	
+		$("#ludan").hide();
 		shuaxindingdanliebiao();
 		liuyanElm.shuaxinliebiao({hostId:currYG._id,hostType:"yuangao"});
 	}
@@ -321,8 +317,9 @@
 					elm.find("div:first-child").css("background-color","#eee");
 				}
 				each(dingdan.huowu,function(n,hw){
-					var hwelm = lb_hw.clone(true); 
-					$("#lb_xuhao",hwelm).text((n+1)+".");
+					var hwelm = lb_hw.clone(true);
+					//$("#lb_xuhao",hwelm).text((n+1)+".");
+					$("#lb_xuhao",hwelm).text(hw.id);
 					$("#lb_guige",hwelm).text(hw.guige);
 					$("#lb_shuliang",hwelm).text(hw.shuliang);
 					$("#lb_danwei",hwelm).text(hw.danwei);

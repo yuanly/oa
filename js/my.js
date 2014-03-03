@@ -103,6 +103,16 @@
  	}
  	return false;
  }
+ //
+ function isFloat(str){
+ 	if(isNaN(str)){
+ 		return false;
+ 	}
+ 	if(str != (""+parseFloat(str))){
+ 		return false;
+ 	}
+ 	return true;
+ }
  function isIE7(){
  	if($.browser.msie && Number($.browser.version)>6 && Number($.browser.version)<=7){
  		return true;

@@ -93,10 +93,14 @@
 				<th style="background-color:#eee" nowrap>序号</th><th nowrap  style="background-color:#eee;">规格</th><th style="background-color:#eee" nowrap>数量</th><th style="background-color:#eee" nowrap>单位</th><th style="background-color:#fff" nowrap></th>
 			</tr>
 			<tr class="ld_huowu">
-				<td id="hw_xuhao">1.</td><td id="hw_guige">红色</td><td id="hw_shuliang">200</td><td id="hw_danwei">码</td><td nowrap><span id="hw_shanchu" class="plainBtn" style="font-size:80%">[ - ]</span></td>
+				<td id="hw_xuhao">1.</td>
+				<td id="hw_guige" class="myinput" contenteditable=true ></td>
+				<td id="hw_shuliang" class="myinput" contenteditable=true style="text-align:center"></td>
+				<td><input class="plainInput" id="hw_danwei" value="码" list="danweilist" size=3></td>
+				<td nowrap><span id="hw_shanchu" class="plainBtn" style="font-size:80%">[ - ]</span></td>				
 			</tr>
-			<tr>
-				<td id="ld_xuhao">1.</td><td id="ld_guige" class="myinput" contenteditable=true ></td><td id="ld_shuliang" class="myinput" contenteditable=true style="text-align:center"></td><td><input class="plainInput" id="ld_danwei" value="码" list="danweilist" size=3></td><td nowrap><span class="plainBtn" style="font-size:78%" id="ld_tianjia">[ + ]</span></td>
+			<tr id="tr_tianjiahuowu">
+				<td nowrap colspan=5><span class="plainBtn" style="font-size:78%" id="ld_tianjia">[ + ]</span></td>
 			</tr>
 		</table>
 		<div style="margin-bottom:5px">留言：<span id="ld_beizhu_xianshi" class="plainBtn" style="font-size:80%">[ + ]</span></div>
@@ -121,7 +125,7 @@
 						<span class="plainBtn" style="display:none" id="lb_quxiaoshenqing">取消申请</span>
 					<span class="plainBtn" style="display:none" id="lb_shenhe">审核</span></nobr>
 					</div>
-					<div id="lb_hw" style="border-bottom:1px solid #eee"><div style="display:inline-block;width:30px" id="lb_xuhao">1.</div><div style="display:inline-block;width:150px" id="lb_guige">红色</div><div style="display:inline-block;width:50px;" id="lb_shuliang">10</div><div style="display:inline-block;width:20px" id="lb_danwei">码</div></div>
+					<div id="lb_hw" style="border-bottom:1px solid #eee"><div style="display:inline-block;width:120px" id="lb_xuhao">1.</div><div style="display:inline-block;width:150px" id="lb_guige">红色</div><div style="display:inline-block;width:50px;" id="lb_shuliang">10</div><div style="display:inline-block;width:20px" id="lb_danwei">码</div></div>
 				</div>
 		</div>
 		<div id="liuyan" style="margin-top:150px">
