@@ -14,6 +14,6 @@ if("shanchu" == $param["caozuo"]){
 }else if("gaileixing" == $param["caozuo"]){
 	$_id = $param["_id"];
 	$leixing = $param["leixing"];
-	coll("news")->update(array("_id"=>$_id),array("type"=>$leixing));
+	coll("news")->update(array("_id"=>$_id),array('$set'=>array("type"=>$leixing)));
 	echo '{"success":true}';
 }

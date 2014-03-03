@@ -20,3 +20,6 @@ body{
 	color: #ffffff;
 	font-weight: bold;
 }
+.selected{
+	color:red;
+}

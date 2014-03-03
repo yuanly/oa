@@ -42,7 +42,9 @@ $(function(){
 //	}
 
 		//设置记录点击处理，在模板被剥离前。
-	$(".tr_contact").click(function(){
+	$(".tr_contact").click(function(){		
+		$(".selected").removeClass("selected");
+		$(this).addClass("selected");
 		showDetail($(this).data("_id"));
 	});
 	var tr_contact = $(".tr_contact").detach();
@@ -328,7 +330,7 @@ $(function(){
 				layout.close("west");
 			}else{
 				if(contacts.length>0){//将列表第一个商家显示在右边的商家详情表单
-					showDetail(contacts[0]["_id"]);
+					$(".tr_contact").get(0).click();
 				}
 			}
 			//调整左侧宽度以便显示完整的列表

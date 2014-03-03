@@ -168,11 +168,12 @@ $(function(){
 	});
 	
 	$("#genggai").click(function(){
+		var that = $(this);
 		if($("#type2").val() == currNews.type){
-			tip($(this),"请先设置为不同的类型！",1500);
+			tip(that,"请先设置为不同的类型！",1500);
 		}else{
 			postJson("news.php",{caozuo:"gaileixing",_id:currNews._id,leixing:$("#type2").val()},function(vendors){
-				tip($(this),"更改消息类型成功！",1500);
+				tip(that,"更改消息类型成功！",1500);
 			});
 		}
 	});
@@ -210,7 +211,7 @@ function new2tr(theNew){
 	tr.find("#readcount").text(theNew.read?theNew.read:0);
 	tr.find("#replycount").text(theNew.reply?theNew.reply:0);
 	
-	tr.find("#lin").click(function(){
+	tr/*.find("#lin")*/.click(function(){
 		$(".selected").removeClass("selected");
 		tr.addClass("selected");
 		setNewsDetail(theNew);
@@ -268,7 +269,7 @@ function setNewsDetail(theNew){
 		first_tr.find("#d_name").text(getUserName(theNew.user));
 		first_tr.find("#d_date").text(new Date(theNew.time*1000).format("yyyy-MM-dd"));
 		first_tr.find("#d_time").text(new Date(theNew.time*1000).format("hh:mm:ss"));
-		first_tr.find("#d_head").attr("src",getUser(theNew.user).photo);
+		first_tr.find("#d_head").attr("src",getUser(theNew.user)?getUser(theNew.user).photo:"");
 		first_tr.find("#d_content").html(theNew.content);
 		$("#newsDetail table").append(first_tr);
 		//show replies

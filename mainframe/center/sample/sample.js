@@ -61,10 +61,13 @@ $(function(){
 			}else{
 				postJson("sample.php",yangban,function(res){
 					if(res.success == true){
+						location.reload();
+						/*
 						currSample = yangban;
 						obj2form(yangban);
 						zhidu();
 						tip(null,"成功提交样板信息！",3000);
+						*/
 					}else{
 						ask3(null,res.err);
 					}
@@ -76,6 +79,8 @@ $(function(){
 	$("#tijiao").click(tijiao_handle);
 	//设置记录点击处理，在模板被剥离前。
 	$(".tr_sample").click(function(){
+		$(".selected").removeClass("selected");
+		$(this).addClass("selected");
 		showDetail($(this).data("_id"));
 	});
 	//筛选处理
@@ -96,7 +101,7 @@ $(function(){
 		bianji();
 	});
 	$("#beixuan_bianhao").click(function(){
-		showDetail($(this).val());
+		showDetail($(this).text());
 	});
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 	//列出样板
@@ -134,7 +139,7 @@ $(function(){
 				showDetail(showId);
 				layout.close("west");
 			}else if(samples.length>0){//将列表第一个商家显示在右边的商家详情表单
-				showDetail(samples[0]["_id"]);
+				$(".tr_sample").get(0).click();
 			}
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();
@@ -194,13 +199,14 @@ $(function(){
 			each(yangban.beixuan,function(n,beixuan){
 				if(beixuan._id != yangban._id){
 					var beixuan_elm = beixuan_tmpl.clone(true);
-					beixuan_elm.find("#beixuan_bianhao").val(beixuan._id);
+					beixuan_elm.find("#beixuan_bianhao").text(beixuan._id);
 					if(beixuan.shangjia){
-						beixuan_elm.find("#beixuan_shangjia").vals(beixuan.shangjia.mingchen);
+						//beixuan_elm.find("#beixuan_shangjia").vals(beixuan.shangjia.mingchen);
+						beixuan_elm.find("#beixuan_shangjia").text(beixuan.shangjia.mingchen);
 					}else{
 						beixuan_elm.find("#beixuan_shangjia").val("");
 					}
-					beixuan_elm.find("#beixuan_jiage").val(jiages2str(beixuan.jiage));
+					beixuan_elm.find("#beixuan_jiage").text(jiages2str(beixuan.jiage));
 					$("#beixuan").append(beixuan_elm);
 				}
 			});
