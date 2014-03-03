@@ -117,12 +117,15 @@ $(function(){
 				postJson("lianxiren.php",{caozuo:"chashangjia",offset:page*limit,limit:limit,option:option},function(vendors){
 					callback(vendors);
 				});
-			},["_id","mingchen"],function(vendor){
+			},["_id","mingchen"],function(vendor){//选中回调
 				$("#shangjia").val(vendor.mingchen);
 				$("#shangjia").data("shangjia",vendor);
 				if("" == $("#dizhi").val().trim()){
 					$("#dizhi").vals(vendor.dizhi);
 				}
+			},"",function(){//清空回调
+				$("#shangjia").val("");
+				$("#shangjia").removeData("shangjia");
 			}
 		);
 	} 

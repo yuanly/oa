@@ -989,8 +989,8 @@ jQuery.fn.dataInc = function(name,value){
  function setSelector(event,getObjs,fields,callback,option,qingkongcallback,datepick){
  		var selector_tmpl = $('<div id="selector">\
  			<div id="mengban" style="position:absolute;top:0px;left:0px;width:100%;height:100%;z-index:100;background-color:rgba(250,250,255,.4);"></div>\
- 			<div id="panel" style="position:absolute;z-index:101;background-color:white;padding:5px;border:1px solid gray">\
- 				<input id="option" type="text" size=20 /> <span style="color:blue;cursor:pointer;float:right" id="guanbi">关闭&nbsp;</span><span style="color:blue;cursor:pointer;float:right" id="qingkong">&nbsp;清空|</span>\
+ 			<div id="panel" style="min-width:250px;position:absolute;z-index:101;background-color:white;padding:5px;border:1px solid gray">\
+ 				<input id="option" type="text" size=20 /> <div style="float:right;display:inline-block"><span style="color:blue;cursor:pointer;" id="qingkong">&nbsp;清空|</span><span style="color:blue;cursor:pointer;" id="guanbi">关闭&nbsp;</span></div>\
  				<table></table>\
  				<div style="text-align:center;padding-top:5px;width:200px"><span id="pager" style="cursor:pointer;color:blue">更多...</span></div>\
  			</div>\
@@ -1022,7 +1022,7 @@ jQuery.fn.dataInc = function(name,value){
  				tr.data("background-color",toggle("#ffeeff","#eeffff"));
  				tr.css("background-color",tr.data("background-color")).css("cursor","pointer");
  				each(fields,function(m,field){
- 					tr.append("<td>"+getField(obj,field)+"</td>");
+ 					tr.append("<td nowrap>"+getField(obj,field)+"</td>");
  				});
  				panel.find("table").append(tr);
  				tr.mouseover(function(){
