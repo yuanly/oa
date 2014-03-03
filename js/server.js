@@ -29,6 +29,25 @@ function post(url, data, success) {
 		}
 	});
 }
+function postJsonSync(url, data, success) {
+	data = "json="+encodeURIComponent(JSON.stringify(data));
+	$.ajax({
+		url: url,
+		data: data,
+		dataType: "json",
+		type : "POST",
+		async : false,
+		success: function(obj){
+			if(obj.redirect){
+				window.top.location.href = obj.redirect;
+			}
+			success(obj);
+		},
+		error : function(jqxhr, status, exText){
+			console.log("服务器异常， 请联系技术人员！");
+		}
+	});
+}
 function postJson(url, data, success) {
 	data = "json="+encodeURIComponent(JSON.stringify(data));
 	$.ajax({

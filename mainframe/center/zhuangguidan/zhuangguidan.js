@@ -297,7 +297,7 @@ function _hanshuku_(){}
 		}
 		var jdz = $("#th_jiaodanzhe").val().trim();
 		if("" != jdz && "交单者" != jdz){
-			ret.jiaodanzhe = jdz;
+			ret.jiaodanzhe = getUserIdByName(jdz);
 		} 		
 		var zgrq = $("#th_zhuangguiriqi").val().trim();
 		if("" != zgrq && "装柜日期" != zgrq){
@@ -305,7 +305,7 @@ function _hanshuku_(){}
 		}
 		var shz = $("#th_shenhezhe").val().trim();
 		if("" != shz && "审核者" != shz){
-			ret.shenhezhe = shz;
+			ret.shenhezhe = getUserIdByName(shz);
 		} 
 		return ret;
 	}

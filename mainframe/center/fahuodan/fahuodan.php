@@ -53,6 +53,10 @@ if("shangchuan" == $param["caozuo"]){
 	$fhd = coll("fahuodan")->findOne($query);
 	$cur = coll("huowu")->find(array("fahuodan"=>$param["_id"]));
 	$fhd["huowu"] = c2a($cur);
+	$lsz = coll("liushuizhang")->findOne(array("fahuodan"=>$param["_id"]));
+	if($lsz){
+		$fhd["zhuanzhang"] = $lsz["_id"];
+	}
 	echo  jsonEncode($fhd);
 }else if("chaxun" == $param["caozuo"]){
 	$query = array();
@@ -88,5 +92,17 @@ if("shangchuan" == $param["caozuo"]){
 	unset($fahuodan["liucheng"]);
 	unset($fahuodan["_id"]);
 	coll("fahuodan")->update(array("_id"=>$id),array('$set'=>$fahuodan));
+	coll("liushuizhang")->update(array("fahuodan"=>$id),array('$unset'=>array("fahuodan"=>1)),array("multiple"=>true));
+	if($fahuodan["zhuanzhang"]){
+		coll("liushuizhang")->update(array("_id"=>$fahuodan["zhuanzhang"]),array('$set'=>array("fahuodan"=>$id)));
+	}
 	echo '{"success":true}';
+}else if("chaliushui" == $param["caozuo"]){
+	$query = array();
+	if($param["option"]){
+		$query = array("_id"=>array('$lt'=>$param["option"]));
+	}
+	$query["zhuangtai"] = array('$ne'=>"作废");
+	$cur = coll("liushuizhang")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	echo  cur2json($cur);
 }

@@ -7,7 +7,7 @@
 		huowu:[huowu],//这个需要从huowu collection关联查询获取，不在fahuodan collection保存
 		qitafei:[{shuoming:"xxx",jine:22}],
 		neirong:"xxx",
-		zhuanzhang:["xxx",...]
+		//zhuanzhang:["xxx",...] 改成放到流水账的表中，方便避免一个帐被多次选中。
 		ludanzhe:1,
 		duidanzhe:2,
 		fuhezhe:3,
@@ -67,6 +67,36 @@
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+		function sel_zhuanzhangliushui(event){
+		var limit = 20;
+		setSelector(event,function(page,option,callback){
+				postJson("fahuodan.php",{caozuo:"chaliushui",offset:page*limit,limit:limit,option:option},function(liushuis){
+					callback(liushuis);
+				});
+			},["_id","fukuanfangname","kemu","jine","shoukuanfangname","fukuanriqi","fahuodan"],function(liushui){//选中回调
+				if(liushui.fahuodan && liushui.fahuodan!=currFHD._id){
+					tip($(this),"该流水账已被关联到发货单，不能重复使用！！！",1500);	
+					return;
+				}
+				$(this).val(liushui._id);
+				if(currFHD.gonghuoshang){
+					if(liushui.shoukuanfang != currFHD.gonghuoshang._id){
+						tip($(this),"注意，该流水收款人与供货商不符！！！",1500);	
+					}
+				} 
+				var zonge = parseFloat($("#fhd_zonge").val().trim());
+				if(!isNaN(zonge)){
+					if(zonge != liushui.jine){
+						tip($(this),"注意，该流水金额和发货单总额不符！！！",1500);	
+					}
+				}
+			},"",function(){//清空回调
+				$(this).val("");
+			},function(){//过滤框是日期选择时，在选中日期后的回调。
+				$("#panel #option").val("LSZ"+date2id($("#panel #option").val()+"0"));
+				});
+	}
+	
 	$("#yanhuodan").click(function(){
 		window.open("../yanhuodan/yanhuodan.html?showId="+$(this).text(),"_blank");		
 	});
@@ -567,7 +597,7 @@ function _hanshuku_(){}
 	function readOnly(){
 		editing = false;
 		$(".myinput").removeAttr("contentEditable");
-		//$("#fhd_gonghuoshang").css("cursor","default").unbind("click").val(currFHD.gonghuoshang?currFHD.gonghuoshang.mingchen:"");
+		$("#fhd_zhuanzhangliushui").unbind("click");
 		$("#fhd_gonghuoshang").css("cursor","default").unbind("click");//.val(currFHD.gonghuoshang?currFHD.gonghuoshang.mingchen:"");
 		yuandanEditor.editorReadonly();
 		$("#fhd_yanhuodizhi").attr("readonly","readonly");
@@ -604,6 +634,7 @@ function _hanshuku_(){}
 		$("#fhd_yanhuodizhi").removeAttr("readonly");
 		$(".plainInput").removeAttr("readonly");
 		$("#fahuodanmingxi").find(".plainBtn").show();
+		$("#fhd_zhuanzhangliushui").click(sel_zhuanzhangliushui);
  		$("#fhd_gonghuoshang").css("cursor","pointer").xuanzeshangjia2("",function(vendor){
  			currFHD.gonghuoshang = {_id:vendor._id,mingchen:vendor.mingchen};
  		}).attr("readonly","readonly");

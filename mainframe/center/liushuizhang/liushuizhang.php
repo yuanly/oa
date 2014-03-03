@@ -12,6 +12,9 @@ if("xinjian" == $param["caozuo"]){
 	$d = "LSZ".date("ymd",time());
 	$n = coll("liushuizhang")->count(array("_id"=>array('$regex'=>"^".$d."")));
 	$liushuizhang["_id"] = $d.".".($n+1);
+	$zhongtai = coll("config")->findOne(array("_id"=>"zhongtai"));
+	$liushuizhang["fukuanfang"] = $zhongtai["zhongtai"]["_id"];
+	$liushuizhang["fukuanfangname"] = $zhongtai["zhongtai"]["mingchen"];
 	coll("liushuizhang")->save($liushuizhang);
 	echo '{"success":true}';
 }else if("chaxun" == $param["caozuo"]){

@@ -496,18 +496,8 @@ function _hanshuku_(){}
 		}
 		var gdy = $("#th_gendanyuan").val().trim();
 		if("跟单员" != gdy){
-			each(users,function(i,user){
-				if(gdy == user.user_name){
-					ret.gendanyuan = user._id;
-					return false;
-				}
-			});
+			ret.gendanyuan = getUserIdByName(gdy);
 		}
-		/*
-		if("" != gdy && "-1" != gdy && "跟单员" != gdy){
-			ret.gendanyuan = gdy;
-		}
-		*/
 		var ghs = $("#th_gonghuoshang").val().trim();
 		if("" != ghs && "供货商" != ghs){
 			ret.gonghuoshang = $("#th_gonghuoshang").data("ghsId");

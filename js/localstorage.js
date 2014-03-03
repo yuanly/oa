@@ -75,18 +75,37 @@ getUserName = function(id){
 	if(user){
 		return user.user_name;
 	}else{
-		return "";
+		var ret = "";
+		postJsonSync("../contact/contacts.php",{_id:id},function(lxr){//离职员工
+			ret = lxr.mingchen;
+			var user = {_id:id,mingchen:lxr.mingchen,role:"operator",user_name:ret};
+			if(!isNaN(lxr.photo)){
+				user.photo = getImgUrl(lxr.photo);
+			}else if(!lxr.photo){
+				user.photo="../logo/noface.jpg";
+			}else{
+				user.photo = "/oa/logo/"+lxr.photo;
+			}
+			var users = getAllUsers();
+			users.push(user);
+			localStorage.setItem("users",JSON.stringify(users));
+		});
+		return ret;
 	}
 }
 function getUserIdByName(name){
+	//考虑到离职的员工，已经不在用户列表中，提供一个处理后门：即直接输入联系人id进行查询。
+	if(name.trim().indexOf("LXR") == 0){
+		return name;
+	}
 	var users = getAllUsers();
 	if(null == users){
-		return null;
+		return undefined;
 	}
 	for(var i = 0;i<users.length;i++){
 		if(users[i].user_name == name){
 			return users[i]._id;
 		}
 	}
-	return null;
+	return undefined;
 }

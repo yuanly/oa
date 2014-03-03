@@ -476,6 +476,7 @@ jQuery.fn.dataInc = function(name,value){
  		$(this).val(v);
  	}
  }
+ //有trim
  jQuery.fn.changexx = function(callback){
  	this.keyup(function(event){
  		if($(this).data("lastValue") != $(this).val()){
@@ -485,6 +486,7 @@ jQuery.fn.dataInc = function(name,value){
  	});
  	return this;
  } 
+ //没trim
  jQuery.fn.changex = function(callback){
  	this.keyup(function(event){
  		if($(this).data("lastValue") != $(this).val().trim()){
@@ -981,13 +983,14 @@ jQuery.fn.dataInc = function(name,value){
  * fields 字符串数据，指定需要显示的对象的属性
  * callback(resp) 将选中的对象返回给调用者
  * option 过滤输入框的初始值
- * guangbicallback 点击关闭时回调
+ * qingkongcallback 点击清空时回调//“清空”与“关闭”的差别仅在于调这个回调，用户在这个回调里实现清空。
+ * datepick 指定option作为编码（时间）选择器，datepicker参数是回调函数设置选择日期后输入框中的值。参见liushuizhang.js
  */
- function setSelector(event,getObjs,fields,callback,option,guangbicallback){
+ function setSelector(event,getObjs,fields,callback,option,qingkongcallback,datepick){
  		var selector_tmpl = $('<div id="selector">\
  			<div id="mengban" style="position:absolute;top:0px;left:0px;width:100%;height:100%;z-index:100;background-color:rgba(250,250,255,.4);"></div>\
  			<div id="panel" style="position:absolute;z-index:101;background-color:white;padding:5px;border:1px solid gray">\
- 				<input id="option" type="text" size=20 /> <span style="color:blue;cursor:pointer;float:right" id="guanbi">关闭</span>\
+ 				<input id="option" type="text" size=20 /> <span style="color:blue;cursor:pointer;float:right" id="guanbi">关闭&nbsp;</span><span style="color:blue;cursor:pointer;float:right" id="qingkong">&nbsp;清空|</span>\
  				<table></table>\
  				<div style="text-align:center;padding-top:5px;width:200px"><span id="pager" style="cursor:pointer;color:blue">更多...</span></div>\
  			</div>\
@@ -999,10 +1002,18 @@ jQuery.fn.dataInc = function(name,value){
  		panel.find("#option").val(option);
  	}
  	panel.find("#pager").data("page",0);
- 	panel.find("#option").changexx(function(){
- 		panel.find("#pager").data("page",0);
- 		listObjs();
- 	});
+ 	if(datepick){
+ 		panel.find("#option").datepicker().change(function(){
+ 			datepick();
+ 			panel.find("#pager").data("page",0);
+	 		listObjs();
+ 		});
+ 	}else{
+	 	panel.find("#option").changexx(function(){
+	 		panel.find("#pager").data("page",0);
+	 		listObjs();
+	 	});
+	}
  	var listObjs=function(){
  		panel.find("table").empty();
  		getObjs(panel.find("#pager").data("page"),panel.find("#option").val().trim(),function(objs){
@@ -1032,8 +1043,11 @@ jQuery.fn.dataInc = function(name,value){
  	}).mouseover(function(){$(this).css("color","red");}).mouseout(function(){$(this).css("color","blue");});
  	panel.find("#guanbi").click(function(){
  		selector_tmpl.remove();
- 		if(guangbicallback){
-	 		guangbicallback()
+ 	}).mouseover(function(){$(this).css("color","red");}).mouseout(function(){$(this).css("color","blue");});
+ 	panel.find("#qingkong").click(function(){
+ 		selector_tmpl.remove();
+ 		if(qingkongcallback){
+	 		qingkongcallback.call(event.target);
 	 	}
  	}).mouseover(function(){$(this).css("color","red");}).mouseout(function(){$(this).css("color","blue");});
  	panel.css("top",event.clientY).css("left",event.clientX-panel.width()>10?event.clientX-panel.width():10);
