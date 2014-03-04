@@ -269,13 +269,30 @@ $(function(){
 			
 			return contact;
 	}
+	//账号不能有重复
+	function dupZhanghao(zhanghus){
+		var ret = false;
+		var ar = [];
+		each(zhanghus,function(i,zh){
+			if(ar.indexOf(zh.zhanghao)>=0){
+				ret = true;
+				return false;
+			}
+			ar.push(zh.zhanghao);
+		});
+		return ret;
+	}
 		//提交
 	$("#tijiao").click(function(){
 		if("" == $("#mingchen").val().trim()){
-			tip(null,"联系人名称不能留空！",1500);
+			tip($(this),"联系人名称不能留空！",1500);
 			return;
 		}
 		var contact = form2obj();
+		if(dupZhanghao(contact.zhanghuliebiao)){
+			tip($(this),"两个账户的账号不能相同！",1500);
+			return;
+		}		
 		if("【新增】" == $("#bianhao").text()){		
 			postJson("contact.php",contact,function(res){
 				if(res.success == true){

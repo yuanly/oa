@@ -10,8 +10,10 @@
  fukuanfangname:1,//增加这个是为了方便在列表中显示。
  shoukuanfang:1,
  shoukuanfangname:"xx",
- fukuanzhanghao:{},
- shoukuanzhanghao:{},
+ fukuanzhanghu:"xxx",//这只是用于显示
+ fukuanfangzhanghao:"xxx",//fukuangfang+fukuangfangzhanghao 这是账户的唯一id
+ shoukuanzhanghu:"xxx",
+ shoukuanzhanghao:"xxx",
  kemu:"xx",
  beizhu:"xxx",
  fahuodan:"xxx"//关联的发货单号，如果有。
@@ -87,6 +89,7 @@
 				});
 			},["yinhang","huming","zhanghao"],function(zhanghu){
 					thatInput.val(zhanghu.yinhang+" "+zhanghu.zhanghao+"("+zhanghu.huming+")");
+					thatInput.data("zhanghao",zhanghu.zhanghao);
 			});
 	}	
 	function baocun(){
@@ -108,9 +111,11 @@
 		currLSZ.fukuanfang = $("#lsz_fukuanfang").data("_id");
 		currLSZ.fukuanfangname = $("#lsz_fukuanfang").val().trim();
 		currLSZ.fukuanfangzhanghu = $("#lsz_fukuanfangzhanghu").val().trim();
+		currLSZ.fukuanfangzhanghu = $("#lsz_fukuanfangzhanghu").data("zhanghao");
 		currLSZ.shoukuanfang =  $("#lsz_shoukuanfang").data("_id");
 		currLSZ.shoukuanfangname =  $("#lsz_shoukuanfang").val().trim();
 		currLSZ.shoukuanfangzhanghu = $("#lsz_shoukuanfangzhanghu").val().trim();
+		currLSZ.shoukuanfangzhanghao = $("#lsz_shoukuanfangzhanghu").data("zhanghao");
 		currLSZ.beizhu = beizhuEditor.editorVal();
 		//console.log(currLSZ);
 		postJson("liushuizhang.php",{caozuo:"baocun",liushuizhang:currLSZ},function(res){ 
@@ -211,7 +216,7 @@ function _hanshuku_(){}
 		}
 		var jzr = $("#th_jizhangren").val().trim();
 		if("" != jzr && "记账人" != jzr){
-			ret.jizhangren = jzr;
+			ret.jizhangren = getUserIdByName(jzr);
 		}
 		return ret;
 	}
@@ -296,9 +301,11 @@ function _hanshuku_(){}
 		setContactName($("#lsz_fukuanfang"),lsz.fukuanfang);
 		$("#lsz_fukuanfang").data("_id",lsz.fukuanfang);
 		$("#lsz_fukuanfangzhanghu").vals(lsz.fukuanfangzhanghu);
+		$("#lsz_fukuanfangzhanghu").data("zhanghao",lsz.fukuanfangzhanghao);
 		setContactName($("#lsz_shoukuanfang"),lsz.shoukuanfang);
 		$("#lsz_shoukuanfang").data("_id",lsz.shoukuanfang);
 		$("#lsz_shoukuanfangzhanghu").vals(lsz.shoukuanfangzhanghu);
+		$("#lsz_shoukuanfangzhanghu").data("zhanghao",lsz.shoukuanfangzhanghao);
 		beizhuEditor.editorVal(lsz.beizhu);
 		liuyanElm.shuaxinliebiao({hostId:currLSZ._id,hostType:"liushuizhang"});
 		readOnly();
