@@ -19,6 +19,27 @@ if("xinjian" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("chaxun" == $param["caozuo"]){
 	$query = array();
+	if(isset($param["option"]["bianhao"])){
+		$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
+	}
+	if(isset($param["option"]["zhuangtai"])){
+		$query["zhuangtai"] = $param["option"]["zhuangtai"];
+	}
+	if(isset($param["option"]["fukuanfang"])){
+		$query["fukuanfang"] = $param["option"]["fukuanfang"];
+	}
+	if(isset($param["option"]["shoukuanfang"])){
+		$query["shoukuanfang"] = $param["option"]["shoukuanfang"];
+	}
+	if(isset($param["option"]["zhifuriqi"])){
+		$query["fukuanriqi"] = array('$lte'=>$param["option"]["zhifuriqi"]);
+	}
+	if(isset($param["option"]["kemu"])){
+		$query["kemu"] = $param["option"]["kemu"];
+	}
+	if(isset($param["option"]["jizhangren"])){
+		$query["jizhangren"] = $param["option"]["jizhangren"];
+	}
 	$cur = coll("liushuizhang")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("zuofei" == $param["caozuo"]){

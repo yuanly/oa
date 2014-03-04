@@ -440,4 +440,14 @@
 	var liuyanElm = $("#liuyan").liuyan({hostType:"yuangao",});
 	listYuangao(0,getUrl().showId);
 	var editor = $("#bianjikuang").myeditor(800,600).editorWritable();
+	
+		//设置头部点击处理（放到当前面板）
+	$("#tableheader").click(function(){
+		layout.sizePane("west",$("#yuangaotable").width()+20);
+	});
+	/*
+	$(".detailheader").click(function(){
+		layout.sizePane("west",$("body").width()-$("#tb_huowu").width()-300);
+	});
+	*/
 });

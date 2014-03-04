@@ -788,4 +788,11 @@ function _hanshuku_(){}
 	var liuyanElm = $("#liuyan").liuyan({hostType:"dingdan",});
 	listDingdan(0,getUrl().showId);
 	
+	//设置头部点击处理（放到当前面板）
+	$("#tableheader").click(function(){
+		layout.sizePane("west",$("#dingdantable").width()+20);
+	});
+	$(".detailheader").click(function(){
+		layout.sizePane("west",$("body").width()-$("#tb_huowu").width()-300);
+	});
 });

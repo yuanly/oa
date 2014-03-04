@@ -21,6 +21,7 @@
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("th").attr("nowrap","true");
 	$(".tr_huowu #td_yanhuodan").click(function(){
 		window.open("../yanhuodan/yanhuodan.html?showId="+$(this).text(),"_blank");
 	});
@@ -519,5 +520,13 @@ function _hanshuku_(){}
 	$("#opt_huowuId").datepicker();
 	var liuyanElm = $("#liuyan").liuyan({hostType:"zhuangguidan",});
 	listzhuangguidan(0,getUrl().showId);
+	
+		 	//设置头部点击处理（放到当前面板）
+	$("#tableheader").click(function(){
+		layout.sizePane("west",$("#zhuangguidantable").width()+20);
+	});
+	$("#detailheader").click(function(){
+		layout.sizePane("west",$("body").width()-$("#huowutable").width()-100);
+	});
 	
 });

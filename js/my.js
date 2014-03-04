@@ -911,7 +911,7 @@ jQuery.fn.dataInc = function(name,value){
  	}
  }
  //商家选择。把input元素设置成支持弹出商家选择框的控件
- jQuery.fn.xuanzeshangjia = function(vendors_php,callback){
+ jQuery.fn.xuanzeshangjia = function(vendors_php,callback,clearCallback){
  	if(!vendors_php){
  		vendors_php = "../contact/lianxiren.php";
  	}	
@@ -924,9 +924,9 @@ jQuery.fn.dataInc = function(name,value){
  			},["_id","mingchen"],function(vendor){
  				$(this).val(vendor.mingchen)
  				$(this).data("shangjia",vendor);
- 				callback(vendor);
+ 				callback.call(event.target,ovendorbj);
  				$(this).change();
- 			}
+ 			},"",clearCallback
  		);
  	});
  	return this;
@@ -1224,6 +1224,12 @@ jQuery.fn.dataInc = function(name,value){
  		return this;
  	}
  }
+ function getKemu(){
+	return ["货款","开票","泰国进账","薪金","办公费","社保","租金","运费","活动费","银行手续费","代付","利息","贷款","还贷","个人消费","其他"];
+ }
+ jQuery.fn.kemu = function(){
+	 	return this.myselector(getKemu());
+	}
  //利用input的list属性，动态设置下拉框控件
  jQuery.fn.myselector = function(values,valueField,labelField){
  	var listId = this.attr("id")+"_list";
@@ -1242,7 +1248,7 @@ jQuery.fn.dataInc = function(name,value){
  		list.append(option);
  	});
  	$("body").append(list);
- 	this.dblclick(function(){$(this).val("")});
+ 	//this.dblclick(function(){$(this).val("")});
  	return this;
  }
  jQuery.fn.userSelector = function(){

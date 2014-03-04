@@ -56,23 +56,23 @@
 			<table id="liushuizhangtable"  style="min-width:500px;">
 				<tr id="tableheader">
 					<th nowrap><input id="th_bianhao" class="plainTh" value="编号" style="width:100px;cursor:pointer"/></th>
-					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:40px;cursor:pointer"/></th>
-					<th nowrap><input id="th_jizhangren" class="plainTh" value="记账人" style="width:60px;cursor:pointer"/></th>
-					<th nowrap><input id="th_fukuanfang" class="plainTh" value="付款方" style="width:50px"/></th>
-					<th nowrap><input id="th_shoukuanfang" class="plainTh" value="收款方" style="width:50px;cursor:pointer"/></th>
-					<th nowrap><input id="th_jine" class="plainTh" value="金额" style="width:50px"/></th>
-					<th nowrap><input id="th_zhifuriqi" class="plainTh" value="支付日期" style="width:70px"/></th>
-					<th nowrap><input id="th_leibie" class="plainTh" value="类别" style="width:50px;cursor:pointer;"/></th>
+					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:70px;cursor:pointer" list="zhuangtailist"/></th>
+					<th nowrap><input id="th_fukuanfang" class="plainTh" value="付款方" style="width:150px;cursor:pointer"/></th>
+					<th nowrap><input id="th_shoukuanfang" class="plainTh" value="收款方" style="width:150px;cursor:pointer"/></th>
+					<th nowrap>金额</th>
+					<th nowrap><input id="th_zhifuriqi" class="plainTh" value="支付日期" style="width:90px;cursor:pointer"/></th>
+					<th nowrap><input id="th_leibie" class="plainTh" value="科目" style="width:80px;cursor:pointer;"/></th>
+					<th nowrap><input id="th_jizhangren" class="plainTh" value="记账人" style="width:80px;cursor:pointer"/></th>
 				</tr>
 				<tr class="tr_liushuizhang">
 					<td id="td_bianhao"></td>
 					<td id="td_zhuangtai"></td>
-					<td id="td_jizhangren"></td>
 					<td id="td_fukuanfang"></td>
 					<td id="td_shoukuanfang"></td>
 					<td id="td_jine"></td>
 					<td id="td_zhifuriqi"></td>
 					<td id="td_leibie"></td></td>
+					<td id="td_jizhangren"></td>
 				</tr>
 			</table>	
 			<div id="pager"><span id="prevPage" class="plainBtn">上一页</span> <span id="nextPage" class="plainBtn">下一页</span></div>
@@ -102,11 +102,11 @@
 		</div>
 	</td></tr></table>
 		<div id="liushuizhangmingxi" style="margin-top:10px">
-			<div style='background-color:#eee'>流水账明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn" style="display:none">保存</span></div>
+			<div style='background-color:#eee' id="detailheader">流水账明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn" style="display:none">保存</span></div>
 			<div>
 				<nobr>流水号：<input type="text" id="lsz_liushuihao" class="plainInput1" readonly size=12 />，金额：<input type="text" id="lsz_jine" class="plainInput" readonly size=6 />元，付款日期：<input type="text" id="lsz_fukuanriqi" class="plainInput" style="cursor:pointer" readonly size=8 />，科目：<input type="text" id="lsz_kemu" class="plainInput list" style="cursor:pointer" readonly list=kemulist size=8 /></nobr>
 			</div>
-			<table>
+			<table id="detailtable">
 				<tr><td nowrap><div style="border:1px solid gray;padding:5px">
 					付款方：<input type="text" id="lsz_fukuanfang" class="plainInput" style="cursor:pointer" readonly size=32 /><br/>
 					账户：<input type="text" id="lsz_fukuanfangzhanghu" class="plainInput" style="font-size:14px;cursor:pointer" readonly size=48 />
@@ -123,24 +123,12 @@
 		<div id="liuyan" style="margin-top:150px">
 			<span class="plainBtn">留言</span>
 		</div>
-	</div>
-		<datalist id="kemulist">
-			<option value="货款"/>
-			<option value="开票"/>
-			<option value="泰国进账"/>
-			<option value="薪金"/>
-			<option value="办公费"/>
-			<option value="社保"/>
-			<option value="租金"/>
-			<option value="运费"/>
-			<option value="活动费"/>
-			<option value="银行手续费"/>
-			<option value="代付"/>
-			<option value="利息"/>
-			<option value="贷款"/>
-			<option value="还贷"/>
-			<option value="个人消费"/>
-			<option value="其他"/>
+	</div>	
+		<datalist id="zhuangtailist">
+			<option value="记账"/>
+			<option value="申请审核"/>
+			<option value="审核"/>
+			<option value="作废"/>
 		</datalist>
 </body>
 </html>

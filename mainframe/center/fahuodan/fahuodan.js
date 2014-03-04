@@ -67,6 +67,7 @@
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+		$("th").attr("nowrap","true");
 		function sel_zhuanzhangliushui(event){
 		var limit = 20;
 		setSelector(event,function(page,option,callback){
@@ -115,7 +116,10 @@
 				$("#th_gonghuoshang").val(gonghuoshang.mingchen);
 				$("#th_gonghuoshang").data("ghsId",gonghuoshang._id);
 				listfahuodan(0);
-			},"",function(){$("#th_gonghuoshang").val("供货商");});
+			},"",function(){
+				$("#th_gonghuoshang").val("供货商");
+				listfahuodan(0);
+			});
 	}
 	$("#th_gonghuoshang").click(sel_gonghuoshang);
 	$("#shanchudingdanhuowu").click(function(){
@@ -882,5 +886,12 @@ function _hanshuku_(){}
 	 
 	var liuyanElm = $("#liuyan").liuyan({hostType:"fahuodan",});
 	listfahuodan(0,getUrl().showId);
-	
+
+//设置头部点击处理（放到当前面板）
+	$("#tableheader").click(function(){
+		layout.sizePane("west",$("#fahuodantable").width()+20);
+	});
+	$(".detailheader").click(function(){
+		layout.sizePane("west",$("body").width()-$("#mingxitable").width()-100);
+	});
 });
