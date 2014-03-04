@@ -7,7 +7,7 @@
 	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
 	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
 <link rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen">
-	<title>流水账汇总</title>
+	<title>流水账统计</title>
 	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
 	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
 	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
@@ -21,8 +21,47 @@
 	<script src="../../../js/ui.datepicker-zh-CN.js" type="text/javascript"></script>
 	<script type="text/javascript" src="huizong.js"></script>
 	<style>
+		th{
+			background-color:#99ccff;
+		}
 	</style>
 </head>
 <body style="margin:0px;padding:0px">
+	<div align=center style="margin:20px;">
+		联系人：<div class="myinput" id="lianxiren" style="cursor:pointer">&nbsp;</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		开始日期：<input id="kaishiriqi" class="plainInput" style="cursor:pointer;width:70px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		结束日期：<input id="jieshuriqi" class="plainInput" style="cursor:pointer;width:70px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		科目：<input id="kemu" class="plainInput" style="cursor:pointer;width:70px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="plainBtn" id="tongji">统计</span>
+	</div>
+	<div align=center>
+		总支出：<span id="zongzhichu" style="font-weight:bolder;color:red"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		总收入：<span id="zongshouru" style="font-weight:bolder;color:green"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		净支出：<span id="jingzhichu" style="font-weight:bolder;color:red"></span>
+	</div>
+	<table align=center id="tb_liushui" style="font-size:0.85em">
+		<tr>
+			<th>No.</th>
+			<th>编号</th>
+			<th>付款方</th>
+			<th>付款账户</th>
+			<th>收款方</th>
+			<th>收款账户</th>
+			<th>金额</th>
+			<th>付款日期</th>
+			<th>科目</th>
+		</tr>
+		<tr id="tr_liushui" class="tr_liushui">
+			<td id="td_no" style="text-align:center"></td>
+			<td id="td_bianhao"></td>
+			<td id="td_fukuanfang"></td>
+			<td id="td_fukuanzhanghu"></td>
+			<td id="td_shoukuanfang"></td>
+			<td id="td_shoukuanzhanghu"></td>
+			<td id="td_jine" style="color:green"></td>
+			<td id="td_fukuanriqi"></td>
+			<td id="td_kemu"></td>
+		</tr>
+	</table>
 </body>
 </html>

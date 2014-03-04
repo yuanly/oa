@@ -68,4 +68,12 @@ if("xinjian" == $param["caozuo"]){
 	$liushuizhang = $param["liushuizhang"];	
 	coll("liushuizhang")->save($liushuizhang);
 	echo '{"success":true}';
+}else if("tongji" == $param["caozuo"]){
+	$query = array('$or'=>array(array("fukuanfang"=>$param["option"]["lxrId"]),array("shoukuanfang"=>$param["option"]["lxrId"])),"fukuanriqi"=>array('$gte'=>$param["option"]["kaishiriqi"],'$lte'=>$param["option"]["jieshuriqi"]));
+	if(isset($param["option"]["kemu"])){
+		$query["kemu"] = $param["option"]["kemu"];
+	}
+	$query["zhuangtai"] = array('$ne'=>"作废");
+	$cur = coll("liushuizhang")->find($query)->sort(array("_id",-1));
+	echo  cur2json($cur);
 }

@@ -924,28 +924,23 @@ jQuery.fn.dataInc = function(name,value){
  			},["_id","mingchen"],function(vendor){
  				$(this).val(vendor.mingchen)
  				$(this).data("shangjia",vendor);
- 				callback.call(event.target,ovendorbj);
+ 				callback.call(event.target,vendor);
  				$(this).change();
  			},"",clearCallback
  		);
  	});
  	return this;
  } 
- //上面那个适合plainInput元素，这个适合myinput元素 
- jQuery.fn.xuanzeshangjia2 = function(vendors_php,callback){
- 	if(!vendors_php){
- 		vendors_php = "../contact/lianxiren.php";
- 	}	
+ 
+ jQuery.fn.xuanlianxiren = function(callback,clearCallback){
  	this.click(function(event){
  		var limit = 20;
  		setSelector(event,function(page,option,callback1){
- 				postJson(vendors_php,{caozuo:"chashangjia",offset:page*limit,limit:limit,option:option},function(vendors){
+ 				postJson("../contact/lianxiren.php",{caozuo:"chalianxiren",offset:page*limit,limit:limit,option:option},function(vendors){
  					callback1(vendors);
  				});
  			},["_id","mingchen"],function(vendor){
- 				$(this).text(vendor.mingchen)
- 				$(this).data("shangjia",vendor);
- 				callback(vendor);
+ 				callback.call(event.target,vendor);
  				$(this).change();
  			}
  		);

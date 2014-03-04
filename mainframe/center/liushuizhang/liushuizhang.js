@@ -34,13 +34,13 @@
 	function _shijianchuli_(){}
 	$("#th_leibie").kemu();
 	$("#lsz_kemu").kemu();
-	$("#th_shoukuanfang").xuanzeshangjia("",function(shangjia){
+	$("#th_shoukuanfang").xuanlianxiren("",function(shangjia){
 			$(this).val(shangjia.mingchen);
 			$(this).data("lxrId",shangjia._id);
 	},function(){
 		$(this).val("收款方");
 	});
-	$("#th_fukuanfang").xuanzeshangjia("",function(shangjia){
+	$("#th_fukuanfang").xuanlianxiren("",function(shangjia){
 			$(this).val(shangjia.mingchen);
 			$(this).data("lxrId",shangjia._id);
 	},function(){
@@ -107,11 +107,17 @@
 				tip(null,"已支付流水账的付款人/收款人不能为空！",1500);
 				return;
 			}
-		}		
+		}
+		if(""!=currLSZ.fukuanriqi){
+			if(!$("#lsz_shoukuanfangzhanghu").data("zhanghao") || !$("#lsz_fukuanfangzhanghu").data("zhanghao")){
+				tip(null,"已支付流水账的账户不能为空！",1500);
+				return;
+			}
+		}
 		currLSZ.fukuanfang = $("#lsz_fukuanfang").data("_id");
 		currLSZ.fukuanfangname = $("#lsz_fukuanfang").val().trim();
 		currLSZ.fukuanfangzhanghu = $("#lsz_fukuanfangzhanghu").val().trim();
-		currLSZ.fukuanfangzhanghu = $("#lsz_fukuanfangzhanghu").data("zhanghao");
+		currLSZ.fukuanfangzhanghao = $("#lsz_fukuanfangzhanghu").data("zhanghao");
 		currLSZ.shoukuanfang =  $("#lsz_shoukuanfang").data("_id");
 		currLSZ.shoukuanfangname =  $("#lsz_shoukuanfang").val().trim();
 		currLSZ.shoukuanfangzhanghu = $("#lsz_shoukuanfangzhanghu").val().trim();
