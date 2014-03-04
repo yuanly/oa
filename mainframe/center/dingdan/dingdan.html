@@ -129,14 +129,14 @@
 			<tr><th nowrap>序号</th><th nowrap>规格</th><th nowrap>数量</th><th nowrap>单位</th><th nowrap>单价<font style="font-size:70%">(元)</font></th><th nowrap>金额</th><th class="delete_huowu"> </th></tr>
 			<tr class="tmpl_huowu">
 				<td id="mx_xuhao"></td>
-				<td><input id="mx_guige" class="plainInput editable" size=36 ></td>
+				<td id="mx_guige" class="myinput" style="min-width:250px" contenteditable=true></td>
 				<td><input id="mx_shuliang" size=4 class="plainInput editable"></td>
-				<td><input id="mx_danwei" size=2 class="plainInput mx_danwei" list="danweilist"></td>
+				<td id="mx_danwei" class="unit"></td>
 				<td><input id="mx_danjia" size=4 class="plainInput mx_danjia" readonly style="cursor:pointer"></td>
 				<td id="mx_jine"></td><td class="hw_cz"><span id="shanchuhuowu" class="plainBtn delete_huowu" style="font-size:80%">[ - ]</span></td>
 			</tr>
 			<tr id="new_huowu_item"><td colspan=5 class="hw_cz"><span id="zengjiahuowu" class="plainBtn" style="font-size:80%">[ + ]</span></td></tr>
-			<tr style="font-weight:bold"><td colspan=2 align=right>总量:</td><td><span id="zongliang">33</span><span class="unit">米</span></td><td align=right>总额:</td><td><span id="zonge">22</span>元</td></tr>
+			<tr style="font-weight:bold"><td colspan=2 align=right>总量:</td><td><span id="zongliang">33</span><span class="unit" id="unit">米</span></td><td align=right>总额:</td><td><span id="zonge">22</span>元</td></tr>
 			</table> 
 			<div>
 				<div style='background-color:#eee'>备注&nbsp;&nbsp;<span id="zhankaibeizhu" class="plainBtn">展开</span><span id="yincangbeizhu" class="plainBtn" style="display:none">收起</span></div>
@@ -148,12 +148,5 @@
 			<span class="plainBtn">留言</span>
 		</div>
 	</div>
-		<datalist id="danweilist">
-			<option value="码"/>
-			<option value="米"/>
-			<option value="件"/>
-			<option value="KG"/>
-			<option value="张"/>
-		</datalist>
 </body>
 </html>
