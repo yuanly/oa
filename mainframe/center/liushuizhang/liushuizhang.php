@@ -83,9 +83,9 @@ if("xinjian" == $param["caozuo"]){
 		}
 		$fukuanchae = $liushuizhang["jine"]-$oldfukuanjine;
 		if(isset($liushuizhang["zhuanrujine"])){
-			$shoukuanfangchae = $liushuizhang["zhuanrujine"] - $oldshoukuanjine;
+			$shoukuanchae = $liushuizhang["zhuanrujine"] - $oldshoukuanjine;
 		}else{
-			$shoukuanfangchae = $liushuizhang["jine"] - $oldshoukuanjine;
+			$shoukuanchae = $liushuizhang["jine"] - $oldshoukuanjine;
 		}
 		$liushuizhang["fukuanzhanghaoyue"] = getBalance($liushuizhang["fukuanfang"],$liushuizhang["fukuanfangzhanghao"]) - $fukuanchae;
 		$liushuizhang["shoukuanzhanghaoyue"] = getBalance($liushuizhang["shoukuanfang"],$liushuizhang["shoukuanfangzhanghao"]) + $shoukuanchae;

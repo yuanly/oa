@@ -56,6 +56,11 @@
 			var number = 1;
 			var zongzhichu = 0;
 			var zongshouru = 0;
+			var chushiyue = parseFloat($("#chushiyue").text().trim());
+			if(isNaN(chushiyue)){
+				chushiyue = 0;
+				$("#chushiyue").text("0");
+			}
 			each(liushuis,function(i,liushui){
 				var tr_liushui = tmpl_tr_liushui.clone(true);
 				tr_liushui.find("#td_no").text(number++);
@@ -76,6 +81,7 @@
 				if(option.lxrId == liushui.shoukuanfang){
 					zongshouru += liushui.jine;
 				}
+				tr_liushui.find("#td_yue").text(zongshouru - zongzhichu + chushiyue);
 				tr_liushui.find("#td_fukuanriqi").text(liushui.fukuanriqi);
 				tr_liushui.find("#td_kemu").text(liushui.kemu); 
 				
