@@ -18,7 +18,7 @@
 	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
 	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
 	<script type="text/javascript">
-		$(function(){			
+		$(function(){
 			var beizhuEditor = $("#dingdanbeizhu").myeditor(700,300);
 			beizhuEditor.editorWritable();
 			postJson("qita.php",{"caozuo":"getdingdanbeizhu"},function(res){ 
@@ -52,6 +52,11 @@
 			if(getTheUser().role == "root"){
 				$("#zhongtai").unbind("click").click(sel_zhongtai);
 			}
+			$("#jiesuo").click(function(){
+				postJson("",{caozuo:"unlock"},function(res){
+					tip($(this),"成功解锁！",1500);	
+				});
+			});
 		});	
 	</script>
 	<style>
@@ -68,6 +73,10 @@
 		<div id="dingdanbeizhu" align=center>
 		</div>
 		<div align=center style="margin-top:15px"><span class="plainBtn" id="tijiaodingdanbeizhu">提交</span></div>
+	</div>
+	<hr/>
+	<div align=center >
+		<span class="plainBtn" id="jiesuo" title="保存流水账报服务器异常时点解锁！">解锁</span>
 	</div>
 </body>
 </html>

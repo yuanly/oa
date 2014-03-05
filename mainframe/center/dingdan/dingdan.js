@@ -36,7 +36,8 @@
 	});
 	var kehus = getKehus();
 	kehus.unshift("客户");
-	$("#th_kehu").myselector(kehus).bind("input",function(){listDingdan(0);});
+	//$("#th_kehu").myselector(kehus).bind("input",function(){listDingdan(0);});
+	$("#th_kehu").bind("input",function(){listDingdan(0);});
 	var users = getUsers();users.unshift({"user_name":"跟单员","_id":"-1"});
 	$("#th_gendanyuan").myselector(users,"user_name").bind("input",function(){
 		listDingdan(0);

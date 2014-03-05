@@ -485,6 +485,7 @@ jQuery.fn.dataInc = function(name,value){
  	}else{
  		$(this).val(v);
  	}
+ 	return this;
  }
  //有trim
  jQuery.fn.changexx = function(callback){

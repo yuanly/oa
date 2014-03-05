@@ -60,10 +60,14 @@ function postJson(url, data, success) {
 			if(obj.redirect){
 				window.top.location.href = obj.redirect;
 			}
+			if(obj.success === false){
+				tip(null,"服务器异常， 请联系技术人员！",1500);
+			}
 			success(obj);
 		},
 		error : function(jqxhr, status, exText){
 			console.log("服务器异常， 请联系技术人员！");
+			tip(null,"服务器异常， 请联系技术人员！",1500);
 		}
 	});
 }
