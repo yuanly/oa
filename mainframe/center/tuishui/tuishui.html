@@ -1,0 +1,125 @@
+﻿<html>
+	<head>
+	<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=0"> 
+	<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
+<link rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen">
+	<title>退税单证管理</title>
+	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
+	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+	<script src="../../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+	<script src="../../../js/my.js" type="text/javascript"></script>
+	<script src="../../../js/localstorage.js" type="text/javascript"></script>
+	<script src="../../../js/server.js" type="text/javascript"></script>
+	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+	<script src="../../../js/jquery.layout-latest.js" type="text/javascript"></script>
+	<script type="text/javascript" src="tuishui.js"></script>
+	<style>
+		th{
+			background-color:#99ccff;
+		}
+		.tr_tuishui:hover{
+			color:brown;
+		}
+		.tr_tuishui{
+			white-space:nowrap; 
+			cursor:pointer;
+		}
+		.tr_selected{
+			color:red
+		}
+		.plainTh{			
+			margin-left:0px;
+			padding-left:0px;
+			border-top:0px;
+			border-right:0px;
+			border-bottom:1px solid gray;
+			border-left:0px;
+			font-size:16px;
+			font-weight:bold;
+			background-color:#99ccff
+		}
+	</style>
+</head>
+<body style="margin:0px;padding:0px">
+	<div class="ui-layout-west">
+		<div>
+			<table id="tuishuitable"  style="min-width:500px;">
+				<tr id="tableheader">
+					<th nowrap><input id="th_id" class="plainTh" value="编号" style="width:80px;"/></th>
+					<th nowrap><input id="th_code" class="plainTh" value="柜号" style="width:50px;"/></th>
+					<th nowrap id="th_declareDate">报关日期</th>
+					<th nowrap id="th_status">状态</th>
+					<th nowrap id="th_quantity">数量</th>
+					<th nowrap id="th_sum">金额</th>
+					<th nowrap id="th_agent">代理商</th>
+				</tr>
+				<tr class="tr_tuishui">
+					<td id="td_id"></td><td id="td_code"></td><td id="td_declareDate"></td><td id="td_status"></td><td id="td_quantity"></td><td id="td_sum"></td><td id="td_agent"></td>
+				</tr>
+			</table>	
+			<div id="pager">
+				<span id="prevPage" class="plainBtn">上一页</span> <span id="nextPage" class="plainBtn">下一页</span>
+				<a style="text-decoration:none;font-size:.8em;color:blue;float:right;" href="help.html" target="_blank">帮助</a>
+			</div>
+		</div>
+	</div>
+	<div class="ui-layout-center">
+		<div id="liucheng">
+			<div id="liuchengItem" style="display:inline-block;border:1px solid #ddd;background-color:#fcfcfc">
+				<table>
+					<tr>
+						<td style="font-size:30px" id="lc_bianhao">2</td>
+						<td><div><img id="lc_touxiang" src="/oa/logo/noface.jpg" style="width:48px;height:48px;border-radius:25px;"/></div></td>
+						<td><span style="font-size:12px" id="lc_mingchen">袁立宇</span>&nbsp;&nbsp;<span style="font-weight:bolder" id="lc_dongzuo">上传</span><div style="font-size:12px" id="lc_shijian">2013-10-3 15:59</div></td><td style="cursor:pointer"><img id="lc_anniu" src="../../../img/up.png" style="display:none"/></td>
+					</tr>
+					<tr id="lc_caozuo" style="display:none" >
+						<td colspan="4" style="text-align:center;border:1px solid #ddd">
+							<span id="cz_jiedan" class="plainBtn" style="margin-right:10px;display:none">接单</span>
+							<span id="cz_jieguan" class="plainBtn" style="margin-right:10px;display:none">接管</span>
+							<span id="cz_dengban" class="plainBtn" style="margin-right:10px;display:none">等版</span>
+							<span id="cz_zidan" class="plainBtn" style="margin-right:10px;display:none">子单</span>
+							<span id="cz_ludan" class="plainBtn" style="margin-right:10px;display:none">录单</span>
+							<span id="cz_xiadan" class="plainBtn" style="margin-right:10px;display:none">下单</span>
+							<span id="cz_dayin" class="plainBtn" style="margin-right:10px;display:none">打印</span>
+							<span id="cz_shendan" class="plainBtn" style="margin-right:10px;display:none">审单</span>
+							<span id="cz_jie2dan" class="plainBtn" style="margin-right:10px;display:none">结单</span>
+							<span id="cz_zuofei" class="plainBtn" style="margin-right:10px;display:none">作废</span>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div id="tuishuimingxi" style="margin-top:10px">
+			<div style='background-color:#eee' class="detailheader">退税单证明细&nbsp;&nbsp;&nbsp;&nbsp;
+				<span id="bianji" class="plainBtn" style="display:none">编辑</span>
+				<span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;
+				<span id="baocun" class="plainBtn">保存</span>
+			</div>
+		</div>
+		<div  style='background-color:#eee;width:150px;margin-top:10px'>货柜</div>
+		编号：柜号：装柜日期：
+		<div  style='background-color:#eee;width:150px;margin-top:10px'>关单</div>
+		合同号码：产品名称：报关日期：金额：（美元）数量：寄单日期：收单日期：
+		<div  style='background-color:#eee;width:150px;margin-top:10px'>代理商</div>
+		代理：人民币账户余额：美金账户余额：
+		<div  style='background-color:#eee;width:150px;margin-top:10px'>发票</div>
+		开票企业 增值税号 品名 开票米数 单价  增值税金额 开票日期 收票日期 付款流水 备注
+		<br/>待开票 余额 数量
+		<div  style='background-color:#eee;width:150px;margin-top:10px'>核销</div>
+		日期：美金金额 人民币金额 汇率牌价 实际汇率 流水
+		<div  style='background-color:#eee;width:150px;margin-top:10px'>退税</div>
+		日期 税率 金额 流水
+		<div  style='background-color:#eee;width:150px;margin-top:10px'>代理费</div>
+		流水：
+		<div id="liuyan" style="margin-top:150px">
+			<span class="plainBtn">留言</span>
+		</div>
+	</div>
+</body>
+</html>
