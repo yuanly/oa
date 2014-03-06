@@ -71,6 +71,9 @@ getUser=function(id){
 	return null;
 }
 getUserName = function(id){
+	if(!id){
+		return "";
+	}
 	var user = getUser(id);
 	if(user){
 		return user.user_name;

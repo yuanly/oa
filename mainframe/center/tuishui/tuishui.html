@@ -55,16 +55,26 @@
 		<div>
 			<table id="tuishuitable"  style="min-width:500px;">
 				<tr id="tableheader">
-					<th nowrap><input id="th_id" class="plainTh" value="编号" style="width:80px;"/></th>
-					<th nowrap><input id="th_code" class="plainTh" value="柜号" style="width:50px;"/></th>
-					<th nowrap id="th_declareDate">报关日期</th>
-					<th nowrap id="th_status">状态</th>
-					<th nowrap id="th_quantity">数量</th>
-					<th nowrap id="th_sum">金额</th>
-					<th nowrap id="th_agent">代理商</th>
+					<th nowrap><input id="th_bianhao" class="plainTh" value="编号" style="width:80px;"/></th>
+					<th nowrap><input id="th_guihao" class="plainTh" value="柜号" style="width:50px;"/></th>
+					<th nowrap>跟单员</th>
+					<th nowrap>装柜日期</th>
+					<th nowrap>报关日期</th>
+					<th nowrap>状态</th>
+					<th nowrap>数量</th>
+					<th nowrap>金额</th>
+					<th nowrap>代理商</th>
 				</tr>
 				<tr class="tr_tuishui">
-					<td id="td_id"></td><td id="td_code"></td><td id="td_declareDate"></td><td id="td_status"></td><td id="td_quantity"></td><td id="td_sum"></td><td id="td_agent"></td>
+					<td id="td_bianhao"></td>
+					<td id="td_guihao"></td>
+					<td id="td_gendanyuan"></td>
+					<td id="td_zhuangguiriqi"></td>
+					<td id="td_baoguanriqi"></td>
+					<td id="td_zhuangtai">
+					</td><td id="td_shuliang">
+					</td><td id="td_jine">
+					</td><td id="td_dailishang"></td>
 				</tr>
 			</table>	
 			<div id="pager">
@@ -76,7 +86,7 @@
 	<div class="ui-layout-center">
 		<div id="liucheng">
 			<div id="liuchengItem" style="display:inline-block;border:1px solid #ddd;background-color:#fcfcfc">
-				<table>
+				<table id="lc_tb_in">
 					<tr>
 						<td style="font-size:30px" id="lc_bianhao">2</td>
 						<td><div><img id="lc_touxiang" src="/oa/logo/noface.jpg" style="width:48px;height:48px;border-radius:25px;"/></div></td>
@@ -84,16 +94,16 @@
 					</tr>
 					<tr id="lc_caozuo" style="display:none" >
 						<td colspan="4" style="text-align:center;border:1px solid #ddd">
-							<span id="cz_jiedan" class="plainBtn" style="margin-right:10px;display:none">接单</span>
 							<span id="cz_jieguan" class="plainBtn" style="margin-right:10px;display:none">接管</span>
-							<span id="cz_dengban" class="plainBtn" style="margin-right:10px;display:none">等版</span>
-							<span id="cz_zidan" class="plainBtn" style="margin-right:10px;display:none">子单</span>
-							<span id="cz_ludan" class="plainBtn" style="margin-right:10px;display:none">录单</span>
-							<span id="cz_xiadan" class="plainBtn" style="margin-right:10px;display:none">下单</span>
 							<span id="cz_dayin" class="plainBtn" style="margin-right:10px;display:none">打印</span>
-							<span id="cz_shendan" class="plainBtn" style="margin-right:10px;display:none">审单</span>
-							<span id="cz_jie2dan" class="plainBtn" style="margin-right:10px;display:none">结单</span>
 							<span id="cz_zuofei" class="plainBtn" style="margin-right:10px;display:none">作废</span>
+							<span id="cz_zhuanggui" class="plainBtn" style="margin-right:10px;display:none">装柜</span>
+							<span id="cz_baoguan" class="plainBtn" style="margin-right:10px;display:none">报关</span>
+							<span id="cz_fukuan" class="plainBtn" style="margin-right:10px;display:none">付款</span>
+							<span id="cz_kaipiao" class="plainBtn" style="margin-right:10px;display:none">开票</span>
+							<span id="cz_danzheng" class="plainBtn" style="margin-right:10px;display:none">单证</span>
+							<span id="cz_tuishui" class="plainBtn" style="margin-right:10px;display:none">退税</span>
+							<span id="cz_quxiao" class="plainBtn" style="margin-right:10px;display:none">取消</span>
 						</td>
 					</tr>
 				</table>
