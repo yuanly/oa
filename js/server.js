@@ -62,8 +62,9 @@ function postJson(url, data, success) {
 			}
 			if(obj.success === false){
 				tip(null,"服务器异常， 请联系技术人员！",1500);
+			}else{
+				success(obj);
 			}
-			success(obj);
 		},
 		error : function(jqxhr, status, exText){
 			console.log("服务器异常， 请联系技术人员！");

@@ -178,9 +178,11 @@
 		}
 		currLSZ.beizhu = beizhuEditor.editorVal();
 		//console.log(currLSZ);
-		postJson("liushuizhang.php",{caozuo:"baocun",liushuizhang:currLSZ},function(res){ 
-			tip($("#baocun"),"保存成功！",1500);
-			showDetailById(currLSZ._id);
+		postJson("liushuizhang.php",{caozuo:"baocun",liushuizhang:currLSZ},function(res){
+			if(res.success !== false){
+				tip($("#baocun"),"保存成功！",1500);
+				showDetailById(currLSZ._id);
+			}
 		});
 	}
 	$("#baocun").click(baocun);

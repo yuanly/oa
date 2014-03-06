@@ -127,6 +127,7 @@ if("xinjian" == $param["caozuo"]){
 	echo  cur2json($cur);
 }else if("unlock" == $param["caozuo"]){//出现死锁时调用
 	unlock();
+	echo '{"success":true}';
 }
 
 function getBalance($lxrId,$zhanghao){

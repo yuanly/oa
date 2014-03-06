@@ -53,7 +53,7 @@
 				$("#zhongtai").unbind("click").click(sel_zhongtai);
 			}
 			$("#jiesuo").click(function(){
-				postJson("",{caozuo:"unlock"},function(res){
+				postJson("../liushuizhang/liushuizhang.php",{caozuo:"unlock"},function(res){
 					tip($(this),"成功解锁！",1500);	
 				});
 			});

@@ -44,6 +44,10 @@
 			font-weight:bold;
 			background-color:#99ccff
 		}
+		.whitespaceinput{
+			display:inline-block;
+			width:60px;
+		}
 	</style>
 </head>
 <body style="margin:0px;padding:0px">
@@ -103,13 +107,39 @@
 			</div>
 		</div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>货柜</div>
-		编号：柜号：装柜日期：
+		编号：<div class="myinput" style="cursor:pointer">ZGD140306.2</div>，柜号：<div class="whitespaceinput" style="width:30px">245</div>，装柜日期：<div class="whitespaceinput" style="width:100px">2014-03-05</div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>关单</div>
-		合同号码：产品名称：报关日期：金额：（美元）数量：寄单日期：收单日期：
+		合同号码：<div class="myinput"></div>，产品名称：<div class="myinput"></div>，金额：<div class="myinput"></div>（美元），数量：<div class="myinput"></div>
+		<br/>报关日期：<input class="plainInput" style="width:100px;cursor:pointer"/>，寄单日期：<input class="plainInput" style="width:100px;cursor:pointer"/>，收单日期：<input class="plainInput" style="width:100px;cursor:pointer"/>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>代理商</div>
-		代理：人民币账户余额：美金账户余额：
+		代理：<div class="myinput" style="cursor:pointer"></div>，人民币账户余额：<div class="whitespaceinput"></div>，美金账户余额：<div class="whitespaceinput"></div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>发票</div>
-		开票企业 增值税号 品名 开票米数 单价  增值税金额 开票日期 收票日期 付款流水 备注
+		<table border=0>
+			<tr>
+				<th nowrap>开票企业</th>
+				<th nowrap>增值税号</th>
+				<th nowrap>品名</th>
+				<th nowrap>开票米数</th>
+				<th nowrap>单价</th>
+				<th nowrap>增值税金额</th>
+				<th nowrap>开票日期</th>
+				<th nowrap>收票日期</th>
+				<th nowrap>付款流水</th>
+				<th nowrap>备注</th>
+			</tr>
+			<tr>
+				<td class="myinput">开票企业</td>
+				<td class="myinput">增值税号</td>
+				<td class="myinput">品名</td>
+				<td class="myinput">开票米数</td>
+				<td class="myinput">单价</td>
+				<td class="myinput" style="">增值税金额</td>
+				<td class="myinput"><input class="plainInput" style="border:0px;width:100px" val="开票日期"/></td>
+				<td class="myinput"><input class="plainInput" style="border:0px;width:100px" val="收票日期"/></td>
+				<td class="myinput">付款流水</td>
+				<td class="myinput">备注</td>
+			</tr>
+		</table>
 		<br/>待开票 余额 数量
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>核销</div>
 		日期：美金金额 人民币金额 汇率牌价 实际汇率 流水
