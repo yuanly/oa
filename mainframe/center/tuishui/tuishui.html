@@ -143,34 +143,36 @@
 		人民币账户余额：<div class="myinput" style="cursor:pointer" id="dls_rmbyue"></div>，
 		美金账户余额：<div class="myinput" style="cursor:pointer" id="dls_mjyue"></div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>发票</div>
-		<table border=0>
-			<tr>
-				<th></th>
-				<th nowrap>开票企业</th>
-				<th nowrap>增值税号</th>
-				<th nowrap>品名</th>
-				<th nowrap>开票米数</th>
-				<th nowrap>增值税金额</th>
-				<th nowrap>开票日期</th>
-				<th nowrap>收票日期</th>
-				<th nowrap>付款流水</th>
-				<th nowrap>备注</th>
-			</tr>
-			<tr>
-				<td nowrap><span class="plainBtn" title="删除本行" id="fp_shanchubenhang">[-]</span>&nbsp;&nbsp;<span class="plainBtn" id="fp_shangyi" title="上移本行">[↑]</span></td>
-				<td class="myinput" id="fp_kaipiaoqiye"></td>
-				<td class="myinput" id="fp_shuihao"></td>
-				<td class="myinput" id="fp_pinming"></td>
-				<td class="myinput" id="fp_mishu"></td>
-				<td class="myinput" style="fp_jine"></td>
-				<td class="myinput"><input id="kaipiaoriqi" class="plainInput" style="border:0px;width:100px"/></td>
-				<td class="myinput"><input id="shoupiaoriqi" class="plainInput" style="border:0px;width:100px"/></td>
-				<td class="myinput" id="fukuanliushui"></td>
-				<td class="myinput" id="beizhu">备注</td>
-			</tr>
-		</table>
-		<span class="plainBtn" title="添加新行" id="fp_tianjiaxinhang">[+]</span>
-		<div style="font-weight:bold;margin-top:10px">待开票金额：<div class="whitespaceinput"></div>（美元，按汇率：<div class="myinput" style="text-align:center;min-width:30px;">6.1</div>），待开票数量：<div class="whitespaceinput"></div>（米）</div>
+		<div id="fp_div">
+			<table id="fp_table">
+				<tr>
+					<th></th>
+					<th nowrap>开票企业</th>
+					<th nowrap>增值税号</th>
+					<th nowrap>品名</th>
+					<th nowrap>开票米数</th>
+					<th nowrap>增值税金额</th>
+					<th nowrap>开票日期</th>
+					<th nowrap>收票日期</th>
+					<th nowrap>付款流水</th>
+					<th nowrap>备注</th>
+				</tr>
+				<tr class="tr_fapiao">
+					<td nowrap><span class="plainBtn" title="删除本行" id="fp_shanchubenhang">[-]</span>&nbsp;&nbsp;<span class="plainBtn" id="fp_shangyi" title="上移本行">[↑]</span></td>
+					<td class="myinput fp_kaipiaoqiye" id="fp_kaipiaoqiye" style="cursor:pointer"></td>
+					<td class="myinput editable" id="fp_shuihao" contenteditable=true></td>
+					<td class="myinput editable" id="fp_pinming" contenteditable=true></td>
+					<td class="myinput editable" id="fp_mishu" contenteditable=true></td>
+					<td class="myinput editable" style="fp_jine" contenteditable=true></td>
+					<td class="myinput"><input id="fp_kaipiaoriqi" class="plainInput datepick" style="border:0px;width:80px;cursor:pointer" readonly/></td>
+					<td class="myinput"><input id="fp_shoupiaoriqi" class="plainInput datepick" style="border:0px;width:80px;cursor:pointer" readonly/></td>
+					<td class="myinput" id="fp_fukuanliushui" style="cursor:pointer"></td>
+					<td class="myinput editable" id="fp_beizhu" contenteditable=true></td>
+				</tr>
+			</table>
+			<span class="plainBtn" title="添加新行" id="fp_tianjiaxinhang">[+]</span>
+			<div style="font-weight:bold;margin-top:10px">待开票金额：<div class="whitespaceinput"></div>（美元，按汇率：<div class="myinput" style="text-align:center;min-width:30px;">6.1</div>），待开票数量：<div class="whitespaceinput"></div>（米）</div>
+		</div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>核销</div>
 		<table>
 			<tr>

@@ -90,6 +90,14 @@ if("xinjian" == $param["caozuo"]){
 	}
 }else if("getyue" == $param["caozuo"]){
 	echo getBalance($param["lxrId"],$param["zhanghao"]);
+}else if("chaliushui" == $param["caozuo"]){
+	$query = array();
+	if($param["option"]){
+		$query = array("_id"=>array('$lt'=>$param["option"]));
+	}
+	$query["zhuangtai"] = array('$ne'=>"作废");
+	$cur = coll("liushuizhang")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	echo  cur2json($cur);
 }
 
 function getBalance($lxrId,$zhanghao){

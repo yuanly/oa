@@ -81,6 +81,9 @@
 					return;
 				}
 				$(this).val(liushui._id);
+				if(liushui.kemu != "货款"){
+					tip($(this),"注意，该流水科目不是 货款！！！",1500);	
+				}
 				if(currFHD.gonghuoshang){
 					if(liushui.shoukuanfang != currFHD.gonghuoshang._id){
 						tip($(this),"注意，该流水收款人与供货商不符！！！",1500);	
