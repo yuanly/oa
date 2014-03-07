@@ -73,4 +73,39 @@ if("xinjian" == $param["caozuo"]){
 	$tuishui = $param["tuishui"];
 	coll("tuishui")->save($tuishui);
 	echo '{"success":true}';
+}else if("chadailishang" == $param["caozuo"]){
+	$query = array("leixing"=>"商家");
+	if($param["option"]){
+		$query["mingchen"] = array('$regex'=>$param["option"]);
+	}
+	$cur = coll("contact")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	echo  cur2json($cur);
+}else if("chazhanghao" == $param["caozuo"]){
+	$query = array("_id"=>$param["lxrId"]);
+	$lxr = coll("contact")->findOne($query);
+	if(isset($lxr["zhanghuliebiao"])){
+		echo  jsonEncode($lxr["zhanghuliebiao"]);
+	}else{
+		echo "[]";
+	}
+}else if("getyue" == $param["caozuo"]){
+	echo getBalance($param["lxrId"],$param["zhanghao"]);
+}
+
+function getBalance($lxrId,$zhanghao){
+	$cur = coll("liushuizhang")->find(array('$or'=>array(array("fukuanfang"=>$lxrId,"fukuanfangzhanghao"=>$zhanghao),array("shoukuanfang"=>$lxrId,"shoukuanfangzhanghao"=>$zhanghao))))->sort(array("lastupdatetime"=>-1))->limit(1);
+	if($cur->hasNext()){
+		$liushui = $cur->getNext();
+	}else{
+		return 0;
+	}
+	if(isset($liushui["lastupdatetime"])){
+		if($liushui["fukuanfang"] == $lxrId && $liushui["fukuanfangzhanghao"] == $zhanghao){
+			return $liushui["fukuanzhanghaoyue"];
+		}else{
+			return $liushui["shoukuanzhanghaoyue"];
+		}
+	}else{
+		return 0;
+	}
 }

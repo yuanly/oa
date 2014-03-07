@@ -129,25 +129,27 @@
 
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>关单</div>
 		<div id="div_guandan">
-			合同号码：<div id="hetonghaoma" class="myinput"></div>，
+			合同号码：<div id="gd_hetonghaoma" class="myinput" title="以泰国公司名义提供给代理商的合同！"></div>，
 			产品名称：<div id="gd_chanpinmingchen" class="myinput"></div>，
 			金额：<div id="gd_jine" class="myinput"></div>（美元），
 			数量：<div id="gd_shuliang" class="myinput"></div>
 			<br/>报关日期：<input id="gd_baoguanriqi" class="plainInput" style="width:100px;cursor:pointer"/>，
-			寄单日期：<input id="gd_jidanriqi" class="plainInput" style="width:100px;cursor:pointer"/>，
-			收单日期：<input id="gd_shoudanriqi" class="plainInput" style="width:100px;cursor:pointer"/>
+			寄单日期：<input id="gd_jidanriqi" class="plainInput" style="width:100px;cursor:pointer" title="报关行向代理商寄出报关单的日期！"/>，
+			收单日期：<input id="gd_shoudanriqi" class="plainInput" style="width:100px;cursor:pointer" title="代理商收到报关单的日期！" />
 		</div>
 		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>代理商</div>
-		代理：<div class="myinput" style="cursor:pointer"></div>，人民币账户余额：<div class="whitespaceinput"></div>，美金账户余额：<div class="whitespaceinput"></div>
+		代理：<div class="myinput" style="cursor:pointer" id="dls_dailishang"></div>，
+		人民币账户余额：<div class="myinput" style="cursor:pointer" id="dls_rmbyue"></div>，
+		美金账户余额：<div class="myinput" style="cursor:pointer" id="dls_mjyue"></div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>发票</div>
 		<table border=0>
 			<tr>
+				<th></th>
 				<th nowrap>开票企业</th>
 				<th nowrap>增值税号</th>
 				<th nowrap>品名</th>
 				<th nowrap>开票米数</th>
-				<th nowrap>单价</th>
 				<th nowrap>增值税金额</th>
 				<th nowrap>开票日期</th>
 				<th nowrap>收票日期</th>
@@ -155,18 +157,19 @@
 				<th nowrap>备注</th>
 			</tr>
 			<tr>
-				<td class="myinput">开票企业</td>
-				<td class="myinput">增值税号</td>
-				<td class="myinput">品名</td>
-				<td class="myinput">开票米数</td>
-				<td class="myinput">单价</td>
-				<td class="myinput" style="">增值税金额</td>
-				<td class="myinput"><input class="plainInput" style="border:0px;width:100px" val="开票日期"/></td>
-				<td class="myinput"><input class="plainInput" style="border:0px;width:100px" val="收票日期"/></td>
-				<td class="myinput">付款流水</td>
-				<td class="myinput">备注</td>
+				<td nowrap><span class="plainBtn" title="删除本行" id="fp_shanchubenhang">[-]</span>&nbsp;&nbsp;<span class="plainBtn" id="fp_shangyi" title="上移本行">[↑]</span></td>
+				<td class="myinput" id="fp_kaipiaoqiye"></td>
+				<td class="myinput" id="fp_shuihao"></td>
+				<td class="myinput" id="fp_pinming"></td>
+				<td class="myinput" id="fp_mishu"></td>
+				<td class="myinput" style="fp_jine"></td>
+				<td class="myinput"><input id="kaipiaoriqi" class="plainInput" style="border:0px;width:100px"/></td>
+				<td class="myinput"><input id="shoupiaoriqi" class="plainInput" style="border:0px;width:100px"/></td>
+				<td class="myinput" id="fukuanliushui"></td>
+				<td class="myinput" id="beizhu">备注</td>
 			</tr>
 		</table>
+		<span class="plainBtn" title="添加新行" id="fp_tianjiaxinhang">[+]</span>
 		<div style="font-weight:bold;margin-top:10px">待开票金额：<div class="whitespaceinput"></div>（美元，按汇率：<div class="myinput" style="text-align:center;min-width:30px;">6.1</div>），待开票数量：<div class="whitespaceinput"></div>（米）</div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>核销</div>
 		<table>
