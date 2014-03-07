@@ -48,6 +48,10 @@
 			display:inline-block;
 			width:60px;
 		}
+		.tip{
+			color:#95B9C7;
+			cursor:pointer
+		}
 	</style>
 </head>
 <body style="margin:0px;padding:0px">
@@ -87,7 +91,7 @@
 		<div id="liucheng">
 			<div id="liuchengItem" style="display:inline-block;border:1px solid #ddd;background-color:#fcfcfc">
 				<table id="lc_tb_in">
-					<tr>
+					<tr id="lc_tr_panel">
 						<td style="font-size:30px" id="lc_bianhao">2</td>
 						<td><div><img id="lc_touxiang" src="/oa/logo/noface.jpg" style="width:48px;height:48px;border-radius:25px;"/></div></td>
 						<td><span style="font-size:12px" id="lc_mingchen">袁立宇</span>&nbsp;&nbsp;<span style="font-weight:bolder" id="lc_dongzuo">上传</span><div style="font-size:12px" id="lc_shijian">2013-10-3 15:59</div></td><td style="cursor:pointer"><img id="lc_anniu" src="../../../img/up.png" style="display:none"/></td>
@@ -103,7 +107,7 @@
 							<span id="cz_kaipiao" class="plainBtn" style="margin-right:10px;display:none">开票</span>
 							<span id="cz_danzheng" class="plainBtn" style="margin-right:10px;display:none">单证</span>
 							<span id="cz_tuishui" class="plainBtn" style="margin-right:10px;display:none">退税</span>
-							<span id="cz_quxiao" class="plainBtn" style="margin-right:10px;display:none">取消</span>
+							<span id="cz_quxiao" class="plainBtn" style="margin-right:10px;display:none">回退</span>
 						</td>
 					</tr>
 				</table>
@@ -111,16 +115,29 @@
 		</div>
 		<div id="tuishuimingxi" style="margin-top:10px">
 			<div style='background-color:#eee' class="detailheader">退税单证明细&nbsp;&nbsp;&nbsp;&nbsp;
-				<span id="bianji" class="plainBtn" style="display:none">编辑</span>
+				<span id="bianji" class="plainBtn">编辑</span>
 				<span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;
-				<span id="baocun" class="plainBtn">保存</span>
+				<span id="baocun" class="plainBtn" style="display:none">保存</span>
 			</div>
 		</div>
+
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>货柜</div>
-		编号：<div class="myinput" style="cursor:pointer">ZGD140306.2</div>，柜号：<div class="whitespaceinput" style="width:30px">245</div>，装柜日期：<div class="whitespaceinput" style="width:100px">2014-03-05</div>
+		编号：<div class="myinput" style="cursor:pointer" id="hg_zhuangguidan">&nbsp;</div>，
+		柜号：<div class="whitespaceinput" style="width:30px" id="hg_guihao"></div>，
+		装柜日期：<div class="whitespaceinput" style="width:100px" id="hg_zhuangguiriqi"></div>
+		<span class="tip" title="你可以选一个没装柜（日期）的货柜，但是等装完柜之后装柜信息不会自动不齐，需要你重新选一次。">tip</span>
+
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>关单</div>
-		合同号码：<div class="myinput"></div>，产品名称：<div class="myinput"></div>，金额：<div class="myinput"></div>（美元），数量：<div class="myinput"></div>
-		<br/>报关日期：<input class="plainInput" style="width:100px;cursor:pointer"/>，寄单日期：<input class="plainInput" style="width:100px;cursor:pointer"/>，收单日期：<input class="plainInput" style="width:100px;cursor:pointer"/>
+		<div id="div_guandan">
+			合同号码：<div id="hetonghaoma" class="myinput"></div>，
+			产品名称：<div id="gd_chanpinmingchen" class="myinput"></div>，
+			金额：<div id="gd_jine" class="myinput"></div>（美元），
+			数量：<div id="gd_shuliang" class="myinput"></div>
+			<br/>报关日期：<input id="gd_baoguanriqi" class="plainInput" style="width:100px;cursor:pointer"/>，
+			寄单日期：<input id="gd_jidanriqi" class="plainInput" style="width:100px;cursor:pointer"/>，
+			收单日期：<input id="gd_shoudanriqi" class="plainInput" style="width:100px;cursor:pointer"/>
+		</div>
+		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>代理商</div>
 		代理：<div class="myinput" style="cursor:pointer"></div>，人民币账户余额：<div class="whitespaceinput"></div>，美金账户余额：<div class="whitespaceinput"></div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>发票</div>

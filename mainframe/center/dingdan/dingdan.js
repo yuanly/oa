@@ -720,7 +720,7 @@ function _hanshuku_(){}
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				var caozuoItem = caozuoTmpl.clone(true);
 				$("#cz_dayin",caozuoItem).show();
-				if(theUser._id == item.userId){
+				if(theUser._id == currDD.gendanyuan){
 					kebianji = true;
 					if((dingdan.liucheng.length - 1) == n){
 						$("#cz_xiadan",caozuoItem).show();
@@ -737,7 +737,7 @@ function _hanshuku_(){}
 				}
 				$("table",tmpl).append(caozuoItem);
 			}else if("子单" == item.dongzuo){
-				if(theUser._id == item.userId){
+				if(theUser._id == currDD.gendanyuan){
 					if((dingdan.liucheng.length - 1) == n){
 						$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 						var caozuoItem = caozuoTmpl.clone(true);
@@ -755,7 +755,7 @@ function _hanshuku_(){}
 				$("table",tmpl).append(caozuoItem);
 			}else if("审单" == item.dongzuo){
 				var caozuoItem = caozuoTmpl.clone(true);
-				if(theUser._id != item.userId && (dingdan.liucheng.length - 1) == n){
+				if(theUser._id == currDD.gendanyuan && (dingdan.liucheng.length - 1) == n){
 					$("#cz_jie2dan",caozuoItem).show();
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				}
