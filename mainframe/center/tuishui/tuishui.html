@@ -46,7 +46,7 @@
 		}
 		.whitespaceinput{
 			display:inline-block;
-			width:60px;
+			min-width:60px;
 		}
 		.tip{
 			color:#95B9C7;
@@ -171,32 +171,40 @@
 				</tr>
 			</table>
 			<span class="plainBtn" title="添加新行" id="fp_tianjiaxinhang">[+]</span>
-			<div style="font-weight:bold;margin-top:10px">待开票金额：<div class="whitespaceinput"></div>（美元，按汇率：<div class="myinput" style="text-align:center;min-width:30px;">6.1</div>），待开票数量：<div class="whitespaceinput"></div>（米）</div>
+			<div style="font-weight:bold;margin-top:10px">
+				待开票金额：<div class="whitespaceinput" id="fp_daikaijine" style="min-width:30px;" title="关单金额按汇率折算后减去全部发票金额"></div>
+				（元，按汇率：<div class="myinput" style="text-align:center;min-width:30px;" id="fp_huilv">6.1</div>），
+				待开票数量：<div class="whitespaceinput" id="fp_daikaimishu" style="min-width:30px;"></div>（米）</div>
 		</div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>核销</div>
-		<table>
-			<tr>
-				<th nowrap>收汇流水</th>
-				<th nowrap>收汇日期</th>
-				<th nowrap>美金金额</th>
-				<th nowrap>核销流水</th>
-				<th nowrap>核销日期</th>
-				<th nowrap>人民币金额</th>
-				<th nowrap>汇率牌价</th>
-				<th nowrap>实际汇率</th>
-			</tr>
-			<tr>
-				<td nowrap class="myinput">收汇流水</td>
-				<td nowrap>收汇日期</td>
-				<td nowrap>美金金额</td>
-				<td nowrap class="myinput">核销流水</td>
-				<td nowrap>核销日期</td>
-				<td nowrap>人民币金额</td>
-				<td nowrap>汇率牌价</td>
-				<td nowrap>实际汇率</td>
-			</tr>
-		</table>
-		<div style="font-weight:bold;margin-top:10px">美金汇总：<div class="whitespaceinput"></div>，人民币汇总：<div class="whitespaceinput"></div></div>
+		<div id="hx_div">
+			<table>
+				<tr>
+					<th></th>
+					<th nowrap>收汇流水</th>
+					<th nowrap>收汇日期</th>
+					<th nowrap>美金金额</th>
+					<th nowrap>核销流水</th>
+					<th nowrap>核销日期</th>
+					<th nowrap>人民币金额</th>
+					<th nowrap>实际汇率</th>
+					<th nowrap>汇率牌价</th>
+				</tr>
+				<tr class="tr_hexiao">
+					<td nowrap><span class="plainBtn" title="删除本行" id="hx_shanchubenhang">[-]</span>&nbsp;&nbsp;<span class="plainBtn" id="hx_shangyi" title="上移本行">[↑]</span></td>
+					<td nowrap class="myinput" id="#hx_shouhuiliushui" title="泰国账户向代理商美金账户汇款流水"></td>
+					<td nowrap id="hx_shouhuiriqi"></td>
+					<td nowrap id="hx_meijinjine"></td>
+					<td nowrap class="myinput" id="#hx_hexiaoliushui" title="代理商美金账户向代理商人民币账户转账流水"></td>
+					<td nowrap id="hx_hexiaoriqi"></td>
+					<td nowrap id="hx_renminbijine"></td>
+					<td nowrap id="hx_shijihuilv"></td>
+					<td nowrap class="myinput" id="hx_huilvpaijia"></td>
+				</tr>
+			</table>
+			<span class="plainBtn" title="添加新行" id="hx_tianjiaxinhang">[+]</span>
+			<div style="font-weight:bold;margin-top:10px">美金汇总：<div class="whitespaceinput"></div>，人民币汇总：<div class="whitespaceinput"></div></div>
+		</div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>退税</div>
 		流水：<div class="myinput"></div>，日期：<div class="whitespaceinput"></div>，金额： <div class="whitespaceinput"></div>，税率：<div class="myinput"></div>（应退税额：<div class="whitespaceinput"></div>）
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>代理费</div>
