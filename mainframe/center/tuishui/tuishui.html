@@ -178,7 +178,7 @@
 		</div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>核销</div>
 		<div id="hx_div">
-			<table>
+			<table id="hx_table">
 				<tr>
 					<th></th>
 					<th nowrap>收汇流水</th>
@@ -192,14 +192,14 @@
 				</tr>
 				<tr class="tr_hexiao">
 					<td nowrap><span class="plainBtn" title="删除本行" id="hx_shanchubenhang">[-]</span>&nbsp;&nbsp;<span class="plainBtn" id="hx_shangyi" title="上移本行">[↑]</span></td>
-					<td nowrap class="myinput" id="#hx_shouhuiliushui" title="泰国账户向代理商美金账户汇款流水"></td>
+					<td nowrap class="myinput hx_shouhuiliushui" style="cursor:pointer" id="#hx_shouhuiliushui" title="泰国账户向代理商美金账户汇款流水"></td>
 					<td nowrap id="hx_shouhuiriqi"></td>
 					<td nowrap id="hx_meijinjine"></td>
-					<td nowrap class="myinput" id="#hx_hexiaoliushui" title="代理商美金账户向代理商人民币账户转账流水"></td>
+					<td nowrap class="myinput hx_hexiaoliushui" style="cursor:pointer" id="#hx_hexiaoliushui" title="代理商美金账户向代理商人民币账户转账流水"></td>
 					<td nowrap id="hx_hexiaoriqi"></td>
 					<td nowrap id="hx_renminbijine"></td>
 					<td nowrap id="hx_shijihuilv"></td>
-					<td nowrap class="myinput" id="hx_huilvpaijia"></td>
+					<td nowrap class="myinput" id="hx_huilvpaijia" contenteditable=true></td>
 				</tr>
 			</table>
 			<span class="plainBtn" title="添加新行" id="hx_tianjiaxinhang">[+]</span>
