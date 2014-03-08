@@ -142,6 +142,8 @@
 		代理：<div class="myinput" style="cursor:pointer" id="dls_dailishang"></div>，
 		人民币账户余额：<div class="myinput" style="cursor:pointer" id="dls_rmbyue"></div>，
 		美金账户余额：<div class="myinput" style="cursor:pointer" id="dls_mjyue"></div>
+		<span class="tip" title="这里的人民币账户和美金账户是由代理商操作的账户，但账户里面的资金实际上是我们的，由代理商用来支付开发票的“货款”。所以，我们要对这两个账户的全部流水进行严格的记录。">tip</span>
+		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>发票</div>
 		<div id="fp_div">
 			<table id="fp_table">
@@ -173,8 +175,10 @@
 			<span class="plainBtn" title="添加新行" id="fp_tianjiaxinhang">[+]</span>
 			<div style="font-weight:bold;margin-top:10px">
 				待开票金额：<div class="whitespaceinput" id="fp_daikaijine" style="min-width:30px;" title="关单金额按汇率折算后减去全部发票金额"></div>
-				（元，按汇率：<div class="myinput" style="text-align:center;min-width:30px;" id="fp_huilv">6.1</div>），
-				待开票数量：<div class="whitespaceinput" id="fp_daikaimishu" style="min-width:30px;"></div>（米）</div>
+				（元，按汇率：<div class="myinput" style="text-align:center;min-width:30px;" id="fp_huilv" title="一美元兑换人民币">6.1</div>），
+				待开票数量：<div class="whitespaceinput" id="fp_daikaimishu" style="min-width:30px;"></div>（米）
+				<span class="tip" title="所有发票的米数总和必须和关单的米数一致。而发票金额总值是不需要和关单金额一致的，理论上要小于关单金额（按牌价换算后），相差部分金额作为出口商的利润。但代理商是不希望金额相差太大，因为相差大了意味着账面上的利润就多，要交的所得税就多，而且发票金额少则我们得到的退税也少，所以要尽量使得发票金额和关单金额接近（具体是否要留利润，留多少，得咨询代理商）。">tip</span>
+			</div>
 		</div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>核销</div>
 		<div id="hx_div">
@@ -203,12 +207,29 @@
 				</tr>
 			</table>
 			<span class="plainBtn" title="添加新行" id="hx_tianjiaxinhang">[+]</span>
-			<div style="font-weight:bold;margin-top:10px">美金汇总：<div class="whitespaceinput" id="hx_meijinhuizong"></div>，人民币汇总：<div class="whitespaceinput" id="hx_renminbihuizong"></div></div>
+			<div style="font-weight:bold;margin-top:10px">
+				美金汇总：<div class="whitespaceinput" id="hx_meijinhuizong"></div>，
+				人民币汇总：<div class="whitespaceinput" id="hx_renminbihuizong"></div>
+				<span class="tip" title="这里的核销是指将泰国汇给代理商的美金兑换成人民币的流水。该流水从代理商的美金账户支付到其人民币账户。如果是按牌价兑换，则后面的“退税”和“代理费”栏就需要设置，否则不需要设置，因为代理商和我们协商的实际汇率已经折算了两者进去。">tip</span>
+			</div>
 		</div>
+		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>退税</div>
-		流水：<div class="myinput"></div>，日期：<div class="whitespaceinput"></div>，金额： <div class="whitespaceinput"></div>，税率：<div class="myinput"></div>（应退税额：<div class="whitespaceinput"></div>）
+		流水：<div class="myinput" id="ts_liushui"></div>，
+		日期：<div class="whitespaceinput" id="ts_riqi"></div>，
+		金额： <div class="whitespaceinput" id="ts_jine"></div>，
+		退税率：<div class="myinput" id="ts_shuilv"></div>%（应退税额：<div class="whitespaceinput" id="ts_yingtuishuie"></div>元）
+		<span class="tip" title="正常情况下，单证齐全后代理商申请退税，然后将所得退税款放进其人民币账户。所以，需要另外建一个虚拟的账户负责支付退税款。
+另外，很多代理商并不单独为我们计算退税，而是和我们商定一个比牌价高的汇率换算美金，这个汇率已经考虑了退税和代理费，这种情况则无需设置该退税栏信息。
+“应退税率”是根据发票金额去掉17%的增值税后乘以退税率所得。">tip</span>
+		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>代理费</div>
-		流水：<div class="myinput"></div>，日期：<div class="whitespaceinput"></div>，金额： <div class="whitespaceinput"></div>，备注：<div class="myinput"></div>
+		流水：<div class="myinput" id="dlf_liushui"></div>，
+		日期：<div class="whitespaceinput" id="dlf_riqi"></div>，
+		金额： <div class="whitespaceinput" id="dlf_jine"></div>，
+		备注：<div class="myinput" id="dlf_beizhu"></div>
+		<span class="tip" title="只有代理商和我们单独算代理费才有必要填写本栏信息。该流水应该是从代理商的人民币账户支付到代理商的第三个账户。">tip</span>
+		
 		<div id="liuyan" style="margin-top:150px">
 			<span class="plainBtn">留言</span>
 		</div>

@@ -1228,7 +1228,7 @@ jQuery.fn.dataInc = function(name,value){
  	return ret;
  }
  function getKemu(){
-	return ["货款","开票","收汇","核销","泰国进账","薪金","办公费","社保","租金","运费","活动费","银行手续费","代付","利息","贷款","还贷","个人消费","其他"];
+	return ["货款","开票","收汇","核销","泰国进账","薪金","办公费","社保","租金","运费","活动费","银行手续费","代付","利息","贷款","还贷","个人消费","退税","代理费","其他"];
  }
  jQuery.fn.kemu = function(){
 	 	return this.myselector(getKemu());
