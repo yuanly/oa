@@ -144,22 +144,27 @@
 				return;
 			}
 		}
-		if("" != $("#lsz_huilv").val().trim() || "" != $("#lsz_zhuanrujine").val().trim()){
-			var huilv = parseFloat($("#lsz_huilv").val().trim());
-			var zhuanrujine = parseFloat($("#lsz_zhuanrujine").val().trim());
-			if(isNaN(huilv)){
-				tip(null,"汇率不是有效数字！",1500);
-				return;
-			}
-			if(isNaN(zhuanrujine)){
-				tip(null,"转入金额不是有效数字！",1500);
-				return;
-			}
-			currLSZ.huilv = huilv;
-			currLSZ.zhuanrujine = zhuanrujine;
+		if($("#hexiaoliushui").css("display") == "none"){
+				currLSZ.huilv = undefined;
+				currLSZ.zhuanrujine = undefined;
 		}else{
-			currLSZ.huilv = undefined;
-			currLSZ.zhuanrujine = undefined;
+			if("" != $("#lsz_huilv").val().trim() || "" != $("#lsz_zhuanrujine").val().trim()){
+				var huilv = parseFloat($("#lsz_huilv").val().trim());
+				var zhuanrujine = parseFloat($("#lsz_zhuanrujine").val().trim());
+				if(isNaN(huilv)){
+					tip(null,"汇率不是有效数字！",1500);
+					return;
+				}
+				if(isNaN(zhuanrujine)){
+					tip(null,"转入金额不是有效数字！",1500);
+					return;
+				}
+				currLSZ.huilv = huilv;
+				currLSZ.zhuanrujine = zhuanrujine;
+			}else{
+				currLSZ.huilv = undefined;
+				currLSZ.zhuanrujine = undefined;
+			}
 		}
 		
 		currLSZ.fukuanfang = $("#lsz_fukuanfang").data("_id");
@@ -381,9 +386,13 @@ function _hanshuku_(){}
 		$("#lsz_shoukuanfangzhanghu").vals(lsz.shoukuanfangzhanghu);
 		$("#lsz_shoukuanfangzhanghu").data("zhanghao",lsz.shoukuanfangzhanghao);
 		if(lsz.zhuanrujine){
-			$("#lsz_huilv").vals(lsz.huilv).show();
-			$("#lsz_zhuanrujine").vals(lsz.zhuanrujine).show();
-			$("#hexiao").remove();
+			$("#hexiaoliushui").show();
+			$("#lsz_huilv").vals(lsz.huilv);
+			$("#lsz_zhuanrujine").vals(lsz.zhuanrujine);
+		}else{
+			$("#hexiaoliushui").hide();
+			$("#lsz_huilv").vals("");
+			$("#lsz_zhuanrujine").vals("");
 		}
 		beizhuEditor.editorVal(lsz.beizhu);
 		liuyanElm.shuaxinliebiao({hostId:currLSZ._id,hostType:"liushuizhang"});

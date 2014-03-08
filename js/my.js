@@ -1220,6 +1220,13 @@ jQuery.fn.dataInc = function(name,value){
  		return this;
  	}
  }
+ function parseFloat2(str){
+ 	var ret = parseFloat(str);
+ 	if(isNaN(ret)){
+ 		return undefined;
+ 	}
+ 	return ret;
+ }
  function getKemu(){
 	return ["货款","开票","收汇","核销","泰国进账","薪金","办公费","社保","租金","运费","活动费","银行手续费","代付","利息","贷款","还贷","个人消费","其他"];
  }
