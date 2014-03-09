@@ -137,8 +137,6 @@
 				tip(null,"已支付流水账的付款人/收款人不能为空！",1500);
 				return;
 			}
-		}
-		if(""!=currLSZ.fukuanriqi){
 			if(!$("#lsz_shoukuanfangzhanghu").data("zhanghao") || !$("#lsz_fukuanfangzhanghu").data("zhanghao")){
 				tip(null,"已支付流水账的账户不能为空！",1500);
 				return;

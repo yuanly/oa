@@ -8,6 +8,24 @@
 		$(this).html("&nbsp;");
 	});
 	*/
+	function sel_zhanghao(){
+		var lxrId = $("#lianxiren").data("lxrId");
+		if(lxrId){
+			var limit = 20;
+			setSelector(event,function(page,option,callback){
+					postJson("../tuishui/tuishui.php",{caozuo:"chazhanghao",offset:page*limit,limit:limit,lxrId:lxrId},function(zhanghaos){
+						callback(zhanghaos);
+					});
+				},["yinhang","huming","zhanghao","wangdian"],function(zhanghu){//selected
+					$(this).text(zhanghu.yinhang+" "+zhanghu.zhanghao+"("+zhanghu.huming+")").data("zhanghao",zhanghu.zhanghao);
+				},"",function(){//clear
+					$(this).html("&nbsp;").removeData("zhanghao");
+				});
+		}else{
+			tip($(this),"请先选定联系人！",1500);
+		}
+	}
+	$("#zhanghu").click(sel_zhanghao);
 	$("#lianxiren").click(function(event){
  		var limit = 20;
  		setSelector(event,function(page,option,callback1){
@@ -33,6 +51,9 @@
 		if(!option.lxrId){
 			tip($(this),"必须指定商家！",1500);
 			return;
+		}
+		if($("#zhanghu").data("zhanghao")){
+			option.zhanghao = $("#zhanghu").data("zhanghao");
 		}
 		option.kaishiriqi = $("#kaishiriqi").val().trim();
 		if("" == option.kaishiriqi){			
