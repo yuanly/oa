@@ -16,6 +16,10 @@
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("#th_bianhao").datepicker().change(function(){
+		$(this).val("TS"+date2id($(this).val()));
+		listtuishui(0);
+	});
 	$("#fp_mishu").blur(function(){daikaimishu();});
 	$("#fp_jine").blur(function(){daikaijine();yingtuishuie();});
 	function sel_kaipiaoqiye(){
@@ -187,7 +191,7 @@
 	}
 	$("#fp_fukuanliushui").click(sel_fukuanliushui);
 	function link_liushui(){
-		if("" != $(this).text()){
+		if("" != $(this).text().trim()){
 			window.open("../liushuizhang/liushuizhang.html?showId="+$(this).text(),"_blank");
 		}		
 	}
@@ -626,12 +630,10 @@
 function _hanshuku_(){}
 	function getOptions(){
 		var ret = {};
-		/*
 		var bh = $("#th_bianhao").val().trim();
 		if("" != bh && "编号" != bh){
 			ret.bianhao = bh+"0";
 		}
-		*/
 		return ret;
 	}
  	function listtuishui(offset,showId){
@@ -809,7 +811,7 @@ function _hanshuku_(){}
 			$("#ts_jine").text(ts.jine?ts.jine:"");
 			$("#ts_shuilv").text(ts.shuilv?ts.shuilv:"");
 		}else{
-			$("#ts_liushui").text("");
+			$("#ts_liushui").html("&nbsp;");
 			$("#ts_riqi").text("");
 			$("#ts_jine").text("");
 			$("#ts_shuilv").text("");
@@ -817,13 +819,13 @@ function _hanshuku_(){}
 		yingtuishuie();
 
 		if(currTS.dailifei){
-			var dlf = currdlf.dailifei;
+			var dlf = currTS.dailifei;
 			$("#dlf_liushui").text(dlf.liushui);
 			$("#dlf_riqi").text(dlf.riqi);
 			$("#dlf_jine").text(dlf.jine?dlf.jine:"");
 			$("#dlf_beizhu").text(dlf.beizhu);
 		}else{
-			$("#dlf_liushui").text("");
+			$("#dlf_liushui").html("&nbsp;");
 			$("#dlf_riqi").text("");
 			$("#dlf_jine").text("");
 			$("#dlf_beizhu").text("");
@@ -963,5 +965,13 @@ function _hanshuku_(){}
 	 
  	var liuyanElm = $("#liuyan").liuyan({hostType:"tuishui",});
  	
+//设置头部点击处理（放到当前面板）
+	$("#tableheader").click(function(){
+		layout.sizePane("west",$("#tuishuitable").width()+20);
+	});
+	$(".detailheader").click(function(){
+		layout.sizePane("west",$("body").width()-$("#fp_table").width()-100);
+	});
+	
 	listtuishui(0);
 });

@@ -59,8 +59,8 @@
 		<div>
 			<table id="tuishuitable"  style="min-width:500px;">
 				<tr id="tableheader">
-					<th nowrap><input id="th_bianhao" class="plainTh" value="编号" style="width:80px;"/></th>
-					<th nowrap><input id="th_guihao" class="plainTh" value="柜号" style="width:50px;"/></th>
+					<th nowrap><input id="th_bianhao" class="plainTh" value="编号" style="width:80px;cursor:pointer"/></th>
+					<th nowrap>柜号</th>
 					<th nowrap>跟单员</th>
 					<th nowrap>装柜日期</th>
 					<th nowrap>报关日期</th>
@@ -71,13 +71,13 @@
 				</tr>
 				<tr class="tr_tuishui">
 					<td id="td_bianhao"></td>
-					<td id="td_guihao"></td>
+					<td id="td_guihao" style="text-align:center"></td>
 					<td id="td_gendanyuan"></td>
 					<td id="td_zhuangguiriqi"></td>
 					<td id="td_baoguanriqi"></td>
 					<td id="td_zhuangtai">
-					</td><td id="td_shuliang">
-					</td><td id="td_jine">
+					</td><td id="td_shuliang" style="text-align:center">
+					</td><td id="td_jine" style="text-align:center">
 					</td><td id="td_dailishang"></td>
 				</tr>
 			</table>	
@@ -215,7 +215,7 @@
 		</div>
 		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>退税</div>
-		流水：<div class="myinput" id="ts_liushui"></div>，
+		流水：<div class="myinput" id="ts_liushui" style="cursor:pointer"></div>，
 		日期：<div class="whitespaceinput" id="ts_riqi"></div>，
 		金额： <div class="whitespaceinput" id="ts_jine"></div>，
 		退税率：<div class="myinput" id="ts_shuilv"></div>%（应退税额：<div class="whitespaceinput" id="ts_yingtuishuie"></div>元）
@@ -224,7 +224,7 @@
 “应退税率”是根据发票金额去掉17%的增值税后乘以退税率所得。">tip</span>
 		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>代理费</div>
-		流水：<div class="myinput" id="dlf_liushui"></div>，
+		流水：<div class="myinput" id="dlf_liushui" style="cursor:pointer"></div>，
 		日期：<div class="whitespaceinput" id="dlf_riqi"></div>，
 		金额： <div class="whitespaceinput" id="dlf_jine"></div>，
 		备注：<div class="myinput" id="dlf_beizhu"></div>
