@@ -98,6 +98,10 @@ if("xinjian" == $param["caozuo"]){
 	$query["zhuangtai"] = array('$ne'=>"作废");
 	$cur = coll("liushuizhang")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
+}else if("zuofei" == $param["caozuo"]){
+	$zuofeiliucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
+	$tuishui = coll("tuishui")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"作废")));
+	echo '{"success":true}';
 }
 
 function getBalance($lxrId,$zhanghao){

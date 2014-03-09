@@ -538,6 +538,14 @@
 		});
 	}
 	$("#cz_zhuanggui").click(cz_zhuanggui);
+	function cz_zuofei(){
+		ask($(this),"你确定要将该退税单证记录作废吗！",function(){
+			postJson("tuishui.php",{caozuo:"zuofei",_id:currTS._id},function(res){
+				showDetailById(currTS._id);
+			});
+		});
+	}	
+	$("#cz_zuofei").click(cz_zuofei);
 	function cz_baoguan(){
 		if(!currTS.guandan){
 			tip($(this),"必须先设置关单信息！",1500);
