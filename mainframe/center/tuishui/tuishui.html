@@ -121,13 +121,15 @@
 		</div>
 
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>货柜</div>
-		编号：<div class="myinput" style="cursor:pointer" id="hg_zhuangguidan">&nbsp;</div>，
-		柜号：<div class="whitespaceinput" style="min-width:30px" id="hg_guihao"></div>，
-		装柜日期：<div class="whitespaceinput" style="width:100px" id="hg_zhuangguiriqi"></div>
-		<span class="tip" title="你可以选一个没装柜（日期）的货柜，但是等装完柜之后装柜信息不会自动不齐，需要你重新选一次。">tip</span>
-
+		<nobr>
+			编号：<div class="myinput" style="cursor:pointer" id="hg_zhuangguidan">&nbsp;</div>，
+			柜号：<div class="whitespaceinput" style="min-width:30px" id="hg_guihao"></div>，
+			装柜日期：<div class="whitespaceinput" style="width:100px" id="hg_zhuangguiriqi"></div>
+			<span class="tip" title="你可以选一个没装柜（日期）的货柜，但是等装完柜之后装柜信息不会自动不齐，需要你重新选一次。">tip</span>
+		</nobr>
+		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>关单</div>
-		<div id="div_guandan">
+		<div id="div_guandan"><nobr>
 			合同号码：<div id="gd_hetonghaoma" class="myinput" title="以泰国公司名义提供给代理商的合同！"></div>，
 			产品名称：<div id="gd_chanpinmingchen" class="myinput"></div>，
 			金额：<div id="gd_jine" class="myinput"></div>（美元），
@@ -135,7 +137,7 @@
 			<br/>报关日期：<input id="gd_baoguanriqi" class="plainInput" style="width:100px;cursor:pointer"/>，
 			寄单日期：<input id="gd_jidanriqi" class="plainInput" style="width:100px;cursor:pointer" title="报关行向代理商寄出报关单的日期！"/>，
 			收单日期：<input id="gd_shoudanriqi" class="plainInput" style="width:100px;cursor:pointer" title="代理商收到报关单的日期！" />
-		</div>
+		</nobr></div>
 		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>代理商</div>
 		代理：<div class="myinput" style="cursor:pointer" id="dls_dailishang"></div>，
@@ -214,20 +216,24 @@
 		</div>
 		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>退税</div>
-		流水：<div class="myinput" id="ts_liushui" style="cursor:pointer"></div>，
-		日期：<div class="whitespaceinput" id="ts_riqi"></div>，
-		金额： <div class="whitespaceinput" id="ts_jine"></div>，
-		退税率：<div class="myinput" id="ts_shuilv"></div>%（应退税额：<div class="whitespaceinput" id="ts_yingtuishuie"></div>元）
-		<span class="tip" title="正常情况下，单证齐全后代理商申请退税，然后将所得退税款放进其人民币账户。所以，需要另外建一个虚拟的账户负责支付退税款。
-另外，很多代理商并不单独为我们计算退税，而是和我们商定一个比牌价高的汇率换算美金，这个汇率已经考虑了退税和代理费，这种情况则无需设置该退税栏信息。
-“应退税率”是根据发票金额去掉17%的增值税后乘以退税率所得。">tip</span>
+		<nobr>
+			流水：<div class="myinput" id="ts_liushui" style="cursor:pointer">&nbsp;</div>，
+			日期：<div class="whitespaceinput" id="ts_riqi"></div>，
+			金额： <div class="whitespaceinput" id="ts_jine"></div>，
+			退税率：<div class="myinput" id="ts_shuilv"></div>%（应退税额：<div class="whitespaceinput" id="ts_yingtuishuie"></div>元）
+			<span class="tip" title="正常情况下，单证齐全后代理商申请退税，然后将所得退税款放进其人民币账户。所以，需要另外建一个虚拟的账户负责支付退税款。
+	另外，很多代理商并不单独为我们计算退税，而是和我们商定一个比牌价高的汇率换算美金，这个汇率已经考虑了退税和代理费，这种情况则无需设置该退税栏信息。
+	“应退税率”是根据发票金额去掉17%的增值税后乘以退税率所得。">tip</span>
+		</nobr>
 		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>代理费</div>
-		流水：<div class="myinput" id="dlf_liushui" style="cursor:pointer"></div>，
-		日期：<div class="whitespaceinput" id="dlf_riqi"></div>，
-		金额： <div class="whitespaceinput" id="dlf_jine"></div>，
-		备注：<div class="myinput" id="dlf_beizhu"></div>
-		<span class="tip" title="只有代理商和我们单独算代理费才有必要填写本栏信息。该流水应该是从代理商的人民币账户支付到代理商的第三个账户。">tip</span>
+		<nobr>
+			流水：<div class="myinput" id="dlf_liushui" style="cursor:pointer">&nbsp;</div>，
+			日期：<div class="whitespaceinput" id="dlf_riqi"></div>，
+			金额： <div class="whitespaceinput" id="dlf_jine"></div>，
+			备注：<div class="myinput" id="dlf_beizhu"></div>
+			<span class="tip" title="只有代理商和我们单独算代理费才有必要填写本栏信息。该流水应该是从代理商的人民币账户支付到代理商的第三个账户。">tip</span>
+		</nobr>
 		
 		<div id="liuyan" style="margin-top:150px">
 			<span class="plainBtn">留言</span>
