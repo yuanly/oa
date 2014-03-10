@@ -110,15 +110,15 @@ if("xinjian" == $param["caozuo"]){
 	$tuishui = coll("tuishui")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"作废")));
 	echo '{"success":true}';
 }else if("tongji" == $param["caozuo"]){
-	$query = array();	
+	$query = array("zhuangtai"=>array('$ne'=>"作废"));	
 	if(isset($param["option"]["kaishibianhao"])){
-		$query["_id"] = array('$gte'=>$param["option"]["kaishibianhao"]);
+		$query["_id"]['$gte'] = $param["option"]["kaishibianhao"];
 	}
 	if(isset($param["option"]["jieshubianhao"])){
-		$query["_id"] = array('$lte'=>$param["option"]["jieshubianhao"]);
+		$query["_id"]['$lte'] = $param["option"]["jieshubianhao"];
 	}
 	if(isset($param["option"]["liwai"])){
-		$query["_id"] = array('$nin'=>$param["option"]["liwai"]);
+		$query["_id"]['$nin'] = $param["option"]["liwai"];
 	}
 	$cur = coll("tuishui")->find($query);
 	echo  cur2json($cur);

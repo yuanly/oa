@@ -66,13 +66,13 @@
 		if(ts.dailifei){
 			tr.find("#dailifei").text("¥"+ts.dailifei.jine);
 		}
-		var fps = ts.fapiaos.slice(0);
-		if(!fps){
-			fps = [];
+		var fps = [];
+		if(ts.fapiaos){
+			fps = ts.fapiaos.slice(0);
 		}
-		var hxs = ts.hexiaos.slice(0);
-		if(!hxs){
-			hxs = [];
+		var hxs = [];
+		if(ts.hexiaos){
+			hxs = ts.hexiaos.slice(0);
 		}
 		setFP(fps,tr,ts._id);
 		setHX(hxs,tr);
@@ -179,7 +179,9 @@
 				tr.find("#gongyingshang").text(fp.kaipiaoqiye.mingchen);
 			}
 			tr.find("#zengzhishuihaoma").text(fp.shuihao);
-			tr.find("#zengzhishuijine").text("¥"+fp.jine);
+			if(fp.jine){
+				tr.find("#zengzhishuijine").text("¥"+fp.jine);
+			}
 			tr.find("#kaipiaomishu").text(fp.mishu);
 			if("" != fp.fukuanliushui){
 				var clz = (bianhao + fp.fukuanliushui).replace(/\./g,"_");
@@ -201,5 +203,6 @@
 		$("#head_div").hide();
 		$("#title_div").show();
 		$("html").attr("contenteditable","true");
+		$("#tb_tuishui").attr("border","1").css("border-spacing","0px").css("border-collapse","collapse");		
 	});
 });
