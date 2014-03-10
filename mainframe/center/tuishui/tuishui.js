@@ -7,7 +7,7 @@
 		huogui:{_id:"xx",guihao:"xx",zhuangguiriqi:"xx"},
 		guandan:{hetonghao:"xx",pinming:"xx",jine:3423,shuliang:3432,baoguanriqi:"xx",jidanriqi:"xxx",shoudanriqi:"xx"},
 		dailishang:{_id:"xx",mingchen:"xx",renminbizhanghao:"xxx",meijinzhanghao:"xx"},
-		fapiaos:[{kaipiaoqiye:{_id:"xx",mingchen:"xx"},shuihao:"xx",pinming:"xx",mishu:332,danjia:23.2,jine:232.2,kaipiaoriqi:"xx",shoupiaoriqi:"xx",fukuanliushui:"xx",beizhu:"xx"},...],
+		fapiaos:[{kaipiaoqiye:{_id:"xx",mingchen:"xx"},shuihao:"xx",pinming:"xx",mishu:332,danjia:23.2,jine:232.2,kaipiaoriqi:"xx",shoupiaoriqi:"xx",fukuanliushui:"xx",fukuanjine:42323,beizhu:"xx"},...],
 		huilv:6.2,
 		hexiaos:[{shouhuiliushui:"xx",shouhuiriqi:"xx",meijinjine:23,hexiaoliushui:"xx",heixiaoriqi:"xx",renminbijine:32,huilvpaijia:2.3,shijihuilv:2.3},...],
 		tuishui:{liushui:"xx",riqi:"xx",jine:32,shuilv:32},
@@ -176,6 +176,7 @@
 				});
 			},["_id","fukuanfangname","kemu","jine","shoukuanfangname","fukuanriqi","fahuodan"],function(liushui){//选中回调				
 				$(this).text(liushui._id);
+				$(this).parent().find("#fp_fukuanjine").text(liushui.jine);
 				if(liushui.kemu != "开票"){
 					tip($(this),"注意，该流水科目不是 开票！！！",1500);
 				}
@@ -357,6 +358,7 @@
 				fapiao.kaipiaoriqi = $(tr).find(".fp_kaipiaoriqi").val();
 				fapiao.shoupiaoriqi = $(tr).find(".fp_shoupiaoriqi").val();
 				fapiao.fukuanliushui = $(tr).find("#fp_fukuanliushui").text();
+				fapiao.fukuanjine = parseFloat2($(tr).find("#fp_fukuanjine").text());
 				fapiao.beizhu = $(tr).find("#fp_beizhu").text().trim();
 				fapiaos.push(fapiao);
 			});
@@ -789,6 +791,7 @@ function _hanshuku_(){}
 				tr.find(".fp_kaipiaoriqi").vals(fapiao.kaipiaoriqi);
 				tr.find(".fp_shoupiaoriqi").vals(fapiao.shoupiaoriqi);
 				tr.find("#fp_fukuanliushui").text(fapiao.fukuanliushui);
+				tr.find("#fp_fukuanjine").text(fapiao.fukuanjine?fapiao.fukuanjine:"");
 				tr.find("#fp_beizhu").text(fapiao.beizhu);
 				$("#fp_table").append(tr);
 			});			

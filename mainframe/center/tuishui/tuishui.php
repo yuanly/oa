@@ -104,8 +104,14 @@ if("xinjian" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("tongji" == $param["caozuo"]){
 	$query = array();	
-	if(isset($param["option"]["bianhao"])){
-		$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
+	if(isset($param["option"]["kaishibianhao"])){
+		$query["_id"] = array('$gte'=>$param["option"]["kaishibianhao"]);
+	}
+	if(isset($param["option"]["jieshubianhao"])){
+		$query["_id"] = array('$lte'=>$param["option"]["jieshubianhao"]);
+	}
+	if(isset($param["option"]["liwai"])){
+		$query["_id"] = array('$nin'=>$param["option"]["liwai"]);
 	}
 	$cur = coll("tuishui")->find($query);
 	echo  cur2json($cur);

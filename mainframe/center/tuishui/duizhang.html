@@ -24,34 +24,42 @@
 		th{
 			background-color:#99ccff;
 		}
+		td{
+			padding-left:3px;
+		}
 	</style>
 </head>
 <body style="margin:0px;padding:0px">
-	<div align=center style="margin:20px;">
+	<div align=center style="margin:20px;" id="head_div">
 		开始编号：<div class="myinput" contenteditable=true id="kaishibianhao"></div>，
 		结束编号：<div class="myinput" contenteditable=true id="jieshubianhao"></div>，
 		例外：<div style="display:inline-block" id="liwaiOut"><div class="myinput liwai" id="liwai" contenteditable=true></div></div> <span title="添加例外" class="plainBtn" id="tianjialiwai">[+]</span>，
-		<span class="plainBtn">统计</span>
+		<span class="plainBtn" id="tongji">统计</span>&nbsp;&nbsp;&nbsp;
+		<span class="plainBtn" id="dayin">打印</span>
+		&nbsp;&nbsp;<span title="利润=收汇兑换人民币总额+总退税额-总已付货款-代理费" style="color:#95B9C7;cursor:pointer">tip</span>
 	</div>
-	<table align=center id="tb_liushui" style="font-size:0.85em">
+	<div align=center id="title_div" style="display:none">
+		<h3>代理出口对账单</h3>
+	</div>
+	<table align=center id="tb_tuishui" style="font-size:0.85em">
 		<tr>
-			<th id="bianh"></th>
+			<th id="bianh">编号</th>
 			<th>合同号码</th>
 			<th>产品名称</th>
 			<th>报关数量</th>
 			<th>报关金额</th>
 			<th>供应商</th>
 			<th>增值税号码</th>
-			<th>增值税金额</th>
 			<th>开票米数</th>
+			<th>增值税金额</th>
 			<th>已付货款</th>
 			<th>收汇美金</th>
 			<th>实际汇率</th>
-			<th>兑后人民币</th>
+			<th>兑人民币</th>
 			<th>退税金额</th>
 			<th>代理费</th>
 		</tr>
-		<tr id="tr_tuishui" class="tr_tuishui">
+		<tr id="tr_tuishui" class="tr_tuishui LSZ1302.2">
 			<td id="bianhao"></td>
 			<td id="hetonghaoma"></td>
 			<td id="chanpinmingchen"></td>
@@ -59,16 +67,18 @@
 			<td id="baoguanjine"></td>
 			<td id="gongyingshang"></td>
 			<td id="zengzhishuihaoma"></td>
-			<td id="zengzhishuijine"></td>
 			<td id="kaipiaomishu"></td>
+			<td id="zengzhishuijine"></td>
 			<td id="yifuhuokuan"></td>
 			<td id="shouhuimeijin"></td>
 			<td id="shijihuilv"></td>
-			<td id="duihourenminbi"></td>
+			<td id="duirenminbi"></td>
 			<td id="tuishuijine"></td>
 			<td id="dailifei"></td>
 		</tr>
-		<tr colspan=15 style="background-color:gray" id="tr_split"></tr>
+		<tr style="background-color:yellow" class="tr_split" id="tr_split">
+			<td colspan=15></td>
+		</tr>
 	</table>
 
 </body>

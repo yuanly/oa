@@ -141,8 +141,8 @@
 		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>代理商</div>
 		代理：<div class="myinput" style="cursor:pointer" id="dls_dailishang"></div>，
-		人民币账户余额：<div class="myinput" style="cursor:pointer" id="dls_rmbyue"></div>，
-		美金账户余额：<div class="myinput" style="cursor:pointer" id="dls_mjyue"></div>
+		人民币账户余额：<div class="myinput" style="cursor:pointer" id="dls_rmbyue"></div>（元），
+		美金账户余额：<div class="myinput" style="cursor:pointer" id="dls_mjyue"></div>（美元）
 		<span class="tip" title="这里的人民币账户和美金账户是由代理商操作的账户，但账户里面的资金实际上是我们的，由代理商用来支付开发票的“货款”。所以，我们要对这两个账户的全部流水进行严格的记录。">tip</span>
 		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>发票</div>
@@ -158,6 +158,7 @@
 					<th nowrap>开票日期</th>
 					<th nowrap>收票日期</th>
 					<th nowrap>付款流水</th>
+					<th nowrap>付款金额</th>
 					<th nowrap>备注</th>
 				</tr>
 				<tr class="tr_fapiao">
@@ -170,6 +171,7 @@
 					<td class="myinput"><input class="fp_kaipiaoriqi plainInput" style="border:0px;width:80px;cursor:pointer" readonly/></td>
 					<td class="myinput"><input class="fp_shoupiaoriqi plainInput" style="border:0px;width:80px;cursor:pointer" readonly/></td>
 					<td class="myinput fp_fukuanliushui" id="fp_fukuanliushui" style="cursor:pointer"></td>
+					<td id="fp_fukuanjine"></td>
 					<td class="myinput editable" id="fp_beizhu" contenteditable=true></td>
 				</tr>
 			</table>
@@ -209,8 +211,8 @@
 			</table>
 			<span class="plainBtn" title="添加新行" id="hx_tianjiaxinhang">[+]</span>
 			<div style="font-weight:bold;margin-top:10px">
-				美金汇总：<div class="whitespaceinput" id="hx_meijinhuizong"></div>，
-				人民币汇总：<div class="whitespaceinput" id="hx_renminbihuizong"></div>
+				美金汇总：<div class="whitespaceinput" id="hx_meijinhuizong"></div>（美元），
+				人民币汇总：<div class="whitespaceinput" id="hx_renminbihuizong"></div>（元）
 				<span class="tip" title="这里的核销是指将泰国汇给代理商的美金兑换成人民币的流水。该流水从代理商的美金账户支付到其人民币账户。如果是按牌价兑换，则后面的“退税”和“代理费”栏就需要设置，否则不需要设置，因为代理商和我们协商的实际汇率已经折算了两者进去。">tip</span>
 			</div>
 		</div>
@@ -219,7 +221,7 @@
 		<nobr>
 			流水：<div class="myinput" id="ts_liushui" style="cursor:pointer">&nbsp;</div>，
 			日期：<div class="whitespaceinput" id="ts_riqi"></div>，
-			金额： <div class="whitespaceinput" id="ts_jine"></div>，
+			金额： <div class="whitespaceinput" id="ts_jine"></div>（元），
 			退税率：<div class="myinput" id="ts_shuilv"></div>%（应退税额：<div class="whitespaceinput" id="ts_yingtuishuie"></div>元）
 			<span class="tip" title="正常情况下，单证齐全后代理商申请退税，然后将所得退税款放进其人民币账户。所以，需要另外建一个虚拟的账户负责支付退税款。
 	另外，很多代理商并不单独为我们计算退税，而是和我们商定一个比牌价高的汇率换算美金，这个汇率已经考虑了退税和代理费，这种情况则无需设置该退税栏信息。
@@ -230,7 +232,7 @@
 		<nobr>
 			流水：<div class="myinput" id="dlf_liushui" style="cursor:pointer">&nbsp;</div>，
 			日期：<div class="whitespaceinput" id="dlf_riqi"></div>，
-			金额： <div class="whitespaceinput" id="dlf_jine"></div>，
+			金额： <div class="whitespaceinput" id="dlf_jine"></div>（元），
 			备注：<div class="myinput" id="dlf_beizhu"></div>
 			<span class="tip" title="只有代理商和我们单独算代理费才有必要填写本栏信息。该流水应该是从代理商的人民币账户支付到代理商的第三个账户。">tip</span>
 		</nobr>
