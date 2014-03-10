@@ -443,7 +443,9 @@
 	
 		//设置头部点击处理（放到当前面板）
 	$("#tableheader").click(function(){
-		layout.sizePane("west",$("#yuangaotable").width()+20);
+		if(layout.state.west.innerWidth < $("#yuangaotable").width()){
+			layout.sizePane("west",$("#yuangaotable").width()+20);
+		}
 	});
 	/*
 	$(".detailheader").click(function(){

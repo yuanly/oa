@@ -1,8 +1,25 @@
 ﻿$(function(){
-	var tmpl_liwai = $("#liwai").detach();
 	var tmpl_tr_tuishui = $("#tr_tuishui").detach();
 	var tmpl_tr_split = $("#tr_split").detach();
 	
+	function sel_tuishui(){
+		var limit = 20;
+		setSelector(event,function(page,option,callback){
+				postJson("tuishui.php",{caozuo:"chaxun2",offset:page*limit,limit:limit,option:option},function(shangjias){
+					callback(shangjias);
+				});
+			},["_id","huogui.guihao","zhuangtai","dailishang.mingchen"],function(tuishui){//selected
+				$(this).text(tuishui._id);
+			},"",function(){//clear
+				$(this).html("&nbsp");
+			},function(){//过滤框是日期选择时，在选中日期后的回调。
+				$("#panel #option").val("TS"+date2id($("#panel #option").val()+"0"));
+			});
+	}
+	$("#kaishibianhao").click(sel_tuishui);
+	$("#jieshubianhao").click(sel_tuishui);
+	$("#liwai").click(sel_tuishui)
+	var tmpl_liwai = $("#liwai").detach();
 	$("#tianjialiwai").click(function(){
 		var liwai = tmpl_liwai.clone(true);
 		$("#liwaiOut").append(liwai).append("&nbsp;&nbsp;");

@@ -894,8 +894,13 @@ function _hanshuku_(){}
 //设置头部点击处理（放到当前面板）
 	$("#tableheader").click(function(){
 		layout.sizePane("west",$("#fahuodantable").width()+20);
+		if(layout.state.west.innerWidth < $("#fahuodantable").width()){
+			layout.sizePane("west",$("#fahuodantable").width()+20);
+		}
 	});
 	$(".detailheader").click(function(){
-		layout.sizePane("west",$("body").width()-$("#mingxitable").width()-100);
+		if(layout.state.center.innerWidth < $("#mingxitable").width()){
+			layout.sizePane("west",$("body").width()-$("#mingxitable").width()-100);
+		}
 	});
 });

@@ -201,10 +201,10 @@
 					<td nowrap><span class="plainBtn" title="删除本行" id="hx_shanchubenhang">[-]</span>&nbsp;&nbsp;<span class="plainBtn" id="hx_shangyi" title="上移本行">[↑]</span></td>
 					<td nowrap class="myinput hx_shouhuiliushui" style="cursor:pointer" id="hx_shouhuiliushui" title="泰国账户向代理商美金账户汇款流水"></td>
 					<td nowrap id="hx_shouhuiriqi"></td>
-					<td nowrap id="hx_meijinjine" style="text-align:center"></td>
+					<td nowrap id="hx_meijinjine"></td>
 					<td nowrap class="myinput hx_hexiaoliushui" style="cursor:pointer" id="hx_hexiaoliushui" title="代理商美金账户向代理商人民币账户转账流水"></td>
 					<td nowrap id="hx_hexiaoriqi"></td>
-					<td nowrap id="hx_renminbijine" style="text-align:center"></td>
+					<td nowrap id="hx_renminbijine"></td>
 					<td nowrap id="hx_shijihuilv" style="text-align:center"></td>
 					<td nowrap class="myinput" id="hx_huilvpaijia"  style="text-align:center" contenteditable=true></td>
 				</tr>
@@ -221,8 +221,8 @@
 		<nobr>
 			流水：<div class="myinput" id="ts_liushui" style="cursor:pointer">&nbsp;</div>，
 			日期：<div class="whitespaceinput" id="ts_riqi"></div>，
-			金额： <div class="whitespaceinput" id="ts_jine"></div>（元），
-			退税率：<div class="myinput" id="ts_shuilv"></div>%（应退税额：<div class="whitespaceinput" id="ts_yingtuishuie"></div>元）
+			金额： <div class="whitespaceinput" id="ts_jine" style="min-width:30px"></div>（元），
+			退税率：<div class="myinput" id="ts_shuilv" style="min-width:30px"></div>%（应退税额：<div class="whitespaceinput" id="ts_yingtuishuie" style="min-width:30px"></div>&nbsp;元）
 			<span class="tip" title="正常情况下，单证齐全后代理商申请退税，然后将所得退税款放进其人民币账户。所以，需要另外建一个虚拟的账户负责支付退税款。
 	另外，很多代理商并不单独为我们计算退税，而是和我们商定一个比牌价高的汇率换算美金，这个汇率已经考虑了退税和代理费，这种情况则无需设置该退税栏信息。
 	“应退税率”是根据发票金额去掉17%的增值税后乘以退税率所得。">tip</span>
@@ -232,7 +232,7 @@
 		<nobr>
 			流水：<div class="myinput" id="dlf_liushui" style="cursor:pointer">&nbsp;</div>，
 			日期：<div class="whitespaceinput" id="dlf_riqi"></div>，
-			金额： <div class="whitespaceinput" id="dlf_jine"></div>（元），
+			金额： <div class="whitespaceinput" id="dlf_jine" style="min-width:30px"></div>（元），
 			备注：<div class="myinput" id="dlf_beizhu"></div>
 			<span class="tip" title="只有代理商和我们单独算代理费才有必要填写本栏信息。该流水应该是从代理商的人民币账户支付到代理商的第三个账户。">tip</span>
 		</nobr>

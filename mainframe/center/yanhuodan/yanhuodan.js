@@ -590,10 +590,13 @@ function _hanshuku_(){}
 	
 			 	//设置头部点击处理（放到当前面板）
 	$("#tableheader").click(function(){
-		layout.sizePane("west",$("#yanhuodantable").width()+20);
+		if(layout.state.west.innerWidth < $("#yanhuodantable").width()){
+			layout.sizePane("west",$("#yanhuodantable").width()+20);
+		}
 	});
 	$("#detailheader").click(function(){
-		layout.sizePane("west",$("body").width()-$("#huowutable").width()-100);
+		if(layout.state.center.innerWidth < $("#huowutable").width()){
+			layout.sizePane("west",$("body").width()-$("#huowutable").width()-100);
+		}
 	});
-	
 });

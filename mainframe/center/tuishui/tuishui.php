@@ -24,6 +24,13 @@ if("xinjian" == $param["caozuo"]){
 	}
 	$cur = coll("tuishui")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
+}else if("chaxun2" == $param["caozuo"]){
+	$query = array("zhuangtai"=>array('$ne'=>"作废"));	
+	if(!empty($param["option"])){
+		$query["_id"] = array('$lt'=>$param["option"]);
+	}
+	$cur = coll("tuishui")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	echo  cur2json($cur);
 }else if("getbyid" == $param["caozuo"]){
 	$query = array("_id"=>$param["_id"]);
 	$ts = coll("tuishui")->findOne($query);
