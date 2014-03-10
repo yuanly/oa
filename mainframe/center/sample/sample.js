@@ -183,6 +183,7 @@ $(function(){
 			$("#shangjia").data("shangjia",yangban.shangjia);
 		}else{
 			$("#shangjia").val("");
+			$("#shangjia").removeData("shangjia");
 		}
 		var user = getUser(yangban.yijiazhe);
 		if(user){

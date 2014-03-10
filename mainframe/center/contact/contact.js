@@ -296,7 +296,9 @@ $(function(){
 		if("【新增】" == $("#bianhao").text()){		
 			postJson("contact.php",contact,function(res){
 				if(res.success == true){
-					window.location.reload();
+					//window.location.reload();
+					tip(null,"成功增加联系人信息！",1500);
+					listContacts(0);
 				}else{
 					ask3(null,res.err);
 				}
@@ -304,9 +306,10 @@ $(function(){
 		}else{
 			postJson("contact.php",contact,function(res){
 				if(res.success == true){
-					obj2form(contact);
-					readonlyContact();
-					tip(null,"成功修改联系人信息！",3000);
+					//obj2form(contact);
+					//readonlyContact();
+					tip(null,"成功修改联系人信息！",1500);
+					listContacts(0);
 				}else{
 					ask3(null,res.err);
 				}
@@ -342,7 +345,8 @@ $(function(){
 				if(contact.shangjia){
 					tr.find("#td_shangjia").text(contact.shangjia.mingchen).attr("title",contact.shangjia.mingchen);
 				}
-				tr.css("background-color",toggle("#deedde","#dedeed"));
+				//tr.css("background-color",toggle("#deedde","#dedeed"));
+				tr.css("background-color",toggle("#fff","#eee"));
 				$("#contacttable").append(tr);
 			});
 			if(showId){
