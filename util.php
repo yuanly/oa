@@ -24,6 +24,11 @@ function userColl(){
 function attachColl(){
 	$db = new MongoClient();
 	return $db->oa->attach;
+	//return $db->oafs->attach;
+}
+function logColl(){
+	$db = new MongoClient();
+	return $db->log->log;
 }
 function newsColl(){
 	$db = new MongoClient();

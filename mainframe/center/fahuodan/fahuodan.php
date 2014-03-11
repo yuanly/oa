@@ -19,7 +19,10 @@ if("shangchuan" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("ludan" == $param["caozuo"]){
 	$ludanliucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"录单","time"=>time());
-	$fahuodan = coll("fahuodan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$ludanliucheng),'$set'=>array("zhuangtai"=>"录单")));
+	$fahuodan = coll("fahuodan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$ludanliucheng),'$set'=>array("zhuangtai"=>"录单","ludanzhe"=>$_SESSION["user"]["_id"])));
+	echo '{"success":true}';
+}else if("jieguan" == $param["caozuo"]){
+	coll("fahuodan")->update(array("_id"=>$param["_id"]),array('$set'=>array("ludanzhe"=>$_SESSION["user"]["_id"])));
 	echo '{"success":true}';
 }else if("zuofei" == $param["caozuo"]){
 	$zuofeiliucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
@@ -92,9 +95,14 @@ if("shangchuan" == $param["caozuo"]){
 	}
 	$cur = coll("fahuodan")->find($query,array("zhuangtai"=>1,"gonghuoshang"=>1,"huowu"=>1))->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
-}else if("baocun" == $param["caozuo"]){
+}else if("baocun" == $param["caozuo"]){	
 	$fahuodan = $param["fahuodan"];
 	$id = $fahuodan["_id"];
+	$old = coll("fahuodan")->findOne(array("_id"=>$id),array("ludanzhe"=>1));
+	if($old["ludanzhe"] !== $_SESSION["user"]["_id"]){
+		echo '{"success":false}';
+		return;
+	}
 	coll("huowu")->remove(array("fahuodan"=>$id));
 	foreach($fahuodan["huowu"] as $huowu){
 		$hwId = $huowu["_id"];

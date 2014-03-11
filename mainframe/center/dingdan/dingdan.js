@@ -267,28 +267,7 @@
 	$("#baocun").click(baocun);
 	var beizhuEditor = $("#beizhu").myeditor(700,300);
 	beizhuEditor.editorReadonly();
-	
-	$(".mx_danwei").dblclick(function(){
-		$(this).val("");
-		});
-		/*
-	$(".mx_danwei").change(function(){
-		if($(this).val().trim() == "码" && $(this).data("lastValue") == "米"){
-			var parent = $(this).parents("tr");
-			var sl = parseFloat(parent.find("#mx_shuliang").val());
-			if(!isNaN(sl)){
-				parent.find("#mx_shuliang").val(round(sl*1.094,2));
-			}
-		}else if($(this).val().trim() == "米" && $(this).data("lastValue") == "码"){
-			var parent = $(this).parents("tr");
-			var sl = parseFloat(parent.find("#mx_shuliang").val());
-			if(!isNaN(sl)){
-				parent.find("#mx_shuliang").val(round(sl*0.9144,2));
-			}
-		}
-		$(this).data("lastValue",$(this).val().trim());
-	});
-	*/
+
 	function cz_jiedan(){
 		//更改状态，作为留言记录订单内容；
 		postJson("dingdan.php",{caozuo:"jiedan",_id:currDD._id},function(res){
@@ -771,6 +750,8 @@ function _hanshuku_(){}
 				$("table",tmpl).append(caozuoItem);
 			}else if("结单" == item.dongzuo){
 				("#lc_tr_panel",tmpl).attr("title","订单经审查没疏漏，可以将其标识为结束！");
+			}else if("录单" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","还在录单，尚未审核！");
 			}
 			that.append(tmpl);
 		});

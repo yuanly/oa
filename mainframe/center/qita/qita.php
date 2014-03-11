@@ -27,4 +27,7 @@ if("getdingdanbeizhu" == $param["caozuo"]){
 	$zhongtai = $param["zhongtai"];
 	coll("config")->save(array("_id"=>"zhongtai","zhongtai"=>$zhongtai));
 	echo '{"success":true}';
+}else if("rizhi" == $param["caozuo"]){
+	$cur = logColl()->find()->skip($param["offset"])->limit($param["limit"]);
+	echo  cur2json($cur);
 }

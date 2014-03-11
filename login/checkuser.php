@@ -12,8 +12,10 @@ if(isset($_REQUEST["password"])){
 }
 
 if (!check_user(urldecode($user_id), $password)){
+	logColl()->save(array("action"=>"checkuser","user"=>$_SESSION['user']["mingchen"],"result"=>"fail"));
 	echo "false";
 }else{
+	logColl()->save(array("action"=>"checkuser","user"=>$_SESSION['user']["mingchen"],"result"=>"success"));
 	echo "true";
 }
 
@@ -26,7 +28,7 @@ function check_user($user_id, $password){
 	if($doc && (!isset($doc["password"]) || $doc["password"]==$password)){
 		$doc["user_name"]=$doc["mingchen"];
 		$_SESSION['user']=$doc;
-		return true;		
+		return true;
 	}
 	return false;
 }

@@ -442,6 +442,7 @@ function _hanshuku_(){}
 			$("#lc_dongzuo",tmpl).text(item.dongzuo);
 			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
 			if("制单" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","正在编制装柜单！");
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				var caozuoItem = caozuoTmpl.clone(true);
 				$("#cz_dayin",caozuoItem).show();
@@ -452,6 +453,7 @@ function _hanshuku_(){}
 				}
 				$("table",tmpl).append(caozuoItem);
 			}else if("交单" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","装柜单完成编制，可以打印出来指导装柜！");
 				kebianji = false;
 				if((zhuangguidan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
@@ -460,7 +462,7 @@ function _hanshuku_(){}
 					$("#cz_shenhe",caozuoItem).show();
 					$("table",tmpl).append(caozuoItem);
 				}
-			}else if("受理" == item.dongzuo){
+			}else if("受理" == item.dongzuo){//这个环境不要了
 				if((zhuangguidan.liucheng.length - 1) == n && theUser._id == item.userId){
 					kebianji = true;
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
@@ -470,6 +472,7 @@ function _hanshuku_(){}
 					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("申请审核" == item.dongzuo){ 
+				("#lc_tr_panel",tmpl).attr("title","已完成装柜，并根据实际装柜情况修正了装柜单，申请审核是否与实际装柜一致！");
 				if((zhuangguidan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
@@ -481,6 +484,7 @@ function _hanshuku_(){}
 					$("table",tmpl).append(caozuoItem); 
 				} 
 			}else if("审核" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","装柜单已被审核与实际装柜情况一致！");
 				if((zhuangguidan.liucheng.length - 1) == n && theUser._id == item.userId){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true); 

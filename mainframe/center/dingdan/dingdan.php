@@ -21,10 +21,15 @@ if("jiedan" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("baocun" == $param["caozuo"]){
 	$dingdan = $param["dingdan"];
+	$old = coll("dingdan")->findOne(array("_id"=>$dingdan["_id"]),array("gendanyuan"=>1));
+	if($_SESSION["user"]["_id"] != $old["gendanyuan"]){//因为有接管功能，所以保存的时候有可能跟单员已经改变
+		echo '{"success":false}';
+		return;
+	}
 	coll("dingdan")->save($dingdan);
 	echo '{"success":true}';
 }else if("jieguan" == $param["caozuo"]){
-	coll("dingdan")->update(array("_id"=>$param["_id"],"liucheng.dongzuo"=>"接单"),array('$set'=>array("liucheng.$.userId"=>(String)$_SESSION["user"]["_id"])));
+	//coll("dingdan")->update(array("_id"=>$param["_id"],"liucheng.dongzuo"=>"接单"),array('$set'=>array("liucheng.$.userId"=>(String)$_SESSION["user"]["_id"])));
 	$dingdan = coll("dingdan")->findAndModify(array("_id"=>$param["_id"]),array('$set'=>array("gendanyuan"=>(String)$_SESSION["user"]["_id"])));
 	$liuyan = array("_id"=>time(),"hostType"=>"dingdan","hostId"=>$param["_id"],"type"=>"caozuorizhi","userId"=>(String)$_SESSION["user"]["_id"],"neirong"=>"接管：".jsonEncode($dingdan));
 	coll("liuyan")->save($liuyan);
