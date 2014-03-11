@@ -4,6 +4,8 @@
 	//shenjieshijian:133423,neirong:"xsdf",shenjieshuoming:"dsdsdfa"}
 	//{yuangao:currYG._id,kehu:$("#ld_kehu").val().trim(),yangban:{taiguoxinghao:$("#ld_yangban").text().trim()},huowu:[]};
 	//原稿有时候有泰国编号！！！TODO 
+	$('#currLocation', window.parent.document).text("原稿管理");
+	
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function tijiaoyuangao(){
 		var yuangao = {shangchuanzhe:getTheUser()._id,neirong:editor.editorVal()};

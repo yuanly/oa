@@ -23,6 +23,8 @@ newsReply:
 var new_tr;
 var currNew = null;
 $(function(){
+	$('#currLocation', window.parent.document).text("最新消息");
+	
 	 //编辑器定义  “图片”和“地图”按钮
 	 var plugins={
      		map:{

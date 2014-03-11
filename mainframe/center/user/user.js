@@ -13,6 +13,7 @@
 }
 */
 			$(function(){
+				$('#currLocation', window.parent.document).text("其它/个人资料");
 				var theUser = getTheUser();
 				//设置背景风格
 				if(theUser.bg){

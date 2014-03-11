@@ -21,6 +21,7 @@
 		zidan:["zidanid"],
 		huowu:[{guige:"xxx",shuliang:23,danwei:"KG"}...]}		
 	*/
+	$('#currLocation', window.parent.document).text("订单管理");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
 	

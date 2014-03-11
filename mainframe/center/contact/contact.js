@@ -16,6 +16,8 @@
 */
 
 $(function(){
+	$('#currLocation', window.parent.document).text("联系人");
+	
 	var currContact = null;
 	var limit = 20;
 	//定义左右布局

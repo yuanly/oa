@@ -20,6 +20,7 @@ D 标记验货单通过
 审核
 作废
 	*/
+	$('#currLocation', window.parent.document).text("验货单管理");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
 	$("#th_bianhao").datepicker().change(function(){

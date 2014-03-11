@@ -13,7 +13,7 @@
 }
 */
 $(function(){
-	
+	$('#currLocation', window.parent.document).text("样板管理");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	//新增样板
 	function xinzengyangban_handle(){

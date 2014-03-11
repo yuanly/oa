@@ -19,6 +19,8 @@
 	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(function(){
+			$('#currLocation', window.parent.document).text("其它/公司资料");
+			
 			var beizhuEditor = $("#dingdanbeizhu").myeditor(700,300);
 			beizhuEditor.editorWritable();
 			postJson("qita.php",{"caozuo":"getdingdanbeizhu"},function(res){ 
