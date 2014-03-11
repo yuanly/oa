@@ -371,6 +371,7 @@
 			$("#lc_dongzuo",tmpl).text(item.dongzuo);
 			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
 			if("上传" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","客户经理已上传原稿，还没被录单员接稿处理！");
 				if(yuangao.liucheng.length == 1){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
@@ -384,6 +385,7 @@
 					}
 				}
 			}else if("接稿" == item.dongzuo){ 
+				("#lc_tr_panel",tmpl).attr("title","录单员已接受原稿，正在进行录单！");
 				if("审结" != yuangao.liucheng[yuangao.liucheng.length-1].dongzuo){
 					if(theUser._id != item.userId){
 						var caozuoItem = caozuoTmpl.clone(true);
@@ -403,6 +405,7 @@
 					}
 				}
 			}else if("申请审结" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","录单员已经完成录单，申请他人帮忙对所有订单进行审核！");
 				var caozuoItem = caozuoTmpl.clone(true);
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				if(theUser._id == item.userId){

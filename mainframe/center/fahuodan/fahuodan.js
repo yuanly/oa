@@ -791,6 +791,7 @@ function _hanshuku_(){}
 			$("#lc_dongzuo",tmpl).text(item.dongzuo);
 			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
 			if("上传" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","发货单原件已经被上传，等待录单！");
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				var caozuoItem = caozuoTmpl.clone(true);
 				$("#cz_zuofei",caozuoItem).show();
@@ -799,6 +800,7 @@ function _hanshuku_(){}
 				}
 				$("table",tmpl).append(caozuoItem);
 			}else if("录单" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","正在录入发货单！");
 				if((fahuodan.liucheng.length - 1) == n && theUser._id == item.userId){
 					kebianji = true;
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
@@ -807,6 +809,7 @@ function _hanshuku_(){}
 					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("申请对单" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","已完成对发货单的录入，申请对单！");
 				if((fahuodan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
@@ -818,6 +821,7 @@ function _hanshuku_(){}
 					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("对单" == item.dongzuo){ 
+				("#lc_tr_panel",tmpl).attr("title","已完成对单，可以进行付款！");
 				kechaifen = true;
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				var caozuoItem = caozuoTmpl.clone(true);
@@ -839,6 +843,7 @@ function _hanshuku_(){}
 				}
 				$("table",tmpl).append(caozuoItem); 
 			}else if("付款" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","已完成付款，等待发货！");
 				if((fahuodan.liucheng.length - 1) == n){
 					if(fahuodan.liucheng[n-1].dongzuo == "发货"){
 						$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
@@ -848,6 +853,7 @@ function _hanshuku_(){}
 					}
 				}
 			}else if("发货" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","厂家已发货！");
 				if((fahuodan.liucheng.length - 1) == n){
 					if(fahuodan.liucheng[n-1].dongzuo == "付款"){
 						$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
@@ -856,8 +862,9 @@ function _hanshuku_(){}
 						$("table",tmpl).append(caozuoItem);
 					}
 				}
-			}else if("发货" == item.dongzuo){
+			}else if("复核" == item.dongzuo){
 				kechaifen = false;
+				("#lc_tr_panel",tmpl).attr("title","该发货单已经被再次检查无误！");
 			}
 			that.append(tmpl);
 		});

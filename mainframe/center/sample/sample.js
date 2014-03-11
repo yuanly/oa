@@ -238,6 +238,7 @@ $(function(){
 		$("#beizhu").editorWritable();
 		$("#bianji").hide();
 		$("#tijiao").show();
+		$("#jiage").val($("#jiage").val()+" 【元】 【元】 【元】");
 	}
 	//进入只读状态
 	function zhidu(){

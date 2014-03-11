@@ -59,16 +59,29 @@ if("shangchuan" == $param["caozuo"]){
 	}
 	echo  jsonEncode($fhd);
 }else if("chaxun" == $param["caozuo"]){
+	$cmd = $param["option"]["cmd"];
 	$query = array();
+	if("dailudan" == $cmd){
+		$query["zhuangtai"] = "上传";
+	}else if("daiduidan" == $cmd){
+		$query["zhuangtai"] = "申请对单";
+	}else if("daifukuan" == $cmd){
+		$query["zhuangtai"] = "对单";
+	}else if("daifahuo" == $cmd){
+		$query["zhuangtai"] = "付款";
+	}else if("daifuhe" == $cmd){
+		$query["zhuangtai"] = "发货";
+	}else if(isset($param["option"]["zhuangtai"])){
+		$query["zhuangtai"] = $param["option"]["zhuangtai"];
+	}
+	
 	if(isset($param["option"]["bianhao"])){
 		$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
 	}
 	if(isset($param["option"]["gonghuoshang"])){
 		$query["gonghuoshang._id"] = $param["option"]["gonghuoshang"];
 	}
-	if(isset($param["option"]["zhuangtai"])){
-		$query["zhuangtai"] = $param["option"]["zhuangtai"];
-	}
+	
 	$cur = coll("fahuodan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("chaxunforyanhuodan" == $param["caozuo"]){

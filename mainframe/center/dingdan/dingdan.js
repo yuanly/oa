@@ -714,6 +714,7 @@ function _hanshuku_(){}
 			$("#lc_dongzuo",tmpl).text(item.dongzuo);
 			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
 			if("审核" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","录单员录入的订单已被审核，可以被采购跟单员接单处理！");
 				if((dingdan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
@@ -721,6 +722,7 @@ function _hanshuku_(){}
 					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("接单" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","跟单员已接受订单，正在对其进行处理！");
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				var caozuoItem = caozuoTmpl.clone(true);
 				$("#cz_dayin",caozuoItem).show();
@@ -741,6 +743,7 @@ function _hanshuku_(){}
 				}
 				$("table",tmpl).append(caozuoItem);
 			}else if("子单" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","订单在等待子单，即该订单需要等子单就绪后才能进行下一步的处理！");
 				if(theUser._id == currDD.gendanyuan){
 					if((dingdan.liucheng.length - 1) == n){
 						$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
@@ -750,6 +753,7 @@ function _hanshuku_(){}
 				}
 				$("table",tmpl).append(caozuoItem);
 			}else if("下单" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","订单已经发给供货商！");
 				kebianji = false;
 				var caozuoItem = caozuoTmpl.clone(true);
 				if(theUser._id != item.userId && (dingdan.liucheng.length - 1) == n){
@@ -758,12 +762,15 @@ function _hanshuku_(){}
 				}
 				$("table",tmpl).append(caozuoItem);
 			}else if("审单" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","订单已经下单，等待其他同事帮忙检查是否有疏漏！");
 				var caozuoItem = caozuoTmpl.clone(true);
 				if(theUser._id == currDD.gendanyuan && (dingdan.liucheng.length - 1) == n){
 					$("#cz_jie2dan",caozuoItem).show();
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				}
 				$("table",tmpl).append(caozuoItem);
+			}else if("结单" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","订单经审查没疏漏，可以将其标识为结束！");
 			}
 			that.append(tmpl);
 		});
