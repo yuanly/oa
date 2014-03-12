@@ -2,15 +2,21 @@
 
 include_once("JSON.php");
 
+date_default_timezone_set("Asia/Shanghai");
+
 function docRoot(){
 	return "/oa/";
 }
 /*
  * 返回mongodb collection
  */
+
 function coll($cn){
 	$db = new MongoClient();
 	return $db->oa->selectCollection($cn);
+}
+function statExpired(){
+	coll("config")->update(array("_id"=>"stat"),array('$set'=>array("expired"=>true)));
 }
 function vendorColl(){
 	$db = new MongoClient();

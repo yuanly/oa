@@ -13,6 +13,7 @@ if("xinjian" == $param["caozuo"]){
 	$n = coll("yanhuodan")->count(array("_id"=>array('$regex'=>"^".$d."")));
 	$yanhuodan["_id"] = $d.".".($n+1);
 	coll("yanhuodan")->save($yanhuodan);
+	statExpired();
 	echo '{"success":true}';
 }else if("chaxun" == $param["caozuo"]){
 	$query = array();	
@@ -36,31 +37,39 @@ if("xinjian" == $param["caozuo"]){
 }else if("shenqingshouli" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请受理","time"=>time());
 	$yanhuodan = coll("yanhuodan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"申请受理")));
+	statExpired();
 	echo '{"success":true}';
 }else if("quxiaoshenqingshouli" == $param["caozuo"]){
 	coll("yanhuodan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"新建"),'$pop'=>array("liucheng"=>1)));
+	statExpired();
 	echo '{"success":true}';
 }else if("zuofei" == $param["caozuo"]){
 	$zuofeiliucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
 	$yanhuodan = coll("yanhuodan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"作废")));
+	statExpired();
 	echo '{"success":true}';
 }else if("shouli" == $param["caozuo"]){
 	$zuofeiliucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"受理","time"=>time());
 	$yanhuodan = coll("yanhuodan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"受理")));
+	statExpired();
 	echo '{"success":true}';
 }else if("shenqingshenhe" == $param["caozuo"]){
 	$zuofeiliucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请审核","time"=>time());
 	$yanhuodan = coll("yanhuodan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"申请审核")));
+	statExpired();
 	echo '{"success":true}';
 }else if("quxiaoshenqingshenhe" == $param["caozuo"]){
 	coll("yanhuodan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"受理"),'$pop'=>array("liucheng"=>1)));
+	statExpired();
 	echo '{"success":true}';
 }else if("shenhe" == $param["caozuo"]){
 	$zuofeiliucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审核","time"=>time());
 	$yanhuodan = coll("yanhuodan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"审核")));
+	statExpired();
 	echo '{"success":true}';
 }else if("quxiaoshenhe" == $param["caozuo"]){
 	coll("yanhuodan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"申请审核"),'$pop'=>array("liucheng"=>1)));
+	statExpired();
 	echo '{"success":true}';
 }else if("getbyid" == $param["caozuo"]){
 	$query = array("_id"=>$param["_id"]);
