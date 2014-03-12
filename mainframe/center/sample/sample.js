@@ -120,7 +120,8 @@ $(function(){
 				tr.data("_id",sample._id);
 				tr.find("#td_bianhao").text(sample._id);
 				tr.find("#td_taiguoxinghao").text(sample.taiguoxinghao);
-				tr.find("#td_jiage").text(jiages2str(sample.jiage));
+				var jiage = jiages2str(sample.jiage);
+				tr.find("#td_jiage").text(jiage).attr("title",jiage);
 				tr.find("#td_danwei").text(sample.danwei);
 				tr.find("#td_zhongguoxinghao").text(sample.zhongguoxinghao);
 				tr.find("#td_yijiariqi").text(sample.yijiariqi);

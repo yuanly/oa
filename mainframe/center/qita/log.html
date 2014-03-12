@@ -36,6 +36,7 @@
 				}
 				$("#pager").data("offset",offset);
 				postJson("qita.php",{caozuo:"rizhi",offset:offset*limit,limit:limit},function(logs){
+					$("tr").remove();
 					each(logs,function(i,log){
 						log._id = undefined;
 						$("table").append("<tr><td>"+JSON.stringify(log)+"</td></tr>");
