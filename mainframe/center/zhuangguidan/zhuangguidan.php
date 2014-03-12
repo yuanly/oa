@@ -17,14 +17,20 @@ if("xinjian" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("chaxun" == $param["caozuo"]){
 	$query = array();
+	$cmd = $param["option"]["cmd"];
+	if("daishenhe" == $cmd){
+		$query["zhuangtai"] = "申请审核";
+	}else if("zhidan" == $cmd){
+		$query["zhuangtai"] = "制单";
+	}else if(isset($param["option"]["zhuangtai"])){
+		$query["zhuangtai"] = $param["option"]["zhuangtai"];
+	}
+	
 	if(isset($param["option"]["bianhao"])){
 		$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
 	}
 	if(isset($param["option"]["guihao"])){
 		$query["guihao"] = array('$lte'=>$param["option"]["guihao"]);
-	}
-	if(isset($param["option"]["zhuangtai"])){
-		$query["zhuangtai"] = $param["option"]["zhuangtai"];
 	}
 	if(isset($param["option"]["jiaodanzhe"])){
 		$query["jiaodanzhe"] = $param["option"]["jiaodanzhe"];
