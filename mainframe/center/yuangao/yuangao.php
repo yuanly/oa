@@ -18,7 +18,7 @@ if("shangchuan" == $param["caozuo"]){
 	coll("yuangao")->save($yuangao);
 	echo jsonEncode($yuangao);
 }else if("shanchu" == $param["caozuo"]){
-	coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"上传"),array('$set'=>array("zhuangtai"=>"删除")));
+	coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"上传"),array('$set'=>array("zhuangtai"=>"作废")));
 	echo '{"success":true}';
 }else if("jiegao" == $param["caozuo"]){
 	$jiegaoliucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"接稿","time"=>time());

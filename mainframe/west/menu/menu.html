@@ -7,6 +7,12 @@
 <script src="../../../js/jquery-1.9.1.js"></script>
 <script src="../../../js/jquery-ui-1.10.2.custom.js"></script>
 <script src="menu.js"></script>
+<style>
+		span{
+			font-size:0.8em;
+			color:red
+		}
+</style>
 </head>
 <body>
 		<table style="width:100%">
@@ -17,12 +23,11 @@
 					  <div>
 					  	<ul>
 							<li><a href="../../center/news/news.html" target="contentpane">最新消息</a></li>
-						<!-- li><a href="../../center/vendor/vendor.html?ver=0.1" target="contentpane">商家管理</a></li -->
 							<li><a href="../../center/sample/sample.html" target="contentpane">样板管理</a></li>
 							<li><a href="../../center/contact/contact.html?ver=0.2"  target="contentpane">联系人</a></li>
 						</ul>
 					  </div>
-					  <h3>原稿</h3>
+					  <h3>原稿&nbsp;<span id="yuangaotip" title="等待审结的原稿数目"></span></h3>
 					  <div>
 						<ul>
 							<li><a href="../../center/yuangao/yuangao.html" target="contentpane" title="查询全部原稿" >查询</a></li>
@@ -31,7 +36,7 @@
 							<li><a href="../../center/yuangao/yuangao.html?cmd=shenjie" target="contentpane" title="等待审结的原稿" >审结</a></li>
 						</ul>
 					  </div>
-					  <h3>订单</h3>
+					  <h3>订单&nbsp;<span style="color:brown" id="dingdantip2" title="尚未结单的订单数目"></span>&nbsp;<span id="dingdantip" title="等待接单的订单数目"></span></h3>
 					  <div>
 						<ul>
 							<li><a href="../../center/dingdan/dingdan.html?cmd=chaxun" target="contentpane">查询</a></li>
@@ -44,7 +49,7 @@
 							<li><a href="../../center/dingdan/dingdan.html?cmd=jie2dan" target="contentpane">待结单</a></li>
 						</ul>
 					  </div>
-					  <h3>发货单</h3>
+					  <h3>发货单&nbsp;<span id="fahuodantip2" style="color:brown" title="尚未复核的发货单数目"></span>&nbsp;<span id="fahuodantip" title="申请对单的发货单数目"></span></h3>
 						<ul>
 							<li><a href="../../center/fahuodan/fahuodan.html?cmd=chaxun" target="contentpane">查询</a></li>
 							<li><a href="../../center/fahuodan/shangchuan.html" target="contentpane">上传发货单</a></li>
@@ -54,7 +59,7 @@
 							<li><a href="../../center/fahuodan/fahuodan.html?cmd=daifahuo" target="contentpane">待发货</a></li>
 							<li><a href="../../center/fahuodan/fahuodan.html?cmd=daifuhe" target="contentpane">待复核</a></li>
 						</ul>
-					  <h3>验货单</h3>
+					  <h3>验货单&nbsp;<span id="yanhuodantip2" style="color:brown" title="尚未审核的验货单数目"></span>&nbsp;<span id="yanhuodantip" title="申请审核的验货单数目"></span></h3>
 					  <div>
 						<ul>
 							<li><a href="../../center/yanhuodan/yanhuodan.html?cmd=chaxun" target="contentpane">查询</a></li>
@@ -63,15 +68,16 @@
 							<li><a href="../../center/yanhuodan/yanhuodan.html?cmd=shenhe" target="contentpane">待审核</a></li>
 						</ul>
 					  </div>
-					  <h3>装柜单</h3>
+					  <h3>装柜单&nbsp;<span id="zhuangguidantip2" style="color:brown" title="尚未审核的装柜单数目"></span>&nbsp;<span id="zhuangguidantip" title="申请审核的装柜单数目"></span></h3>
 					  <div>
 						<ul>
 							<li><a href="../../center/zhuangguidan/zhuangguidan.html?cmd=chaxun" target="contentpane">查询</a></li>
 							<li><a href="../../center/zhuangguidan/xinjian.html" target="contentpane">新增</a></li>
 							<li><a href="../../center/zhuangguidan/zhuangguidan.html?cmd=zhidan" target="contentpane">制单</a></li>
+							<li><a href="../../center/zhuangguidan/zhuangguidan.html?cmd=待审核" target="contentpane">待审核</a></li>
 						</ul>
 					  </div>
-					  <h3>记账</h3>
+					  <h3>记账&nbsp;<span id="jizhangtip" title="申请审核的流水账数目"></span></h3>
 					  <div>
 						<ul>
 							<li><a href="../../center/liushuizhang/liushuizhang.html?cmd=chaxun" target="contentpane">查询</a></li>
@@ -80,7 +86,7 @@
 							<li><a href="../../center/liushuizhang/huizong.html" target="_blank">统计</a></li>
 						</ul>
 					  </div>
-					  <h3>退税</h3>
+					  <h3>退税&nbsp;<span id="tuishuitip" title="正在跟进的退税单证数目"></span></h3>
 					  <div>
 						<ul>
 							<li><a href="../../center/tuishui/tuishui.html?cmd=chaxun" target="contentpane">查询</a></li>

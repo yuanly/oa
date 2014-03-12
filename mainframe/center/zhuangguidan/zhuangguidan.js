@@ -462,7 +462,7 @@ function _hanshuku_(){}
 					$("#cz_shenhe",caozuoItem).show();
 					$("table",tmpl).append(caozuoItem);
 				}
-			}else if("受理" == item.dongzuo){//这个环境不要了
+			}else if("受理" == item.dongzuo){//这个环节不要了
 				if((zhuangguidan.liucheng.length - 1) == n && theUser._id == item.userId){
 					kebianji = true;
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
