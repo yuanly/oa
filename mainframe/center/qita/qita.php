@@ -30,4 +30,10 @@ if("getdingdanbeizhu" == $param["caozuo"]){
 }else if("rizhi" == $param["caozuo"]){
 	$cur = logColl()->find()->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
+}else if("getConfig" == $param["caozuo"]){	
+	$cfg = coll("config")->findOne(array("_id"=>$param["_id"]));
+	echo jsonEncode($cfg);
+}else if("saveConfig" == $param["caozuo"]){	
+	coll("config")->save($param["cfg"]);
+	echo '{"success":true}';
 }

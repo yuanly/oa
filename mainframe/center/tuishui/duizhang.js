@@ -60,6 +60,9 @@
 			tr.find("#baoguanshuliang").text(ts.guandan.shuliang);
 			tr.find("#baoguanjine").text("$"+ts.guandan.jine);
 		}
+		if(ts.hexiao){
+			tr.find("#hexiaojine").text("¥"+ts.hexiao.jine);
+		}
 		if(ts.tuishui){
 			tr.find("#tuishuijine").text("¥"+ts.tuishui.jine);
 		}
@@ -70,21 +73,22 @@
 		if(ts.fapiaos){
 			fps = ts.fapiaos.slice(0);
 		}
+		/*
 		var hxs = [];
 		if(ts.hexiaos){
 			hxs = ts.hexiaos.slice(0);
-		}
+		}*/
 		setFP(fps,tr,ts._id);
-		setHX(hxs,tr);
+		//setHX(hxs,tr);
 		if("#eee" != toggle("#fff","#eee")){
 			toggle("#fff","#eee");
 		}
 		tr.css("background-color",toggle("#fff","#eee"));
 		$("#tb_tuishui").append(tr);
-		while(fps.length>0 || hxs.length>0){
+		while(fps.length>0){// || hxs.length>0){
 			tr = tmpl_tr_tuishui.clone(true);
 			setFP(fps,tr,ts._id);
-			setHX(hxs,tr);
+			//setHX(hxs,tr);
 			tr.css("background-color",toggle("#fff","#eee"));
 			$("#tb_tuishui").append(tr);
 		}
@@ -121,12 +125,16 @@
 		var zengzhishuijineSum = 0;
 		var kaipiaomishuSum = 0;
 		var yifuhuokuanSum = 0;
-		var shouhuimeijinSum = 0;
-		var duirenminbiSum = 0;
+		//var shouhuimeijinSum = 0;
+		//var duirenminbiSum = 0;
+		var hexiaojineSum = 0;
 		var tuishuijineSum = 0;
 		var dailifeiSum = 0;
 		if(ts.dailifei){
 			dailifeiSum = ts.dailifei.jine;
+		}
+		if(ts.hexiao){
+			hexiaojineSum = ts.hexiao.jine;
 		}
 		if(ts.tuishui){
 			tuishuijineSum = ts.tuishui.jine;
@@ -141,6 +149,7 @@
 				kaipiaomishuSum += kaipiaomishu;
 			}
 		});
+		/*
 		each(ts.hexiaos,function(i,hx){
 			var shouhuimeijin = parseFloat(hx.meijinjine);
 			if(!isNaN(shouhuimeijin)){
@@ -150,7 +159,7 @@
 			if(!isNaN(duirenminbi)){
 				duirenminbiSum += duirenminbi;
 			}
-		});
+		});*/
 		
 		$("."+ts._id.replace(/\./g,"_")).each(function(i,td){
 			var huokuan = parseFloat($(td).text().slice(1));
@@ -161,15 +170,18 @@
 		tr.find("#zengzhishuijine").text("¥"+zengzhishuijineSum);
 		tr.find("#kaipiaomishu").text(kaipiaomishuSum);
 		tr.find("#yifuhuokuan").text("¥"+yifuhuokuanSum);
-		tr.find("#shouhuimeijin").text("$"+shouhuimeijinSum);
-		tr.find("#duirenminbi").text("¥"+duirenminbiSum);
+		//tr.find("#shouhuimeijin").text("$"+shouhuimeijinSum);
+		//tr.find("#duirenminbi").text("¥"+duirenminbiSum);
+		tr.find("#hexiaojine").text("¥"+hexiaojineSum);
 		tr.find("#tuishuijine").text("¥"+tuishuijineSum);
 		tr.find("#dailifei").text("¥"+dailifeiSum);
 		$("#tb_tuishui").append(tr);
+		/*
 		tr = tmpl_tr_split.clone(true);
 		var lirun = round(duirenminbiSum + tuishuijineSum - yifuhuokuanSum - dailifeiSum,2);
 		tr.find("td").html("利润：¥"+lirun);
 		$("#tb_tuishui").append(tr);
+		*/
 	}
 	
 	function setFP(fps,tr,bianhao){

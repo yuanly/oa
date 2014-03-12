@@ -142,9 +142,11 @@
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>代理商</div>
 		<nobr>
 			代理：<div class="myinput" style="cursor:pointer" id="dls_dailishang"></div>，
-			人民币账户余额：<div class="myinput" style="cursor:pointer" id="dls_rmbyue"></div>（元），
-			美金账户余额：<div class="myinput" style="cursor:pointer" id="dls_mjyue"></div>（美元）
-			<span class="tip" title="这里的人民币账户和美金账户是由代理商操作的账户，但账户里面的资金实际上是我们的，由代理商用来支付开发票的“货款”。所以，我们要对这两个账户的全部流水进行严格的记录。">tip</span>
+			自由账户余额：<div class="myinput" style="cursor:pointer" id="dls_rmbyue"></div>（元），
+			收汇账户余额：<div class="myinput" style="cursor:pointer" id="dls_mjyue"></div>（元）
+			<span class="tip" title="这里的自由账户和收汇账户是由代理商操作的账户，但账户里面的资金实际上是我们的，由代理商用来支付开发票的“货款”。
+所以，我们要对这两个账户的全部流水进行严格的记录。其中收汇账户的钱是由泰国汇过来的美金按（收汇牌价-0.06）兑换得到的人民币；
+收汇账户里面的钱只有通过核销之后才能进入自由账户。">tip</span>
 		</nobr>
 		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>发票</div>
@@ -180,54 +182,40 @@
 			<span class="plainBtn" title="添加新行" id="fp_tianjiaxinhang">[+]</span>
 			<div style="font-weight:bold;margin-top:10px">
 				待开票金额：<div class="whitespaceinput" id="fp_daikaijine" style="min-width:30px;" title="关单金额按汇率折算后减去全部发票金额"></div>
-				（元，按汇率：<div class="myinput" style="text-align:center;min-width:30px;" id="fp_huilv" title="一美元兑换人民币">6.1</div>），
+				（元，按汇率：<div class="myinput" style="text-align:center;min-width:30px;" id="fp_huilv" title="一美元兑换人民币，缺省值在‘其它/公司资料’设置">6.1</div>），
 				待开票数量：<div class="whitespaceinput" id="fp_daikaimishu" style="min-width:30px;"></div>（米）
-				<span class="tip" title="所有发票的米数总和必须和关单的米数一致。而发票金额总值是不需要和关单金额一致的，理论上要小于关单金额（按牌价换算后），相差部分金额作为出口商的利润。但代理商是不希望金额相差太大，因为相差大了意味着账面上的利润就多，要交的所得税就多，而且发票金额少则我们得到的退税也少，所以要尽量使得发票金额和关单金额接近（具体是否要留利润，留多少，得咨询代理商）。">tip</span>
+				<span class="tip" title="所有发票的米数总和必须和关单的米数一致。
+而发票金额总值是不需要和关单金额一致的，理论上要小于关单金额（按牌价换算后），相差部分金额即为出口商的利润。
+但代理商是不希望金额相差太大，因为相差大了意味着账面上的利润就多，要交的所得税就多；另一方面，如果发票金额少则我们得到的退税也少。
+理想情况是关单金额按牌价兑换成人民币后=发票总额-退税额，即代理商0利润，这样最大限度地获取退税，但又免交所得税。事实上温州那家代理就是这样给我们操作的。
+基于以上前提得出根据美金换算发票总额公式为：发票总额=关单金额*汇率*（1+增值税率）/（1+增值税率-退税率）
+代开票金额就是这么算的，但这个公式中汇率是固定的，而实际操作中一个关单的美金分多批汇进，
+会有多种汇率，所以这个公式计算结果跟实际情况总会有偏差，这个代开票金额不一定要控制为0，偏差不大即可。">tip</span>
 			</div>
+		</div>
+		<div style="margin-top:10px;">
+		（按增值税率：<div class="myinput" id="zengzhishuilv" style="min-width:30px"></div>%，
+			退税率：<div class="myinput" id="tuishuilv" style="min-width:30px"></div>%，
+			发票总额：<div class="whitespaceinput" id="fapiaozonge" style="min-width:30px"></div>元）
 		</div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>核销</div>
-		<div id="hx_div">
-			<table id="hx_table">
-				<tr>
-					<th></th>
-					<th nowrap>收汇流水</th>
-					<th nowrap>收汇日期</th>
-					<th nowrap>美金金额</th>
-					<th nowrap>核销流水</th>
-					<th nowrap>核销日期</th>
-					<th nowrap>人民币金额</th>
-					<th nowrap>实际汇率</th>
-					<th nowrap>汇率牌价</th>
-				</tr>
-				<tr class="tr_hexiao">
-					<td nowrap><span class="plainBtn" title="删除本行" id="hx_shanchubenhang">[-]</span>&nbsp;&nbsp;<span class="plainBtn" id="hx_shangyi" title="上移本行">[↑]</span></td>
-					<td nowrap class="myinput hx_shouhuiliushui" style="cursor:pointer" id="hx_shouhuiliushui" title="泰国账户向代理商美金账户汇款流水"></td>
-					<td nowrap id="hx_shouhuiriqi"></td>
-					<td nowrap id="hx_meijinjine"></td>
-					<td nowrap class="myinput hx_hexiaoliushui" style="cursor:pointer" id="hx_hexiaoliushui" title="代理商美金账户向代理商人民币账户转账流水"></td>
-					<td nowrap id="hx_hexiaoriqi"></td>
-					<td nowrap id="hx_renminbijine"></td>
-					<td nowrap id="hx_shijihuilv" style="text-align:center"></td>
-					<td nowrap class="myinput" id="hx_huilvpaijia"  style="text-align:center" contenteditable=true></td>
-				</tr>
-			</table>
-			<span class="plainBtn" title="添加新行" id="hx_tianjiaxinhang">[+]</span>
-			<div style="font-weight:bold;margin-top:10px">
-				美金汇总：<div class="whitespaceinput" id="hx_meijinhuizong" style="min-width:30px"></div>（美元），
-				人民币汇总：<div class="whitespaceinput" id="hx_renminbihuizong" style="min-width:30px"></div>（元）
-				<span class="tip" title="这里的核销是指将泰国汇给代理商的美金兑换成人民币的流水。该流水从代理商的美金账户支付到其人民币账户。如果是按牌价兑换，则后面的“退税”和“代理费”栏就需要设置，否则不需要设置，因为代理商和我们协商的实际汇率已经折算了两者进去。">tip</span>
-			</div>
-		</div>
+ 		<nobr>
+			流水：<div class="myinput" id="hx_liushui" style="cursor:pointer">&nbsp;</div>，
+			日期：<div class="whitespaceinput" id="hx_riqi"></div>，
+			金额： <div class="whitespaceinput" id="hx_jine" style="min-width:30px"></div>（元）
+			（应核销额：<div class="whitespaceinput" id="hx_yinghexiaoe" style="min-width:30px"></div>&nbsp;元）
+			<span class="tip" title="因为收汇账户兑换外汇时已经扣除0.06元的代理费（账面上是利润），所以：核销额=发票总额-应退税额。">tip</span>
+		</nobr>
 		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>退税</div>
 		<nobr>
 			流水：<div class="myinput" id="ts_liushui" style="cursor:pointer">&nbsp;</div>，
 			日期：<div class="whitespaceinput" id="ts_riqi"></div>，
-			金额： <div class="whitespaceinput" id="ts_jine" style="min-width:30px"></div>（元），
-			退税率：<div class="myinput" id="ts_shuilv" style="min-width:30px"></div>%（应退税额：<div class="whitespaceinput" id="ts_yingtuishuie" style="min-width:30px"></div>&nbsp;元）
+			金额： <div class="whitespaceinput" id="ts_jine" style="min-width:30px"></div>（元）
+			（应退税额：<div class="whitespaceinput" id="ts_yingtuishuie" style="min-width:30px"></div>&nbsp;元）
 			<span class="tip" title="正常情况下，单证齐全后代理商申请退税，然后将所得退税款放进其人民币账户。所以，需要另外建一个虚拟的账户负责支付退税款。
 	另外，很多代理商并不单独为我们计算退税，而是和我们商定一个比牌价高的汇率换算美金，这个汇率已经考虑了退税和代理费，这种情况则无需设置该退税栏信息。
-	“应退税率”是根据发票金额去掉17%的增值税后乘以退税率所得。">tip</span>
+	“应退税额”是根据发票金额去掉17%的增值税后乘以退税率所得。">tip</span>
 		</nobr>
 		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>代理费</div>

@@ -59,6 +59,49 @@
 					tip($(this),"成功解锁！",1500);	
 				});
 			});
+			
+			postJson("qita.php",{caozuo:"getConfig",_id:"zengzhishuilv"},function(res){
+				$("#zengzhishuilv").text(res.zengzhishuilv);
+			});
+			postJson("qita.php",{caozuo:"getConfig",_id:"tuishuilv"},function(res){
+				$("#tuishuilv").text(res.tuishuilv);
+			});
+			postJson("qita.php",{caozuo:"getConfig",_id:"zuixinhuilv"},function(res){
+				$("#zuixinhuilv").text(res.zuixinhuilv);
+			});
+			$("#zengzhishuilvBtn").click(function(){
+				var v = parseFloat($("#zengzhishuilv").text());
+				if(isNaN(v)||v<0||v>100){
+					tip($(this),"不是有效增值税率！",1500);
+					return;
+				}
+				$("#zengzhishuilv").text(v)
+				postJson("qita.php",{caozuo:"saveConfig",cfg:{_id:"zengzhishuilv",zengzhishuilv:v}},function(res){
+					tip($(this),"OK！",1500);
+				});
+			});
+			$("#tuishuilvBtn").click(function(){
+				var v = parseFloat($("#tuishuilv").text());
+				if(isNaN(v)||v<0||v>100){
+					tip($(this),"不是有效退税率！",1500);
+					return;
+				}
+				$("#tuishuilv").text(v)
+				postJson("qita.php",{caozuo:"saveConfig",cfg:{_id:"tuishuilv",tuishuilv:v}},function(res){
+					tip($(this),"OK！",1500);
+				});
+			});			
+			$("#zuixinhuilvBtn").click(function(){
+				var v = parseFloat($("#zuixinhuilv").text());
+				if(isNaN(v)||v<0){
+					tip($(this),"不是有效汇率！",1500);
+					return;
+				}
+				$("#zuixinhuilv").text(v)
+				postJson("qita.php",{caozuo:"saveConfig",cfg:{_id:"zuixinhuilv",zuixinhuilv:v}},function(res){
+					tip($(this),"OK！",1500);
+				});
+			});
 		});	
 	</script>
 	<style>
@@ -67,7 +110,7 @@
 <body style="margin:0px;padding:0px">
 	<br/>
 	<div align=center >
-	选定公司资料：<input type=text class="plainInput" id="zhongtai" style="cursor:pointer"/>
+	选定公司：<input type=text class="plainInput" id="zhongtai" style="cursor:pointer"/>
 	</div>
 	<hr/>
 	<div>
@@ -78,7 +121,15 @@
 	</div>
 	<hr/>
 	<div align=center >
-		<span class="plainBtn" id="jiesuo" title="保存流水账报服务器异常时点解锁！">解锁</span>
+		<span class="plainBtn" id="jiesuo">解锁</span><br/>
+		<span>（注：保存流水账报服务器异常时点解锁！）</span>
+	</div>
+	<hr/>
+	<div align=center >
+		增值税率：<div id="zengzhishuilv" class="myinput" contenteditable=true></div>%，<span id="zengzhishuilvBtn" class="plainBtn">提交</span><br/>
+		退税率：<div id="tuishuilv" class="myinput" contenteditable=true></div>%，<span class="plainBtn" id="tuishuilvBtn">提交</span><br/>
+		最新汇率：<div id="zuixinhuilv" class="myinput" contenteditable=true></div>，<span class="plainBtn" id="zuixinhuilvBtn">提交</span><br/>
+		<span>（注：这里设置的值用于“退税”模块中作为缺省值！）</span>
 	</div>
 </body>
 </html>

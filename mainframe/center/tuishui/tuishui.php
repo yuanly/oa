@@ -12,6 +12,12 @@ if("xinjian" == $param["caozuo"]){
 	$d = "TS".date("ymd",time());
 	$n = coll("tuishui")->count(array("_id"=>array('$regex'=>"^".$d."")));
 	$tuishui["_id"] = $d.".".($n+1);
+	$cfg = coll("config")->findOne(array("_id"=>"zuixinhuilv"));
+	$tuishui["huilv"]=$cfg["zuixinhuilv"];
+	$cfg = coll("config")->findOne(array("_id"=>"zengzhishuilv"));
+	$tuishui["zengzhishuilv"]=$cfg["zengzhishuilv"];
+	$cfg = coll("config")->findOne(array("_id"=>"tuishuilv"));
+	$tuishui["tuishuilv"]=$cfg["tuishuilv"];
 	coll("tuishui")->save($tuishui);
 	statExpired();
 	echo '{"success":true}';
@@ -130,6 +136,11 @@ if("xinjian" == $param["caozuo"]){
 	}
 	$cur = coll("tuishui")->find($query);
 	echo  cur2json($cur);
+}else if("huilvfactor" == $param["caozuo"]){//这里根据预先推定好的公式计算出汇率调整比例
+	$z = coll("config")->findOne(array("_id"=>"zengzhishuilv"));
+	$t = coll("config")->findOne(array("_id"=>"tuishuilv"));
+	$v = (1+$z["zengzhishuilv"]/100)/(1+$z["zengzhishuilv"]/100-$t["tuishuilv"]/100);
+	echo $v;
 }
 
 function getBalance($lxrId,$zhanghao){
