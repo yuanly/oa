@@ -225,13 +225,19 @@ function getnews(page,type){
 	server.getnews(page,type,function(news){ 
 		if(news instanceof Array){
 			$("#newslist").empty(); 
+			$(".ui-layout-center").hide();
 			for(i=0;i<news.length;i++){
 				try{
 				$("#newslist").append(new2tr(news[i]));
 			}catch(e){}
 			}
 			if(0 == page){
-				try{$("#newslist").find("#lin").get(0).click();}catch(e){}
+				try{
+					if($("#newslist").find("#lin").length>0){
+						$(".ui-layout-center").show();
+						$("#newslist").find("#lin").click();
+					}
+				}catch(e){}
 			}
 		}else{
 			tip(null,"获取消息失败！",1000)

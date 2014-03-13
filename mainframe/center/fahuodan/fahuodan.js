@@ -604,7 +604,10 @@ function _hanshuku_(){}
 				showDetailById(showId);
 				layout.close("west");
 			}else if(fahuodans.length>0){
+				$(".ui-layout-center").show();
 				$(".tr_fahuodan").get(0).click();
+			}else{
+				$(".ui-layout-center").hide();
 			}
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();

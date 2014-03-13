@@ -140,7 +140,10 @@ $(function(){
 				showDetail(showId);
 				layout.close("west");
 			}else if(samples.length>0){//将列表第一个商家显示在右边的商家详情表单
+				$(".ui-layout-center").show();
 				$(".tr_sample").get(0).click();
+			}else{
+				$(".ui-layout-center").hide();
 			}
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();

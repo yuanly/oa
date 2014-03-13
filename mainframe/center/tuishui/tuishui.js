@@ -696,7 +696,10 @@ function _hanshuku_(){}
 				showDetailById(showId);
 				layout.close("west");
 			}else if(tuishuis.length>0){
+				$(".ui-layout-center").show();
 				$(".tr_tuishui").get(0).click();
+			}else{
+				$(".ui-layout-center").hide();
 			}
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();

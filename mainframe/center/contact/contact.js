@@ -354,10 +354,11 @@ $(function(){
 			if(showId){
 				showDetail(showId);
 				layout.close("west");
+			}else if(contacts.length>0){//将列表第一个商家显示在右边的商家详情表单
+				$(".ui-layout-center").show();
+				$(".tr_contact").get(0).click();
 			}else{
-				if(contacts.length>0){//将列表第一个商家显示在右边的商家详情表单
-					$(".tr_contact").get(0).click();
-				}
+				$(".ui-layout-center").hide();
 			}
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();
