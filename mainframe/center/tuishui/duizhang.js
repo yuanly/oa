@@ -216,5 +216,13 @@
 		$("#title_div").show();
 		$("html").attr("contenteditable","true");
 		$("#tb_tuishui").attr("border","1").css("border-spacing","0px").css("border-collapse","collapse");		
+		$("#dayinfanhui").show();
+	});
+	$("#dayinfanhui").click(function(){
+		$("#head_div").show();
+		$("#title_div").hide();
+		$("#tb_tuishui").attr("border","0").css("border-spacing","0px").css("border-collapse","collapse");		
+		$("html").removeAttr("contenteditable");
+		$(this).hide();
 	});
 });

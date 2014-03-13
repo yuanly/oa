@@ -18,6 +18,7 @@
  beizhu:"xxx",
  fahuodan:"xxx"，//关联的发货单号，如果有。
  
+ shouxufei:3,
  huilv:2.1,
  zhuanrujine:23.1,
  fukuanzhanghaoyue:2323.1,
@@ -129,6 +130,7 @@
 		if($("#lsz_jine").val().trim() != ""){
 			currLSZ.jine = parseFloat($("#lsz_jine").val().trim());
 		}
+		currLSZ.shouxufei = parseFloat2($("#lsz_shouxufei").val().trim());
 		if(currLSZ.fukuanriqi != ""){
 			if(isNaN(currLSZ.jine) || "" == currLSZ.kemu){
 				tip(null,"已支付流水账的金额/科目不能为空！",1500);
@@ -374,6 +376,7 @@ function _hanshuku_(){}
 		
 		$("#lsz_liushuihao").val(lsz._id);
 		$("#lsz_jine").vals(lsz.jine);
+		$("#lsz_shouxufei").vals(lsz.shouxufei);
 		$("#lsz_fukuanriqi").vals(lsz.fukuanriqi);
 		$("#lsz_kemu").vals(lsz.kemu);
 		setContactName($("#lsz_fukuanfang"),lsz.fukuanfang);

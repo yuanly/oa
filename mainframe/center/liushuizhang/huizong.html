@@ -24,16 +24,25 @@
 		th{
 			background-color:#99ccff;
 		}
+		.tip{
+			color:#95B9C7;
+			cursor:pointer
+		}
 	</style>
 </head>
 <body style="margin:0px;padding:0px">
-	<div align=center style="margin:20px;">
+	<div align=center style="margin:20px;" id="div_options">
 		联系人：<div class="myinput" id="lianxiren" style="cursor:pointer">&nbsp;</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		账户：<div class="myinput" id="zhanghu" style="cursor:pointer">&nbsp;</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		开始日期：<input id="kaishiriqi" class="plainInput" style="cursor:pointer;width:70px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		结束日期：<input id="jieshuriqi" class="plainInput" style="cursor:pointer;width:70px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		科目：<input id="kemu" class="plainInput" style="cursor:pointer;width:70px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<span class="plainBtn" id="tongji">统计</span>
+		<span class="plainBtn" id="tongji">统计</span>&nbsp;&nbsp;
+		<span class="plainBtn" id="dayin">打印</span>&nbsp;&nbsp;
+		<span class="tip" title="双击列头可以删除该列！">tip</span>
+	</div>
+	<div align=center id="title_div" style="display:none">
+		<h3>收支流水对账单</h3>
 	</div>
 	<div align=center>
 		初始余额：<div class="myinput" id="chushiyue" contenteditable=true >0</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -42,30 +51,39 @@
 		净支出：<span id="jingzhichu" style="font-weight:bolder;color:red"></span>
 	</div>
 	<table align=center id="tb_liushui" style="font-size:0.85em">
-		<tr>
-			<th>No.</th>
-			<th>编号</th>
-			<th>付款方</th>
-			<th>付款账户</th>
-			<th>收款方</th>
-			<th>收款账户</th>
-			<th>金额</th>
-			<th>余额</th>
-			<th>付款日期</th>
-			<th>科目</th>
+		<tr id="tr_header">
+			<th id="td_no">No.</th>
+			<th id="td_bianhao">编号</th>
+			<th id="td_fukuanfang">付款方</th>
+			<th id="td_fukuanzhanghu">付款账户</th>
+			<th id="td_shoukuanfang">收款方</th>
+			<th id="td_shoukuanzhanghu">收款账户</th>
+			<th id="td_jine">付款金额</th>
+			<th id="td_shoukuanjine">收款金额</th>
+			<th id="td_shijihuilv">实际汇率</th>
+			<th id="td_shouxufei">手续费</th>
+			<th id="td_yue">余额</th>
+			<th id="td_fukuanriqi">付款日期</th>
+			<th id="td_kemu">科目</th>
+			<th id="td_beizhu">备注</th>
 		</tr>
 		<tr id="tr_liushui" class="tr_liushui">
-			<td id="td_no" style="text-align:center"></td>
-			<td id="td_bianhao"></td>
-			<td id="td_fukuanfang"></td>
-			<td id="td_fukuanzhanghu"></td>
-			<td id="td_shoukuanfang"></td>
-			<td id="td_shoukuanzhanghu"></td>
-			<td id="td_jine" style="color:green"></td>
-			<td id="td_yue"></td>
-			<td id="td_fukuanriqi"></td>
-			<td id="td_kemu"></td>
+			<td class="td_no" id="td_no" style="text-align:center"></td>
+			<td id="td_bianhao" class="td_bianhao"></td>
+			<td id="td_fukuanfang" class="td_fukuanfang"></td>
+			<td id="td_fukuanzhanghu" class="td_fukuanzhanghu"></td>
+			<td id="td_shoukuanfang" class="td_shoukuanfang"></td>
+			<td id="td_shoukuanzhanghu" class="td_shoukuanzhanghu"></td>
+			<td id="td_jine" class="td_jine" style="color:green"></td>
+			<td class="td_shoukuanjine" id="td_shoukuanjine"></td>
+			<td id="td_shijihuilv" class="td_shijihuilv"></td>
+			<td id="td_shouxufei" class="td_shouxufei"></td>
+			<td id="td_yue" class="td_yue"></td>
+			<td id="td_fukuanriqi" class="td_fukuanriqi"></td>
+			<td id="td_kemu" class="td_kemu"></td>
+			<td class="td_beizhu" contenteditable=true></td>
 		</tr>
 	</table>
+	<span class="plainBtn" id="dayinfanhui" style="display:none">←</span>
 </body>
 </html>

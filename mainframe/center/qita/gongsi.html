@@ -17,6 +17,8 @@
 	<script src="../../../js/server.js" type="text/javascript"></script>
 	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
 	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+	<script src="../../../js/jquery.layout-latest.js" type="text/javascript"></script>
+	<script src="../../../js/ui.datepicker-zh-CN.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(function(){
 			$('#currLocation', window.parent.document).text("其它/公司资料");
@@ -77,7 +79,7 @@
 				}
 				$("#zengzhishuilv").text(v)
 				postJson("qita.php",{caozuo:"saveConfig",cfg:{_id:"zengzhishuilv",zengzhishuilv:v}},function(res){
-					tip($(this),"OK！",1500);
+					tip($("#zengzhishuilv"),"OK！",1500);
 				});
 			});
 			$("#tuishuilvBtn").click(function(){
@@ -88,7 +90,7 @@
 				}
 				$("#tuishuilv").text(v)
 				postJson("qita.php",{caozuo:"saveConfig",cfg:{_id:"tuishuilv",tuishuilv:v}},function(res){
-					tip($(this),"OK！",1500);
+					tip($("#tuishuilv"),"OK！",1500);
 				});
 			});			
 			$("#zuixinhuilvBtn").click(function(){
@@ -99,7 +101,7 @@
 				}
 				$("#zuixinhuilv").text(v)
 				postJson("qita.php",{caozuo:"saveConfig",cfg:{_id:"zuixinhuilv",zuixinhuilv:v}},function(res){
-					tip($(this),"OK！",1500);
+					tip($("#zuixinhuilv"),"OK！",1500);
 				});
 			});
 		});	
