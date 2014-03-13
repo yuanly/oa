@@ -12,7 +12,7 @@ $stat = coll("config")->findOne(array("_id"=>"stat"));
 if(empty($stat) || $stat["expired"] ){//更新stat
 	$yuangao = coll("yuangao")->count(array("zhuangtai"=>array('$in'=>array("上传","接稿","申请审结"))));
 	$dingdan = coll("dingdan")->count(array("zhuangtai"=>"审核"));
-	$dingdan2 = coll("dingdan")->count(array("zhuangtai"=>array('$in'=>array("审核","接单","等版","子单","下单","审单"))));
+	$dingdan2 = coll("dingdan")->count(array("zhuangtai"=>array('$in'=>array("录单","审核","接单","等版","子单","下单","审单"))));
 	$fahuodan = coll("fanhuodan")->count(array("zhuangtai"=>"申请对单"));
 	$fahuodan2 = coll("fanhuodan")->count(array("zhuangtai"=>array('$in'=>array("申请对单","对单","付款","发货"))));
 	$yanhuodan = coll("yanhuodan")->count(array("zhuangtai"=>"申请审核"));

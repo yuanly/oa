@@ -105,7 +105,7 @@
 				<div style="width:650px;">
 					编号：<input type="text" id="fhd_bianhao" class="plainInput" readonly style="width:90px;"/>，
 					总额：<input type="text" id="fhd_zonge" class="plainInput" readonly style="width:45px;text-align:center"/>元，
-					转账流水：<input type="text" id="fhd_zhuanzhangliushui" class="plainInput" style="cursor:pointer" size=10 readonly /><br/>
+					转账流水：<div class="myinput" id="fhd_zhuanzhangliushui" style="cursor:pointer">&nbsp;</div><br/>
 					供货商：<div id="fhd_gonghuoshang" class="myinput" style="min-width:150px"></div>，
 					验货地址：<div id="fhd_yanhuodizhi" class="myinput" style="min-width:150px"></div>
 				</div>
@@ -145,8 +145,8 @@
 				<tr><td colspan=2>
 								<div id="shuliangjianshu" class="shuliangjianshu" style="margin-bottom:8px">
 									编号：<span id="hwbianhao" style="font-size:12px;color:brown"></span>
-									&nbsp;数量：<input class="plainInput jinetrigger hw_edit shuliang" size=3 />
-									&nbsp;件数：<input class="plainInput jinetrigger hw_edit jianshu" size=2 />
+									&nbsp;数量：<input class="plainInput jinetrigger hw_edit shuliang" size=3 style="text-align:center"/>
+									&nbsp;件数：<input class="plainInput jinetrigger hw_edit jianshu" size=2  style="text-align:center"/>
 									<span class="zhu_ctnr">&nbsp;<i>备注：</i><div id="zhu" style="display:inline-block;border-bottom:1px solid gray;min-width:50px;font-size:0.8em;color:#660033;" class="myinput" contentEditable=true ></div></span>
 									<span class="plainBtn1" id="yanhuodan" style="display:none;font-size:0.8em"></span>
 									<span class="plainBtn1" id="zhuangguidan" style="display:none;font-size:0.8em"></span>
@@ -160,7 +160,7 @@
 			<span class="plainBtn" id="tianjiahuowu">[+添加货物]</span>
 			<div id="qita_div">
 				<div style="background-color:#99ccff;margin-top:10px">其他费用</div>
-				<div class="qitafeiyong">说明：<input class="plainInput" id="qita_shuoming" value="运输费" /> 金额：<input id="qita_jine" class="plainInput" size=5 /><span class="plainBtn" id="shanchuqita">[-]</span></div>
+				<div class="qitafeiyong">说明：<div class="myinput" id="qita_shuoming" contenteditable=true>&nbsp;</div>，金额：<input id="qita_jine" class="plainInput" style="text-align:center" size=5 />元<span class="plainBtn" id="shanchuqita">[-]</span></div>
 				<span class="plainBtn" id="zengjiaqitafeiyong">[+]</span>
 			</div>
 		</div>

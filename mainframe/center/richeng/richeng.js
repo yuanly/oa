@@ -30,10 +30,16 @@
 		currDay = currDay + 7;
 		refreshRicheng(currDay);
 	});
-	$("td","#tb_richeng").blur(function(){
+	
+	$("td","#tb_richeng").focus(function(){
+		tmpRC = $(this).html().trim();
+	}).blur(function(){
 		var rc = {_id:$(this).data("day")};
 		var i = $(this).data("i");
 		if(!i){
+			return;
+		}
+		if($(this).html().trim() == tmpRC){
 			return;
 		}
 		$(".tr_richeng").each(function(n,tr){
@@ -107,6 +113,7 @@ function _hanshuku_(){}
 	
 	///////////////////////////////初始化/////////////////////////////////////////////
 	function _chushihua_(){} 
+	var tmpRC=null;
 	var week = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
 	var tmpl_tr = $("#tr_richeng").detach();
 	var users = getUsers();
