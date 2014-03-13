@@ -520,5 +520,5 @@ function _hanshuku_(){}
 		if(layout.state.center.innerWidth < $("#detailtable").width()){
 			layout.sizePane("west",$("body").width()-$("#detailtable").width()-100);
 		}
-	});
+	}).dblclick(function(){layout.toggle("west");});
 });

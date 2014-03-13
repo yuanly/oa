@@ -460,4 +460,5 @@
 		layout.sizePane("west",$("body").width()-$("#tb_huowu").width()-300);
 	});
 	*/
+	$(".detailheader").dblclick(function(){layout.toggle("west");});
 });

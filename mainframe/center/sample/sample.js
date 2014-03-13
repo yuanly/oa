@@ -306,7 +306,7 @@ $(function(){
 	});
 	$("#detailheader").click(function(){
 		layout.sizePane("west",$("body").width()-$(this).width()-100);
-	});
+	}).dblclick(function(){layout.toggle("west");});
 	//列出样板
 	listYangban(0,getUrl().showId);
 	

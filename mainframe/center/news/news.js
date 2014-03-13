@@ -186,6 +186,8 @@ $(function(){
 				});
 		});
 	});
+	
+	$("#newsDetail").dblclick(function(){layout.toggle("west");});
 	//消息列表
 	getnews(0,null);	
 });

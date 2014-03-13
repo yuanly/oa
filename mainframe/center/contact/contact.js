@@ -399,7 +399,7 @@ $(function(){
 	});
 	$("#detailheader").click(function(){
 		layout.sizePane("west",$("body").width()-$(this).width()-100);
-	});
+	}).dblclick(function(){layout.toggle("west");});
 	
 	
 	$(".list").dblclick(function(){$(this).val("");});
