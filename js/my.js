@@ -933,7 +933,7 @@ jQuery.fn.dataInc = function(name,value){
  	return this;
  } 
  
- jQuery.fn.xuanlianxiren = function(callback,clearCallback){
+ jQuery.fn.xuanlianxiren = function(event,callback,clearCallback){
  	this.click(function(event){
  		var limit = 20;
  		setSelector(event,function(page,option,callback1){
@@ -1253,8 +1253,12 @@ jQuery.fn.dataInc = function(name,value){
 					"备用2",
 					"其他"];
  }
- jQuery.fn.kemu = function(){
-	 	return this.myselector(getKemu());
+ jQuery.fn.kemu = function(items){
+ 		var kms = getKemu();
+ 		if(items && items.length>0){
+ 			kms = items.concat(kms);
+ 		}
+	 	return this.myselector(kms);	
 	}
  //利用input的list属性，动态设置下拉框控件
  jQuery.fn.myselector = function(values,valueField,labelField){

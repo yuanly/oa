@@ -64,20 +64,38 @@
 	$("#hexiao").click(function(){
 		$("#hexiaoliushui").toggle();
 	});
-	$("#th_leibie").kemu();
+	$("#th_leibie").kemu(["科目"]).bind("input",function(){listliushuizhang(0);})
 	$("#lsz_kemu").kemu();
-	$("#th_shoukuanfang").xuanlianxiren("",function(shangjia){
-			$(this).val(shangjia.mingchen);
-			$(this).data("lxrId",shangjia._id);
-	},function(){
-		$(this).val("收款方");
-	});
-	$("#th_fukuanfang").xuanlianxiren("",function(shangjia){
-			$(this).val(shangjia.mingchen);
-			$(this).data("lxrId",shangjia._id);
-	},function(){
-		$(this).val("付款方");
-	});
+	$("#th_shoukuanfang").click(function(event){
+ 		var limit = 20;
+ 		setSelector(event,function(page,option,callback1){
+ 				postJson("../contact/lianxiren.php",{caozuo:"chalianxiren",offset:page*limit,limit:limit,option:option},function(vendors){
+ 					callback1(vendors);
+ 				});
+ 			},["_id","mingchen"],function(lianxiren){
+ 				$(this).data("lxrId",lianxiren._id);
+				$(this).val(lianxiren.mingchen);
+				listliushuizhang(0);
+ 			},"",function(){
+ 				$(this).val("收款方");
+ 				listliushuizhang(0);
+			});
+ 	});
+	$("#th_fukuanfang").click(function(event){
+ 		var limit = 20;
+ 		setSelector(event,function(page,option,callback1){
+ 				postJson("../contact/lianxiren.php",{caozuo:"chalianxiren",offset:page*limit,limit:limit,option:option},function(vendors){
+ 					callback1(vendors);
+ 				});
+ 			},["_id","mingchen"],function(lianxiren){
+ 				$(this).data("lxrId",lianxiren._id);
+				$(this).val(lianxiren.mingchen);
+				listliushuizhang(0);
+ 			},"",function(){
+ 				$(this).val("付款方");
+ 				listliushuizhang(0);
+			});
+ 	});
 	var users = getUsers();users.unshift({"user_name":"记账人","_id":"-1"});
 	$("#th_jizhangren").myselector(users,"user_name").bind("input",function(){
 		listliushuizhang(0);
@@ -86,7 +104,7 @@
 		listliushuizhang(0);
 	});
 	$("#th_bianhao").datepicker().change(function(){
-		$(this).val("lsz"+date2id($(this).val()));
+		$(this).val("LSZ"+date2id($(this).val()));
 		listliushuizhang(0);
 	});
 	$("#th_zhifuriqi").datepicker().change(function(){
