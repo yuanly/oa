@@ -24,5 +24,6 @@ $(function(){
 			}
 		});
 	}
+	stat();
 	setInterval(stat,3000);
 });
