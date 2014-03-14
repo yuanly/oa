@@ -904,7 +904,7 @@ jQuery.fn.dataInc = function(name,value){
 		}
 	}
  
- function random(max,min){
+ function random(min,max){
  	if(typeof min == "number"){
  		return Math.floor((max-min+1) * Math.random())+min;
  	}else{

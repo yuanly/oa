@@ -5,16 +5,19 @@
 			//从服务器获取全部用户信息
 			var content = server.loginPage();
 			each(content.users,function(n,usr){
-				if(!isNaN(usr.photo)){
+				if(!isNaN(usr.photo)){//正常头像属性，整数id
 					usr.photo = getImgUrl(usr.photo);
 				}else if(!usr.photo){
-					usr.photo="../logo/noface.jpg";
+					//usr.photo="../logo/noface.jpg";
+					usr.photo=getDocRoot()+"logo/noface.jpg";
 				}else{
-					usr.photo = "/oa/logo/"+usr.photo;
+					//usr.photo = "/oa/logo/"+usr.photo;
+					usr.photo = getDocRoot()+"logo/"+usr.photo;
 				}
 			});
 			localStorage.setItem("users",JSON.stringify(content.users));
 			localStorage.setItem("kehus",JSON.stringify(content.kehu));
+			
 			//设置当前用户
 			var lastUser = getLastUser();
 			

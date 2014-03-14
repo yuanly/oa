@@ -27,6 +27,9 @@ D 标记验货单通过
 		$(this).val("YHD"+date2id($(this).val()));
 		listyanhuodan(0);
 	});
+	$("#yhd_bianhao").click(function(){
+			window.open("yanhuodan.html?showId="+$(this).val(),"_blank");		
+		});
 	var users = getUsers();users.unshift({"user_name":"创建者"});
 	$("#th_chuangjianzhe").myselector(users,"user_name").bind("input",function(){
 		listyanhuodan(0);

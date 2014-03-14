@@ -117,8 +117,26 @@ function _hanshuku_(){}
 	var week = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
 	var tmpl_tr = $("#tr_richeng").detach();
 	var users = getUsers();
-	users.unshift({_id:"LXR0",mingchen:"公司"});
-	each(users,function(i,user){
+	var theUser = getTheUser();
+	users = users.sort(function(a,b){
+		if(a._id<b._id){
+			return -1;
+		}else if(a._id>b._id){
+			return 1;
+		}else {
+			return 0;
+		}
+	});
+	users.push(users.shift());//第一个用户是LXR1 袁立宇，放到最后一行。
+	var tmpUsers = [];
+	each(users,function(i,u){
+		if(u._id != theUser._id){
+			tmpUsers.push(u);
+		}
+	});
+	tmpUsers.unshift(theUser);//当前用户放第一行
+	tmpUsers.unshift({_id:"LXR0",mingchen:"公司"});
+	each(tmpUsers,function(i,user){
 		var tr = tmpl_tr.clone(true);
 		$(tr.find("td").get(0)).text(user.mingchen);
 		tr.data("lxrId",user._id);

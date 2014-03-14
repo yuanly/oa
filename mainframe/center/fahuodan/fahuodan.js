@@ -74,6 +74,9 @@
 		$("#zhuangguidan").click(function(){
 			window.open("../zhuangguidan/zhuangguidan.html?showId="+$(this).text(),"_blank");		
 		});
+		$("#fhd_bianhao").click(function(){
+			window.open("fahuodan.html?showId="+$(this).val(),"_blank");		
+		});
 		function sel_zhuanzhangliushui(event){
 		var limit = 20;
 		setSelector(event,function(page,option,callback){

@@ -125,6 +125,12 @@
 					postJson("user.php",usr,function(res){
 						if(res.success){
 							if("编辑用户" == $("#handle").text()){
+								usr = $.extend(getUser(usr._id),usr);
+								if(!isNaN(usr.photo)){//正常头像属性，整数id
+									usr.photo = getImgUrl(usr.photo);
+								}
+								setLastUser(usr);
+								setTheUser(usr);
 								tip(null,"成功更改用户信息！",3);
 								setTimeout(function(){location.reload();},500);
 							}else{

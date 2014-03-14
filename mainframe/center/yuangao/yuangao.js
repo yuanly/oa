@@ -1,4 +1,15 @@
 ﻿$(function(){
+/*
+{	_id:"xx",
+	liucheng:[{userId:3,dongzuo:"上传",time:1322}],
+	jiegaozhe:"xx",
+	shenjiezhe:"xx",
+	zhuangtai:"xx",
+	shangchuanshijian:12312,
+	shenjieshijian:123213232,
+	neirong:"xx"
+}
+*/
 	//{_id:"20131008_1",liucheng:[{userId:3,dongzuo:"上传",time:1322}],
 	//shangchuanzhe:3,shangchuanshijian:1312322,jiegaozhe:2,zhuangtai:"上传",shenjiezhe:5,
 	//shenjieshijian:133423,neirong:"xsdf",shenjieshuoming:"dsdsdfa"}
@@ -280,7 +291,7 @@
 		currYG = yg;
 		$("#shangchuan").hide();
 		$("#liucheng").show().liucheng(getTheUser(),yg);
-		$("#xianshi").show().empty().html(yg.neirong).prepend("<div style='background-color:#eee'>原稿&nbsp;&nbsp;"+yg._id+"</div>");
+		$("#xianshi").show().empty().html(yg.neirong).prepend("<div style='background-color:#eee'>原稿&nbsp;&nbsp;<a href='yuangao.html?showId="+yg._id+"' target=_blank>"+yg._id+"</a></div>");
 		if(yg.shenjieshuoming){
 			$("#xianshi").append("<p style='background-color:#eee'>备注</p>");
 			$("#xianshi").append("<div id='xs_beizhu'></div>");
