@@ -187,7 +187,7 @@ $(function(){
 		});
 	});
 	
-	$("#newsDetail").dblclick(function(){layout.toggle("west");});
+	$("#newsDetail").dblclick(function(){layout.toggle("west");clearSelection();});
 	//消息列表
 	getnews(0,null);	
 });

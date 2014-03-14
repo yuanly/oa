@@ -1449,3 +1449,12 @@ catch(e){
  	}
  	return this;
  }
+ 	function clearSelection() { //清楚双击选择
+    if(document.selection && document.selection.empty) { 
+        document.selection.empty(); 
+    } 
+    else if(window.getSelection) { 
+        var sel = window.getSelection(); 
+        sel.removeAllRanges(); 
+    } 
+	} 

@@ -607,5 +607,5 @@ function _hanshuku_(){}
 		if(layout.state.center.innerWidth < $("#huowutable").width()){
 			layout.sizePane("west",$("body").width()-$("#huowutable").width()-100);
 		}
-	}).dblclick(function(){layout.toggle("west");});
+	}).dblclick(function(){layout.toggle("west");clearSelection();});
 });

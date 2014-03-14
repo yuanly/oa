@@ -794,5 +794,5 @@ function _hanshuku_(){}
 		if(layout.state.center.innerWidth < $("#tb_huowu").width()){
 			layout.sizePane("west",$("body").width()-$("#tb_huowu").width()-300);
 		}
-	}).dblclick(function(){layout.toggle("west");});
+	}).dblclick(function(){layout.toggle("west");clearSelection();});
 });

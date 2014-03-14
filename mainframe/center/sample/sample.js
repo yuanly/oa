@@ -42,7 +42,7 @@ $(function(){
 	function tijiao_handle(){
 		var bh = $("#bianhao").val().trim(); 
 		if("" == bh){
-			tip(null,"样板编号不能为空！",1500);
+			tip($("#zhongguoxinghao"),"样板编号不能为空！",1500);
 			return;
 		}
 		var yangban = form2obj();
@@ -53,7 +53,7 @@ $(function(){
 		var xinbianhao = false;		
 		if(currSample == null || bh != currSample._id){
 			xinbianhao = true;
-		}
+		} 
 		postJson("samples.php",{"caozuo":"sfchongfu","bianhao":bh},function(res){
 			if(res.chongfu && xinbianhao){
 				$("#bianhao").val("");
@@ -61,13 +61,12 @@ $(function(){
 			}else{
 				postJson("sample.php",yangban,function(res){
 					if(res.success == true){
-						location.reload();
-						/*
+						//location.reload();
 						currSample = yangban;
 						obj2form(yangban);
 						zhidu();
-						tip(null,"成功提交样板信息！",3000);
-						*/
+						console.log($("#tijiao"));
+						tip($("#bianji"),"成功提交样板信息！",1500);						
 					}else{
 						ask3(null,res.err);
 					}
@@ -300,13 +299,14 @@ $(function(){
  	$("#shangjia").xuanzeshangjia();
  	$("#yijiazhe").userSelector();
  	var tr_sample = $(".tr_sample").detach();
+ 
  	//设置头部点击处理（放到当前面板）
 	$("#tableheader").click(function(){
 		layout.sizePane("west",$("#sampletable").width()+20);
 	});
 	$("#detailheader").click(function(){
 		layout.sizePane("west",$("body").width()-$(this).width()-100);
-	}).dblclick(function(){layout.toggle("west");});
+	}).dblclick(function(){layout.toggle("west");clearSelection();});
 	//列出样板
 	listYangban(0,getUrl().showId);
 	

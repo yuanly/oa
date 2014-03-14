@@ -962,5 +962,5 @@ function _hanshuku_(){}
 		if(layout.state.center.innerWidth < $("#mingxitable").width()){
 			layout.sizePane("west",$("body").width()-$("#mingxitable").width()-100);
 		}
-	}).dblclick(function(){layout.toggle("west");});
+	}).dblclick(function(){layout.toggle("west");clearSelection();});
 });

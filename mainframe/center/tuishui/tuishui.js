@@ -1011,7 +1011,7 @@ function _hanshuku_(){}
 		if(layout.state.center.innerWidth < $("#fp_table").width()){
 			layout.sizePane("west",$("body").width()-$("#fp_table").width()-100);
 		}
-	}).dblclick(function(){layout.toggle("west");});
+	}).dblclick(function(){layout.toggle("west");clearSelection();});
 	
 	listtuishui(0);
 });
