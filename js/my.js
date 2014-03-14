@@ -1249,6 +1249,7 @@ jQuery.fn.dataInc = function(name,value){
 					"还贷",
 					"个人消费",
 					"代理费",
+					"平帐",
 					"备用1",
 					"备用2",
 					"其他"];
