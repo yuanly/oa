@@ -15,7 +15,7 @@ $result = array();
 //获取用户（姓名+头像）；
 $result["users"] = getUsers();
 //获取背景照片；
-$result["background"] = getBackgrounds();
+//$result["background"] = getBackgrounds();
 //获取滚动图片；
 //$result["roll"] = getRollingImg();
 //获取企业文化标语；
