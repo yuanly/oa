@@ -115,6 +115,7 @@ $(function(){
 	$("#new_tr").remove();
 	//打开消息发布界面 “发布”按钮
 	$("#fabu").click(function(){
+		$(".ui-layout-center").show();
 		$("#newsDetailContainer").hide();
 		$(".ui-layout-center > #fabuxiaoxi").remove();
 		diag = $("#template > #fabuxiaoxi").clone(true);

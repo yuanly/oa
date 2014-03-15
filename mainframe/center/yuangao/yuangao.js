@@ -357,6 +357,7 @@
 		});
 	}
 	function shangchuanmoshi(){
+		$(".ui-layout-center").show();
 		$("#liucheng").hide();
 		$("#xianshi").hide();
 		$("#dingdanliebiao").hide();
