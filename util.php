@@ -10,7 +10,11 @@ function docRoot(){
 /*
  * 返回mongodb collection
  */
-
+function isMasterDB(){
+	$db = new MongoClient();
+	$result = $db->myDb->command(array("isMaster" => 1));
+	return $result["ismaster"];
+}
 function coll($cn){
 	$db = new MongoClient();
 	return $db->oa->selectCollection($cn);
@@ -30,9 +34,14 @@ function userColl(){
 function attachColl(){
 	$db = new MongoClient();
 	return $db->oa->attach;
-	//return $db->oafs->attach;
+}
+class FakeColl{
+	function save(){}
 }
 function logColl(){
+	if(!isMasterDB()){
+		return new FakeColl();
+	}
 	$db = new MongoClient();
 	return $db->log->log;
 }
