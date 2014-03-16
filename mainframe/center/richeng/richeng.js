@@ -110,38 +110,98 @@ function _hanshuku_(){}
 			});
 		});
 	}
+	function reorder(){
+		var order = $(this).data("forReorder");
+		if(!order){
+			return;
+		}
+		postJson("richeng.php",{caozuo:"reorder",order:order},function(res){
+			var users = getUsers();
+			each(users,function(i,user){
+				if(user._id == order.id){
+					user.rcOrder = order.lastOrder;
+				}else if(user._id == order.lastId){
+					user.rcOrder = order.order;
+				}
+			});
+			localStorage.setItem("users",JSON.stringify(users));
+		setUsers(false);
+		refreshRicheng(currDay);
+		$(".mingchen").css("cursor","pointer").unbind("click").click(reorder);	
+		$(".up").show();
+		});
+	}
+	$("#editBtn").toggle(function(){
+		setUsers(false);
+		refreshRicheng(currDay);
+		$(".mingchen").css("cursor","pointer").click(reorder);	
+		$(".up").show();
+	},function(){
+		setUsers(true);
+		refreshRicheng(currDay);
+		$(".mingchen").css("cursor","default").unbind("click");
+		$(".up").hide();
+	});
 	
+	function setUsers(theUserFirst){
+		var users = getUsers();
+		var rcOrder = 100;
+		each(users,function(i,usr){
+			if(usr.rcOrder){
+				if(usr.rcOrder>rcOrder){
+					rcOrder = usr.rcOrder;
+				}
+			}
+		});
+		var changed=false;
+		each(users,function(i,usr){
+			if(!usr.rcOrder){
+				changed=true;
+				rcOrder += 100;
+				usr.rcOrder = rcOrder;
+				postJson("richeng.php",{caozuo:"rcorder",lxrId:usr._id,rcOrder:rcOrder},function(res){});
+			}
+		});
+		if(changed){
+			localStorage.setItem("users",JSON.stringify(users));
+		}
+		users = users.sort(function(a,b){
+			return a.rcOrder - b.rcOrder;
+		});
+		if(theUserFirst){
+			var theUser = getTheUser();
+			var tmpUsers = [];
+			each(users,function(i,u){
+				if(u._id != theUser._id){
+					tmpUsers.push(u);
+				}
+			});
+			tmpUsers.unshift(theUser);//当前用户放第一行
+			users = tmpUsers;
+		}
+		users.unshift({_id:"LXR0",mingchen:"公司"});
+		$(".tr_richeng").remove();	
+		var lastUser;
+		each(users,function(i,user){
+			var tr = tmpl_tr.clone(true);
+			if(i > 1){
+				$(tr.find("td").get(0)).html(user.mingchen+"<span class='plainBtn up' style='display:none'>↑</span>");
+				$(tr.find("td").get(0)).data("forReorder",{id:user._id,order:user.rcOrder,lastId:lastUser._id,lastOrder:lastUser.rcOrder});
+			}else{
+				$(tr.find("td").get(0)).html(user.mingchen);
+			}
+			tr.data("lxrId",user._id);
+			$("#tb_richeng").append(tr);
+			lastUser = user;
+		});
+	}
 	///////////////////////////////初始化/////////////////////////////////////////////
 	function _chushihua_(){} 
 	var tmpRC=null;
 	var week = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
 	var tmpl_tr = $("#tr_richeng").detach();
-	var users = getUsers();
-	var theUser = getTheUser();
-	users = users.sort(function(a,b){
-		if(a._id<b._id){
-			return -1;
-		}else if(a._id>b._id){
-			return 1;
-		}else {
-			return 0;
-		}
-	});
-	users.push(users.shift());//第一个用户是LXR1 袁立宇，放到最后一行。
-	var tmpUsers = [];
-	each(users,function(i,u){
-		if(u._id != theUser._id){
-			tmpUsers.push(u);
-		}
-	});
-	tmpUsers.unshift(theUser);//当前用户放第一行
-	tmpUsers.unshift({_id:"LXR0",mingchen:"公司"});
-	each(tmpUsers,function(i,user){
-		var tr = tmpl_tr.clone(true);
-		$(tr.find("td").get(0)).text(user.mingchen);
-		tr.data("lxrId",user._id);
-		$("#tb_richeng").append(tr);
-	});
+	
+	setUsers(true);
 	var today = Math.floor((new Date().getTime())/1000/3600/24);
 	var currDay = today - 7;
 	refreshRicheng(currDay);

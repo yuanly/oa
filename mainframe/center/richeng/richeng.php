@@ -14,4 +14,12 @@ if("chaxun" == $param["caozuo"]){
 	$richeng = $param["richeng"];
 	coll("richeng")->save($richeng);
 	echo '{"success":true}';
+}else if("rcorder" == $param["caozuo"]){
+	coll("contact")->update(array("_id"=>$param["lxrId"]),array('$set'=>array("rcOrder"=>$param["rcOrder"])));
+	echo '{"success":true}';
+}else if("reorder" == $param["caozuo"]){
+	$order = $param["order"];
+	coll("contact")->update(array("_id"=>$order["id"]),array('$set'=>array("rcOrder"=>$order["lastOrder"])));
+	coll("contact")->update(array("_id"=>$order["lastId"]),array('$set'=>array("rcOrder"=>$order["order"])));
+	echo '{"success":true}';
 }
