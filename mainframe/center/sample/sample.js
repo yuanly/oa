@@ -18,6 +18,7 @@ $(function(){
 	//新增样板
 	function xinzengyangban_handle(){
 		currSample = null;
+		$(".ui-layout-center").show();
 		obj2form({});
 		bianji();
 	}
