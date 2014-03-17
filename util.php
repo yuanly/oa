@@ -35,13 +35,8 @@ function attachColl(){
 	$db = new MongoClient();
 	return $db->oa->attach;
 }
-class FakeColl{
-	function save(){}
-}
+
 function logColl(){
-	if(!isMasterDB()){
-		return new FakeColl();
-	}
 	$db = new MongoClient();
 	return $db->log->log;
 }

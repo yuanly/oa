@@ -12,10 +12,14 @@ if(isset($_REQUEST["password"])){
 }
 
 if (!check_user(urldecode($user_id), $password)){
-	logColl()->save(array("action"=>"checkuser","user"=>$_SESSION['user']["mingchen"],"result"=>"fail"));
+	if(isMasterDB()){
+		logColl()->save(array("action"=>"checkuser","user"=>$_SESSION['user']["mingchen"],"result"=>"fail"));
+	}
 	echo "false";
 }else{
-	logColl()->save(array("action"=>"checkuser","user"=>$_SESSION['user']["mingchen"],"result"=>"success","time"=>date("Y/m/d H:i:s",time())));
+	if(isMasterDB()){
+		logColl()->save(array("action"=>"checkuser","user"=>$_SESSION['user']["mingchen"],"result"=>"success","time"=>date("Y/m/d H:i:s",time())));
+	}
 	echo "true";
 }
 
