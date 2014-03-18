@@ -86,7 +86,7 @@ function _hanshuku_(){}
 				if(i>0){
 					$(th).html(formatDate(day+i)+"<br/>"+formatDay(day+i));
 					if((day+i) == today){
-						$(th).css("background-color","yellow");
+						$(th).css("background-color","#ffffcc");
 					}else{
 						$(th).css("background-color","#99ccff");
 					}
@@ -98,7 +98,7 @@ function _hanshuku_(){}
 					if(i>0){
 						$(td).html(getRicheng(richengs,day+i,lxrId));
 						if((day+i) == today){
-							$(td).css("background-color","yellow");
+							$(td).css("background-color","#ffffcc");
 						}else{
 							$(td).css("background-color","#fff");
 						}
@@ -184,6 +184,7 @@ function _hanshuku_(){}
 		var lastUser;
 		each(users,function(i,user){
 			var tr = tmpl_tr.clone(true);
+			tr.attr("title",user.mingchen);
 			if(i > 1){
 				$(tr.find("td").get(0)).html(user.mingchen+"<span class='plainBtn up' style='display:none'>↑</span>");
 				$(tr.find("td").get(0)).data("forReorder",{id:user._id,order:user.rcOrder,lastId:lastUser._id,lastOrder:lastUser.rcOrder});
