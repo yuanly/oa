@@ -97,12 +97,15 @@
 				postJson("dingdan.php",{"caozuo":"lianxiren",offset:page*limit,limit:limit,option:option.trim()},function(lianxirens){
 					callback(lianxirens);
 				});
-			},["_id","taiguoxinghao","mingchen","shangjia.mingchen"],function(lianxiren){
+			},["_id","taiguoxinghao","mingchen","shangjia.mingchen"],function(lianxiren){//选择回调
 				$("#dd_lianxiren").val(lianxiren.mingchen);
 				currDD.lianxiren = {_id:lianxiren._id,mingchen:lianxiren.mingchen};
-			},"");
+			},"",function(){//清除回调
+				$("#dd_lianxiren").val("");
+				currDD.lianxiren = undefined;
+			});
 	}
-	function sel_yangban(event){
+	function sel_yangban(event){//订单明细中选择样板
 		var limit = 20;
 		setSelector(event,function(page,option,callback){
 				postJson("yangban.php",{offset:page*limit,limit:limit,option:option},function(yangbans){
@@ -116,7 +119,7 @@
 				$(".unit").text(yangban.danwei);
 			},(currDD.yangban)?currDD.yangban.taiguoxinghao:"");
 	}
-	function sel_yangban2(event){
+	function sel_yangban2(event){//左侧列表过滤选择样板
 		var limit = 20;
 		setSelector(event,function(page,option,callback){
 				postJson("yangban.php",{offset:page*limit,limit:limit,option:option},function(yangbans){
@@ -153,7 +156,8 @@
 			return;
 		}
 		
-		var parent = $(this).parents("tr");
+		var parent = $(this).parent().parent();
+		
 		if(parent.find("#mx_danwei").val().trim() != currDD.yangban.danwei){
 			tip($(this),"单位必须与样板单位一致！",1500);
 			return;
@@ -168,7 +172,7 @@
 	function zengjiahuowu(){
 			var huowu = tmpl_huowu.clone(true);
 			huowu.find("#mx_xuhao").text($(".tmpl_huowu").length);
-			huowu.find("#mx_danwei").text($("#unit").text());
+			huowu.find("#mx_danwei").val($("#unit").text());
 			$("#new_huowu_item").before(huowu);
 	}
 	$("#zengjiahuowu").click(zengjiahuowu);
@@ -232,7 +236,7 @@
 				ret = false;
 				return false;
 			}
-			huowu.danwei = $(this).find("#mx_danwei").text();
+			huowu.danwei = $(this).find("#mx_danwei").val();
 			huowu.id=$(this).data("id");
 			hws.push(huowu);
 		});
@@ -445,6 +449,7 @@ function _hanshuku_(){}
 		$("#dd_yangban").unbind("click").click(sel_yangban);		
 		$("#dd_lianxiren").unbind("click").click(sel_lianxiren);
 		$(".mx_danjia").click(sel_danjia);
+		$(".mx_danwei").removeAttr("readonly");
 		$("#baocun").show();
 		$("#fangqi").show();
 		$("#new_huowu_item").show();
@@ -459,7 +464,8 @@ function _hanshuku_(){}
 		}
 		$(".myinput").removeAttr("contenteditable");
 		$("#dd_yangban").unbind("click").click(showYangban);
-		$("#dd_lianxiren").unbind("click").click(showLianxiren);
+		$("#dd_lianxiren").unbind("click").click(showLianxiren);		
+		$(".mx_danwei").attr("readonly","readonly");
 		$(".mx_danjia").unbind("click");
 		$("#baocun").hide();
 		$("#fangqi").hide();
@@ -595,7 +601,7 @@ function _hanshuku_(){}
 			huowu.find("#mx_xuhao").text(i);
 			huowu.find("#mx_guige").text(dd.huowu[i].guige);
 			huowu.find("#mx_shuliang").val(dd.huowu[i].shuliang);
-			huowu.find("#mx_danwei").text(dd.huowu[i].danwei);
+			huowu.find("#mx_danwei").val(dd.huowu[i].danwei);
 			//huowu.find("#mx_danwei").data("lastValue",dd.huowu[i].danwei);
 			huowu.find("#mx_danjia").val(dd.huowu[i].danjia);
 			huowu.find("#mx_jine").text(round(dd.huowu[i].shuliang*dd.huowu[i].danjia,2));

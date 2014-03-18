@@ -131,7 +131,7 @@
 				<td id="mx_xuhao"></td>
 				<td id="mx_guige" class="myinput" style="min-width:250px" contenteditable=true></td>
 				<td><input id="mx_shuliang" size=4 class="plainInput editable"></td>
-				<td id="mx_danwei" class="unit"></td>
+				<td><input id="mx_danwei" size=2 class="plainInput mx_danwei" readonly style="cursor:pointer" list="danweilist"></td>
 				<td><input id="mx_danjia" size=4 class="plainInput mx_danjia" readonly style="cursor:pointer"></td>
 				<td id="mx_jine"></td><td class="hw_cz"><span id="shanchuhuowu" class="plainBtn delete_huowu" style="font-size:80%">[ - ]</span></td>
 			</tr>
@@ -148,5 +148,12 @@
 			<span class="plainBtn">留言</span>
 		</div>
 	</div>
+		<datalist id="danweilist">
+			<option value="码"/>
+			<option value="米"/>
+			<option value="件"/>
+			<option value="KG"/>
+			<option value="张"/>
+		</datalist>
 </body>
 </html>
