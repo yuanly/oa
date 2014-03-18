@@ -86,8 +86,34 @@
 		$("#ld_beizhu").val("");
 		$("#ld_beizhu_waibu").hide();
 		$("#ld_tijiaodingdan").data("waiting",false);
+		$("#ld_ddbianhao").text("");
+		$("#ld_ddbianhao_out").hide();
 	}
 	$("#cz_ludan").click(cz_ludan);
+	function xiugai(){
+		cz_ludan();
+		$(".ld_huowu","#ludan").remove();
+		xiugaiId = $(this).parent().find("#lb_bianhao").text();
+		$("#ld_ddbianhao_out").show();
+		$("#ld_ddbianhao").text(xiugaiId);
+		postJson("dingdan.php",{caozuo:"getbyid",_id:xiugaiId},function(dd){
+			$("#ld_kehu").val(dd.kehu);
+			$("#ld_yangban").text(dd.yangban.taiguoxinghao);
+			each(dd.huowu,function(i,hw){
+				var huowu = tr_huowu.clone(true);
+				huowu.find("#hw_xuhao").text(i+1);
+				huowu.find("#hw_guige").text(hw.guige);
+				huowu.find("#hw_shuliang").text(hw.shuliang);
+				huowu.find("#hw_danwei").val(hw.danwei);
+				$("#tr_tianjiahuowu").before(huowu);				
+			});
+			if(dd.ludanbeizhu){
+				ld_beizhu();
+				$("#ld_beizhu").val(dd.ludanbeizhu);
+			}
+		});
+	}
+	$("#lb_xiugai").click(xiugai);
 	function cz_beizhu(){
 		$("#beizhu").show();
 		if(currYG.beizhu){
@@ -171,6 +197,9 @@
 			return;
 		}
 		var dingdan = {yuangao:currYG._id,kehu:$("#ld_kehu").val().trim(),yangban:{taiguoxinghao:$("#ld_yangban").text().trim()},huowu:[]};
+		if($("#ld_ddbianhao").text()!=""){
+			dingdan._id = $("#ld_ddbianhao").text();
+		}
 		var ok = true;
 		$(".ld_huowu").each(function(n,hw){
 			var huowu = {guige:$("#hw_guige",hw).text().trim(),shuliang:$("#hw_shuliang",hw).text().trim(),danwei:$("#hw_danwei",hw).val().trim()};
@@ -208,8 +237,11 @@
 	}
 	$("#ld_tijiaodingdan").click(tijiaodingdan);
 	function lb_shanchudingdan(){
-		postJson("dingdan.php",{caozuo:"shanchu",_id:$(this).parents("#lb_dingdan").data("dingdanId")},function(res){
-			shuaxindingdanliebiao();
+		var that = $(this);
+		ask($(this),"确定要删除该订单吗？",function(){
+			postJson("dingdan.php",{caozuo:"shanchu",_id:that.parents("#lb_dingdan").data("dingdanId")},function(res){
+				shuaxindingdanliebiao();
+			});
 		});
 	}
 	$("#lb_shanchu").click(lb_shanchudingdan);
@@ -320,6 +352,7 @@
 				$("#lb_zhuangtai",elm).text(dingdan.zhuangtai);
 				if(dingdan.zhuangtai == "录单" && getTheUser()._id == jiegaozheid){
 					$("#lb_shanchu",elm).show();
+					$("#lb_xiugai",elm).show();	
 					$("#lb_shenqingshenhe",elm).show();
 				}
 				if(dingdan.zhuangtai == "申请审核"){

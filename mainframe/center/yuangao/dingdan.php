@@ -22,9 +22,11 @@ if("liebiao" == $param["caozuo"]){
 	echo jsonEncode($a);
 }else if("ludan" == $param["caozuo"]){
 	$dingdan = $param["dingdan"];
-	$dingdan["_id"] = "DD".date("ymd",time());
-	$n = coll("dingdan")->count(array("_id"=>array('$regex'=>"^".$dingdan["_id"])));
-	$dingdan["_id"] .=".".($n+1);
+	if(empty($dingdan["_id"])){
+		$dingdan["_id"] = "DD".date("ymd",time());
+		$n = coll("dingdan")->count(array("_id"=>array('$regex'=>"^".$dingdan["_id"])));
+		$dingdan["_id"] .=".".($n+1);
+	}
 	$i = 1;
 	foreach($dingdan["huowu"] as $k=>$huowu){
 		$dingdan["huowu"][$k]["id"] = $dingdan["_id"]."HW".$i;
@@ -32,6 +34,7 @@ if("liebiao" == $param["caozuo"]){
 	}
 	if(isset($dingdan["beizhu"]) && $dingdan["beizhu"]){
 		$liuyan = array("hostType"=>"dingdan","hostId"=>$dingdan["_id"],"type"=>"ludanliuyan","_id"=>time(),"userId"=>$_SESSION["user"]["_id"],"neirong"=>$dingdan["beizhu"]);
+		coll("liuyan")->remove(array("hostType"=>"dingdan","hostId"=>$dingdan["_id"],"type"=>"ludanliuyan"));
 		coll("liuyan")->save($liuyan);
 		unset($dingdan["beizhu"]);
 	}
@@ -40,7 +43,8 @@ if("liebiao" == $param["caozuo"]){
 	coll("dingdan")->save($dingdan);
 	echo '{"success":true}';
 }else if("shanchu" == $param["caozuo"]){
-	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"删除")));
+	//coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"删除")));
+	coll("dingdan")->remove(array("_id"=>$param["_id"]));
 	echo '{"success":true}';
 }else if("shenqingshenhe" == $param["caozuo"]){
 	$dingdan = coll("dingdan")->findAndModify(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"申请审核")));
@@ -53,4 +57,11 @@ if("liebiao" == $param["caozuo"]){
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"审核")));
 	coll("dingdan")->update(array("_id"=>$param["_id"],"zhuangtai"=>"审核"),array('$push'=>array("liucheng"=>array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审核","time"=>time()))));
 	echo '{"success":true}';
+}else if("getbyid" == $param["caozuo"]){
+	$dd = coll("dingdan")->findOne(array("_id"=>$param["_id"]));
+	$ludanliuyan = coll("liuyan")->findOne(array("hostId"=>$dd["_id"],"hostType"=>"dingdan","type"=>"ludanliuyan"));
+	if($ludanliuyan){
+		$dd["ludanbeizhu"]=$ludanliuyan["neirong"];
+	}
+	echo jsonEncode($dd);
 }
