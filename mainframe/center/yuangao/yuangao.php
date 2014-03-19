@@ -28,7 +28,7 @@ if("shangchuan" == $param["caozuo"]){
 		echo '{"success":false}';
 		exit;
 	}
-	coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"上传"),array('$set'=>array("zhuangtai"=>"作废")));
+	coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"接稿"),array('$set'=>array("zhuangtai"=>"作废")));
 	statExpired();
 	echo '{"success":true}';
 }else if("jiegao" == $param["caozuo"]){
