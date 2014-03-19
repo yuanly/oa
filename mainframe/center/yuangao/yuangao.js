@@ -344,13 +344,15 @@
 		liuyanElm.shuaxinliebiao({hostId:currYG._id,hostType:"yuangao"});
 	}
 	function shuaxindingdanliebiao(){
-		var jiegaozheid = null;
+		var jiegaozheid = currYG.jiegaozhe;
+		/*
 		each(currYG.liucheng,function(n,liucheng){
 			if(liucheng.dongzuo == "接稿"){
 				jiegaozheid = liucheng.userId;
 				return false;
 			}		
 		});
+		*/
 		$("#dingdanliebiao").empty().show();
 		postJson("dingdan.php",{caozuo:"liebiao",_id:currYG._id},function(dingdans){
 			each(dingdans,function(n,dingdan){
