@@ -19,6 +19,15 @@ if("shangchuan" == $param["caozuo"]){
 	statExpired();
 	echo jsonEncode($yuangao);
 }else if("shanchu" == $param["caozuo"]){
+	coll("yuangao")->remove(array("_id"=>$param["_id"],"zhuangtai"=>"上传"));
+	statExpired();
+	echo '{"success":true}';
+}else if("zuofei" == $param["caozuo"]){
+	$count = coll("dingdan")->count(array("yuangao"=>$param["_id"],"zhuangtai"=>array('$ne'=>"作废")));
+	if($count>0){
+		echo '{"success":false}';
+		exit;
+	}
 	coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"上传"),array('$set'=>array("zhuangtai"=>"作废")));
 	statExpired();
 	echo '{"success":true}';

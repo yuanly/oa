@@ -57,6 +57,13 @@
 		}
 	}
 	$("#lc_anniu").click(cz_anniu);
+	function cz_zuofei(){
+		var _id = $("#liucheng").data("_id");
+		postJson("yuangao.php",{caozuo:"zuofei",_id:_id},function(res){
+			listYuangao(0);
+		});
+	}
+	$("#cz_zuofei").click(cz_zuofei);
 	function cz_shanchu(){
 		var _id = $("#liucheng").data("_id");
 		postJson("yuangao.php",{caozuo:"shanchu",_id:_id},function(res){
@@ -450,7 +457,7 @@
 							$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 							$("#cz_ludan",caozuoItem).show();
 							$("#cz_shenqingshenhe",caozuoItem).show();
-							$("#cz_shenqingshenjie",caozuoItem).show();
+							$("#cz_zuofei",caozuoItem).show();
 							//$("#cz_beizhu",caozuoItem).show();
 							$("table",tmpl).append(caozuoItem);
 						}
