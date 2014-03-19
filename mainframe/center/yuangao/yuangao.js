@@ -458,7 +458,7 @@
 							var caozuoItem = caozuoTmpl.clone(true);
 							$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 							$("#cz_ludan",caozuoItem).show();
-							$("#cz_shenqingshenhe",caozuoItem).show();
+							$("#cz_shenqingshenjie",caozuoItem).show();
 							$("#cz_zuofei",caozuoItem).show();
 							//$("#cz_beizhu",caozuoItem).show();
 							$("table",tmpl).append(caozuoItem);
