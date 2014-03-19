@@ -1,6 +1,7 @@
 ﻿/*
 //
 {_id:"A232",
+	accesss:122, 
 	taiguoxinghao:"",
 	zhongguoxinghao:"",
 	shangjia:{_id:1,mingchen:""},

@@ -27,6 +27,12 @@ if("jiedan" == $param["caozuo"]){
 		echo '{"success":false}';
 		return;
 	}
+	if(!empty($dingdan["gonghuoshang"])){
+		coll("contact")->update(array("_id"=>$dingdan["gonghuoshang"]["_id"]),array('$set'=>array("access"=>time())));
+	}
+	if(!empty($dingdan["yangban"])){
+		coll("yangban")->update(array("_id"=>$dingdan["yangban"]["_id"]),array('$set'=>array("access"=>time())));
+	}
 	coll("dingdan")->save($dingdan);
 	echo '{"success":true}';
 }else if("jieguan" == $param["caozuo"]){
