@@ -163,6 +163,9 @@
 	function ld_tianjia(){
 		var huowu = tr_huowu.clone(true);
 		huowu.find("#hw_xuhao").text($(".ld_huowu").length+1);
+		if($(this).parents("tr").prev().hasClass("ld_huowu")){
+			huowu.find("#hw_danwei").val($(this).parents("tr").prev().find("#hw_danwei").val());
+		}
 		$(this).parents("tr").before(huowu);
 	}
 	$("#ld_tianjia","#ludan").click(ld_tianjia);
