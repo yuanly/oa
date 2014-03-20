@@ -203,7 +203,7 @@ function _hanshuku_(){}
 	var tmpl_tr = $("#tr_richeng").detach();
 	
 	setUsers(true);
-	var today = Math.floor((new Date().getTime())/1000/3600/24);
+	var today = Math.floor((new Date().getTime()+(8*3600000))/1000/3600/24);
 	var currDay = today - 7;
 	refreshRicheng(currDay);
 });
