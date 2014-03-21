@@ -67,7 +67,7 @@ $(function(){
 						currSample = yangban;
 						obj2form(yangban);
 						zhidu();
-						console.log($("#tijiao"));
+						liuyanElm.shuaxinliebiao({hostId:yangban._id});
 						tip($("#bianji"),"成功提交样板信息！",1500);						
 					}else{
 						ask3(null,res.err);
@@ -229,7 +229,7 @@ $(function(){
 		yangban.danwei = $("#xiangdan #danwei").val().trim();
 		var shangjia = $("#xiangdan #shangjia").data("shangjia");
 		if(shangjia){
-			yangban.shangjia = {_id:shangjia._id,mingchen:shangjia.mingchen};
+			yangban.shangjia = {_id:shangjia._id,mingchen:shangjia.mingchen,py:shangjia.py};
 		}
 		yangban.yijiazhe = getUserIdByName($("#xiangdan #yijiazhe").val().trim());
 		yangban.yijiariqi = $("#xiangdan #yijiariqi").val().trim();

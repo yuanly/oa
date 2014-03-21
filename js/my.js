@@ -17,7 +17,7 @@
  function getImgUrl(id){
  	return getDocRoot()+"uploader/server/down.php?id="+id;
  }
- 
+
  var logger={
  		level:1,//0 debug 1 info 2 warn 3 error
  		setLevel:function(lv){
@@ -74,7 +74,18 @@
  		}
  	}catch(ex){}
  }
- 
+ //用于拼音首字母过滤，只留下大写字母其他字符扔掉
+ 	function filterAZ(s){
+ 		s = s.toUpperCase();
+		var ret="";
+		for(var i=0;i<s.length;i++){
+			if(s.charAt(i)>='A' && s.charAt(i)<='Z'){
+				ret += s.charAt(i);
+			}
+		}
+		return ret;
+	}
+	
  function isHtml5(){
  	if(isOldIE()){
  		return false;

@@ -28,7 +28,8 @@ if(isset($param["_id"])){//
 		if(!empty($param["option"]["bianhao"])){
 			$query["_id"] = array('$regex'=>$param["option"]["bianhao"]);
 		}else if(!empty($param["option"]["shangjia"])){
-			$query["shangjia.mingchen"] = array('$regex'=>$param["option"]["shangjia"]);
+			//$query["shangjia.mingchen"] = array('$regex'=>$param["option"]["shangjia"]);
+			$query["shangjia.py"]=strtoupper($param["option"]["shangjia"]);
 		}else if(!empty($param["option"]["taixing"])){
 			$query["taiguoxinghao"] = array('$regex'=>$param["option"]["taixing"]);
 		}else if(!empty($param["option"]["zhongxing"])){

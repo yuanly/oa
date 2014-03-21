@@ -3,6 +3,9 @@
 	_id:"xx",
 	access:111232,
 	mingchen:"xxx",
+	py:"xx",
+	bianma:"xx",//几个英文字母缩写，打印柜单时候用到
+	quyu:"xx",//区域，如“花都”“中大”,有时需要按区域搜索商家
 	dizhi:"xxx",
 	beizhu:"xxx",
 	dianhualiebiao:[],
@@ -17,7 +20,7 @@
 
 $(function(){
 	$('#currLocation', window.parent.document).text("联系人");
-	
+
 	var currContact = null;
 	var limit = 20;
 	//定义左右布局
@@ -154,10 +157,12 @@ $(function(){
 		$("#yanhuodizhi").vals(contact.yanhuodizhi);
 		if("个人" == contact.leixing){
 			$("#tr_geren").show();
-			$("#tr_shangjia").hide();
+			$(".tr_shangjia").hide();
 		}else if("商家" == contact.leixing){
 			$("#tr_geren").hide();
-			$("#tr_shangjia").show();
+			$(".tr_shangjia").show();
+			$("#bianma").vals(contact.bianma);
+			$("#quyu").vals(contact.quyu);
 		}
 		$("#dizhi").vals(contact.dizhi);
 		$("#beizhu").vals(contact.beizhu);
@@ -185,9 +190,9 @@ $(function(){
 	}
 	$("#leixing").bind("input",function(){
 		if("个人" == $(this).val()){
-			$("#tr_geren").show();$("#tr_shangjia").hide();
+			$("#tr_geren").show();$(".tr_shangjia").hide();
 		}else if("商家" == $(this).val()){
-			$("#tr_geren").hide();$("#tr_shangjia").show();
+			$("#tr_geren").hide();$(".tr_shangjia").show();
 		}
 	});
 	//进入编辑状态。
@@ -234,13 +239,15 @@ $(function(){
 			if("商家" == contact.leixing){
 				contact.yanhuodizhi = $("#yanhuodizhi").val().trim();
 				contact.zhiwu = undefined;contact.shangjia = undefined;
-				contact.shangjia = {_id:contact._id,mingchen:contact.mingchen};
+				contact.shangjia = {_id:contact._id,mingchen:contact.mingchen,py:contact.py};
+				contact.bianma = $("#bianma").val().toUpperCase();
+				contact.quyu = $("#quyu").val();
 			}else if("个人" == contact.leixing){
 				contact.yanhuodizhi = undefined;
 				contact.zhiwu = $("#zhiwu").val().trim();
 				var sj = $("#shangjia").data("shangjia");
 				if(sj && ""!=$("#shangjia").val().trim()){
-					contact.shangjia = {_id:sj._id,mingchen:sj.mingchen};
+					contact.shangjia = {_id:sj._id,mingchen:sj.mingchen,py:sj.py};
 				}else{
 					contact.shangjia = undefined;
 				}
@@ -306,6 +313,7 @@ $(function(){
 				}
 			});
 		}else{
+			contact.py = makePy(contact.mingchen);
 			postJson("contact.php",contact,function(res){
 				if(res.success == true){
 					//obj2form(contact);
