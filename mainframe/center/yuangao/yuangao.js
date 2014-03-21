@@ -1,6 +1,7 @@
 ﻿$(function(){
 /*
 {	_id:"xx",
+	taiguobianhao:"xxx",
 	liucheng:[{userId:3,dongzuo:"上传",time:1322}],
 	jiegaozhe:"xx",
 	shenjiezhe:"xx",
@@ -17,12 +18,34 @@
 	//原稿有时候有泰国编号！！！TODO 
 	$('#currLocation', window.parent.document).text("原稿管理");
 	
+	function statusColor(status,color){
+		//上传 作废 接稿 申请审结 审结
+		if(status == "上传"){
+			return "#FFB5B5";
+		}
+		if(status == "接稿"){
+			return "#ffdc35";
+		}
+		if(status == "申请审结"){
+			return "#deffac";
+		}
+		if(status == "审结"){
+			return color;
+		}
+		if(status == "作废"){
+			return color;
+		}
+	}
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function tijiaoyuangao(){
-		var yuangao = {shangchuanzhe:getTheUser()._id,neirong:editor.editorVal()};
+		var yuangao = {shangchuanzhe:getTheUser()._id,neirong:editor.editorVal(),taiguobianhao:$("#taiguobianhao").val().trim()};
 		var that = $(this);
 		if("" == yuangao.neirong){
 			tip(that,"原稿内容不能为空！",1500);
+			return;
+		}
+		if("" == yuangao.taiguobianhao){
+			tip(that,"泰国编号不能为空！",1500);
 			return;
 		}
 		that.data("waiting",true);
@@ -313,6 +336,10 @@
 				tr.find("#td_shenjieshijian").text(yuangao.shenjieshijian?new Date(yuangao.shenjieshijian*1000).format("yy/MM/dd hh:mm"):"");
 				
 				tr.css("background-color",toggle("#fff","#eee"));
+				tr.find("#td_bianhao").css("background-color",statusColor(yuangao.zhuangtai,tr.css("background-color")));
+				if(yuangao.zhuangtai == "作废"){
+					tr.css("text-decoration","line-through");
+				}
 				
 				$("#yuangaotable").append(tr);
 			});
@@ -333,7 +360,7 @@
 		currYG = yg;
 		$("#shangchuan").hide();
 		$("#liucheng").show().liucheng(getTheUser(),yg);
-		$("#xianshi").show().empty().html(yg.neirong).prepend("<div style='background-color:#eee'>原稿&nbsp;&nbsp;<a href='yuangao.html?showId="+yg._id+"' target=_blank>"+yg._id+"</a></div>");
+		$("#xianshi").show().empty().html(yg.neirong).prepend("<div style='background-color:#eee'>原稿&nbsp;&nbsp;<a href='yuangao.html?showId="+yg._id+"' target=_blank>"+yg._id+"</a>&nbsp;&nbsp;"+yg.taiguobianhao+"</div>");
 		if(yg.shenjieshuoming){
 			$("#xianshi").append("<p style='background-color:#eee'>备注</p>");
 			$("#xianshi").append("<div id='xs_beizhu'></div>");
@@ -404,6 +431,7 @@
 	function shangchuanmoshi(){
 		$(".ui-layout-center").show();
 		$("#liucheng").hide();
+		$("#ludan").hide();
 		$("#xianshi").hide();
 		$("#dingdanliebiao").hide();
 		$("#shangchuan").show();
@@ -483,7 +511,7 @@
 	}
 	
 	///////////////////////////////初始化/////////////////////////////////////////////
-	var limit=20;
+	var limit=35;
 	var currYG = null;
 	//定义左右布局
 	var layout = $("body").layout({
