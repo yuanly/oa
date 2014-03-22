@@ -12,25 +12,29 @@ if(isset($param["_id"])){//
 }else{//
 	$cmd = $param["option"]["cmd"];
 	$query = array();
+	//录单 审核 接单（作废 接管 慢单/取消慢单） 下单申请（回退） 下单审核（打印 回退） 下单（回退） 发货 审结（回退） 作废（审结 回退） 
 	if("jiedan" == $cmd){
 		$query["zhuangtai"] = "审核";
-	}else if("xiadan" == $cmd){
-		$query["zhuangtai"] = "接单";
-		$query["gendanyuan"] = (String)$_SESSION["user"]["_id"];
-	}else if("shendan" == $cmd){
+	}else if("wodexindan" == $cmd){
+		$query["zhuangtai"] = array('$in'=>array("接单","下单申请","下单审核"));
+		$query["mandan"] = false;
+		$query["gendanyuan"] = $_SESSION["user"]["_id"];
+	}else if("wodemandan" == $cmd){
+		$query["zhuangtai"] = array('$in'=>array("接单","下单申请","下单审核"));
+		$query["mandan"] = true;
+		$query["gendanyuan"] = $_SESSION["user"]["_id"];
+	}else if("wodeweifahuo" == $cmd){
 		$query["zhuangtai"] = "下单";
-		$query["gendanyuan"] = array('$ne'=>(String)$_SESSION["user"]["_id"]);
-	}else if("jie2dan" == $cmd){
-		$query["zhuangtai"] = "审单";
-		$query["gendanyuan"] = (String)$_SESSION["user"]["_id"];
-	}else if("dengzidan" == $cmd){
-		$query["zhuangtai"] = "子单";
-		$query["gendanyuan"] = (String)$_SESSION["user"]["_id"];
-	}else if("dengban" == $cmd){
-		$query["zhuangtai"] = "等版";
-		$query["gendanyuan"] = (String)$_SESSION["user"]["_id"];
-	}else if("wode" == $cmd){
-		$query["gendanyuan"] = (String)$_SESSION["user"]["_id"];
+		$query["gendanyuan"] = $_SESSION["user"]["_id"];
+	}else if("wodedaishenjie" == $cmd){
+		$query["zhuangtai"] = array('$in'=>array("作废","发货"));
+		$query["gendanyuan"] = $_SESSION["user"]["_id"];
+	}else if("daixiadanshenhe" == $cmd){
+		$query["zhuangtai"] = "下单申请";
+		$query["gendanyuan"] = array('$ne'=>$_SESSION["user"]["_id"]);
+	}else if("daishenjie" == $cmd){
+		$query["zhuangtai"] = array('$in'=>array("作废","发货"));
+		$query["gendanyuan"] = array('$ne'=>$_SESSION["user"]["_id"]);
 	}
 	
 		if(isset($param["option"]["kehu"])){
@@ -50,6 +54,12 @@ if(isset($param["_id"])){//
 		}
 		if(isset($param["option"]["bianhao"])){
 			$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
+		}
+		if(isset($param["option"]["quyu"])){
+			$query["gonghuoshang.quyu"] = $param["option"]["quyu"];
+		}
+		if(isset($param["option"]["man"])){
+			$query["mandan"] = $param["option"]["man"];
 		}
 	$cur = coll("dingdan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	

@@ -16,7 +16,6 @@
 	//shenjieshijian:133423,neirong:"xsdf",shenjieshuoming:"dsdsdfa"}
 	//{yuangao:currYG._id,kehu:$("#ld_kehu").val().trim(),yangban:{taiguoxinghao:$("#ld_yangban").text().trim()},huowu:[]};
 	//原稿有时候有泰国编号！！！TODO 
-	$('#currLocation', window.parent.document).text("原稿管理");
 	
 	function statusColor(status,color){
 		//上传 作废 接稿 申请审结 审结
@@ -367,6 +366,7 @@
 	});
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 		//列出原稿
+	var cmd = getUrl().cmd?getUrl().cmd:"";			
 	function listYuangao(offset,showId){
 		if(offset<0){
 			return;
@@ -380,7 +380,15 @@
 		if(shangchuanshijian>0){
 			shangchuanshijian = shangchuanshijian/1000 + 24*3600;
 		}
-		var cmd = getUrl().cmd?getUrl().cmd:"";
+		if("jiegao" == cmd){
+			$('#currLocation', window.parent.document).text("原稿/待接稿");
+		}else if("ludan" == cmd){
+			$('#currLocation', window.parent.document).text("原稿/待录单");
+		}else if("shenjie" == cmd){
+			$('#currLocation', window.parent.document).text("原稿/待审结");
+		}else{
+			$('#currLocation', window.parent.document).text("原稿/查询");
+		}
 		postJson("yuangaos.php",{offset:offset*limit,limit:limit,option:{cmd:cmd,"shangchuanshijian":shangchuanshijian,
 																																		"weishenjie":isWeishenjie}},function(yuangaos){
 			$("#yuangaotable .tr_yuangao").remove();

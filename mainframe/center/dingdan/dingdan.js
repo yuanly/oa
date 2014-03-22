@@ -8,26 +8,29 @@
 	
 	{	_id:"DD131008.1",
 		liucheng:[{userId:3,dongzuo:"录单",time:1322}],
-		yuangao:YG131008.1,
-		taiguoyuangao:"xx",
-		taiguobianhao:3,
-		zhuangtai:"录单",
+		mandan:true,
+		yuangao:YG131008.1,//系统原稿编号
+		taiguoyuangao:"xx",//泰国原稿编号
+		taiguobianhao:3,//该订单在原始的泰国原稿中的序号（审录单时有用）
+		zhuangtai:"录单",//录单 审核 接单（作废 接管 慢单/取消慢单） 下单申请（回退） 下单审核（打印 回退） 下单（回退） 发货 审结（回退） 作废（审结 回退） 
 		kehu:"C",
-		taiguoyangban:"xx",
+		taiguoyangban:"xx",//从泰国原稿抄过来的，打印给泰国的柜单时有用
 		yangban:{_id:"YB223",taiguoxinghao:"xxx",zhongguoxinghao:""},
-		gonghuoshang:{_id:"SJ131110",mingche:"大大"},
+		gonghuoshang:{_id:"SJ131110",mingchen:"大大",quyu:"xxx"},//计划装柜单的时候需要按区域查（方便装车？）
 		lianxiren:{_id:12,mingchen:"xx"},
 		gendanyuan:3,
-		xiadanshijian:13223,
+		xiadanshijian:13223,//可以不要。这个时间出现在列表里，方便看出是否下单。但如果用颜色来区分状态，就没必要在列表里出现下单时间
 		beizhu:"xxx",
 		fudan:"fudanid",
-		zidan:["zidanid"],
-		huowu:[{taiguoguige:"xx",guige:"xxx",shuliang:23,danwei:"KG"}...]}		
+		zidan:["zidanid"],//这个其实也可以不要，用父单做关联即可
+		huowu:[{id:"xxx",taiguoguige:"xx",guige:"xxx",shuliang:23,danwei:"KG"}...]}		
 	*/
-	$('#currLocation', window.parent.document).text("订单管理");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
-	
+	addQuyulist();
+	$("#th_quyu").attr("list","quyulist");
+	$("#th_quyu").bind("input",function(){listDingdan(0);});
+	$("#th_man").bind("input",function(){listDingdan(0);});
 	$("#th_bianhao").datepicker().change(function(){
 		$(this).val("DD"+date2id($(this).val()));
 		listDingdan(0);
@@ -47,7 +50,7 @@
 		listDingdan(0);
 	});
  
-	$("#th_zhuangtai").myselector(["状态","录单","审核","接单","等版","子单","下单","审单","结单","作废"]).bind("input",function(){listDingdan(0);});
+	$("#th_zhuangtai").myselector(["状态","录单","审核","接单","下单申请","下单审核","下单","发货","结单","作废"]).bind("input",function(){listDingdan(0);});
 	$("#fangqi").click(function(){
 		showDetailById(currDD._id);
 	});
@@ -140,7 +143,7 @@
 	function sel_gonghuoshang(event){
 		var limit = 20;
 		setSelector(event,function(page,option,callback){
-				postJson("dingdan.php",{caozuo:"shangjia",offset:page*limit,limit:limit,option:option},function(gonghuoshangs){
+				postJson("dingdan.php",{caozuo:"shangjia",offset:page*limit,limit:limit,option:option.trim().toUpperCase()},function(gonghuoshangs){
 					callback(gonghuoshangs);
 				});
 			},["_id","mingchen","dianhua","dizhi"],function(gonghuoshang){
@@ -288,6 +291,24 @@
 		});
 	}
 	$("#cz_jieguan").click(cz_jieguan);
+	function cz_mandan(){
+		postJson("dingdan.php",{caozuo:"mandan",_id:currDD._id},function(res){
+			showDetailById(currDD._id);
+		});
+	}
+	$("#cz_mandan").click(cz_mandan);
+	function cz_xiadanshenqing(){
+		postJson("dingdan.php",{caozuo:"xiadanshenqing",_id:currDD._id},function(res){
+			showDetailById(currDD._id);
+		});
+	}
+	$("#cz_xiadanshenqing").click(cz_xiadanshenqing);
+	function cz_quxiaomandan(){
+		postJson("dingdan.php",{caozuo:"quxiaomandan",_id:currDD._id},function(res){
+			showDetailById(currDD._id);
+		});	
+	}
+	$("#cz_quxiaomandan").click(cz_quxiaomandan);
 	function cz_ludan(){
 		postJson("dingdan.php",{caozuo:"ludan",_id:currDD._id},function(res){
 			showDetailById(res.id);
@@ -439,6 +460,37 @@
 	}
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 function _hanshuku_(){}
+	function statusColor(status,color){
+		//录单 审核 接单（作废 接管 慢单/取消慢单） 下单申请（回退） 下单审核（打印 回退） 下单（回退） 发货 审结（回退） 作废（审结 回退） 
+		if(status == "录单"){//浅蓝
+			return "#ADD8E6";
+		}
+		if(status == "审核"){//绿色
+			return "#7CFC00";
+		}
+		if(status == "接单"){//红色
+			return "#FF4500";
+		}
+		if(status == "下单申请"){//棕色
+			return "#FF6347";
+		}
+		if(status == "下单审核"){//粉红
+			return "#FFB6C1";
+		}
+		if(status == "下单"){//黄色
+			return "FFFF00";
+		}
+		if(status == "发货"){//赭
+			return "#DEB887";
+		}
+		if(status == "作废"){//赭
+			return "#DEB887";
+		}
+		if(status == "审结"){
+			return color;
+		}
+	}
+	
 	function hwId2Int(hwId){
 		if(!hwId){
 			return 0;
@@ -504,15 +556,42 @@ function _hanshuku_(){}
 		if("" != ghs && "供货商" != ghs){
 			ret.gonghuoshang = $("#th_gonghuoshang").data("ghsId");
 		}
+		var quyu = $("#th_quyu").val().trim();
+		if("" != quyu && "区域" != quyu){
+			ret.quyu = quyu;
+		}
+		var man = $("#th_man").val().trim();
+		if("是" == man){
+			ret.man = true;
+		}else if("否" == man){
+			ret.man = false;
+		}
 		return ret;
 	}
 		//列出原稿
+	var cmd = getUrl().cmd?getUrl().cmd:"";
 	function listDingdan(offset,showId){
 		if(offset<0){
 			return;
 		}
 		$("#pager").data("offset",offset);
-		var cmd = getUrl().cmd?getUrl().cmd:"";
+		if("jiedan" == cmd){
+			$('#currLocation', window.parent.document).text("订单/待接单");
+		}else if("wodexindan" == cmd){
+			$('#currLocation', window.parent.document).text("订单/我的新单");
+		}else if("wodemandan" == cmd){
+			$('#currLocation', window.parent.document).text("订单/我的慢单");
+		}else if("wodeweifahuo" == cmd){
+			$('#currLocation', window.parent.document).text("订单/我的未发货");
+		}else if("wodedaishenjie" == cmd){
+			$('#currLocation', window.parent.document).text("订单/我的待审结");
+		}else if("daixiadanshenhe" == cmd){
+			$('#currLocation', window.parent.document).text("订单/待下单审核");
+		}else if("daishenjie" == cmd){
+			$('#currLocation', window.parent.document).text("订单/待审结");
+		}else{
+			$('#currLocation', window.parent.document).text("订单/查询");
+		}
 		var option = $.extend({cmd:cmd},getOptions());
 		postJson("dingdans.php",{offset:offset*limit,limit:limit,option:option},function(dingdans){
 			$("#dingdantable .tr_dingdan").remove();
@@ -532,10 +611,14 @@ function _hanshuku_(){}
 				tr.find("#td_zhuangtai").text(dingdan.zhuangtai);				
 				tr.find("#td_gendanyuan").text(dingdan.gendanyuan?getUser(dingdan.gendanyuan).user_name:"");
 				tr.find("#td_gonghuoshang").text(dingdan.gonghuoshang?dingdan.gonghuoshang.mingchen:"");
-				tr.find("#td_xiadanriqi").text(dingdan.xiadanshijian?new Date(dingdan.xiadanshijian*1000).format("yy/MM/dd hh:mm"):"");
+				//tr.find("#td_xiadanriqi").text(dingdan.xiadanshijian?new Date(dingdan.xiadanshijian*1000).format("yy/MM/dd hh:mm"):"");
+				tr.find("#td_quyu").text(dingdan.quyu?dingdan.quyu:"");
+				tr.find("#td_man").text(dingdan.man?"慢":"");
 				
-				tr.css("background-color",toggle("#fff","#eee"));
-				if(dingdan.zhuangtai == "删除"){
+				var color = toggle("#fff","#eee");
+				tr.css("background-color",color);
+				tr.find("#td_bianhao").css("background-color",statusColor(dingdan.zhuangtai,color));
+				if(dingdan.zhuangtai == "作废"){
 					tr.css("text-decoration","line-through");
 				}
 				$("#dingdantable").append(tr);
@@ -704,6 +787,7 @@ function _hanshuku_(){}
 			$("#lc_mingchen",tmpl).text(usr.user_name);
 			$("#lc_dongzuo",tmpl).text(item.dongzuo);
 			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
+			//录单 审核 接单（作废 接管 慢单/取消慢单 子单） 下单申请（回退） 下单审核（打印 回退） 下单（回退） 发货 审结（回退） 作废（审结 回退）
 			if("审核" == item.dongzuo){
 				("#lc_tr_panel",tmpl).attr("title","录单员录入的订单已被审核，可以被采购跟单员接单处理！");
 				if((dingdan.liucheng.length - 1) == n){
@@ -712,58 +796,95 @@ function _hanshuku_(){}
 					$("#cz_jiedan",caozuoItem).show();
 					$("table",tmpl).append(caozuoItem);
 				}
-			}else if("接单" == item.dongzuo){
+			}else if("接单" == item.dongzuo){//接单（作废-跟单员自己还没下单申请 接管-非跟单员任何时候 慢单/取消慢单-跟单员任何时候 子单-跟单未作废/审结 下单申请-跟单员）
 				("#lc_tr_panel",tmpl).attr("title","跟单员已接受订单，正在对其进行处理！");
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				var caozuoItem = caozuoTmpl.clone(true);
-				$("#cz_dayin",caozuoItem).show();
 				if(theUser._id == currDD.gendanyuan){
 					kebianji = true;
-					if((dingdan.liucheng.length - 1) == n){
-						$("#cz_xiadan",caozuoItem).show();
-						$("#cz_zidan",caozuoItem).show();
-						$("#cz_dengban",caozuoItem).show();
-					}else if("子单" == dingdan.liucheng[dingdan.liucheng.length-1].dongzuo || "等版" == dingdan.liucheng[dingdan.liucheng.length-1].dongzuo){
-						$("#cz_xiadan",caozuoItem).show();
+					if(currDD.mandan){
+						$("#cz_quxiaomandan",caozuoItem).show();
+					}else{
+						$("#cz_mandan",caozuoItem).show();
 					}
-					if("结单" != dingdan.liucheng[dingdan.liucheng.length-1].dongzuo && "作废" != dingdan.liucheng[dingdan.liucheng.length-1].dongzuo){
+					if((dingdan.liucheng.length - 1) == n){
+						$("#cz_xiadanshenqing",caozuoItem).show();
 						$("#cz_zuofei",caozuoItem).show();
 					}
-				}else if((dingdan.liucheng.length - 1) == n){
+					if(!inLiuchen(liucheng,"审结") && !inLiucheng(liulcheng,"作废")){
+						$("#cz_zidan",caozuoItem).show();
+					}
+				}else{
 					$("#cz_jieguan",caozuoItem).show();
 				}
 				$("table",tmpl).append(caozuoItem);
-			}else if("子单" == item.dongzuo){
-				("#lc_tr_panel",tmpl).attr("title","订单在等待子单，即该订单需要等子单就绪后才能进行下一步的处理！");
-				if(theUser._id == currDD.gendanyuan){
-					if((dingdan.liucheng.length - 1) == n){
+			}else if("下单申请" == item.dongzuo){//下单申请（回退-跟单员没审核 下单审核-非跟单员没审核）
+				kebianji = false;
+				("#lc_tr_panel",tmpl).attr("title","跟单员已经谈好价格准备下单，申请他人审核确认！");
+				if((dingdan.liucheng.length - 1) == n){
+					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+					var caozuoItem = caozuoTmpl.clone(true);
+					if(theUser._id == currDD.gendanyuan){
+						$("#cz_huitui",caozuoItem).show();
+					}else{
+						$("#cz_xiadanshenhe",caozuoItem).show();
+					}
+					$("table",tmpl).append(caozuoItem);
+				}
+			}else if("下单审核" == item.dongzuo){//下单审核（回退-审核者没下单 打印-）
+				("#lc_tr_panel",tmpl).attr("title","他人一对订单进行审核确认，可以下单！");
+				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+				var caozuoItem = caozuoTmpl.clone(true);
+				if((dingdan.liucheng.length - 1) == n && theUser._id == item.userId){
+					$("#cz_huitui",caozuoItem).show();
+				}
+				$("#cz_dayin",caozuoItem).show();
+				$("table",tmpl).append(caozuoItem);
+			}else if("下单" == item.dongzuo){//下单（回退-跟单员未发货 发货-跟单员未发货）
+				("#lc_tr_panel",tmpl).attr("title","订单已经发给供货商，等待供货商发货！");
+				if((dingdan.liucheng.length - 1) == n){
+					if(theUser._id == currDD.gendanyuan){
 						$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 						var caozuoItem = caozuoTmpl.clone(true);
-						$("#cz_ludan",caozuoItem).show();
+						$("#cz_huitui",caozuoItem).show();
+						$("#cz_fahuo",caozuoItem).show();
+						$("table",tmpl).append(caozuoItem);
 					}
 				}
-				$("table",tmpl).append(caozuoItem);
-			}else if("下单" == item.dongzuo){
-				("#lc_tr_panel",tmpl).attr("title","订单已经发给供货商！");
-				kebianji = false;
-				var caozuoItem = caozuoTmpl.clone(true);
-				if(theUser._id != item.userId && (dingdan.liucheng.length - 1) == n){
-					$("#cz_shendan",caozuoItem).show();
+			}else if("发货" == item.dongzuo){//发货（回退-跟单员未审结 审结-非跟单员）
+				("#lc_tr_panel",tmpl).attr("title","已发货，申请审结中！");
+				if((dingdan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+					var caozuoItem = caozuoTmpl.clone(true);
+					if(theUser._id == currDD.gendanyuan){
+						$("#cz_huitui",caozuoItem).show();
+					}else{
+						$("#cz_shenjie",caozuoItem).show();
+					}
+					$("table",tmpl).append(caozuoItem);
 				}
-				$("table",tmpl).append(caozuoItem);
-			}else if("审单" == item.dongzuo){
-				("#lc_tr_panel",tmpl).attr("title","订单已经下单，等待其他同事帮忙检查是否有疏漏！");
-				var caozuoItem = caozuoTmpl.clone(true);
-				if(theUser._id == currDD.gendanyuan && (dingdan.liucheng.length - 1) == n){
-					$("#cz_jie2dan",caozuoItem).show();
+			}else if("作废" == item.dongzuo){//作废（审结-非跟单员未审结 回退-跟单员未审结）
+				("#lc_tr_panel",tmpl).attr("title","订单被作废，申请审结中！");
+				if((dingdan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+					var caozuoItem = caozuoTmpl.clone(true);
+					if(theUser._id == currDD.gendanyuan){
+						$("#cz_huitui",caozuoItem).show();
+					}else{
+						$("#cz_shenjie",caozuoItem).show();
+					}
+					$("table",tmpl).append(caozuoItem);
 				}
-				$("table",tmpl).append(caozuoItem);
-			}else if("结单" == item.dongzuo){
-				("#lc_tr_panel",tmpl).attr("title","订单经审查没疏漏，可以将其标识为结束！");
+			}else if("审结" == item.dongzuo){//审结（回退-审结者）
+				("#lc_tr_panel",tmpl).attr("title","订单已审核！");
+				if(theUser._id == item.userId){
+					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+					var caozuoItem = caozuoTmpl.clone(true);
+					$("#cz_huitui",caozuoItem).show();
+					$("table",tmpl).append(caozuoItem);
+				}
 			}else if("录单" == item.dongzuo){
-				("#lc_tr_panel",tmpl).attr("title","还在录单，尚未审核！");
+				("#lc_tr_panel",tmpl).attr("title","原稿录单员还在录单，没审核，还不可以接单！");
 			}
 			that.append(tmpl);
 		});

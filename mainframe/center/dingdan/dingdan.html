@@ -61,12 +61,25 @@
 					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:45px;	font-size:0.8em"/></th>
 					<th nowrap><input id="th_gendanyuan" class="plainTh" value="跟单员" style="width:55px;font-size:0.8em"/></th>
 					<th nowrap><input id="th_gonghuoshang" class="plainTh" value="供货商" style="width:120px;cursor:pointer;font-size:0.8em"/></th>
-					<th nowrap>下单日期</th>
+					<th nowrap><input id="th_quyu" class="plainTh" value="区域" style="width:55px;font-size:0.8em"/></th>
+					<th nowrap><input id="th_man" class="plainTh" value="慢" list="manlist" style="width:30px;font-size:0.8em"/></th>
 				</tr>
 				<tr class="tr_dingdan">
-					<td id="td_bianhao"></td><td id="td_kehu"></td><td id="td_yangban"></td><td id="td_zhuangtai"></td><td id="td_gendanyuan"></td><td id="td_gonghuoshang"></td><td id="td_xiadanriqi"></td>
+					<td id="td_bianhao"></td>
+					<td id="td_kehu"></td>
+					<td id="td_yangban"></td>
+					<td id="td_zhuangtai"></td>
+					<td id="td_gendanyuan"></td>
+					<td id="td_gonghuoshang"></td>
+					<td id="td_quyu"></td>
+					<td id="td_man"></td>
 				</tr>
 			</table>	
+			<datalist id="manlist">
+				<option value="慢"/>
+				<option value="是"/>
+				<option value="否"/>
+			</datalist>
 			<div id="pager">
 				<span id="prevPage" class="plainBtn">上一页</span> <span id="nextPage" class="plainBtn">下一页</span>
 				<a style="text-decoration:none;font-size:.8em;color:blue;float:right;" href="help.html" target="_blank">帮助</a>
@@ -84,16 +97,21 @@
 					</tr>
 					<tr id="lc_caozuo" style="display:none" >
 						<td colspan="4" style="text-align:center;border:1px solid #ddd">
+							<!--//录单 审核 接单（作废 接管 慢单/取消慢单 子单） 下单申请（回退） 下单审核（打印 回退） 下单（回退） 发货 审结（回退） 作废（审结 回退） -->
 							<span id="cz_jiedan" class="plainBtn" style="margin-right:10px;display:none">接单</span>
 							<span id="cz_jieguan" class="plainBtn" style="margin-right:10px;display:none">接管</span>
-							<span id="cz_dengban" class="plainBtn" style="margin-right:10px;display:none">等版</span>
-							<span id="cz_zidan" class="plainBtn" style="margin-right:10px;display:none">子单</span>
-							<span id="cz_ludan" class="plainBtn" style="margin-right:10px;display:none">录单</span>
-							<span id="cz_xiadan" class="plainBtn" style="margin-right:10px;display:none">下单</span>
-							<span id="cz_dayin" class="plainBtn" style="margin-right:10px;display:none">打印</span>
-							<span id="cz_shendan" class="plainBtn" style="margin-right:10px;display:none">审单</span>
-							<span id="cz_jie2dan" class="plainBtn" style="margin-right:10px;display:none">结单</span>
 							<span id="cz_zuofei" class="plainBtn" style="margin-right:10px;display:none">作废</span>
+							<span id="cz_mandan" class="plainBtn" style="margin-right:10px;display:none">慢单</span>
+							<span id="cz_quxiaomandan" class="plainBtn" style="margin-right:10px;display:none">取消慢单</span>
+							<span id="cz_zidan" class="plainBtn" style="margin-right:10px;display:none">子单</span>
+							<span id="cz_xiadanshenqing" class="plainBtn" style="margin-right:10px;display:none">下单申请</span>
+							<span id="cz_xiadanshenhe" class="plainBtn" style="margin-right:10px;display:none">下单审核</span>
+							<span id="cz_dayin" class="plainBtn" style="margin-right:10px;display:none">打印</span>
+							<!--<span id="cz_ludan" class="plainBtn" style="margin-right:10px;display:none">录单</span>-->
+							<span id="cz_xiadan" class="plainBtn" style="margin-right:10px;display:none">下单</span>
+							<span id="cz_fahuo" class="plainBtn" style="margin-right:10px;display:none">发货</span>
+							<span id="cz_shenjie" class="plainBtn" style="margin-right:10px;display:none">审结</span>							
+							<span id="cz_huitui" class="plainBtn" style="margin-right:10px;display:none">回退</span>
 						</td>
 					</tr>
 				</table>

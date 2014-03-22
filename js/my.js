@@ -18,6 +18,29 @@
  	return getDocRoot()+"uploader/server/down.php?id="+id;
  }
 
+funcion inLiucheng(liucheng,dongzuo){
+	var ret = false;
+	each(liucheng,function(i,lc){
+		if(lc.dongzuo == dongzuo){
+			ret = true;
+			return false;
+		}
+	});
+	return ret;
+}
+function addQuyulist(){
+	if($("#quyulist").length==0){
+		$("body").append('<datalist id="quyulist">\
+				<option value="花都"/>\
+				<option value="中大"/>\
+				<option value="惠东"/>\
+				<option value="工厂"/>\
+				<option value="新濠畔"/>\
+				<option value="代付"/>\
+				<option value="其它"/>\
+			</datalist>');
+		}
+}
  var logger={
  		level:1,//0 debug 1 info 2 warn 3 error
  		setLevel:function(lv){
