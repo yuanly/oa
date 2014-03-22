@@ -66,4 +66,10 @@ if("shangchuan" == $param["caozuo"]){
 }else if("beizhu" == $param["caozuo"]){
 	coll("yuangao")->update(array("_id"=>$param["_id"]),array('$set'=>array("beizhu"=>$param["beizhu"])));
 	echo '{"success":true}';
+}else if("taiguoguige" == $param["caozuo"]){
+	$cur = coll("taiguige")->find();	
+	echo  cur2json($cur);
+}else if("zhongguoguige" == $param["caozuo"]){
+	$cur = coll("zhongguige")->find();	
+	echo  cur2json($cur);
 }

@@ -4,8 +4,16 @@
 include("../../../util.php");
 
 if(coll("contact")->count()>0){
+	$db = new MongoClient();
+	//$db->oa->createCollection("taiguige",array("capped"=>true,"max"=>100));
+	$db->oa->command(array("create"=>"taiguige","capped"=>true,"size"=>1024*1024,"max"=>10));
+	$db->oa->command(array("create"=>"zhongguige","capped"=>true,"size"=>1024*1024,"max"=>100));
 	echo "已初始化！";
 }else{
+	$db = new MongoClient();
+	$db->oa->command(array("create"=>"taiguige","capped"=>true,"size"=>1024*1024,"max"=>100));
+	$db->oa->command(array("create"=>"zhongguige","capped"=>true,"size"=>1024*1024,"max"=>100));
+	
 	getId("contact");
 	coll("contact")->save(array("_id"=>"LXR0","mingchen"=>"中泰华伦进出口有限公司","leixing"=>"商家"));//设置公司联系人
 	getId("contact");

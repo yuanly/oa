@@ -9,8 +9,11 @@
 	{	_id:"DD131008.1",
 		liucheng:[{userId:3,dongzuo:"录单",time:1322}],
 		yuangao:YG131008.1,
+		taiguoyuangao:"xx",
+		taiguobianhao:3,
 		zhuangtai:"录单",
 		kehu:"C",
+		taiguoyangban:"xx",
 		yangban:{_id:"YB223",taiguoxinghao:"xxx",zhongguoxinghao:""},
 		gonghuoshang:{_id:"SJ131110",mingche:"大大"},
 		lianxiren:{_id:12,mingchen:"xx"},
@@ -19,7 +22,7 @@
 		beizhu:"xxx",
 		fudan:"fudanid",
 		zidan:["zidanid"],
-		huowu:[{guige:"xxx",shuliang:23,danwei:"KG"}...]}		
+		huowu:[{taiguoguige:"xx",guige:"xxx",shuliang:23,danwei:"KG"}...]}		
 	*/
 	$('#currLocation', window.parent.document).text("订单管理");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////

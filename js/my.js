@@ -1185,7 +1185,7 @@ jQuery.fn.dataInc = function(name,value){
  	   		                	//{"id":16,"success":true}
  	   		                	var src = r+"uploader/server/down.php?id="+respJson.id;
  	   		                	//editor.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:"+(w-20)+"px'/></a>");
- 	   		                	_this.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:"+(w-20)+"px'/></a>");
+ 	   		                	_this.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:"+Math.min(w-20,500)+"px'/></a>");
  	   		                },
  	   		            });
  	   				//editor.removeModal();
@@ -1231,6 +1231,14 @@ jQuery.fn.dataInc = function(name,value){
  		this.find("textarea").val(v);
  		return this;
  	}
+ }
+ 
+ function parseInt2(str){
+ 	var ret = parseInt(str);
+ 	if(isNaN(ret)){
+ 		return undefined;
+ 	}
+ 	return ret;
  }
  function parseFloat2(str){
  	var ret = parseFloat(str);
@@ -1355,7 +1363,9 @@ catch(e){
  	   		                params:{'memo':'new'},
  	   		                debug: true,
  	   		                onComplete: function(id, fileName, respJson){
- 	   		                	editor.pasteHTML("<img src="+opt.docRoot+"uploader/server/down.php?id="+respJson.id+"'/>");
+ 	   		                	var src = opt.docRoot+"uploader/server/down.php?id="+respJson.id;
+ 	   		                	//editor.pasteHTML("<img src="+opt.docRoot+"uploader/server/down.php?id="+respJson.id+"' style='max-width:400px;cursor:pointer'/>");
+ 	   		                	editor.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:400px'/></a>");
  	   		                },
  	   		            });
  	   				editor.removeModal();
