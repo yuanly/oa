@@ -18,7 +18,7 @@
  	return getDocRoot()+"uploader/server/down.php?id="+id;
  }
 
-funcion inLiucheng(liucheng,dongzuo){
+function inLiucheng(liucheng,dongzuo){
 	var ret = false;
 	each(liucheng,function(i,lc){
 		if(lc.dongzuo == dongzuo){

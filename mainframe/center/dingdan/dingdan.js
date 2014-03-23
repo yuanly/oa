@@ -297,6 +297,12 @@
 		});
 	}
 	$("#cz_mandan").click(cz_mandan);
+	function cz_xiadanshenhe(){
+		postJson("dingdan.php",{caozuo:"xiadanshenhe",_id:currDD._id},function(res){
+			showDetailById(currDD._id);
+		});
+	}
+	$("#cz_xiadanshenhe").click(cz_xiadanshenhe);
 	function cz_xiadanshenqing(){
 		postJson("dingdan.php",{caozuo:"xiadanshenqing",_id:currDD._id},function(res){
 			showDetailById(currDD._id);
@@ -356,18 +362,24 @@
 		});
 	}
 	$("#cz_xiadan").click(cz_xiadan);
-	function cz_shendan(){
-		postJson("dingdan.php",{caozuo:"shendan",_id:currDD._id},function(res){
+	function cz_shenjie(){
+		postJson("dingdan.php",{caozuo:"shenjie",_id:currDD._id},function(res){
 			showDetailById(currDD._id);
 		});
 	}
-	$("#cz_shendan").click(cz_shendan);
-	function cz_jie2dan(){
-		postJson("dingdan.php",{caozuo:"jie2dan",_id:currDD._id},function(res){
+	$("#cz_shenjie").click(cz_shenjie);
+	function cz_fahuo(){
+		postJson("dingdan.php",{caozuo:"fahuo",_id:currDD._id},function(res){
 			showDetailById(currDD._id);
-		});
+		});		
 	}
-	$("#cz_jie2dan").click(cz_jie2dan);
+	$("#cz_fahuo").click(cz_fahuo);
+	function cz_huitui(){
+		postJson("dingdan.php",{caozuo:"huitui",_id:currDD._id},function(res){
+			showDetailById(currDD._id);
+		});		
+	}
+	$("#cz_huitui").click(cz_huitui);
 	function cz_dayin(){
 		window.open("dayin.html?showId="+currDD._id,"_blank");
 	}
@@ -811,7 +823,7 @@ function _hanshuku_(){}
 						$("#cz_xiadanshenqing",caozuoItem).show();
 						$("#cz_zuofei",caozuoItem).show();
 					}
-					if(!inLiuchen(liucheng,"审结") && !inLiucheng(liulcheng,"作废")){
+					if(!inLiucheng(liucheng,"审结") && !inLiucheng(liucheng,"作废")){
 						$("#cz_zidan",caozuoItem).show();
 					}
 				}else{
@@ -831,12 +843,16 @@ function _hanshuku_(){}
 					}
 					$("table",tmpl).append(caozuoItem);
 				}
-			}else if("下单审核" == item.dongzuo){//下单审核（回退-审核者没下单 打印-）
+			}else if("下单审核" == item.dongzuo){//下单审核（回退-审核者没下单  打印- 下单-）
 				("#lc_tr_panel",tmpl).attr("title","他人一对订单进行审核确认，可以下单！");
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				var caozuoItem = caozuoTmpl.clone(true);
-				if((dingdan.liucheng.length - 1) == n && theUser._id == item.userId){
-					$("#cz_huitui",caozuoItem).show();
+				if((dingdan.liucheng.length - 1) == n){
+					if(theUser._id == item.userId){
+						$("#cz_huitui",caozuoItem).show();
+					}else if(theUser._id == currDD.gendanyuan){
+						$("#cz_xiadan",caozuoItem).show();
+					}
 				}
 				$("#cz_dayin",caozuoItem).show();
 				$("table",tmpl).append(caozuoItem);
