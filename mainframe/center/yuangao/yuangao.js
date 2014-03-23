@@ -437,7 +437,7 @@
 		currYG = yg;
 		$("#shangchuan").hide();
 		$("#liucheng").show().liucheng(getTheUser(),yg);
-		$("#xianshi").show().empty().html(yg.neirong).prepend("<div style='background-color:#eee'>原稿&nbsp;&nbsp;<a href='yuangao.html?showId="+yg._id+"' target=_blank>"+yg._id+"</a>&nbsp;&nbsp;"+yg.taiguobianhao+"</div>");
+		$("#xianshi").show().empty().html(yg.neirong).prepend("<div style='background-color:#eee'>原稿&nbsp;&nbsp;<a href='yuangao.html?showId="+yg._id+"' target=_blank>"+yg._id+"</a>，泰国单号："+yg.taiguobianhao+"</div>");
 		if(yg.shenjieshuoming){
 			$("#xianshi").append("<p style='background-color:#eee'>备注</p>");
 			$("#xianshi").append("<div id='xs_beizhu'></div>");

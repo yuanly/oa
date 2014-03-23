@@ -671,7 +671,7 @@ function _hanshuku_(){}
 			$("#zidan_out").hide();
 		}
 		$("#dd_bianhao").val(dd._id);
-		$("#dd_yuangao").val(dd.yuangao);
+		$("#dd_yuangao").text(dd.yuangao+"("+dd.taiguoyuangao+")");
 		$("#dd_kehu").val(dd.kehu);
 		if(dd.yangban){
 			var yangban = "("+dd.yangban.taiguoxinghao+")";
@@ -810,26 +810,28 @@ function _hanshuku_(){}
 				}
 			}else if("接单" == item.dongzuo){//接单（作废-跟单员自己还没下单申请 接管-非跟单员任何时候 慢单/取消慢单-跟单员任何时候 子单-跟单未作废/审结 下单申请-跟单员）
 				("#lc_tr_panel",tmpl).attr("title","跟单员已接受订单，正在对其进行处理！");
-				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
-				var caozuoItem = caozuoTmpl.clone(true);
-				if(theUser._id == currDD.gendanyuan){
-					kebianji = true;
-					if(currDD.mandan){
-						$("#cz_quxiaomandan",caozuoItem).show();
+				if(!inLiucheng(dingdan.liucheng,"作废")){
+					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+					var caozuoItem = caozuoTmpl.clone(true);
+					if(theUser._id == currDD.gendanyuan){
+						kebianji = true;
+						if(currDD.mandan){
+							$("#cz_quxiaomandan",caozuoItem).show();
+						}else{
+							$("#cz_mandan",caozuoItem).show();
+						}
+						if((dingdan.liucheng.length - 1) == n){
+							$("#cz_xiadanshenqing",caozuoItem).show();
+							$("#cz_zuofei",caozuoItem).show();
+						}
+						if(!inLiucheng(dingdan.liucheng,"审结")){
+							$("#cz_zidan",caozuoItem).show();
+						}
 					}else{
-						$("#cz_mandan",caozuoItem).show();
+						$("#cz_jieguan",caozuoItem).show();
 					}
-					if((dingdan.liucheng.length - 1) == n){
-						$("#cz_xiadanshenqing",caozuoItem).show();
-						$("#cz_zuofei",caozuoItem).show();
-					}
-					if(!inLiucheng(liucheng,"审结") && !inLiucheng(liucheng,"作废")){
-						$("#cz_zidan",caozuoItem).show();
-					}
-				}else{
-					$("#cz_jieguan",caozuoItem).show();
+					$("table",tmpl).append(caozuoItem);
 				}
-				$("table",tmpl).append(caozuoItem);
 			}else if("下单申请" == item.dongzuo){//下单申请（回退-跟单员没审核 下单审核-非跟单员没审核）
 				kebianji = false;
 				("#lc_tr_panel",tmpl).attr("title","跟单员已经谈好价格准备下单，申请他人审核确认！");
