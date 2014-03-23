@@ -102,16 +102,29 @@ if("jiedan" == $param["caozuo"]){
 		$str .= "新单";
 	}
 	$str .= "，状态：".$dingdan["zhuangtai"];
-	if(empty($dingdan["yangban"])||empty($dingdan["yangban"]["_id"])){
-		$str .= "，样板：";
-	}else{
+	if(!empty($dingdan["yangban"])&&!empty($dingdan["yangban"]["_id"])){
 		$str .= "，样板：".$dingdan["yangban"]["_id"]."-".$dingdan["yangban"]["zhongguoxinghao"];
 	}
-	if(empty($dingdan["gonghuoshang"])||empty($dingdan["yangban"]["_id"])){
-		$str .= "，样板：";
-	}else{
-		$str .= "，样板：".$dingdan["yangban"]["_id"]."-".$dingdan["yangban"]["zhongguoxinghao"];
+	if(!empty($dingdan["gonghuoshang"]) && !empty($dingdan["gonghuoshang"]["_id"])){
+		$str .= "，供货商：".$dingdan["gonghuoshang"]["_id"]."-".$dingdan["gonghuoshang"]["mingchen"];
 	}
+	if(!empty($dingdan["lianxiren"]) && !empty($dingdan["lianxiren"]["mingchen"])){
+		$str .= "，联系人：".$dingdan["gonghuoshang"]["mingchen"];
+	}
+	$str .= "，跟单员ID：".$dingdan["gendanyuan"];
+	if(!empty($dingdan["beizhu"])){
+		$str .= "，备注：".$dingdan["beizhu"];
+	}
+	if(!empty($dingdan["fudan"])){
+		$str .= "，父单：".$dingdan["fudan"];
+	}
+	if(!empty($dingdan["zidan"])){		
+		$str .= "，子单：";
+		foreach($dingdan["zidan"] as $zd){
+			$str .= $zd." ";
+		}
+	}
+	$str .=",货物：<br/>";
 	foreach($dingdan["huowu"] as $huowu){
 		$str = $str."规格：".$huowu["guige"]."数量：".$huowu["shuliang"]."单位：".$huowu["danwie"]."<br/>";
 	}
