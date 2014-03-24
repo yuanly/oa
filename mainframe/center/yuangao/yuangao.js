@@ -396,11 +396,13 @@
 				tr = tr_yuangao.clone(true);
 				tr.data("_id",yuangao._id);
 				tr.find("#td_bianhao").text(yuangao._id);
+				tr.find("#td_taiguodanhao").text(yuangao.taiguobianhao);
+				tr.find("#td_zhuangtai").text(yuangao.zhuangtai);
 				tr.find("#td_shangchuanzhe").text(getUser(yuangao.shangchuanzhe).user_name);
-				tr.find("#td_shangchuanshijian").text(new Date(yuangao.shangchuanshijian*1000).format("yy/MM/dd hh:mm"));
+				//tr.find("#td_shangchuanshijian").text(new Date(yuangao.shangchuanshijian*1000).format("yy/MM/dd hh:mm"));
 				tr.find("#td_jiegaozhe").text(yuangao.jiegaozhe?getUser(yuangao.jiegaozhe).user_name:"");
 				tr.find("#td_shenjiezhe").text(yuangao.shenjiezhe?getUser(yuangao.shenjiezhe).user_name:"");
-				tr.find("#td_shenjieshijian").text(yuangao.shenjieshijian?new Date(yuangao.shenjieshijian*1000).format("yy/MM/dd hh:mm"):"");
+				//tr.find("#td_shenjieshijian").text(yuangao.shenjieshijian?new Date(yuangao.shenjieshijian*1000).format("yy/MM/dd hh:mm"):"");
 				
 				tr.css("background-color",toggle("#fff","#eee"));
 				tr.find("#td_bianhao").css("background-color",statusColor(yuangao.zhuangtai,tr.css("background-color")));
@@ -437,7 +439,15 @@
 		currYG = yg;
 		$("#shangchuan").hide();
 		$("#liucheng").show().liucheng(getTheUser(),yg);
-		$("#xianshi").show().empty().html(yg.neirong).prepend("<div style='background-color:#eee'>原稿&nbsp;&nbsp;<a href='yuangao.html?showId="+yg._id+"' target=_blank>"+yg._id+"</a>，泰国单号："+yg.taiguobianhao+"</div>");
+		$("#xianshi").show().empty().html(yg.neirong).prepend("<div style='background-color:#eee'>原稿&nbsp;&nbsp;<a href='yuangao.html?showId="+yg._id+"' target=_blank>"+yg._id+"</a>，泰国单号：<div class='myinput' id='taiguodanhao'>"+yg.taiguobianhao+"</div>&nbsp;&nbsp;<span title='更改泰国单号' class='plainBtn' id='genggaitaiguodanhao' style='display:none'>更改</span></div>");
+		if(yg.zhuangtai == "上传" || yg.zhuangtai == "接稿"){
+			$("#taiguodanhao").attr("contenteditable","true");
+			$("#genggaitaiguodanhao").show().click(function(){//重新保存泰国单号，并且把已经写到订单的泰国单号也改过来
+				postJson("yuangao.php",{caozuo:"genggaitaiguodanhao",_id:yg._id,danhao:$("#taiguodanhao").text().trim()},function(res){
+					tip($("#genggaitaiguodanhao"),"成功更改泰国单号！",1500);
+				});	
+			});
+		}
 		if(yg.shenjieshuoming){
 			$("#xianshi").append("<p style='background-color:#eee'>备注</p>");
 			$("#xianshi").append("<div id='xs_beizhu'></div>");

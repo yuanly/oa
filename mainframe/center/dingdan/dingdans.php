@@ -37,11 +37,17 @@ if(isset($param["_id"])){//
 		$query["gendanyuan"] = array('$ne'=>$_SESSION["user"]["_id"]);
 	}
 	
+		if(isset($param["option"]["bianhao"])){
+			$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
+		}
+		if(isset($param["option"]["taiguodanhao"])){
+			$query["taiguoyuangao"] = $param["option"]["taiguodanhao"];
+		}
 		if(isset($param["option"]["kehu"])){
 			$query["kehu"] = $param["option"]["kehu"];
 		}
 		if(isset($param["option"]["yangban"])){
-			$query["yangban.taiguoxinghao"] = $param["option"]["yangban"];
+			$query["yangban.zhongguoxinghao"] = $param["option"]["yangban"];
 		}
 		if(isset($param["option"]["zhuangtai"])){
 			$query["zhuangtai"] = $param["option"]["zhuangtai"];
@@ -51,9 +57,6 @@ if(isset($param["_id"])){//
 		}
 		if(isset($param["option"]["gonghuoshang"])){
 			$query["gonghuoshang._id"] = $param["option"]["gonghuoshang"];
-		}
-		if(isset($param["option"]["bianhao"])){
-			$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
 		}
 		if(isset($param["option"]["quyu"])){
 			$query["gonghuoshang.quyu"] = $param["option"]["quyu"];

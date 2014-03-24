@@ -35,6 +35,7 @@
 		$(this).val("DD"+date2id($(this).val()));
 		listDingdan(0);
 	});
+	
 	$("#dd_yuangao").click(function(){
 		if($(this).val().trim() == ""){
 			return;
@@ -45,6 +46,7 @@
 	//kehus.unshift("客户");
 	//$("#th_kehu").myselector(kehus).bind("input",function(){listDingdan(0);});
 	$("#th_kehu").bind("input",function(){listDingdan(0);});
+	$("#th_taiguodanhao").change(function(){listDingdan(0);});
 	var users = getUsers();users.unshift({"user_name":"跟单员","_id":"-1"});
 	$("#th_gendanyuan").myselector(users,"user_name").bind("input",function(){
 		listDingdan(0);
@@ -548,6 +550,10 @@ function _hanshuku_(){}
 		if("" != bh && "编号" != bh){
 			ret.bianhao = bh+"0";
 		}
+		var dh = $("#th_taiguoanhao").val().trim();
+		if("" != dh && "泰国单号" != dh){
+			ret.taiguodanhao = dh;
+		}
 		var kh = $("#th_kehu").val().trim();
 		if("" != kh && "客户" != kh){
 			ret.kehu = kh;
@@ -611,13 +617,14 @@ function _hanshuku_(){}
 				tr = tr_dingdan.clone(true);
 				tr.data("_id",dingdan._id);
 				tr.find("#td_bianhao").text(dingdan._id);
+				tr.find("#td_taiguodanhao").text((dingdan.taiguoyuangao?dingdan.taiguoyuangao:"-")+"("+(dingdan.taiguobianhao?dingdan.taiguobianhao:"-")+")");
 				tr.find("#td_kehu").text(dingdan.kehu);
 				if(dingdan.yangban){
-					var yb = "("+dingdan.yangban.taiguoxinghao+")";
+					var yb = "("+(dingdan.yangban.taiguoxinghao?dingdan.yangban.taiguoxinghao:"-")+")";
 					if(dingdan.yangban.zhongguoxinghao){
 						tr.find("#td_yangban").text(dingdan.yangban.zhongguoxinghao+yb);
 					}else{
-						tr.find("#td_yangban").text(yb);
+						tr.find("#td_yangban").text("-"+yb);
 					}
 				}
 				tr.find("#td_zhuangtai").text(dingdan.zhuangtai);				
