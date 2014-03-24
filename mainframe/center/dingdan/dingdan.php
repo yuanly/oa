@@ -131,11 +131,14 @@ if("jiedan" == $param["caozuo"]){
 	coll("liuyan")->save($liuyan);
 	echo '{"success":true}';
 }else if("huitui" == $param["caozuo"]){//
-	$dingdan = coll("dingdan")->findOne(array("_id"=>$param["_id"]));
-	array_pop($dingdan["liucheng"]);
-	$lastLC = end($dingdan["liucheng"]);
-	$dingdan["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
-	coll("dingdan")->save($dingdan);
+	$obj = coll("dingdan")->findOne(array("_id"=>$param["_id"],"zhuangtai"=>$param["zhuangtai"]));
+	if(empty($obj)){
+	echo '{"success":false}';
+	}
+	array_pop($obj["liucheng"]);
+	$lastLC = end($obj["liucheng"]);
+	$obj["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
+	coll("dingdan")->save($obj);
 	statExpired();
 	echo '{"success":true}';
 }else if("xiadanshenhe" == $param["caozuo"]){

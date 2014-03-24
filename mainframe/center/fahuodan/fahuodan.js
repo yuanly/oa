@@ -539,7 +539,7 @@
 	}
 	$("#cz_jieguan").click(cz_jieguan);
 	function cz_huitui(){
-		postJson("fahuodan.php",{caozuo:"huitui",_id:currFHD._id},function(res){
+		postJson("fahuodan.php",{caozuo:"huitui",_id:currFHD._id,zhuangtai:currFHD.zhuangtai},function(res){
 			showDetailById(currFHD._id);
 		});
 	}

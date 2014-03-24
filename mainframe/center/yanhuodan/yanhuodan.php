@@ -47,11 +47,14 @@ if("xinjian" == $param["caozuo"]){
 	statExpired();
 	echo '{"success":true}';
 }else if("huitui" == $param["caozuo"]){
-	$yhd = coll("yanhuodan")->findOne(array("_id"=>$param["_id"]));
-	array_pop($yhd["liucheng"]);
-	$lastLC = end($yhd["liucheng"]);
-	$yhd["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
-	coll("yhd")->save($dingdan);
+	$obj = coll("yanhuodan")->findOne(array("_id"=>$param["_id"],"zhuangtai"=>$param["zhuangtai"]));
+	if(empty($obj)){
+	echo '{"success":false}';
+	}
+	array_pop($obj["liucheng"]);
+	$lastLC = end($obj["liucheng"]);
+	$obj["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
+	coll("yanhuodan")->save($obj)
 	statExpired();
 	echo '{"success":true}';
 }else if("shanchu" == $param["caozuo"]){

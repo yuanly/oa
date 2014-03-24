@@ -207,6 +207,7 @@
 	$("#bianji").click(edit);
 	function cz_shanchu(){
 		if(!currYHD.huowu){
+			tip($(this),"必须清空验货单中的货物并保存，才能删除验货单！",1500);
 			return;
 		}
 		postJson("yanhuodan.php",{caozuo:"shanchu",_id:currYHD._id},function(res){
@@ -240,7 +241,7 @@
 	$("#cz_miyin2").click(cz_miyin2);
 	
 	function cz_huitui(){
-		postJson("yanhuodan.php",{caozuo:"huitui",_id:currYHD._id},function(res){
+		postJson("yanhuodan.php",{caozuo:"huitui",_id:currYHD._id,zhuangtai:currYHD.zhuangtai},function(res){
 			showDetailById(currYHD._id);
 		});
 	}
@@ -388,7 +389,7 @@
 				
 				var color = toggle("#fff","#eee");
 				tr.css("background-color",color);
-				tr.find("#td_bianhao").css("background-color",statusColor(yanbuodan.zhuangtai,color));
+				tr.find("#td_bianhao").css("background-color",statusColor(yanhuodan.zhuangtai,color));
 				
 				$("#yanhuodantable").append(tr);
 			});

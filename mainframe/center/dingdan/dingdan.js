@@ -379,7 +379,7 @@
 	}
 	$("#cz_fahuo").click(cz_fahuo);
 	function cz_huitui(){
-		postJson("dingdan.php",{caozuo:"huitui",_id:currDD._id},function(res){
+		postJson("dingdan.php",{caozuo:"huitui",_id:currDD._id,zhuangtai:currDD.zhuangtai},function(res){
 			showDetailById(currDD._id);
 		});		
 	}

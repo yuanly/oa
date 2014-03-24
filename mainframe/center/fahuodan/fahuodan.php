@@ -45,11 +45,14 @@ if("shangchuan" == $param["caozuo"]){
 	coll("fahuodan")->update(array("_id"=>$param["_id"]),array('$set'=>array("ludanzhe"=>$_SESSION["user"]["_id"])));
 	echo '{"success":true}';
 }else if("huitui" == $param["caozuo"]){//
-	$fahuodan = coll("fahuodan")->findOne(array("_id"=>$param["_id"]));
-	array_pop($dingdan["liucheng"]);
-	$lastLC = end($dingdan["liucheng"]);
-	$fahuodan["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
-	coll("fahuodan")->save($fahuodan);
+	$obj = coll("fahuodan")->findOne(array("_id"=>$param["_id"],"zhuangtai"=>$param["zhuangtai"]));
+	if(empty($obj)){
+	echo '{"success":false}';
+	}
+	array_pop($obj["liucheng"]);
+	$lastLC = end($obj["liucheng"]);
+	$obj["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
+	coll("fahuodan")->save($obj)
 	statExpired();
 	echo '{"success":true}';
 }else if("duidan" == $param["caozuo"]){
