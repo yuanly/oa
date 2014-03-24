@@ -1,12 +1,15 @@
 ﻿$(function(){
 	/*
-	流程：上传 接单 （申请对单  对单） （申请付款 审核付款申请 付款） 收货 装柜 申请审结 审结
+流程：上传 接单 申请对单  对单 收货 装柜 申请审结 审结
 
-状态：上传 接单 申请对单  对单  收货 装柜 申请审结 审结（付完款才能审结）
-申请付款 审核付款申请 付款 （辅助状态）
+状态：上传(删除 接单） 接单（作废 接管-未审结 申请对单） 申请对单（回退 对单）  对单（回退-未付款 收货） 
+			 收货（回退 装柜-发现有未关联货柜的货物要提醒-考虑有退货情况不强制要求关联） 装柜（回退 申请审结-已付款） 申请审结（回退 审结） 审结（回退）（付完款才能审结）
+需要另外增加一个“付款申请”模块，数据模型兼容“发货单”，流程：制单 申请付款（申请对单） 审核申请（对单） 付款 审结
+跟“流水账”合并到一个叫“财账”的模块。
 
 	{	_id:"FHD131008.1",
 		liucheng:[{userId:3,dongzuo:"录单",time:1322}],
+		liushuizhang:{"xx"},//保存的是流水账id，但返回时直接关联上整个流水账
 		zhuangtai:"录单",
 		gonghuoshang:{_id:"SJ131110",mingchen:"大大"},
 		huowu:[huowu],//这个需要从huowu collection关联查询获取，不在fahuodan collection保存
@@ -76,6 +79,36 @@
 	
 	function _shijianchuli_(){}
 		$("th").attr("nowrap","true");
+	function statusColor(status,color){
+		//上传 接单 申请对单 对单 收货 装柜 申请审结 审结 作废
+		if(status == "上传"){//绿色
+			return "#7CFC00";
+		}
+		if(status == "接单"){//红色
+			return "#FF4500";
+		}
+		if(status == "申请对单"){//棕色
+			return "#FF6347";
+		}
+		if(status == "对单"){//粉红
+			return "#FFB6C1";
+		}
+		if(status == "收货"){//黄色
+			return "FFFF00";
+		}
+		if(status == "装柜"){//赭
+			return "#DEB887";
+		}
+		if(status == "申请审结"){//赭
+			return "#DEB887";
+		}
+		if(status == "作废"){//赭
+			return "#DEB887";
+		}
+		if(status == "审结"){
+			return color;
+		}
+	}
 		$("#zhuangguidan").click(function(){
 			window.open("../zhuangguidan/zhuangguidan.html?showId="+$(this).text(),"_blank");		
 		});
@@ -719,6 +752,12 @@ function _hanshuku_(){}
 			}
 		});
 		$("#liucheng").show().liucheng(getTheUser(),fhd);
+		if(fhd.liushuizhang){
+			$("#tb_liushuizhangliucheng").show();
+			$("#liushuizhangliucheng").show().liushuizhangliucheng(fhd.liushuizhang.liucheng);
+		}else{
+			$("#tb_liushuizhangliucheng").hide();
+		}
 		$("#fhd_bianhao").val(currFHD._id);
 		//$("#fhd_zhuanzhangliushui").val(currFHD.zhuanzhang?currFHD.zhuanzhang:"");
 		if(currFHD.zhuanzhang){
@@ -832,8 +871,22 @@ function _hanshuku_(){}
 			showDetail(fhd);
 		});
 	}
-
+	jQuery.fn.liushuizhangliucheng = function(liucheng){//显示流水账流程。仅显示，不能操作，要在流水账管理界面操作。
+		var that = this.empty();
+		each(liucheng,function(n,item){
+			var tmpl = liuchengItem.clone(true);
+			$("#lc_bianhao",tmpl).text(n+1);
+			var usr = getUser(item.userId);
+			$("#lc_touxiang",tmpl).attr("src",usr.photo);
+			$("#lc_mingchen",tmpl).text(usr.user_name);
+			$("#lc_dongzuo",tmpl).text(item.dongzuo);
+			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
+			that.append(tmpl);
+		});
+	}
 	jQuery.fn.liucheng = function(theUser,fahuodan){
+		kechaifen = false;
+		kebianji = false;
 		var that = this.empty();
 		this.data("_id",fahuodan._id);
 		each(fahuodan.liucheng,function(n,item){
@@ -845,85 +898,110 @@ function _hanshuku_(){}
 			$("#lc_dongzuo",tmpl).text(item.dongzuo);
 			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
 			if("上传" == item.dongzuo){
-				("#lc_tr_panel",tmpl).attr("title","发货单原件已经被上传，等待录单！");
-				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
-				var caozuoItem = caozuoTmpl.clone(true);
-				$("#cz_zuofei",caozuoItem).show();
-				if((fahuodan.liucheng.length - 1) == n){
-					$("#cz_ludan",caozuoItem).show();
-				}
-				$("table",tmpl).append(caozuoItem);
-			}else if("录单" == item.dongzuo){
-				("#lc_tr_panel",tmpl).attr("title","正在录入发货单！");
+				("#lc_tr_panel",tmpl).attr("title","发货单原件已经被上传，等待接单！");
 				if((fahuodan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
-					//if(theUser._id == item.userId){
-					if(theUser._id == currFHD.ludanzhe){
-						kebianji = true;
-						$("#cz_shenqingduidan",caozuoItem).show();
+					if(theUser._id == item.userId){
+						$("#cz_shanchu",caozuoItem).show();
+					}
+					$("#cz_jiedan",caozuoItem).show();
+					$("table",tmpl).append(caozuoItem);
+				}
+			}else if("接单" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","正在录入发货单！");
+				if(!inLiucheng(fahuodan.liucheng,"审结")){
+					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+					if(fahuodan.ludanzhe == theUser._id){
+						if((fahuodan.liucheng.length - 1) == n){
+							kebianji = true;
+							$("#cz_shenqingduidan",caozuoItem).show();
+							$("#cz_zuofei",caozuoItem).show();
+						}
 					}else{
 						$("#cz_jieguan",caozuoItem).show();
 					}
 					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("申请对单" == item.dongzuo){
+				kebianji = false;
+				kechaifen = true;
 				("#lc_tr_panel",tmpl).attr("title","已完成对发货单的录入，申请对单！");
 				if((fahuodan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
+					if(theUser._id == fahuodan.ludanzhe){
+						$("#cz_huitui",caozuoItem).show();
+					}
 					if(theUser._id == item.userId){
-						$("#cz_quxiaoshenqingduidan",caozuoItem).show();
-					}else{
 						$("#cz_duidan",caozuoItem).show();
 					}
 					$("table",tmpl).append(caozuoItem);
 				}
-			}else if("对单" == item.dongzuo){ 
-				("#lc_tr_panel",tmpl).attr("title","已完成对单，可以进行付款！");
-				kechaifen = true;
-				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
-				var caozuoItem = caozuoTmpl.clone(true);
-				$("#cz_fukuan",caozuoItem).show();
-				$("#cz_fahuo",caozuoItem).show();
-				var c = 2;
-				for(i=n;i<fahuodan.liucheng.length;i++){
-					if(fahuodan.liucheng[i].dongzuo == "付款"){
-						$("#cz_fukuan",caozuoItem).hide();
-						c --;
-					}
-					if(fahuodan.liucheng[i].dongzuo == "发货"){
-						$("#cz_fahuo",caozuoItem).hide();
-						c --;
-					}
-				}
-				if(c == 0){
-					$("#lc_anniu",tmpl).hide();
-				}
-				$("table",tmpl).append(caozuoItem); 
-			}else if("付款" == item.dongzuo){
-				("#lc_tr_panel",tmpl).attr("title","已完成付款，等待发货！");
+			}else if("对单" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","已完成对单，等待发货！");
 				if((fahuodan.liucheng.length - 1) == n){
-					if(fahuodan.liucheng[n-1].dongzuo == "发货"){
+					if(theUser._id == fahuodan.ludanyuan){
 						$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 						var caozuoItem = caozuoTmpl.clone(true);
-						$("#cz_fuhe",caozuoItem).show();
+						$("#cz_shouhuo",caozuoItem).hide();
+						if(!fahuodan.liushuizhang){
+							$("#cz_huitui",caozuoItem).show();
+						}
+						$("table",tmpl).append(caozuoItem); 
+					}
+				}
+			}else if("收货" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","已收货，可以装柜！");
+				if((fahuodan.liucheng.length - 1) == n && theUser._id == fahuodan.ludanyuan){
+						$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+						var caozuoItem = caozuoTmpl.clone(true);
+						$("#cz_huitui",caozuoItem).show();
+						$("#cz_zhuanggui",caozuoItem).show();
 						$("table",tmpl).append(caozuoItem);
 					}
 				}
-			}else if("发货" == item.dongzuo){
-				("#lc_tr_panel",tmpl).attr("title","厂家已发货！");
-				if((fahuodan.liucheng.length - 1) == n){
-					if(fahuodan.liucheng[n-1].dongzuo == "付款"){
-						$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
-						var caozuoItem = caozuoTmpl.clone(true);
-						$("#cz_fuhe",caozuoItem).show();
-						$("table",tmpl).append(caozuoItem);
-					}
-				}
-			}else if("复核" == item.dongzuo){
+			}else if("装柜" == item.dongzuo){
 				kechaifen = false;
-				("#lc_tr_panel",tmpl).attr("title","该发货单已经被再次检查无误！");
+				("#lc_tr_panel",tmpl).attr("title","货物已装柜，如果已经付款则可以申请审结！");
+				if((fahuodan.liucheng.length - 1) == n && theUser._id == fahuodan.ludanyuan){
+						$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+						var caozuoItem = caozuoTmpl.clone(true);
+						$("#cz_huitui",caozuoItem).show();
+						if(inLiucheng(fahuodan.liushuizhang,"审核")){
+							$("#cz_shenqingshenjie",caozuoItem).show();
+						}
+						$("table",tmpl).append(caozuoItem);
+					}
+				}
+			}else if("作废" == item.dongzuo){
+				kechaifen = false;
+				("#lc_tr_panel",tmpl).attr("title","该单已作废，但还需要申请审结！");
+				if((fahuodan.liucheng.length - 1) == n && theUser._id == fahuodan.ludanyuan){
+						$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+						var caozuoItem = caozuoTmpl.clone(true);
+						$("#cz_huitui",caozuoItem).show();
+						if(inLiucheng(fahuodan.liushuizhang,"审核")){
+							$("#cz_shenqingshenjie",caozuoItem).show();
+						}
+						$("table",tmpl).append(caozuoItem);
+					}
+				}
+			}else if("申请审结" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","货等待他人审结！");
+				if((fahuodan.liucheng.length - 1) == n){
+					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+					var caozuoItem = caozuoTmpl.clone(true);
+					if(theUser._id == fahuodan.ludanzhe){
+						$("#cz_huitui",caozuoItem).show();
+					}
+					if(theUser._id == item.userId){
+						$("#cz_shenjie",caozuoItem).show();
+					}
+					$("table",tmpl).append(caozuoItem);
+				}
+			}else if("审结" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","该发货单已被处理完成，经检查无误！");
 			}
 			that.append(tmpl);
 		});

@@ -64,7 +64,8 @@ if("jiedan" == $param["caozuo"]){
 	statExpired();
 	echo '{"success":true}';
 }else if("zidan" == $param["caozuo"]){//生成一张子单
-	$dingdan = coll("dingdan")->findOne(array("_id"=>$param["_id"],"gendanyuan"=>$_SESSION["user"]["_id"]),array("liucheng"=>0));
+	$dingdan = coll("dingdan")->findOne(array("_id"=>$param["_id"],"gendanyuan"=>$_SESSION["user"]["_id"])
+					,array("liucheng"=>0,"huowu"=>0));//子单是加工订单的买材料的订单。如果临时追加新订单，需要临时加一个原稿（原稿相当于采购申请，这部不能随便省 ）。
 	if(empty($dingdan)){
 		echo '{"success":false}';
 		exit;
@@ -75,8 +76,6 @@ if("jiedan" == $param["caozuo"]){
 	$dingdan["liucheng"] = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time());
 	coll("dingdan")->save($dingdan);
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("zidan"=>$dingdan["_id"])));
-	//$liuyan = array("_id"=>time(),"hostType"=>"dingdan","hostId"=>$dingdan["_id"],"type"=>"caozuorizhi","userId"=>(String)$_SESSION["user"]["_id"],"neirong"=>"生成子单：".$dingdan["_id"]);
-	coll("liuyan")->save($liuyan);
 	echo '{"success":true,"id":'.$dingdan["_id"].'}';
 	statExpired();
 	echo '{"success":true}';

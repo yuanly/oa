@@ -1,5 +1,6 @@
 ﻿$(function(){
 	/* 
+	流程：制单 申请付款 付款 审结
 {
  _id:"xxx",
  zhuangtai:"xx",

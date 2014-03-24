@@ -806,7 +806,8 @@ function _hanshuku_(){}
 			$("#lc_mingchen",tmpl).text(usr.user_name);
 			$("#lc_dongzuo",tmpl).text(item.dongzuo);
 			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
-			//录单 审核 接单（作废 接管 慢单/取消慢单 子单） 下单申请（回退） 下单审核（打印 回退） 下单（回退） 发货 审结（回退） 作废（审结 回退）
+			/*录单 审核 接单（作废 接管 慢单/取消慢单 子单） 下单申请（回退） 下单审核（打印 回退） 
+			下单（回退） 发货 审结（回退） 作废（审结 回退）*/
 			if("审核" == item.dongzuo){
 				("#lc_tr_panel",tmpl).attr("title","录单员录入的订单已被审核，可以被采购跟单员接单处理！");
 				if((dingdan.liucheng.length - 1) == n){
