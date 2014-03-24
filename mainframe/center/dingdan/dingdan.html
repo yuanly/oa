@@ -56,7 +56,7 @@
 			<table id="dingdantable"  style="min-width:500px;">
 				<tr id="tableheader">
 					<th nowrap><input id="th_bianhao" class="plainTh" value="编号" style="width:80px;font-size:0.8em"/></th>
-					<th nowrap><input id="th_bianhao" class="plainTh" value="泰国单号" style="width:80px;font-size:0.8em"/></th>
+					<th nowrap><input id="th_taiguodanhao" class="plainTh" value="泰国单号" style="width:80px;font-size:0.8em"/></th>
 					<th nowrap><input id="th_kehu" class="plainTh" value="客户" style="width:50px;font-size:0.8em"/></th>
 					<th nowrap><input id="th_yangban" class="plainTh" value="样板" style="width:80px;cursor:pointer;font-size:0.8em"/></th>
 					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:45px;	font-size:0.8em"/></th>
@@ -129,10 +129,10 @@
 				<div id="zidan"></div>
 			</div>
 			<div style='background-color:#eee' class="detailheader">订单明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn">保存</span></div>
-			<div style="width:500px">
-				编号：<input type="text" id="dd_bianhao" class="plainInput" readonly size=16 />&nbsp;&nbsp;
+			<div style="width:500px"><nobr>
+				编号：<div id="dd_bianhao" class="myInput"></div>&nbsp;&nbsp;
 				原稿：<div id="dd_yuangao" class="myInput" style="cursor:pointer"></div>&nbsp;&nbsp;
-				客户：<input type="text" id="dd_kehu" class="plainInput" readonly size=7 />
+			客户：<div id="dd_kehu" class="myInput" style="min-width:10px"></div></nobr>
 			</div>
 			<div style="width:500px"><nobr>
 				样板：<input type="text" id="dd_yangban" class="plainInput" size=69 readonly style="cursor:pointer" /><br/>
@@ -146,9 +146,10 @@
 			</nobr></div>
 			<table id="tb_huowu">
 				<!-- 发货分拆为二级表：单号 数量 金额 以及 总计 -->
-			<tr><th nowrap>序号</th><th nowrap>规格</th><th nowrap>数量</th><th nowrap>单位</th><th nowrap>单价<font style="font-size:70%">(元)</font></th><th nowrap>金额</th><th class="delete_huowu"> </th></tr>
+			<tr><th nowrap>序号</th><th nowrap>泰规格</th><th nowrap>规格</th><th nowrap>数量</th><th nowrap>单位</th><th nowrap>单价<font style="font-size:70%">(元)</font></th><th nowrap>金额</th><th class="delete_huowu"> </th></tr>
 			<tr class="tmpl_huowu">
 				<td id="mx_xuhao"></td>
+				<td id="mx_taiguoguige" style="font-size:0.8em"></td>
 				<td id="mx_guige" class="myinput" style="min-width:250px" contenteditable=true></td>
 				<td><input id="mx_shuliang" size=4 class="plainInput editable"></td>
 				<td><input id="mx_danwei" size=2 class="plainInput mx_danwei" readonly style="cursor:pointer" list="danweilist"></td>
