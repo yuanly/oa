@@ -656,15 +656,17 @@ function _hanshuku_(){}
 			if(showId){
 				showDetailById(showId);
 				layout.close("west");
-			}else if(dingdans.length>0){
-				$(".ui-layout-center").show();
-				$(".tr_dingdan").get(0).click();
 			}else{
-				$(".ui-layout-center").hide();
+				//调整左侧宽度以便显示完整的列表
+				$("#tableheader").click();
+				if(dingdans.length>0){
+					$(".ui-layout-center").show();
+					$(".tr_dingdan").get(0).click();
+				}else{
+					$(".ui-layout-center").hide();
+				}
 			}
-			//调整左侧宽度以便显示完整的列表
-			$("#tableheader").click();
-						if(offset<=0){
+			if(offset<=0){
 				$("#prevPage").css("color","gray");
 			}else{
 				$("#prevPage").css("color","blue");

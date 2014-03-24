@@ -87,13 +87,11 @@
 							<span id="cz_miyin" class="plainBtn" style="margin-right:10px;display:none">密印</span>
 							<span id="cz_miyin2" class="plainBtn" style="margin-right:10px;display:none">密印2</span>
 							<span id="cz_shenqingshouli" class="plainBtn" style="margin-right:10px;display:none" title="申请验货员受理该验货单">申请受理</span>
-							<span id="cz_quxiaoshenqingshouli" class="plainBtn" style="margin-right:10px;display:none">取消申请</span>
+							<span id="cz_huitui" class="plainBtn" style="margin-right:10px;display:none">回退</span>
 							<span id="cz_shouli" class="plainBtn" style="margin-right:10px;display:none">受理</span>
 							<span id="cz_shenqingshenhe" class="plainBtn" style="margin-right:10px;display:none">申请审核</span>
-							<span id="cz_quxiaoshenqingshenhe" class="plainBtn" style="margin-right:10px;display:none">取消申请</span>
 							<span id="cz_shenhe" class="plainBtn" style="margin-right:10px;display:none">审核</span>
-							<span id="cz_quxiaoshenhe" class="plainBtn" style="margin-right:10px;display:none">取消审核</span>
-							<span id="cz_zuofei" class="plainBtn" style="margin-right:10px;display:none">作废</span>
+							<span id="cz_shanchu" class="plainBtn" style="margin-right:10px;display:none">删除</span>
 						</td>
 					</tr>
 				</table>
@@ -108,7 +106,7 @@
 			<table id="huowutable">
 				<tr><th></th><th>货物编号</th><th nowrap>客户</th><th>供货商</th><th>样板</th><th>规格</th><th nowrap>数量</th><th nowrap>单位</th><th nowrap>件数</th><th>状态</th><th nowrap>备注</th></tr>
 				<tr class="tr_huowu" >
-					<td nowrap><span id="shanchuhuowu" class="plainBtn" title="删除货物">[-]</span>&nbsp;<span id="shangyi" class="plainBtn" title="上移">[↑]</span></td>
+					<td nowrap><span id="shanchuhuowu" class="plainBtn shanchu" title="删除货物">[-]</span>&nbsp;<span id="shangyi" class="plainBtn" title="上移">[↑]</span></td>
 					<td id="td_huowubianhao" style="cursor:pointer;color:brown">发货单</td>
 					<td id="td_kehu" style="text-align:center"></td>
 					<td id="td_gonghuoshang" nowrap>供货商</td>
@@ -117,7 +115,7 @@
 					<td id="td_shuliang" style="text-align:center">数量</td>
 					<td id="td_danwei" style="text-align:center">单位</td>
 					<td id="td_jianshu" style="text-align:center">件数</td>
-					<td><input id="td_zhuangtai" class="plainInput" value="待查" list="zhuangtailist" size=5 ></td>
+					<td><input id="td_zhuangtai" class="plainInput zhuangtai" value="待查" list="zhuangtailist" size=5 ></td>
 					<td id="td_beizhu"></td>
 					<td><span class="plainBtn" id="jiazhu" title="给该货物添加一条备注">[注]</span></td></tr>
 				<tr class="tr_zhu">
@@ -153,7 +151,7 @@
 		</datalist>
 		<datalist id="zhuangtailist2">
 			<option value="状态"/>
-			<option value="新建"/>
+			<option value="制单"/>
 			<option value="申请受理"/>
 			<option value="受理"/>
 			<option value="申请审核"/>
