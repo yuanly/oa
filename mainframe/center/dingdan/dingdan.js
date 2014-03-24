@@ -597,18 +597,27 @@ function _hanshuku_(){}
 		$("#pager").data("offset",offset);
 		if("jiedan" == cmd){
 			$('#currLocation', window.parent.document).text("订单/待接单");
+			$("#th_zhuangtai").attr("readonly","readonlly");
 		}else if("wodexindan" == cmd){
 			$('#currLocation', window.parent.document).text("订单/我的新单");
+			$("#th_man").attr("readonly","readonlly");
+			$("#th_zhuangtai").attr("readonly","readonlly");
 		}else if("wodemandan" == cmd){
 			$('#currLocation', window.parent.document).text("订单/我的慢单");
+			$("#th_man").attr("readonly","readonlly");
+			$("#th_zhuangtai").attr("readonly","readonlly");
 		}else if("wodeweifahuo" == cmd){
 			$('#currLocation', window.parent.document).text("订单/我的未发货");
+			$("#th_zhuangtai").attr("readonly","readonlly");
 		}else if("wodedaishenjie" == cmd){
 			$('#currLocation', window.parent.document).text("订单/我的待审结");
+			$("#th_zhuangtai").attr("readonly","readonlly");
 		}else if("daixiadanshenhe" == cmd){
 			$('#currLocation', window.parent.document).text("订单/待下单审核");
+			$("#th_zhuangtai").attr("readonly","readonlly");
 		}else if("daishenjie" == cmd){
 			$('#currLocation', window.parent.document).text("订单/待审结");
+			$("#th_zhuangtai").attr("readonly","readonlly");
 		}else{
 			$('#currLocation', window.parent.document).text("订单/查询");
 		}
@@ -655,6 +664,16 @@ function _hanshuku_(){}
 			}
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();
+						if(offset<=0){
+				$("#prevPage").css("color","gray");
+			}else{
+				$("#prevPage").css("color","blue");
+			}
+			if(dingdans.length<limit){
+				$("#nextPage").css("color","gray");
+			}else{
+				$("#nextPage").css("color","blue");
+			}
 		});
 	}
 	

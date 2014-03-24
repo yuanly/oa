@@ -60,10 +60,17 @@
 					<th nowrap><input id="th_gonghuoshang" class="plainTh" value="供货商" style="width:120px;cursor:pointer"/></th>
 					<th nowrap>录单者</th>
 					<th nowrap>对单者</th>
-					<th nowrap>复核者</th>
+					<th nowrap>审结者</th>
+					<th nowrap><input id="th_fukuan" class="plainTh" value="付款" style="width:55px;cursor:pointer" list="fukuanlist"/></th>
 				</tr>
 				<tr class="tr_fahuodan">
-					<td id="td_bianhao"></td><td id="td_zhuangtai"></td><td id="td_gonghuoshang"></td><td id="td_ludanzhe"></td><td id="td_duidanzhe"></td><td id="td_fuhezhe"></td>
+					<td id="td_bianhao"></td>
+					<td id="td_zhuangtai"></td>
+					<td id="td_gonghuoshang"></td>
+					<td id="td_ludanzhe"></td>
+					<td id="td_duidanzhe"></td>
+					<td id="td_fuhezhe"></td>
+					<td id="td_fukuan"></td>
 				</tr>
 			</table>	
 			<div id="pager">
@@ -125,7 +132,7 @@
 				<div style="width:650px;">
 					编号：<input type="text" id="fhd_bianhao" class="plainInput" readonly style="width:90px;cursor:pointer"/>，
 					总额：<input type="text" id="fhd_zonge" class="plainInput" readonly style="width:45px;text-align:center"/>元，
-					转账流水：<div class="myinput" id="fhd_zhuanzhangliushui" style="cursor:pointer">&nbsp;</div><br/>
+					转账流水：<div class="myinput" id="fhd_zhuanzhangliushui" style="cursor:pointer"></div><br/>
 					供货商：<div id="fhd_gonghuoshang" class="myinput" style="min-width:150px"></div>，
 					验货地址：<div id="fhd_yanhuodizhi" class="myinput" style="min-width:150px"></div>
 				</div>
@@ -202,12 +209,18 @@
 		<datalist id="zhuangtailist">
 			<option value="状态"/>
 			<option value="上传"/>
-			<option value="录单"/>
+			<option value="接单"/>
 			<option value="申请对单"/>
 			<option value="对单"/>
+			<option value="收货"/>
+			<option value="装柜"/>
+			<option value="申请审结"/>
+			<option value="审结"/>
+		</datalist>
+		<datalist id="fukuanlist">
 			<option value="付款"/>
-			<option value="发货"/>
-			<option value="复核"/>
+			<option value="已付"/>
+			<option value="未付"/>
 		</datalist>
 	<div style="display:none;position:absolute;z-index:100;border:1px solid gray;background-color:white;" id="sel_ctnr">
 		<div style="width:100%;background-color:#99ccff;text-align:center">选择订单货物</div>
