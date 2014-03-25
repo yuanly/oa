@@ -30,6 +30,9 @@
 				});
 			}
 			$("#tijiao").click(tijiaoyuangao);
+			$("#fangqi").click(function(){
+				window.open("fahuodan.html?cmd=chaxun","_self");
+			});
 		});
 	</script>
 	<style>
@@ -37,9 +40,10 @@
 </head>
 <body style="margin:0px;padding:0px">
 		<div id="shangchuan" style="border:1px solid gray;width:800px;padding:5px;margin:0px auto">
-			<div id="detailHandle" style="width:100%;background-color:#eee;height:30px;margin-bottom:5px;text-align:center;line-height:30px;">上传发货单</div>
+			<div id="detailHandle" style="width:100%;background-color:#eee;height:30px;margin-bottom:5px;text-align:center;line-height:30px;">
+				<span style="float:left"><span class="plainBtn" id="fangqi">[放弃]</span>&nbsp;<span class="plainBtn" id="tijiao">[提交]</span></span>上传发货单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</div>
 			<div id="bianjikuang"></div>
-			<div style="text-align:center;margin-top:10px"><span class="plainBtn" id="tijiao">提交</span></div>			
 		</div>
 </body>
 </html>

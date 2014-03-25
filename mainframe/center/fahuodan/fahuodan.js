@@ -79,6 +79,9 @@
 	
 	function _shijianchuli_(){}
 		$("th").attr("nowrap","true");
+	$("#shangchuanfahuodan").click(function(){
+		window.open("shangchuan.html","_self");
+	});
 	function statusColor(status,color){
 		//上传 接单 申请对单 对单 收货 装柜 申请审结 审结 作废
 		if(status == "上传"){//绿色
@@ -701,7 +704,7 @@ function _hanshuku_(){}
 					$(".tr_fahuodan").get(0).click();
 				}else{
 					$(".ui-layout-center").hide();
-				}
+				}
 			}
 			if(offset<=0){
 				$("#prevPage").css("color","gray");

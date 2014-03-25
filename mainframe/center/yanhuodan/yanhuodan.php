@@ -17,12 +17,7 @@ if("xinjian" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("chaxun" == $param["caozuo"]){
 	$query = array();
-	$cmd = $param["option"]["cmd"];
-	if("shouli" == $cmd){
-		$query["zhuangtai"] = "申请受理";
-	}else if("shenhe" == $cmd){
-		$query["zhuangtai"] = "申请审核";
-	}else if(isset($param["option"]["zhuangtai"])){
+	if(isset($param["option"]["zhuangtai"])){
 		$query["zhuangtai"] = $param["option"]["zhuangtai"];
 	}
 	
@@ -54,7 +49,10 @@ if("xinjian" == $param["caozuo"]){
 	array_pop($obj["liucheng"]);
 	$lastLC = end($obj["liucheng"]);
 	$obj["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
-	coll("yanhuodan")->save($obj)
+	if($param["zhuangtai"] == "审核"){
+		unset($obj["shenhezhe"]);
+	}
+	coll("yanhuodan")->save($obj);
 	statExpired();
 	echo '{"success":true}';
 }else if("shanchu" == $param["caozuo"]){
@@ -70,6 +68,12 @@ if("xinjian" == $param["caozuo"]){
 	coll("yanhuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"申请受理")
 			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("shoulizhe"=>$_SESSION["user"]["_id"],"zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
+	echo '{"success":true}';
+}else if("jieguan" == $param["caozuo"]){
+	coll("yanhuodan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhidanzhe"=>$_SESSION["user"]["_id"])));
+	$liuyan = array("_id"=>time(),"hostType"=>"yanhuodan","hostId"=>$param["_id"],"type"=>"caozuorizhi"
+			,"userId"=>$_SESSION["user"]["_id"],"neirong"=>"略");//以后改成保存整个json到另外一个表，界面是点击打开就可以像普通单一样显示详情。
+	coll("liuyan")->save($liuyan);
 	echo '{"success":true}';
 }else if("shenqingshenhe" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请审核","time"=>time());

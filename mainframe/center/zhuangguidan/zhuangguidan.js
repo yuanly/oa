@@ -7,14 +7,14 @@
  zhuangtai:"xx",
  zhuangguiriq:"2012-1-1",
  //huowu:[{zgdId:"xx",guige:"xxx",danwei:"x",shuliang:22,jianshu:22,beizhu:"xxx"}...],//从huowu表关联
- liucheng:[制单 交单 审核 作废],
+ liucheng:[制单 交单 审核],
  zhidanzhe:23,
  jiaodanzhe:33,
  shenhezhe:22,
  zhuangguirenyuan:"xxx"//手写的一串名字，系统不做校验。
 }
-制单（删除-货物清空时） 交单（回退） 审核（回退） 
-只要没交单谁都可以编辑装柜单，理论上会造成混乱，但实际上大家不会乱来，真有冲突解决起来也不麻烦。
+制单（删除-货物清空时 接管） 交单（回退） 审核（回退） 
+制单者直接交单，无需受理者，因为别人很容易接管。
 
 创建装柜单（如果是装柜时发货，也得先做好发货单才能建装柜单）
 	编辑（包括新建和调整装柜单 对货物做分拆） 打印装柜单（随时都可以打印） 未申请审核可作废
@@ -199,6 +199,12 @@
 			showDetailById(currZGD._id);
 		});
 	}
+	function cz_jieguan(){
+		postJson("zhuangguidan.php",{caozuo:"jieguan",_id:currYHD._id},function(res){
+			showDetailById(currYHD._id);
+		});
+	}
+	$("#cz_jieguan").click(cz_jieguan);
 	function cz_jiaodan(){
 		postJson("zhuangguidan.php",{caozuo:"jiaodan",_id:currZGD._id},function(res){
 			showDetailById(currZGD._id);
@@ -450,14 +456,18 @@ function _hanshuku_(){}
 			$("#lc_dongzuo",tmpl).text(item.dongzuo);
 			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
 			if("制单" == item.dongzuo){
-				kebianji = true;
 				("#lc_tr_panel",tmpl).attr("title","正在编制装柜单！");
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				var caozuoItem = caozuoTmpl.clone(true);
 				$("#cz_dayin",caozuoItem).show();
 				if((zhuangguidan.liucheng.length - 1) == n){
-					$("#cz_jiaodan",caozuoItem).show();
-					$("#cz_huitui",caozuoItem).show();
+					if(theUser._id == zhuangguidan.zhidanzhe){
+						kebianji = true;
+						$("#cz_jiaodan",caozuoItem).show();
+						$("#cz_shanchu",caozuoItem).show();
+					}else{
+						$("#cz_jieguan",caozuoItem).show();
+					}
 				}
 				$("table",tmpl).append(caozuoItem);
 			}else if("交单" == item.dongzuo){

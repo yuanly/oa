@@ -215,6 +215,12 @@
 		});
 	}
 	$("#cz_shanchu").click(cz_shanchu);
+	function cz_jieguan(){
+		postJson("yanhuodan.php",{caozuo:"jieguan",_id:currYHD._id},function(res){
+			showDetailById(currYHD._id);
+		});
+	}
+	$("#cz_jieguan").click(cz_jieguan);
 	function cz_shouli(){
 		postJson("yanhuodan.php",{caozuo:"shouli",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
@@ -515,10 +521,7 @@
 	}
 	
 	function showDetailById(_id){
-		postJson("yanhuodan.php",{caozuo:"getbyid",_id:_id},function(yhd){			
-			if(currYHD.zhuangtai != "审核"){//回退的时候不会删除审核者，所以在这里打补丁处理一下。
-				currYHD.shenhezhe = undefined;
-			}
+		postJson("yanhuodan.php",{caozuo:"getbyid",_id:_id},function(yhd){
 			showDetail(yhd);
 		});
 	}
@@ -535,23 +538,27 @@
 			$("#lc_dongzuo",tmpl).text(item.dongzuo);
 			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
 			if("制单" == item.dongzuo){
-				kebianji = true;
 				("#lc_tr_panel",tmpl).attr("title","验货单已创建，正在进行编制！");
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				var caozuoItem = caozuoTmpl.clone(true);
 				$("#cz_dayin",caozuoItem).show();
 				$("#cz_miyin",caozuoItem).show();
 				$("#cz_miyin2",caozuoItem).show();
-				if(theUser._id == item.userId){
-					if(!inLiucheng(yanhuodan.liucheng,"申请审核"){
+				if(theUser._id == yanhuodan.zhidanzhe){
+					kebianji = true;
+					if(!inLiucheng(yanhuodan.liucheng,"申请审核")){
 						$("#cz_shanchu",caozuoItem).show();
 					}
 					if((yanhuodan.liucheng.length - 1) == n){
 						$("#cz_shenqingshouli",caozuoItem).show();
 					}
+				}else{
+					if(!inLiucheng(yanhuodan.liucheng,"申请审核")){
+						$("#cz_jieguan",caozuoItem).show();
+					}
 				}
 				$("table",tmpl).append(caozuoItem);
-/*状态：制单（删除） 申请受理（回退） 受理 申请审核（回退） 审核（回退，非受理者本人审核）
+/*状态：制单（删除 接管） 申请受理（回退） 受理 申请审核（回退） 审核（回退，非受理者本人审核）
 只要没申请审核，制单者都可以修改甚至删除验货单（若要删除，必须已清空货物）。受理者已经拿了打印单，不用担心工作被否定。
 制单者可以是受理者。只有受理者才能修改状态，而且仅能修改状态，而且是在申请审核前。
 一个货物只能被一个验货单收录，如果要重复验货，被收入新验货单时，就会冲掉旧验货单信息（？）备注在选择货物的时候要带进来。*/
@@ -560,7 +567,7 @@
 				if((yanhuodan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
-					if((yanhuodan.liucheng.length - 1) == n && theUser._id == item.userId){
+					if((yanhuodan.liucheng.length - 1) == n && theUser._id == yanhuodan.zhidanzhe){
 						$("#cz_huitui",caozuoItem).show();
 					}
 					$("#cz_shouli",caozuoItem).show(); 
@@ -568,7 +575,8 @@
 				}
 			}else if("受理" == item.dongzuo){
 				("#lc_tr_panel",tmpl).attr("title","验货员受理了验货单，正在按依照验货单开展验货！");
-				if((yanhuodan.liucheng.length - 1) == n && theUser._id == item.userId){
+				if((yanhuodan.liucheng.length - 1) == n && theUser._id == fahuodan.shoulizhe){
+					kebianji = true;
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true); 
 					$("#cz_shenqingshenhe",caozuoItem).show();
@@ -580,7 +588,7 @@
 				if((yanhuodan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
-					if(theUser._id == item.userId){
+					if(theUser._id == fahuodan.shoulizhe){
 						$("#cz_huitui",caozuoItem).show();
 					}else{
 						$("#cz_shenhe",caozuoItem).show();

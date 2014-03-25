@@ -438,6 +438,7 @@
 	function showDetail(yg){
 		currYG = yg;
 		$("#shangchuan").hide();
+		liuyanElm.show();
 		$("#liucheng").show().liucheng(getTheUser(),yg);
 		$("#xianshi").show().empty().html(yg.neirong).prepend("<div style='background-color:#eee'>原稿&nbsp;&nbsp;<a href='yuangao.html?showId="+yg._id+"' target=_blank>"+yg._id+"</a>，泰国单号：<div class='myinput' id='taiguodanhao'>"+yg.taiguobianhao+"</div>&nbsp;&nbsp;<span title='更改泰国单号' class='plainBtn' id='genggaitaiguodanhao' style='display:none'>更改</span></div>");
 		if(yg.zhuangtai == "上传" || yg.zhuangtai == "接稿"){
@@ -528,7 +529,8 @@
 		$("#shangchuan").show();
 		editor.editorVal("");		
 		$("#tijiao").data("waiting",false);
-		liuyanElm.clearliuyan();
+		//liuyanElm.clearliuyan();
+		liuyanElm.hide();
 	}
 	$("#shangchuanyuangao").click(function(){shangchuanmoshi();});
 		//设置头部点击处理（放到当前面板） 

@@ -56,6 +56,12 @@ if("xinjian" == $param["caozuo"]){
 	array_pop($obj["liucheng"]);
 	$lastLC = end($obj["liucheng"]);
 	$obj["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
+	if($param["zhuangtai"] == "审核"){
+		unset($obj["shenhezhe"]);
+	}
+	if($param["zhuangtai"] == "交单"){
+		unset($obj["jiaodanzhe"]);
+	}
 	coll("zhuangguidan")->save($obj)
 	statExpired();
 	echo '{"success":true}';
@@ -67,14 +73,22 @@ if("xinjian" == $param["caozuo"]){
 	coll("zhuangguidan")->remove(array("_id"=>$param["_id"]));
 	statExpired();
 	echo '{"success":true}';
+}else if("jieguan" == $param["caozuo"]){
+	coll("zhuangguidan")->update(array("_id"=>$param["_id"]),array('$set'=>array("ludanzhe"=>$_SESSION["user"]["_id"])));
+	$liuyan = array("_id"=>time(),"hostType"=>"zhuangguidan","hostId"=>$param["_id"],"type"=>"caozuorizhi"
+			,"userId"=>$_SESSION["user"]["_id"],"neirong"=>"略");//以后改成保存整个json到另外一个表，界面是点击打开就可以像普通单一样显示详情。
+	coll("liuyan")->save($liuyan);
+	echo '{"success":true}';
 }else if("jiaodan" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"交单","time"=>time());
-	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"交单","jiaodanzhe"=>$_SESSION["user"]["_id"])));
+	coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"])
+		,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"],"jiaodanzhe"=>$_SESSION["user"]["_id"])));
 	statExpired();
 	echo '{"success":true}';
 }else if("shenhe" == $param["caozuo"]){
 	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审核","time"=>time());
-	$zhuangguidan = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"审核","shenhezhe"=>$_SESSION["user"]["_id"])));
+	coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"])
+			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"],"shenhezhe"=>$_SESSION["user"]["_id"])));
 	statExpired();
 	echo '{"success":true}';
 }else if("getbyid" == $param["caozuo"]){
