@@ -3,14 +3,14 @@
 	流程：制单 申请付款 付款 审结
 {
  _id:"xxx",
- zhuangtai:"xx",//记账 付款 申请审核 审核
+ zhuangtai:"xx",//记账 付款 申请审核 审核 作废
  jine:1211,
  yifu:true,//通过该属性标识是否已付款，而不是根据日期判定
  fukuanriqi:"xx",
  jizhangren:12,
- fukuanfang:1,
- fukuanfangname:1,//增加这个是为了方便在列表中显示。
- shoukuanfang:1,
+ fukuanfang:"1",
+ fukuanfangname:"1",//增加这个是为了方便在列表中显示。
+ shoukuanfang:"1",
  shoukuanfangname:"xx",
  fukuanzhanghu:"xxx",//这只是用于显示
  fukuanfangzhanghao:"xxx",//fukuangfang+fukuangfangzhanghao 这是账户的唯一id
@@ -18,14 +18,15 @@
  shoukuanzhanghao:"xxx",
  kemu:"xx",
  beizhu:"xxx",
- fahuodan:"xxx"，//关联的发货单号，如果有。
  
  shouxufei:3,
  huilv:2.1,
  zhuanrujine:23.1,
  fukuanzhanghaoyue:2323.1,
  shoukuanzhanghaoyue:2321.3,
- lastupdatetime:123213213
+ lastupdatetime:123213213,
+ 
+ shenqings:[]//付款申请，从fahuodan表关联，本地不存
 }
 流水号
 状态
