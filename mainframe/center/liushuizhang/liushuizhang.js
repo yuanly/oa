@@ -5,6 +5,7 @@
  _id:"xxx",
  zhuangtai:"xx",//记账 付款 申请审核 审核
  jine:1211,
+ yifu:true,//通过该属性标识是否已付款，而不是根据日期判定
  fukuanriqi:"xx",
  jizhangren:12,
  fukuanfang:1,

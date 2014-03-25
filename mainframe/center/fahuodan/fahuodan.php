@@ -13,9 +13,10 @@ if("shangchuan" == $param["caozuo"]){
 	$fahuodan["zhuangtai"] = "上传";
 	$fahuodan["lastId"] = 0;
 	$fahuodan["liucheng"][] = $shangchuanliucheng;
-	$d = "FHD".date("ymd",time());
-	$n = coll("fahuodan")->count(array("_id"=>array('$regex'=>"^".$d."")));
-	$fahuodan["_id"] = $d.".".($n+1);
+	$d = date("ymd",time());
+	$n = coll("fahuodan")->count(array("_id"=>array('$regex'=>"^FHD".$d."")));
+	$fahuodan["subid"] = $d.".".($n+1);
+	$fahuodan["_id"] = "FHD".$fahuodan["subid"];
 	coll("fahuodan")->save($fahuodan);
 	statExpired();
 	echo '{"success":true}';

@@ -12,9 +12,10 @@ if("xinzengshenqing" == $param["caozuo"]){
 	$shenqing["zhuangtai"] = "制单";
 	$shenqing["ludanzhe"] = $_SESSION["user"]["_id"];
 	$shenqing["liucheng"][] = $liucheng;
-	$d = "SQ".date("ymd",time());
-	$n = coll("shenqing")->count(array("_id"=>array('$regex'=>"^".$d."")));
-	$shenqing["_id"] = $d.".".($n+1);
+	$d = date("ymd",time());
+	$n = coll("fahuodan")->count(array("_id"=>array('$regex'=>"^SQ".$d."")));
+	$shenqing["subid"] = $d.".".($n+1);
+	$shenqing["_id"] = "SQ".$shenqing["subid"];
 	coll("fahuodan")->save($shenqing);
 	statExpired();
 	echo '{"success":true}';
@@ -23,28 +24,44 @@ if("xinzengshenqing" == $param["caozuo"]){
 	statExpired();
 	echo '{"success":true}';
 }else if("chaxun" == $param["caozuo"]){
-	$cmd = $param["option"]["cmd"];
+	//$cmd = $param["option"]["cmd"];
 	$query = array();
-	if("dailudan" == $cmd){
-		$query["zhuangtai"] = "上传";
-	}else if("daiduidan" == $cmd){
-		$query["zhuangtai"] = "申请对单";
-	}else if(isset($param["option"]["zhuangtai"])){
+	if(isset($param["option"]["zhuangtai"])){
 		$query["zhuangtai"] = $param["option"]["zhuangtai"];
+		if($query["zhuangtai"] == "制单"){
+			$query["zhuangtai"] = array('$in'=>array("上传","接单","制单"));
+		}else if($query["zhuangtai"] == "对单"){
+			unset($query["zhuangtai"]);
+			$query["duidanzhe"] = array('$exists'=>true);
+		}
 	}
 	
 	if(isset($param["option"]["fukuan"])){
-		$query["liushuizhang"] = array('$exists'=>true);
+		if($param["option"]["fukuan"] == "未记账"){
+			$query["liushuizhang"] = array('$exists'=>false);	
+		}else if($param["option"]["fukuan"] == "已记账"){
+			$query["liushuizhang.yifu"] = false;
+		}else if($param["option"]["fukuan"] == "已付款"){
+			$query["liushuizhang.yifu"] = true;
+		}
 	}
 	
 	if(isset($param["option"]["bianhao"])){
-		$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
+		$query["subid"] = array('$lt'=>$param["option"]["bianhao"]);
 	}
 	if(isset($param["option"]["gonghuoshang"])){
 		$query["gonghuoshang._id"] = $param["option"]["gonghuoshang"];
 	}
-	
-	$cur = coll("fahuodan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	if(isset($param["option"]["shenqingzhe"])){
+		$query["ludanzhe"] = $param["option"]["shenqingzhe"];
+	}
+	if(isset($param["option"]["shenhezhe"])){
+		$query["duidanzhe"] = $param["option"]["shenhezhe"];
+	}
+	if(isset($param["option"]["type"])){
+		$query["type"] = "shenqing";
+	}
+	$cur = coll("fahuodan")->find($query)->sort(array("subid"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("getbyid" == $param["caozuo"]){
 	$query = array("_id"=>$param["_id"]);
