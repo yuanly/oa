@@ -32,7 +32,7 @@ if("shangchuan" == $param["caozuo"]){
 }else if("shenqingduidan" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请对单","time"=>time());
 	coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"接单","ludanzhe"=>$_SESSION["user"]["_id"])
-			,array('$push'=>array("liucheng"=>$ludanliucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
+			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
 	echo '{"success":true}';
 }else if("zuofei" == $param["caozuo"]){
@@ -64,7 +64,7 @@ if("shangchuan" == $param["caozuo"]){
 }else if("duidan" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"对单","time"=>time());
 	coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"申请对单")
-			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
+			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("duidanzhe"=>$_SESSION["user"]["_id"],"zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
 	echo '{"success":true}';
 }else if("shouhuo" == $param["caozuo"]){
@@ -85,7 +85,7 @@ if("shangchuan" == $param["caozuo"]){
 			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
 	echo '{"success":true}';
-}else if("shenqingshenjie" == $param["caozuo"]){
+}else if("shenjie" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审结","time"=>time());
 	coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"申请审结","ludanzhe"=>$_SESSION["user"]["_id"])
 			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
@@ -96,10 +96,12 @@ if("shangchuan" == $param["caozuo"]){
 	$fhd = coll("fahuodan")->findOne($query);
 	$cur = coll("huowu")->find(array("fahuodan"=>$param["_id"]));
 	$fhd["huowu"] = c2a($cur);
+	/*
 	$lsz = coll("liushuizhang")->findOne(array("fahuodan"=>$param["_id"]));
 	if($lsz){
 		$fhd["zhuanzhang"] = $lsz["_id"];
 	}
+	*/
 	echo  jsonEncode($fhd);
 }else if("chaxun" == $param["caozuo"]){
 	$cmd = $param["option"]["cmd"];

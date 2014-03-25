@@ -1,0 +1,146 @@
+﻿<html>
+	<head>
+	<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=0"> 
+	<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
+<link rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen">
+	<title>付款申请</title>
+	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
+	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+	<script src="../../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+	<script src="../../../js/my.js" type="text/javascript"></script>
+	<script src="../../../js/localstorage.js" type="text/javascript"></script>
+	<script src="../../../js/server.js" type="text/javascript"></script>
+	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+	<script src="../../../js/jquery.layout-latest.js" type="text/javascript"></script>
+	<script src="../../../js/ui.datepicker-zh-CN.js" type="text/javascript"></script>
+	<script type="text/javascript" src="shenqing.js"></script>
+	<style>  
+		th{
+			background-color:#99ccff;
+		}
+		.tmpl_dingdan:hover,.tmpl_huowu:hover,.tr_shenqing:hover{
+			color:brown;
+		}
+		.tr_shenqing{
+			white-space:nowrap; 
+			cursor:pointer;
+		}
+		
+		.tr_selected{
+			color:red
+		}
+		.plainTh{			
+			margin-left:0px;
+			padding-left:0px;
+			border-top:0px;
+			border-right:0px;
+			border-bottom:1px solid gray;
+			border-left:0px;
+			font-size:16px;
+			font-weight:bold;
+			background-color:#99ccff
+		}
+		.hw_cz{
+		}
+	</style>
+</head>
+<body style="margin:0px;padding:0px">
+	<div class="ui-layout-west">
+		<div>
+			<div><input type="checkbox" /><label>非货款</label>&nbsp;&nbsp;&nbsp;&nbsp;<span class="plainBtn" id="xinzengshenqing">[新增付款申请]</span></div>
+			<table id="shenqingtable"  style="min-width:500px;">
+				<tr id="tableheader">
+					<th nowrap><input id="th_bianhao" class="plainTh" value="编号" style="width:120px;cursor:pointer"/></th>
+					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:55px;cursor:pointer" list="zhuangtailist"/></th>
+					<th nowrap><input id="th_shoukuanren" class="plainTh" value="收款人" style="width:120px;cursor:pointer"/></th>
+					<th nowrap>金额</th>
+					<th nowrap><input id="th_shenqingzhe" class="plainTh" value="申请者" style="width:55px;font-size:0.8em"/></th>
+					<th nowrap><input id="th_shenhezhe" class="plainTh" value="审核者" style="width:55px;font-size:0.8em"/></th>
+					<th nowrap><input id="th_fukuan" class="plainTh" value="付款" style="width:55px;cursor:pointer" list="fukuanlist"/></th>
+				</tr>
+				<tr class="tr_shenqing">
+					<td id="td_bianhao"></td>
+					<td id="td_zhuangtai"></td>
+					<td id="td_shoukuanren"></td>
+					<td id="td_jine"></td>
+					<td id="td_shenqingzhe"></td>
+					<td id="td_shenhezhe"></td>
+					<td id="td_fukuan"></td>
+				</tr>
+			</table>	
+			<div id="pager">
+				<span id="prevPage" class="plainBtn">上一页</span> <span id="nextPage" class="plainBtn">下一页</span>
+				<a style="text-decoration:none;font-size:.8em;color:blue;float:right;" href="help.html" target="_blank">帮助</a>
+			</div>
+		</div>
+	</div>
+	<div class="ui-layout-center">
+	<div id="ctr_shenqing">
+		<table><tr><td nowrap>
+		<div id="liucheng">
+			<div id="liuchengItem" style="display:inline-block;border:1px solid #ddd;background-color:#fcfcfc">
+				<table>
+					<tr>
+						<td style="font-size:30px" id="lc_bianhao">2</td>
+						<td><div><img id="lc_touxiang" src="/oa/logo/noface.jpg" style="width:48px;height:48px;border-radius:25px;"/></div></td>
+						<td><span style="font-size:12px" id="lc_mingchen">袁立宇</span>&nbsp;&nbsp;<span style="font-weight:bolder" id="lc_dongzuo">制单</span><div style="font-size:12px" id="lc_shijian">2013-10-3 15:59</div></td><td style="cursor:pointer"><img id="lc_anniu" src="../../../img/up.png" style="display:none"/></td>
+					</tr>
+					<tr id="lc_caozuo" style="display:none" >
+						<td colspan="4" style="text-align:center;border:1px solid #ddd">
+							<span id="cz_shanchu" class="plainBtn" style="margin-right:10px;display:none">删除</span>
+							<span id="cz_shenqingduidan" class="plainBtn" style="margin-right:10px;display:none">申请对单</span>
+							<span id="cz_huitui" class="plainBtn" style="margin-right:10px;display:none">回退</span>
+							<span id="cz_duidan" class="plainBtn" style="margin-right:10px;display:none">对单</span>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</td></tr></table>
+		<table id="tb_liushuizhangliucheng"><tr><td nowrap>
+		<div id="liushuizhangliucheng">
+		</div>
+	</td></tr></table>
+		<div id="shenqingmingxi" style="margin-top:10px">
+			<div>
+				<div style='background-color:#eee' id="detailheader"  class="detailheader">付款信息</div>
+				<div class="myInput" id="sq_fukuanxinxi" style="margin:5px">未付款！</div>
+			</div>
+			<div style='background-color:#eee' id="detailheader"  class="detailheader">付款申请明细&nbsp;&nbsp;&nbsp;&nbsp;
+					<span id="bianji" class="plainBtn" style="display:none">[编辑]</span>
+					<span id="fangqi" class="plainBtn" style="display:none">[放弃]</span>&nbsp;&nbsp;
+					<span id="baocun" class="plainBtn" style="display:none">[保存]</span>
+			</div>
+			编号：<div class="myInput" id="sq_bianhao"></div>，
+			付款金额：<input type="text" class="plainInput" id="sq_jine" size=7 style="color:red;text-align:center;font-size:1.5em" readonly/>元，
+			科目：<input type="text" id="sq_kemu" class="plainInput" style="cursor:pointer" size=7 />
+			<div>收款人：<div class="myInput" id="sq_shoukuanren" style="min-width:120px;cursor:pointer"></div> </div>
+			<div style="margin-top:8px;margin-bottom:8px">收款账户：<div class="myInput" id="sq_shoukuanzhanghu" style="min-width:120px"></div></div>
+			<div style='background-color:#eee;min-width:10px;display:inline-block'>付款申请说明：</div>
+			<div id="sq_shuoming"></div>
+		</div>
+		<div id="liuyan" style="margin-top:150px">
+			<span class="plainBtn">留言</span>
+		</div>
+	</div>
+		<datalist id="zhuangtailist">
+			<option value="状态"/>
+			<option value="制单"/>
+			<option value="申请对单"/>
+			<option value="对单"/>
+		</datalist>
+		<datalist id="fukuanlist">
+			<option value="付款"/>
+			<option value="已付"/>
+			<option value="未付"/>
+		</datalist>
+	</div>
+	</div>
+</body>
+</html>

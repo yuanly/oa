@@ -8,8 +8,8 @@
 	quyu:"xx",//区域，如“花都”“中大”,有时需要按区域搜索商家
 	dizhi:"xxx",
 	beizhu:"xxx",
-	dianhualiebiao:[],
-	zhanghuliebiao:[],
+	dianhualiebiao:["","",...],
+	zhanghuliebiao:[{zhanghao:,huming:,yinhang:,wangdian:},...],
 	shangjia:{_id:"xx",mingchen:"xx"},	//如果是商家类型，则填自己
 	leixing:"xx",//geren（个人） shangjia（商家）
 	yanyuodizhi:"xxx",//商家才需要
