@@ -119,6 +119,17 @@
 		}
 	}
 	$("#lc_anniu").click(cz_anniu);
+	function cz_huitui(){
+		var that = $(this);
+		postJson("yuangao.php",{caozuo:"huitui",_id:currYG._id,zhuangtai:currYG.zhuangtai},function(res){
+			if(res.err){
+				tip(that,res.err,1500);
+			}else{
+				showDetailById(currYG._id);
+			}
+		});
+	}
+	$("#cz_huitui").click(cz_huitui);
 	function cz_zuofei(){
 		var _id = $("#liucheng").data("_id");
 		postJson("yuangao.php",{caozuo:"zuofei",_id:_id},function(res){
@@ -558,14 +569,11 @@
 					var caozuoItem = caozuoTmpl.clone(true);
 					if(theUser._id == item.userId){
 						$("#cz_shanchu",caozuoItem).show();
-						$("#cz_jiegao",caozuoItem).show();
-						$("table",tmpl).append(caozuoItem);
-					}else{
-						$("#cz_jiegao",caozuoItem).show();
-						$("table",tmpl).append(caozuoItem);
 					}
+					$("#cz_jiegao",caozuoItem).show();
+					$("table",tmpl).append(caozuoItem);
 				}
-			}else if("接稿" == item.dongzuo){ 
+			}else if("接稿" == item.dongzuo){
 				("#lc_tr_panel",tmpl).attr("title","录单员已接受原稿，正在进行录单！");
 				if("审结" != yuangao.liucheng[yuangao.liucheng.length-1].dongzuo){
 					//if(theUser._id != item.userId){
@@ -581,10 +589,18 @@
 							$("#cz_ludan",caozuoItem).show();
 							$("#cz_shenqingshenjie",caozuoItem).show();
 							$("#cz_zuofei",caozuoItem).show();
-							//$("#cz_beizhu",caozuoItem).show();
 							$("table",tmpl).append(caozuoItem);
 						}
 					}
+				}
+			}else if("作废" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","录单员已经将原稿作废！");
+				if(theUser._id == yuangao.jiegaozhe){
+					var caozuoItem = caozuoTmpl.clone(true);
+					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+					$("#huitui",caozuoItem).show();
+					$("#cz_shenqingshenjie",caozuoItem).show();//出于重视，有作废者主动申请审核
+					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("申请审结" == item.dongzuo){
 				("#lc_tr_panel",tmpl).attr("title","录单员已经完成录单，申请他人帮忙对所有订单进行审核！");
@@ -592,11 +608,19 @@
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				//if(theUser._id == item.userId){
 				if(theUser._id == yuangao.jiegaozhe){
-						$("#cz_quxiaoshenqingshenjie",caozuoItem).show();
+						$("#cz_huitui",caozuoItem).show();
 						$("table",tmpl).append(caozuoItem);
 				}else{
 						$("#cz_shenjie",caozuoItem).show();
 						$("table",tmpl).append(caozuoItem);
+				}
+			}else if("审结" == item.dongzuo){
+				("#lc_tr_panel",tmpl).attr("title","已审结！");
+				if(theUser._id == item.userId){
+					var caozuoItem = caozuoTmpl.clone(true);
+					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+					$("#huitui",caozuoItem).show();
+					$("table",tmpl).append(caozuoItem);
 				}
 			}
 			that.append(tmpl);

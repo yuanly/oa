@@ -250,10 +250,14 @@
 	$("#cz_dayin").click(cz_dayin);
 	$("#cz_miyin").click(cz_miyin);
 	$("#cz_miyin2").click(cz_miyin2);
-	
 	function cz_huitui(){
+		var that = $(this);
 		postJson("yanhuodan.php",{caozuo:"huitui",_id:currYHD._id,zhuangtai:currYHD.zhuangtai},function(res){
-			showDetailById(currYHD._id);
+			if(res.err){
+				tip(that,res.err,1500);
+			}else{
+				showDetailById(currYHD._id);
+			}
 		});
 	}
 	$("#cz_huitui").click(cz_huitui);

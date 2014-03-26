@@ -48,8 +48,19 @@ if("shangchuan" == $param["caozuo"]){
 	coll("dingdan")->update(array("yuangao"=>$param["_id"],"zhuangtai"=>"录单"),array('$set'=>array("zhuangtai"=>"申请审核")),array("multiple"=>true));
 	statExpired();
 	echo '{"success":true}';
-}else if("quxiaoshenqingshenjie" == $param["caozuo"]){
-	coll("yuangao")->update(array("_id"=>$param["_id"],"jiegaozhe"=>$_SESSION["user"]["_id"]),array('$set'=>array("zhuangtai"=>"接稿"),'$pop'=>array("liucheng"=>1)));
+}else if("huitui" == $param["caozuo"]){
+	$obj = coll("yuangao")->findOne(array("_id"=>$param["_id"],"zhuangtai"=>$param["zhuangtai"]));
+	if(empty($obj)){
+		echo '{"success":false,"err":"数据异常，请刷新页面！"}';
+		return;
+	}
+	array_pop($obj["liucheng"]);
+	$lastLC = end($obj["liucheng"]);
+	$obj["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
+	if($param["zhuangtai"] == "审核"){
+		unset($obj["shenjiezhe"]);
+	}
+	coll("yuangao")->save($obj);
 	statExpired();
 	echo '{"success":true}';
 }else if("shenjie" == $param["caozuo"]){

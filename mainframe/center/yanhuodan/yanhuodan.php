@@ -44,7 +44,8 @@ if("xinjian" == $param["caozuo"]){
 }else if("huitui" == $param["caozuo"]){
 	$obj = coll("yanhuodan")->findOne(array("_id"=>$param["_id"],"zhuangtai"=>$param["zhuangtai"]));
 	if(empty($obj)){
-	echo '{"success":false}';
+		echo '{"success":false,"err":"数据异常，请刷新页面！"}';
+		return;
 	}
 	array_pop($obj["liucheng"]);
 	$lastLC = end($obj["liucheng"]);
