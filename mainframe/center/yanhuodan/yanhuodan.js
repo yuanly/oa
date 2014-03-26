@@ -32,7 +32,7 @@
 	$("#yhd_bianhao").click(function(){
 			window.open("yanhuodan.html?showId="+$(this).val(),"_blank");		
 		});
-	var users = getUsers();users.unshift({"user_name":"创建者"});
+	var users = getUsers();users.unshift({"user_name":"制单者"});
 	$("#th_chuangjianzhe").myselector(users,"user_name").bind("input",function(){
 		listyanhuodan(0);
 	});
@@ -356,7 +356,7 @@
 			ret.zhuangtai = zt;
 		}
 		var cjz = $("#th_chuangjianzhe").val().trim();
-		if("" != cjz && "创建者" != cjz){
+		if("" != cjz && "制单者" != cjz){
 			var id = getUserIdByName(cjz);
 			if(id){
 				ret.chuangjianzhe = id;

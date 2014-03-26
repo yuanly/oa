@@ -63,6 +63,12 @@ if("jiedan" == $param["caozuo"]){
 								array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
 	echo '{"success":true}';
+}else if("shenqingshenjie" == $param["caozuo"]){
+	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请审结","time"=>time());
+	coll("dingdan")->update(array("_id"=>$param["_id"],"gendanyuan"=>$_SESSION["user"]["_id"],"zhuangtai"=>array('$in'=>array("发货","作废")))
+			,array('$set'=>array("zhuangtai"=>$liucheng["dongzuo"]),'$push'=>array("liucheng"=>$liucheng)));
+	statExpired();
+	echo '{"success":true}';
 }else if("zidan" == $param["caozuo"]){//生成一张子单
 	$dingdan = coll("dingdan")->findOne(array("_id"=>$param["_id"],"gendanyuan"=>$_SESSION["user"]["_id"])
 					,array("liucheng"=>0,"huowu"=>0));//子单是加工订单的买材料的订单。如果临时追加新订单，需要临时加一个原稿（原稿相当于采购申请，这部不能随便省 ）。
@@ -133,7 +139,8 @@ if("jiedan" == $param["caozuo"]){
 }else if("huitui" == $param["caozuo"]){//
 	$obj = coll("dingdan")->findOne(array("_id"=>$param["_id"],"zhuangtai"=>$param["zhuangtai"]));
 	if(empty($obj)){
-	echo '{"success":false}';
+		echo '{"success":true,"err":"后台数据异常，请刷新界面！"}';
+		return;
 	}
 	array_pop($obj["liucheng"]);
 	$lastLC = end($obj["liucheng"]);

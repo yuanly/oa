@@ -615,7 +615,7 @@
 						$("table",tmpl).append(caozuoItem);
 				}
 			}else if("审结" == item.dongzuo){
-				("#lc_tr_panel",tmpl).attr("title","已审结！");
+				("#lc_tr_panel",tmpl).attr("title","其他同事已对该原稿处理情况进行审结！");
 				if(theUser._id == item.userId){
 					var caozuoItem = caozuoTmpl.clone(true);
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
