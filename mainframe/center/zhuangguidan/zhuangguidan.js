@@ -345,7 +345,7 @@ function _hanshuku_(){}
 				tr.find("#td_guihao").text(zhuangguidan.guihao);
 				tr.find("#td_zhuangtai").text(zhuangguidan.zhuangtai);
 				tr.find("#td_zhidanzhe").text(zhidanzhe);
-				tr.find("#td_jiaodanzhe").text(jiaodanzhe);
+				//tr.find("#td_jiaodanzhe").text(jiaodanzhe);
 				tr.find("#td_zhuangguiriqi").text(zhuangguidan.zhuangguiriqi);
 				tr.find("#td_shenhezhe").text(shenhezhe);
 				

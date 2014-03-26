@@ -331,13 +331,10 @@ function _hanshuku_(){}
 				}else if("对单" == item.dongzuo){
 					("#lc_tr_panel",tmpl).attr("title","已完成对单，可以付款！");
 					if((shenqing.liucheng.length - 1) == n){
-						if(theUser._id == item.userId){
+						if(theUser._id == item.userId && !shenqing.liushuizhang){
 							$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 							var caozuoItem = caozuoTmpl.clone(true);
-							$("#cz_shouhuo",caozuoItem).hide();
-							if(!shenqing.liushuizhang){
-								$("#cz_huitui",caozuoItem).show();
-							}
+							$("#cz_huitui",caozuoItem).show();
 							$("table",tmpl).append(caozuoItem); 
 						}
 					}
