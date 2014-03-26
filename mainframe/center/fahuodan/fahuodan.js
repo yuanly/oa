@@ -14,7 +14,7 @@
 		kemu:"",//付款申请才需要
 		subid:"xx",
 		liucheng:[{userId:3,dongzuo:"录单",time:1322}],
-		liushuizhang:{_id:"xx",zhuangtai:"xx"},//保存的是流水账id，但返回时直接关联上整个流水账//一般不会有一个付款申请被分成多次支付，除非不够钱，对方要求有多少付多少，但这种情况发生可能性极低，备注注明即可。
+		liushuizhang:{_id:"xx",yifu:true},//保存的是流水账id，但返回时直接关联上整个流水账//一般不会有一个付款申请被分成多次支付，除非不够钱，对方要求有多少付多少，但这种情况发生可能性极低，备注注明即可。
 		zhuangtai:"录单",
 		gonghuoshang:{_id:"SJ131110",mingchen:"大大"},//收款人
 		shoukuanzhanghu:"xxx",//收款账户 整理好的一个字符串
@@ -548,7 +548,11 @@
 	$("#cz_jieguan").click(cz_jieguan);
 	function cz_huitui(){
 		postJson("fahuodan.php",{caozuo:"huitui",_id:currFHD._id,zhuangtai:currFHD.zhuangtai},function(res){
-			showDetailById(currFHD._id);
+			if(res.err){
+				tip(that,res.err,1500);
+			}else{
+				showDetailById(currFHD._id);
+			}
 		});
 	}
 	$("#cz_huitui").click(cz_huitui);

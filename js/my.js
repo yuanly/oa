@@ -1263,6 +1263,13 @@ jQuery.fn.dataInc = function(name,value){
  	}
  	return ret;
  }
+function parseFloat3(str){
+ 	var ret = parseFloat(str);
+ 	if(isNaN(ret)){
+ 		return 0;
+ 	}
+ 	return ret;
+ }
  function parseFloat2(str){
  	var ret = parseFloat(str);
  	if(isNaN(ret)){

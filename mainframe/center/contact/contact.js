@@ -206,6 +206,7 @@ $(function(){
 		$(".jian").show();
 		$(".jia").show();
 		$(".plainInput").removeAttr("readonly");
+		$(".zhanghao").attr("readonly","readonly");//帐号不能修改，只能删除后重新录入。涉及到记账流水已经绑定。可能需要人工迁移流水。
 		$("#shangjia").click(shangjiaclickhandler); 
 	}
 	//进入只读状态 
@@ -283,7 +284,7 @@ $(function(){
 		var ret = false;
 		var ar = [];
 		each(zhanghus,function(i,zh){
-			if(ar.indexOf(zh.zhanghao)>=0){
+			if(zh.zhanghao == "" || ar.indexOf(zh.zhanghao)>=0){
 				ret = true;
 				return false;
 			}
@@ -299,7 +300,7 @@ $(function(){
 		}
 		var contact = form2obj();
 		if(dupZhanghao(contact.zhanghuliebiao)){
-			tip($(this),"两个账户的账号不能相同！",1500);
+			tip($(this),"帐号不能为空，且两个账户的账号不能相同！",1500);
 			return;
 		}		
 		if("【新增】" == $("#bianhao").text()){		

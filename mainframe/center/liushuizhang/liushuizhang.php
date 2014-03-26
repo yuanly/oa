@@ -8,7 +8,7 @@ checkuser();
 $param = getJson();
 if("xinjian" == $param["caozuo"]){
 	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"记账","time"=>time());
-	$liushuizhang = array("liucheng"=>array($liucheng),"zhuangtai"=>"记账","jizhangren"=>$_SESSION["user"]["_id"]);	
+	$liushuizhang = array("liucheng"=>array($liucheng),"zhuangtai"=>$liucheng["dongzuo"],"jizhangren"=>$_SESSION["user"]["_id"]);	
 	$d = "LSZ".date("ymd",time());
 	$n = coll("liushuizhang")->count(array("_id"=>array('$regex'=>"^".$d."")));
 	$liushuizhang["_id"] = $d.".".($n+1);
@@ -17,32 +17,41 @@ if("xinjian" == $param["caozuo"]){
 	$liushuizhang["fukuanfangname"] = $zhongtai["zhongtai"]["mingchen"];
 	$liushuizhang["fukuanriqi"] = "";//方便查待付流水
 	$liushuizhang["yifu"] = false;
+	$liushuizhang["shouxufei"]=0;
 	coll("liushuizhang")->save($liushuizhang);
 	statExpired();
 	echo '{"success":true}';
 }else if("daishenqingchuanjian" == $param["caozuo"]){
 	$shenqings = $param["liushui"]["shenqings"];
-	if(coll("fahuodan")->count(array("_id"=>array('$in'=>$param["shenqings"]),"liushuizhang"=>array('$exists'=>false)))<count($param["shenqings"])){
-		echo '{"success":true,"err":"数据冲突，请刷新后重来！"}';	
-		exit;
-	}
+
 	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"记账","time"=>time());
 	$liushuizhang = array("liucheng"=>array($liucheng),"zhuangtai"=>$liucheng["dongzuo"]
 												,"jine"=>$param["liushui"]["jine"],"jizhangren"=>$_SESSION["user"]["_id"]);	
 	if(isset($param["liushui"]["kemu"])){
 		$liushuizhang["kemu"] = $param["liushui"]["kemu"];
 	}
-	$d = "LSZ".date("ymd",time());
-	$n = coll("liushuizhang")->count(array("_id"=>array('$regex'=>"^".$d."")));
-	$liushuizhang["_id"] = $d.".".($n+1);
 	$zhongtai = coll("config")->findOne(array("_id"=>"zhongtai"));
 	$liushuizhang["fukuanfang"] = $zhongtai["zhongtai"]["_id"];
 	$liushuizhang["fukuanfangname"] = $zhongtai["zhongtai"]["mingchen"];
-	$liushuizhang["fukuanriqi"] = "";//方便查待付流水
+	$liushuizhang["fukuanriqi"] = "";
 	$liushuizhang["yifu"] = false;
+	$liushuizhang["shouxufei"]=0;
+	if(!lock()){
+			echo '{"success":true,"err","锁冲突，请重试。若连续超过3次冲突请到“其他”模块进行解锁。"}';
+			return;
+	}
+	if(coll("fahuodan")->count(array("_id"=>array('$in'=>$param["shenqings"]),"liushuizhang"=>array('$exists'=>false)))<count($param["shenqings"])){
+		echo '{"success":true,"err":"数据冲突，请先刷新界面！"}';	
+		unlock();
+		return;
+	}
+	$d = "LSZ".date("ymd",time());
+	$n = coll("liushuizhang")->count(array("_id"=>array('$regex'=>"^".$d."")));
+	$liushuizhang["_id"] = $d.".".($n+1);
 	coll("liushuizhang")->save($liushuizhang);
 	coll("fahuodan")->update(array("_id"=>array('$in'=>$param["shenqings"]))
 			,array('$set'=>array("liushuizhang"=>array("_id"=>$liushuizhang["_id"],"yifu"=>false))),array("multiple"=>true));
+	unlock();
 	statExpired();
 	echo '{"success":true}';
 }else if("chaxun" == $param["caozuo"]){
@@ -59,9 +68,9 @@ if("xinjian" == $param["caozuo"]){
 	if(isset($param["option"]["shoukuanfang"])){
 		$query["shoukuanfang"] = $param["option"]["shoukuanfang"];
 	}
-	if(isset($param["option"]["zhifuriqi"])){
+	/*if(isset($param["option"]["zhifuriqi"])){
 		$query["fukuanriqi"] = array('$lte'=>$param["option"]["zhifuriqi"]);
-	}
+	}*/
 	if(isset($param["option"]["kemu"])){
 		$query["kemu"] = $param["option"]["kemu"];
 	}
@@ -73,83 +82,141 @@ if("xinjian" == $param["caozuo"]){
 	}
 	$cur = coll("liushuizhang")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
-}else if("shenqingshenhe" == $param["caozuo"]){
-	$zuofeiliucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请审核","time"=>time());
-	$liushuizhang = coll("liushuizhang")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"申请审核")));
+}else if("shanchu" == $param["caozuo"]){
+	if(!lock()){
+			echo '{"success":true,"err","锁冲突，请重试。若连续超过3次冲突请到“其他”模块进行解锁。"}';
+			return;
+	}
+	$one = coll("liushuizhang")->findOne(array("_id"=>$param["_id"],"jizhangren"=>$_SESSION["user"]["_id"],"zhuangtai"=>"记账"));
+	if(empty($one)){
+		echo '{"success":true}';
+		unlock();
+		return;
+	}
+	coll("fahuodan")->update(array("liushuizhang._id"=>$one["_id"])
+			,array('$unset'=>array("liushuizhang"=>1)),array("multiple"=>true));
+	coll("liushuizhang")->remove(array("_id"=>$param["_id"],"zhuangtai"=>"记账"));
+	unlock();
 	statExpired();
 	echo '{"success":true}';
-}else if("quxiaoshenqingshenhe" == $param["caozuo"]){
-	coll("liushuizhang")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"记账"),'$pop'=>array("liucheng"=>1)));
+}else if("huitui" == $param["caozuo"]){//
+	$obj = coll("liushuizhang")->findOne(array("_id"=>$param["_id"],"zhuangtai"=>$param["zhuangtai"]));
+	if(empty($obj)){
+		echo '{"success":true,"err":"后台数据异常，请刷新界面！"}';
+	}
+	array_pop($obj["liucheng"]);
+	$lastLC = end($obj["liucheng"]);
+	$obj["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
+	coll("liushuizhang")->save($obj);
 	statExpired();
 	echo '{"success":true}';
-}else if("shenhe" == $param["caozuo"]){
-	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审核","time"=>time());
-	$liushuizhang = coll("liushuizhang")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>"审核","shenhezhe"=>$_SESSION["user"]["_id"])));
+}else if("fukuan" == $param["caozuo"]){
+	if(!lock()){
+			echo '{"success":true,"err","锁冲突，请重试。若连续超过3次冲突请到“其他”模块进行解锁。"}';
+			return;
+	}
+	$ls = coll("liushuizhang")->findOne(array("_id"=>$param["_id"],"jizhangren"=>$_SESSION["user"]["_id"],"zhuangtai"=>"记账"));
+	if(empty($ls)){
+		echo '{"success":true,"err":"数据异常！"}';
+		unlock();
+		return;
+	}
+	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"付款","time"=>time());
+	$ls["liucheng"][] = $liucheng;
+	$ls["zhuangtai"] = $liucheng["dongzuo"];
+	$ls["yifu"] = true;
+	//更新付款账户和收款账号余额
+	$ls["fukuanzhanghaoyue"] = getBalacne($ls["fukuanfang"],$ls["fukuanzhanghao"])-$ls["jine"];
+	if(empty($ls["zhuanrujine"])){
+		$skjine = $ls["jine"];
+	}else{
+		$skjine = $ls["zhuanrujine"];
+	}
+	$ls["shoukuanzhanghaoyue"] = getBalacne($ls["fukuanfang"],$ls["fukuanzhanghao"])+$skjine;
+	$ls["lastupdatetime"] = time();
+	coll("liushuizhang")->save($ls);
+	//更新所有关联的付款申请
+	if(!empty($ls["shenqings"])){
+		coll("fahuodan")->update(array("liushuizhang._id"=>array('$in'=>$one["shenqings"]))
+				,array('$set'=>array("liushuizhang.yifu"=>true)),array("multiple"=>true));
+	}	
+	unlock();
 	statExpired();
 	echo '{"success":true}';
-}else if("quxiaoshenhe" == $param["caozuo"]){
-	coll("liushuizhang")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"申请审核"),'$unset'=>array("shenhezhe"=>1),'$pop'=>array("liucheng"=>1)));
+}else if("shenqingfuhe" == $param["caozuo"]){
+	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请复核","time"=>time());
+	coll("liushuizhang")->findAndModify(array("_id"=>$param["_id"],array("zhuangtai"=>array('$in'=>array("付款","作废"))),"jizhangren"=>$_SESSION["user"]["_id"])
+			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
+	statExpired();
+	echo '{"success":true}';
+}else if("fuhe" == $param["caozuo"]){
+	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"复核","time"=>time());
+	coll("liushuizhang")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"申请复核","jizhangren"=>$_SESSION["user"]["_id"])
+			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
 	echo '{"success":true}';
 }else if("getbyid" == $param["caozuo"]){
 	$query = array("_id"=>$param["_id"]);
 	$lsz = coll("liushuizhang")->findOne($query);
-	echo  jsonEncode($lsz);
-}else if("baocun" == $param["caozuo"]){//余额计算，要考虑并发和事务性
-	$liushuizhang = $param["liushuizhang"];
-	if(empty($liushuizhang["fukuanriqi"])){//不涉及余额，直接覆盖
-		coll("liushuizhang")->save($liushuizhang);
-	}else{
-		if(!lock()){
-				echo '{"success":false}';
-				return;
-		}
-		$old = coll("liushuizhang")->findOne(array("_id"=>$liushuizhang["_id"]));
-		if(!empty($old["fukuanriqi"])){
-			$oldfukuanjine = $old["jine"];
-			if(isset($old["zhuanrujine"])){
-				$oldshoukuanjine = $old["zhuanrujine"];
-			}else{
-				$oldshoukuanjine = $old["jine"];
-			}
-		}else{
-			$oldfukuanjine = 0;
-			$oldshoukuanjine = 0;
-		}
-		$fukuanchae = $liushuizhang["jine"]-$oldfukuanjine;
-		if(isset($liushuizhang["zhuanrujine"])){
-			$shoukuanchae = $liushuizhang["zhuanrujine"] - $oldshoukuanjine;
-		}else{
-			$shoukuanchae = $liushuizhang["jine"] - $oldshoukuanjine;
-		}
-		$liushuizhang["fukuanzhanghaoyue"] = getBalance($liushuizhang["fukuanfang"],$liushuizhang["fukuanfangzhanghao"]) - $fukuanchae;
-		$liushuizhang["shoukuanzhanghaoyue"] = getBalance($liushuizhang["shoukuanfang"],$liushuizhang["shoukuanfangzhanghao"]) + $shoukuanchae;
-		$liushuizhang["lastupdatetime"] = time();
-		coll("liushuizhang")->save($liushuizhang);
-		unlock();
+	if(!empty($lsz)){
+		$cur = coll("fahuodan")->find(array("liushuizhang._id"=>$lsz["_id"]),array("neirong"=>0,"qitafei"=>0,"liucheng"=>0))->sort(array("_id"=>1));
+		$lsz["shenqings"] = cur2json($cur);
 	}
-	echo '{"success":true}';
-}else if("zuofei" == $param["caozuo"]){
-	$zuofeiliucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
+	echo  jsonEncode($lsz);
+}else if("baocun" == $param["caozuo"]){//要考虑关联的发货单的变化！
+	$liushuizhang = $param["liushuizhang"];
 	if(!lock()){
-		echo '{"success":false}';
+			echo '{"success":true,"err","锁冲突，请重试。若连续超过3次冲突请到“其他”模块进行解锁。"}';
+			return;
+	}
+	$one = coll("liushuizhang")->findOne(array("_id"=>$liushuizhang["_id"],"zhuangtai"=>"记账"));
+	if(empty($one)){
+		echo '{"success":true,"err":"记账状态已发生变化，请刷新页面。"}';	
+		unlock();
 		return;
 	}
-	//$liushuizhang = coll("liushuizhang")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"作废")),null,array("new"=>true));
-	$liushuizhang = coll("liushuizhang")->findOne(array("_id"=>$param["_id"]));
-	$liushuizhang["liucheng"][] = $zuofeiliucheng;
-	if(!empty($liushuizhang["fukuanriqi"])){
-		$fukuanchae = $liushuizhang["jine"];
-		if(isset($liushuizhang["zhuanrujine"])){
-			$shoukuanfangchae = $liushuizhang["zhuanrujine"];
-		}else{
-			$shoukuanfangchae = $liushuizhang["jine"];
+	if($liushuizhang["shenqingsyibian"]){//由客户端告知是否已经修改了申请
+		//删除已关联的
+		coll("fahuodan")->update(array("liushuizhang._id"=>$one["_id"])
+				,array('$unset'=>array("liushuizhang"=>1)),array("multiple"=>true));
+		//按新数据重新关联
+		if(!empty($liushuizhang["shenqings"])){
+			coll("fahuodan")->update(array("_id"=>array('$in'=>$liushuizhang["shenqings"]))
+					,array('$set'=>array("liushuizhang"=>array("_id"=>$liushuizhang["_id"],"yifu"=>false))),array("multiple"=>true));
 		}
-		$liushuizhang["fukuanzhanghaoyue"] = getBalance($liushuizhang["fukuanfang"],$liushuizhang["fukuanfangzhanghao"]) + $fukuanchae;
-		$liushuizhang["shoukuanzhanghaoyue"] = getBalance($liushuizhang["shoukuanfang"],$liushuizhang["shoukuanfangzhanghao"]) - $shoukuanchae;
-		$liushuizhang["lastupdatetime"] = time();
-		coll("liushuizhang")->save($liushuizhang);
+		unset($liushuizhang["shenqingsyibian"]);
+	｝
+	unset($liushuizhang["shenqings"]);
+	coll("liushuizhang")->save($liushuizhang);//还在“记账”阶段，不用考虑余额的事情。
+	unlock();
+	echo '{"success":true}';
+}else if("zuofei" == $param["caozuo"]){//重算余额和去关联
+	if(!lock()){
+			echo '{"success":true,"err","锁冲突，请重试。若连续超过3次冲突请到“其他”模块进行解锁。"}';
+			return;
 	}
+	$ls = coll("liushuizhang")->findOne(array("_id"=>$param["_id"],"zhuangtai"=>"付款","jizhangren"=>$_SESSION["user"]["_id"]));
+	if( empty($ls)){
+		echo '{"success":true,"err":"记账状态已发生变化，请刷新页面。"}';	
+		unlock();
+		return;
+	}
+	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
+	$ls["liucheng"][]=$liucheng;
+	$ls["zhuangtai"] = $liucheng["dongzuo"];
+	//更新付款账户和收款账号余额
+	$ls["fukuanzhanghaoyue"] = getBalacne($ls["fukuanfang"],$ls["fukuanzhanghao"]) + $ls["jine"];
+	if(empty($ls["zhuanrujine"])){
+		$skjine = $ls["jine"];
+	}else{
+		$skjine = $ls["zhuanrujine"];
+	}
+	$ls["shoukuanzhanghaoyue"] = getBalacne($ls["fukuanfang"],$ls["fukuanzhanghao"]) - $skjine;
+	$ls["lastupdatetime"] = time();
+	coll("liushuizhang")->save($ls);
+	//删除所有关联的付款申请
+	coll("fahuodan")->update(array("liushuizhang._id"=>$ls["_id"])
+			,array('$unset'=>array("liushuizhang"=>1)),array("multiple"=>true));
 	unlock();
 	statExpired();
 	echo '{"success":true}';
@@ -162,8 +229,8 @@ if("xinjian" == $param["caozuo"]){
 		$query["kemu"] = $param["option"]["kemu"];
 	}
 	if(isset($param["option"]["zhanghao"])){
-		$query['$or'] = array(array("fukuanfangzhanghao"=>$param["option"]["zhanghao"]),
-								 					 array("shoukuanfangzhanghao"=>$param["option"]["zhanghao"]));
+		$query['$or'] = array(array("fukuanzhanghao"=>$param["option"]["zhanghao"]),
+								 					 array("shoukuanzhanghao"=>$param["option"]["zhanghao"]));
 	}
 	$query["zhuangtai"] = array('$ne'=>"作废");
 	$cur = coll("liushuizhang")->find($query)->sort(array("_id",-1));
@@ -173,15 +240,16 @@ if("xinjian" == $param["caozuo"]){
 	echo '{"success":true}';
 }
 
+//帐号余额被记录在每一笔流水里。最新流水（根据lastupdatetime判断，包括作废的）就是最新的余额，这样可以保证更新流水和余额在一个事务里完成。
 function getBalance($lxrId,$zhanghao){
-	$cur = coll("liushuizhang")->find(array('$or'=>array(array("fukuanfang"=>$lxrId,"fukuanfangzhanghao"=>$zhanghao),array("shoukuanfang"=>$lxrId,"shoukuanfangzhanghao"=>$zhanghao))))->sort(array("lastupdatetime"=>-1))->limit(1);
+	$cur = coll("liushuizhang")->find(array('$or'=>array(array("fukuanfang"=>$lxrId,"fukuanzhanghao"=>$zhanghao),array("shoukuanfang"=>$lxrId,"shoukuanzhanghao"=>$zhanghao))))->sort(array("lastupdatetime"=>-1))->limit(1);
 	if($cur->hasNext()){
 		$liushui = $cur->getNext();
 	}else{
 		return 0;
 	}
 	if(isset($liushui["lastupdatetime"])){
-		if($liushui["fukuanfang"] == $lxrId && $liushui["fukuanfangzhanghao"] == $zhanghao){
+		if($liushui["fukuanfang"] == $lxrId && $liushui["fukuanzhanghao"] == $zhanghao){
 			return $liushui["fukuanzhanghaoyue"];
 		}else{
 			return $liushui["shoukuanzhanghaoyue"];

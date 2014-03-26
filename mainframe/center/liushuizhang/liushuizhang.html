@@ -53,26 +53,27 @@
 <body style="margin:0px;padding:0px">
 	<div class="ui-layout-west">
 		<div>
-			<table id="liushuizhangtable"  style="min-width:500px;">
+			<table id="liushuizhangtable"  style="width:300px">
 				<tr id="tableheader">
 					<th nowrap><input id="th_bianhao" class="plainTh" value="编号" style="width:100px;cursor:pointer"/></th>
-					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:70px;cursor:pointer" list="zhuangtailist"/></th>
+					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:55px;cursor:pointer" list="zhuangtailist"/></th>
+					<th nowrap><input id="th_jizhangren" class="plainTh" value="记账人" style="width:70px;cursor:pointer"/></th>
 					<th nowrap><input id="th_fukuanfang" class="plainTh" value="付款方" style="width:150px;cursor:pointer"/></th>
 					<th nowrap><input id="th_shoukuanfang" class="plainTh" value="收款方" style="width:150px;cursor:pointer"/></th>
 					<th nowrap>金额</th>
-					<th nowrap><input id="th_zhifuriqi" class="plainTh" value="支付日期" style="width:90px;cursor:pointer"/></th>
 					<th nowrap><input id="th_leibie" class="plainTh" value="科目" style="width:80px;cursor:pointer;"/></th>
-					<th nowrap><input id="th_jizhangren" class="plainTh" value="记账人" style="width:80px;cursor:pointer"/></th>
+					<!--<th nowrap><input id="th_zhifuriqi" class="plainTh" value="支付日期" style="width:90px;cursor:pointer"/></th>-->
+					<th nowrap style="width:100px">摘要</th>
 				</tr>
 				<tr class="tr_liushuizhang">
 					<td id="td_bianhao"></td>
 					<td id="td_zhuangtai"></td>
+					<td id="td_jizhangren"></td>
 					<td id="td_fukuanfang"></td>
 					<td id="td_shoukuanfang"></td>
 					<td id="td_jine"></td>
-					<td id="td_zhifuriqi"></td>
-					<td id="td_leibie"></td></td>
-					<td id="td_jizhangren"></td>
+					<td id="td_leibie"></td>
+					<td id="td_zhaiyao" nowrap style="max-width:150px;overflow:hidden"></td>
 				</tr>
 			</table>	
 			<div id="pager">
@@ -93,11 +94,12 @@
 					</tr>
 					<tr id="lc_caozuo" style="display:none" >
 						<td colspan="4" style="text-align:center;border:1px solid #ddd">
+							<span id="cz_shanchu" class="plainBtn" style="margin-right:10px;display:none">删除</span>
+							<span id="cz_fukuan" class="plainBtn" style="margin-right:10px;display:none">付款</span>
 							<span id="cz_zuofei" class="plainBtn" style="margin-right:10px;display:none">作废</span>
-							<span id="cz_shenqingshenhe" class="plainBtn" style="margin-right:10px;display:none">申请审核</span>
-							<span id="cz_quxiaoshenqing" class="plainBtn" style="margin-right:10px;display:none">取消申请</span>
-							<span id="cz_shenhe" class="plainBtn" style="margin-right:10px;display:none">审核</span>
-							<span id="cz_quxiaoshenhe" class="plainBtn" style="margin-right:10px;display:none">取消审核</span>
+							<span id="cz_shenqingfuhe" class="plainBtn" style="margin-right:10px;display:none">申请复核</span>
+							<span id="cz_huitui" class="plainBtn" style="margin-right:10px;display:none">回退</span>
+							<span id="cz_fuhe" class="plainBtn" style="margin-right:10px;display:none">复核</span>
 						</td>
 					</tr>
 				</table>
@@ -107,23 +109,61 @@
 		<div id="liushuizhangmingxi" style="margin-top:10px">
 			<div style='background-color:#eee' id="detailheader">流水账明细&nbsp;&nbsp;&nbsp;&nbsp;<span id="bianji" class="plainBtn" style="display:none">编辑</span><span id="fangqi" class="plainBtn" style="display:none">放弃</span>&nbsp;&nbsp;<span id="baocun" class="plainBtn" style="display:none">保存</span></div>
 			<div>
-				<nobr>流水号：<input type="text" id="lsz_liushuihao" class="plainInput1" readonly size=12 />，
-					金额：<input type="text" id="lsz_jine" class="plainInput" style="text-align:center;"readonly size=6 />元，
-					付款日期：<input type="text" id="lsz_fukuanriqi" class="plainInput" style="cursor:pointer" readonly size=8 />，
+				<nobr>
+					流水号：<input type="text" id="lsz_liushuihao" class="plainInput1" readonly size=12 />，
+					金额：<input type="text" id="lsz_jine" class="plainInput" style="font-size:1.5em;color:red;text-align:center;"readonly size=6 />元，
 					科目：<input type="text" id="lsz_kemu" class="plainInput list" style="cursor:pointer" readonly list=kemulist size=7 />，
-					手续费：<input type="text" id="lsz_shouxufei" class="plainInput" readonly style="width:25px;text-align:center" title="银行手续费"/>元&nbsp;&nbsp;&nbsp;
-					<span id="hexiao" class="plainBtn" style="display:none">收汇</span></nobr>
-				<br/><div id="hexiaoliushui" style="display:none">汇率：<input type="text" id="lsz_huilv" class="plainInput" readonly size=6 />，转入金额：<input type="text" id="lsz_zhuanrujine" class="plainInput" readonly size=8 />元（RMB）&nbsp;&nbsp;&nbsp;<span id="jisuanhuilv" class="plainBtn" title="计算汇率">[=]</span></div>
+					手续费：<input type="text" id="lsz_shouxufei" class="plainInput" readonly style="width:25px;text-align:center" title="银行手续费"/>元
+				</nobr>
+				<br/>
+				<nobr>
+					摘&#12288;要：<input class="plainInput" id="lsz_zhaiyao" size=12/>，
+					付款日期：<input type="text" id="lsz_fukuanriqi" class="plainInput" style="cursor:pointer" readonly size=8 />&nbsp;&nbsp;&nbsp;
+					<span id="hexiao" class="plainBtn" style="display:none">收汇</span>
+				</nobr>
+				<div id="hexiaoliushui" style="display:none">
+					汇&#12288;率：<input type="text" id="lsz_huilv" class="plainInput" style="text-align:center" readonly size=12 />，
+					转入金额：<input type="text" id="lsz_zhuanrujine" class="plainInput" style="text-align:center" readonly size=8 />元（RMB）&nbsp;&nbsp;&nbsp;
+					<span id="jisuanhuilv" class="plainBtn" title="计算汇率">[=]</span>
+				</div>
 			</div>
 			<table id="detailtable">
 				<tr><td nowrap><div style="border:1px solid gray;padding:5px">
 					付款方：<input type="text" id="lsz_fukuanfang" class="plainInput" style="cursor:pointer" readonly size=32 /><br/>
-					账户：<input type="text" id="lsz_fukuanfangzhanghu" class="plainInput" style="font-size:14px;cursor:pointer" readonly size=48 />
+					账户：<input type="text" id="lsz_fukuanzhanghu" class="plainInput" style="font-size:14px;cursor:pointer" readonly size=48 />
 				</div></td><td nowrap><div style="border:1px solid gray;padding:5px">
 					收款方：<input type="text" id="lsz_shoukuanfang" class="plainInput" style="cursor:pointer" readonly size=32 /><br/>
-					账户：<input type="text" id="lsz_shoukuanfangzhanghu" class="plainInput" style="font-size:14px;cursor:pointer" readonly size=48 />
+					账户：<input type="text" id="lsz_shoukuanzhanghu" class="plainInput" style="font-size:14px;cursor:pointer" readonly size=48 />
 				</div></td></tr>
 			</table>
+			<div>
+				<div style="font-size:1em;color:blue;padding:5px">付款申请，共<span class="plainInput" id="selNum">0</span>条，总金额：<span class="plainInput" id="selSum">0</span>元。</div>
+				<table id="tb_shenqing">
+					<tr>
+						<th></th>
+						<th>编号</th>
+						<th>收款人</th>
+						<th>金额</th>
+						<th>科目</th>
+						<th>申请者</th>
+						<th>对单者</th>
+						<th>收款账户</th>
+						<th class="sq_shanchu"></th>
+					</tr>
+					<tr class="tr_shenqing">
+						<td id="sq_index"></td>
+						<td id="sq_bianhao" style="cursor">编号</td>
+						<td id="sq_shoukuanren">收款人</td>
+						<td id="sq_jine">金额</td>
+						<td id="sq_kemu">科目</td>
+						<td id="sq_shenqingzhe">申请者</td>
+						<td id="sq_duidanzhe">对单者</td>
+						<td id="sq_shoukuanzhanghu">收款账户</td>
+						<td class="plainBtn sq_shanchu">[-]</td>
+					</tr>
+				</table>
+				<span class="plainBtn" id="tianjiashenqing">[+]</span>
+			</div>
 			<div style="margin-top:5px">
 				备注：<br/>
 				<div id="beizhu"></div>
@@ -136,8 +176,9 @@
 		<datalist id="zhuangtailist">
 			<option value="状态"/>
 			<option value="记账"/>
-			<option value="申请审核"/>
-			<option value="审核"/>
+			<option value="付款"/>
+			<option value="申请复核"/>
+			<option value="复核"/>
 			<option value="作废"/>
 		</datalist>
 </body>

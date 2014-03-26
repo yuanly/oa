@@ -45,6 +45,10 @@
 		$("#seltable").find(".tr_shenqing").each(function(i){
 			shenqings.push($(this).data("_id"));
 		});
+		if(shenqings.length==0){
+			tip($(this),"必须选择申请",1500);
+			return;
+		}
 		liushui.shenqings = shenqing;
 		liushui.jine = parseFloat($("#selSum").text());		
 		var kemu;
