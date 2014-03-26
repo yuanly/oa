@@ -219,7 +219,8 @@
 	$("#chai").click(chai);
 	function baocun(){
 		jisuanzonge();
-		if($("#fhd_zonge").val().trim() == ""){
+		currFHD.zongjine = parseFloat($("#fhd_zonge").val());
+		if(isNaN(currFHD.zongjine)){
 			tip($("#fhd_zonge"),"无法计算总额，请确保所有栏目有效！",1500);
 			return;
 		}

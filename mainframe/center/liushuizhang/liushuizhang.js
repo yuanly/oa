@@ -530,7 +530,7 @@ function _hanshuku_(){}
 			tr.find("#sq_kemu").text(sq.kemu);
 			tr.find("#sq_shenqingzhe").text(getUserName(sq.ludanzhe));
 			tr.find("#sq_duidanzhe").text(getUserName(sq.duidanzhe));
-			tr.find("#sq_shoukuanzhanghu").text(sq.shoukuanzhanghu);
+			tr.find("#sq_shoukuanzhanghu").text(sq.shoukuanzhanghu?sq.shoukuanzhanghu:"");
 			tr.css("background-color",toggle("#fff","#eee"));
 			$("#tb_shenqing").append(tr);
 		});
