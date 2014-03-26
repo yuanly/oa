@@ -160,7 +160,7 @@ if("xinjian" == $param["caozuo"]){
 	$lsz = coll("liushuizhang")->findOne($query);
 	if(!empty($lsz)){
 		$cur = coll("fahuodan")->find(array("liushuizhang._id"=>$lsz["_id"]),array("neirong"=>0,"qitafei"=>0,"liucheng"=>0))->sort(array("_id"=>1));
-		$lsz["shenqings"] = cur2json($cur);
+		$lsz["shenqings"] = cur2obj($cur);
 	}
 	echo  jsonEncode($lsz);
 }else if("baocun" == $param["caozuo"]){//要考虑关联的发货单的变化！
@@ -185,7 +185,7 @@ if("xinjian" == $param["caozuo"]){
 					,array('$set'=>array("liushuizhang"=>array("_id"=>$liushuizhang["_id"],"yifu"=>false))),array("multiple"=>true));
 		}
 		unset($liushuizhang["shenqingsyibian"]);
-	｝
+	}
 	unset($liushuizhang["shenqings"]);
 	coll("liushuizhang")->save($liushuizhang);//还在“记账”阶段，不用考虑余额的事情。
 	unlock();

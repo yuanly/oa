@@ -20,6 +20,11 @@
 	$('#currLocation', window.parent.document).text("验货单管理");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("#xinzengyanhuodan").click(function(){
+		postJson("yanhuodan.php",{caozuo:"xinjian"},function(res){
+			listyanhuodan(0);
+		});	
+	});
 	$("#th_bianhao").datepicker().change(function(){
 		$(this).val("YHD"+date2id($(this).val()));
 		listyanhuodan(0);
@@ -374,10 +379,8 @@
 		if(offset<0){
 			return;
 		}
-		$("#pager").data("offset",offset);		
-		//var cmd = getUrl().cmd?getUrl().cmd:"";
-		//var option = $.extend({cmd:cmd},getOptions());
-		var option = getOptions();
+		$("#pager").data("offset",offset);
+		var option = $.extend({cmd:cmd},getOptions());
 		postJson("yanhuodan.php",{caozuo:"chaxun",offset:offset*limit,limit:limit,option:option},function(yanhuodans){
 			$("#yanhuodantable .tr_yanhuodan").remove();
 			each(yanhuodans,function(n,yanhuodan){
@@ -646,6 +649,18 @@
 		$("#th_zhuangtai").val("申请受理");
 	}else if("daishenhe" == cmd){
 		$("#th_zhuangtai").val("申请审核");
+	}
+	
+	var cmd = getUrl().cmd?getUrl().cmd:"";
+	if("chaxun" == cmd){		
+		$("#xinzengyanhuodan").show();
+		$('#currLocation', window.parent.document).text("验货单/查询");
+	}else	if("daishouli"== cmd){
+		$('#currLocation', window.parent.document).text("验货单/待受理");
+		$("#th_zhuangtai").val("申请受理").attr("readonly","readonly");
+	}else if("daishenhe"== cmd){
+		$('#currLocation', window.parent.document).text("验货单/待审核");
+		$("#th_zhuangtai").val("申请审核").attr("readonly","readonly");
 	}
 	listyanhuodan(0,getUrl().showId);
 	

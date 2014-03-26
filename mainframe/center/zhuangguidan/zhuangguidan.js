@@ -4,7 +4,7 @@
 {
  _id:"xxx",
  guihao:"xx",//如第N柜的N
- zhuangtai:"xx",
+ zhuangtai:"xx",//制单(删除) 交单 审核
  zhuangguiriq:"2012-1-1",
  //huowu:[{zgdId:"xx",guige:"xxx",danwei:"x",shuliang:22,jianshu:22,beizhu:"xxx"}...],//从huowu表关联
  liucheng:[制单 交单 审核],
@@ -26,6 +26,11 @@
 	$('#currLocation', window.parent.document).text("装柜单管理");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("#xinzengzhuangguidan").click(function(){
+		postJson("zhuangguidan.php",{caozuo:"xinjian"},function(res){
+			listzhuangguidan(0);
+		});	
+	});
 	$("th").attr("nowrap","true");
 	$(".tr_huowu #td_yanhuodan").click(function(){
 		window.open("../yanhuodan/yanhuodan.html?showId="+$(this).text(),"_blank");
@@ -45,6 +50,10 @@
 	});
 	var users = getUsers();users.unshift({"user_name":"交单者"});
 	$("#th_jiaodanzhe").myselector(users,"user_name").bind("input",function(){
+		listzhuangguidan(0);
+	});
+	users = getUsers();users.unshift({"user_name":"制单者"});
+	$("#th_zhidanzhe").myselector(users,"user_name").bind("input",function(){
 		listzhuangguidan(0);
 	});
 	$("#th_zhuangguiriqi").datepicker().change(function(){
@@ -195,10 +204,13 @@
 			tip($(this),"必须清空装柜单中的货物并保存，才能删除装柜单！",1500);
 			return;
 		}
-		postJson("zhuangguidan.php",{caozuo:"shanchu",_id:currZGD._id},function(res){
-			showDetailById(currZGD._id);
-		});
+		ask($(this),"确定要删除吗？",function(){
+			postJson("zhuangguidan.php",{caozuo:"shanchu",_id:currZGD._id},function(res){
+				listzhuangguidan(0);
+			});
+		});		
 	}
+	$("#cz_shanchu").click(cz_shanchu);
 	function cz_jieguan(){
 		postJson("zhuangguidan.php",{caozuo:"jieguan",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
@@ -298,7 +310,11 @@ function _hanshuku_(){}
 		var jdz = $("#th_jiaodanzhe").val().trim();
 		if("" != jdz && "交单者" != jdz){
 			ret.jiaodanzhe = getUserIdByName(jdz);
-		} 		
+		}
+		var zdz = $("#th_zhidanzhe").val().trim();
+		if("" != jdz && "制单者" != jdz){
+			ret.zhidanzhe = getUserIdByName(jdz);
+		}
 		var zgrq = $("#th_zhuangguiriqi").val().trim();
 		if("" != zgrq && "装柜日期" != zgrq){
 			ret.zhuangguiriqi = zgrq+"0";
@@ -315,13 +331,12 @@ function _hanshuku_(){}
 			return;
 		}
 		$("#pager").data("offset",offset);
-		//var cmd = getUrl().cmd?getUrl().cmd:"";
-		//var option = $.extend({cmd:cmd},getOptions());
-		var option = getOptions();
+		var option = $.extend({cmd:cmd},getOptions());
 		postJson("zhuangguidan.php",{caozuo:"chaxun",offset:offset*limit,limit:limit,option:option},function(zhuangguidans){
 			$("#zhuangguidantable .tr_zhuangguidan").remove();
 			each(zhuangguidans,function(n,zhuangguidan){
-				var jiaodanzhe,shenhezhe;
+				var zhidanzhe,jiaodanzhe,shenhezhe;
+				zhidanzhe = zhuangguidan.zhidanzhe?getUser(zhuangguidan.zhidanzhe).user_name:"";
 				jiaodanzhe = zhuangguidan.jiaodanzhe?getUser(zhuangguidan.jiaodanzhe).user_name:"";
 				shenhezhe = zhuangguidan.shenhezhe?getUser(zhuangguidan.shenhezhe).user_name:"";
 				tr = tr_zhuangguidan.clone(true);
@@ -329,6 +344,7 @@ function _hanshuku_(){}
 				tr.find("#td_bianhao").text(zhuangguidan._id);				
 				tr.find("#td_guihao").text(zhuangguidan.guihao);
 				tr.find("#td_zhuangtai").text(zhuangguidan.zhuangtai);
+				tr.find("#td_zhidanzhe").text(zhidanzhe);
 				tr.find("#td_jiaodanzhe").text(jiaodanzhe);
 				tr.find("#td_zhuangguiriqi").text(zhuangguidan.zhuangguiriqi);
 				tr.find("#td_shenhezhe").text(shenhezhe);
@@ -347,7 +363,7 @@ function _hanshuku_(){}
 				$("#tableheader").click();
 				if(zhuangguidans.length>0){
 					$(".ui-layout-center").show();
-					$(".tr_yanhuodan").get(0).click();
+					$(".tr_zhuangguidan").get(0).click();
 				}else{
 					$(".ui-layout-center").hide();
 				}
@@ -526,12 +542,17 @@ function _hanshuku_(){}
 	$("#sel_ctnr").draggable();
 	$("#opt_huowuId").datepicker();
 	var liuyanElm = $("#liuyan").liuyan({hostType:"zhuangguidan",});
-	
+		
 	var cmd = getUrl().cmd?getUrl().cmd:"";
-	if("zhidan"== cmd){
-		$("#th_zhuangtai").val("制单");
+	if("chaxun" == cmd){
+		$('#currLocation', window.parent.document).text("装柜单/查询");
+		$("#xinzengzhuangguidan").show();
+	}else if("zhidan" == cmd){
+		$('#currLocation', window.parent.document).text("装柜单/制单");
+		$("#th_zhuangtai").val("制单").attr("readonly","readonly");
 	}else if("daishenhe" == cmd){
-		$("#th_zhuangtai").val("交单");
+		$('#currLocation', window.parent.document).text("装柜单/待审核");
+		$("#th_zhuangtai").val("交单").attr("readonly","readonly");
 	}
 	listzhuangguidan(0,getUrl().showId);
 	

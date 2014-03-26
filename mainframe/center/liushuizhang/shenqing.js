@@ -36,7 +36,6 @@
 
 付款申请 待审核申请 已审核申请 付款待审核 我的付款申请 查询流水 流水统计
 	*/
-	$('#currLocation', window.parent.document).text("付款申请");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
 	function selShengchengliushui(){
@@ -533,10 +532,14 @@ function _hanshuku_(){}
 	var liuyanElm = $("#liuyan").liuyan({hostType:"shenqing",});
 	
 	var cmd = getUrl().cmd?getUrl().cmd:"";
-	if("daishenheshenqing"== cmd){
+	if("chaxun" == cmd){		
+		$("#xinzengshenqing").show();
+		$('#currLocation', window.parent.document).text("财账/申请");
+	}else	if("daishenheshenqing"== cmd){
+		$('#currLocation', window.parent.document).text("财账/待审核申请");
 		$("#th_zhuangtai").val("申请对单").attr("readonly","readonly");
-	}
-	if("daifukuan"== cmd){
+	}else if("daifukuan"== cmd){
+		$('#currLocation', window.parent.document).text("财账/待记账申请");
 		$("#th_zhuangtai").val("对单").attr("readonly","readonly");
 		$("#th_fukuan").val("未记账").attr("readonly","readonly");
 		$("#ctr_sel").show();

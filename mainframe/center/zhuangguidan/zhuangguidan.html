@@ -53,11 +53,13 @@
 <body style="margin:0px;padding:0px">
 	<div class="ui-layout-west">
 		<div>
+			<div><span class="plainBtn" id="xinzengzhuangguidan" style="display:none">[新增装柜单]</span></div>
 			<table id="zhuangguidantable"  style="min-width:500px;">
 				<tr id="tableheader">
 					<th nowrap><input id="th_bianhao" class="plainTh" value="编号" style="width:100px;cursor:pointer"/></th>
 					<th nowrap><input id="th_guihao" class="plainTh" value="柜号" style="width:40px;cursor:pointer"/></th>
 					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:55px" list="zhuangtailist" /></th>
+					<th nowrap><input id="th_zhidanzhe" class="plainTh" value="制单者" style="width:70px;cursor:pointer"/></th>
 					<th nowrap><input id="th_jiaodanzhe" class="plainTh" value="交单者" style="width:70px;cursor:pointer"/></th>
 					<th nowrap><input id="th_zhuangguiriqi" class="plainTh" value="装柜日期" style="width:90px;cursor:pointer"/></th>
 					<th nowrap><input id="th_shenhezhe" class="plainTh" value="审核者" style="width:70px;cursor:pointer;"/></th>
@@ -66,6 +68,7 @@
 					<td id="td_bianhao"></td>
 					<td id="td_guihao"></td>
 					<td id="td_zhuangtai"></td>
+					<td id="td_zhidanzhe"></td>
 					<td id="td_jiaodanzhe"></td>
 					<td id="td_zhuangguiriqi"></td>
 					<td id="td_shenhezhe"></td></td>
@@ -142,7 +145,6 @@
 			<option value="状态"/>
 			<option value="制单"/>
 			<option value="交单"/>
-			<option value="申请审核"/>
 			<option value="审核"/>
 		</datalist>
 	<div style="display:none;position:absolute;z-index:100;border:1px solid gray;background-color:white;" id="sel_ctnr">

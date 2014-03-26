@@ -3,7 +3,7 @@
 	{	_id:"TS131008.1",
 		liucheng:[...],
 		gendanyuan:"xx",
-		zhuangtai:"xx",
+		zhuangtai:"xx",//新建（作废） 装柜 报关 付款 开票 单证 退税 申请复核 复核(通过复核确保有两个人了解业务)
 		huogui:{_id:"xx",guihao:"xx",zhuangguiriqi:"xx"},
 		guandan:{hetonghao:"xx",pinming:"xx",jine:3423,shuliang:3432,baoguanriqi:"xx",jidanriqi:"xxx",shoudanriqi:"xx"},
 		dailishang:{_id:"xx",mingchen:"xx",renminbizhanghao:"xxx",meijinzhanghao:"xx"},
@@ -20,6 +20,14 @@
 	$('#currLocation', window.parent.document).text("退税管理");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("#th_guihao").change(function(){
+		listtuishui(0);
+	});	
+	$("#xinzengtuishui").click(function(){
+		postJson("tuishui.php",{caozuo:"xinjian"},function(res){
+			listtuishui(0);
+		});	
+	});
 	$("#th_bianhao").datepicker().change(function(){
 		$(this).val("TS"+date2id($(this).val()));
 		listtuishui(0);
@@ -566,6 +574,19 @@
 		});
 	}	
 	$("#cz_zuofei").click(cz_zuofei);
+
+	function cz_shenqingfuhe(){
+		postJson("tuishui.php",{caozuo:"shenqingfuhe",_id:currLSZ._id},function(res){
+			showDetailById(currLSZ._id);
+		});
+	}
+	$("#cz_shenqingfuhe").click(cz_shenqingfuhe);
+	function cz_fuhe(){
+		postJson("tuishui.php",{caozuo:"fuhe",_id:currLSZ._id},function(res){
+			showDetailById(currLSZ._id);
+		});
+	}
+	$("#cz_fuhe").click(cz_fuhe);
 	function cz_baoguan(){
 		if(!currTS.guandan){
 			tip($(this),"必须先设置关单信息！",1500);
@@ -656,11 +677,45 @@
 	$("#cz_jieguan").click(cz_jieguan);
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 function _hanshuku_(){}
+	function statusColor(status,color){
+		//新建（作废） 装柜 报关 付款 开票 单证 退税 申请复核 复核(通过复核确保有两个人了解业务)
+		if(status == "新建"){//绿色
+			return "#228B22";
+		}
+		if(status == "装柜"){//兰
+			return "#00FFFF";
+		}
+		if(status == "报关"){//粉红
+			return "#FFE4E1";
+		}
+		if(status == "付款"){//赭
+			return "#CD853F";
+		}
+		if(status == "开票"){//紫
+			return "EE82EE";
+		}
+		if(status == "单证"){//棕
+			return "#FFA07A";
+		}
+		if(status == "退税"){//黄
+			return "#FFFF00";
+		}
+		if(status == "申请复核"){//红色
+			return "#FF4500";
+		}
+		if(status == "复核"||status == "作废"){
+			return color;
+		}
+	}
 	function getOptions(){
 		var ret = {};
-		var bh = $("#th_bianhao").val().trim();
-		if("" != bh && "编号" != bh){
-			ret.bianhao = bh+"0";
+		var v = $("#th_bianhao").val().trim();
+		if("" != v && "编号" != v){
+			ret.bianhao = v+"0";
+		}
+		v = $("#th_guihao").val().trim();
+		if("" != v && "柜号" != v){
+			ret.guihao = v;
 		}
 		return ret;
 	}
@@ -669,7 +724,6 @@ function _hanshuku_(){}
 			return;
 		}
 		$("#pager").data("offset",offset);
-		var cmd = getUrl().cmd?getUrl().cmd:"";
 		var option = $.extend({cmd:cmd},getOptions());
 		postJson("tuishui.php",{caozuo:"chaxun",offset:offset*limit,limit:limit,option:option},function(tuishuis){
 			$("#tuishuitable .tr_tuishui").remove();
@@ -686,7 +740,9 @@ function _hanshuku_(){}
 				tr.find("#td_jine").text((tuishui.guandan && tuishui.guandan.jine)?tuishui.guandan.jine:"");
 				tr.find("#td_dailishang").text(tuishui.dailishang?tuishui.dailishang.mingchen:"");
 				
-				tr.css("background-color",toggle("#fff","#eee"));
+				var color = toggle("#fff","#eee");
+				tr.css("background-color",color);
+				tr.find("#td_bianhao").css("background-color",statusColor(tuishui.zhuangtai,color));
 				if(tuishui.zhuangtai == "作废"){
 					tr.css("text-decoration","line-through");
 				}
@@ -695,14 +751,26 @@ function _hanshuku_(){}
 			if(showId){
 				showDetailById(showId);
 				layout.close("west");
-			}else if(tuishuis.length>0){
-				$(".ui-layout-center").show();
-				$(".tr_tuishui").get(0).click();
-			}else{
-				$(".ui-layout-center").hide();
+			}else{				
+				//调整左侧宽度以便显示完整的列表
+				$("#tableheader").click();
+				if(tuishuis.length>0){
+					$(".ui-layout-center").show();
+					$(".tr_tuishui").get(0).click();
+				}else{
+					$(".ui-layout-center").hide();
+				}
 			}
-			//调整左侧宽度以便显示完整的列表
-			$("#tableheader").click();
+			if(offset<=0){
+				$("#prevPage").css("color","gray");
+			}else{
+				$("#prevPage").css("color","blue");
+			}
+			if(tuishuis.length<limit){
+				$("#nextPage").css("color","gray");
+			}else{
+				$("#nextPage").css("color","blue");
+			}
 		});
 	} 
 	function daikaijine(){
@@ -975,6 +1043,29 @@ function _hanshuku_(){}
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
 					$("#cz_quxiao",caozuoItem).show();
+					$("#cz_shenqingfuhe",caozuoItem).show();
+					$("table",tmpl).append(caozuoItem);
+				}
+			}else if("申请复核" == item.dongzuo){
+				$("#bianji").hide();
+				("#lc_tr_panel",tmpl).attr("title","申请其他同事复核！");
+				if((tuishui.liucheng.length - 1) == n){
+					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+					var caozuoItem = caozuoTmpl.clone(true);
+					if(currTS.gendanyuan == theUser._id){
+						$("#cz_quxiao",caozuoItem).show();
+					}else{
+						$("#cz_fuhe",caozuoItem).show();
+					}
+					$("table",tmpl).append(caozuoItem);
+				}
+			}else if("复核" == item.dongzuo){
+				$("#bianji").hide();
+				("#lc_tr_panel",tmpl).attr("title","已经过其他同事复核！");
+				if((tuishui.liucheng.length - 1) == n && item.userId == theUser._id){
+					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+					var caozuoItem = caozuoTmpl.clone(true);
+					$("#cz_quxiao",caozuoItem).show();
 					$("table",tmpl).append(caozuoItem);
 				}
 			}
@@ -1013,5 +1104,12 @@ function _hanshuku_(){}
 		}
 	}).dblclick(function(){layout.toggle("west");clearSelection();});
 	
+	
+	var cmd = getUrl().cmd?getUrl().cmd:"";
+	if("chaxun" == cmd){
+		$('#currLocation', window.parent.document).text("退税/查询");
+	}else if("daifuhe" == cmd){
+		$('#currLocation', window.parent.document).text("退税/待复核");
+	}
 	listtuishui(0);
 });

@@ -47,6 +47,11 @@
 	$('#currLocation', window.parent.document).text("流水账管理");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("#xinzengliushui").click(function(){
+		postJson("liushuizhang.php",{caozuo:"xinjian"},function(res){
+			listliushuizhang(0);
+		});	
+	});
 	$(".sq_shanchu").click(function(){
 		$(this).parent().remove();
 		refreshShengqingCount();
@@ -278,12 +283,6 @@
 		});
 	}
 	$("#cz_zuofei").click(cz_zuofei);
-	function cz_shenqingfuhe(){
-		postJson("liushuizhang.php",{caozuo:"shenqingfuhe",_id:currLSZ._id},function(res){
-			showDetailById(currLSZ._id);
-		});
-	}
-	$("#cz_shenqingfuhe").click(cz_shenqingfuhe);
 	function cz_shanchu(){
 		postJson("liushuizhang.php",{caozuo:"shanchu",_id:currLSZ._id},function(res){
 			listliushuizhang(0);
@@ -322,6 +321,12 @@
 			showDetailById(currLSZ._id);
 		});
 	}
+	function cz_shenqingfuhe(){
+		postJson("liushuizhang.php",{caozuo:"shenqingfuhe",_id:currLSZ._id},function(res){
+			showDetailById(currLSZ._id);
+		});
+	}
+	$("#cz_shenqingfuhe").click(cz_shenqingfuhe);
 	function cz_fuhe(){
 		postJson("liushuizhang.php",{caozuo:"fuhe",_id:currLSZ._id},function(res){
 			showDetailById(currLSZ._id);
@@ -409,7 +414,6 @@ function _hanshuku_(){}
 			return;
 		}
 		$("#pager").data("offset",offset);
-		var cmd = getUrl().cmd?getUrl().cmd:"";
 		var option = $.extend({cmd:cmd},getOptions());
 		postJson("liushuizhang.php",{caozuo:"chaxun",offset:offset*limit,limit:limit,option:option},function(liushuizhangs){
 			$("#liushuizhangtable .tr_liushuizhang").remove();
@@ -448,6 +452,16 @@ function _hanshuku_(){}
 				}else{
 					$(".ui-layout-center").hide();
 				}
+			}
+			if(offset<=0){
+				$("#prevPage").css("color","gray");
+			}else{
+				$("#prevPage").css("color","blue");
+			}
+			if(liushuizhangs.length<limit){
+				$("#nextPage").css("color","gray");
+			}else{
+				$("#nextPage").css("color","blue");
 			}
 		});
 	}
@@ -634,6 +648,20 @@ function _hanshuku_(){}
 	
 	$("#sel_ctnr").draggable();
 	var liuyanElm = $("#liuyan").liuyan({hostType:"liushuizhang",});
+	
+	
+	var cmd = getUrl().cmd?getUrl().cmd:"";
+	if("chaxun" == cmd){		
+		$("#xinzengliushui").show();
+		$('#currLocation', window.parent.document).text("财账/流水");
+	}else	if("daifukuanliushui"== cmd){
+		$('#currLocation', window.parent.document).text("财账/待付款流水");
+		$("#th_zhuangtai").val("记账").attr("readonly","readonly");
+	}else if("daifuheliushui"== cmd){
+		$('#currLocation', window.parent.document).text("财账/待复核流水");
+		$("#th_zhuangtai").val("申请复核").attr("readonly","readonly");
+		$("#ctr_sel").show();
+	}
 	listliushuizhang(0,getUrl().showId);
 	
 	 	//设置头部点击处理（放到当前面板）

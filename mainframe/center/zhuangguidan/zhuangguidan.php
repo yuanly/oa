@@ -8,7 +8,7 @@ checkuser();
 $param = getJson();
 if("xinjian" == $param["caozuo"]){
 	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"制单","time"=>time());
-	$zhuangguidan = array("chuangjianzhe"=>$_SESSION["user"]["_id"],"zhuangtai"=>"制单","liucheng"=>array($liucheng));
+	$zhuangguidan = array("zhidanzhe"=>$_SESSION["user"]["_id"],"zhuangtai"=>$liucheng["dongzuo"],"liucheng"=>array($liucheng));
 	$d = "ZGD".date("ymd",time());
 	$n = coll("zhuangguidan")->count(array("_id"=>array('$regex'=>"^".$d."")));
 	$zhuangguidan["_id"] = $d.".".($n+1);
@@ -31,6 +31,9 @@ if("xinjian" == $param["caozuo"]){
 	}
 	if(isset($param["option"]["guihao"])){
 		$query["guihao"] = array('$lte'=>$param["option"]["guihao"]);
+	}
+	if(isset($param["option"]["zhidanzhe"])){
+		$query["zhidanzhe"] = $param["option"]["zhidanzhe"];
 	}
 	if(isset($param["option"]["jiaodanzhe"])){
 		$query["jiaodanzhe"] = $param["option"]["jiaodanzhe"];
@@ -62,7 +65,7 @@ if("xinjian" == $param["caozuo"]){
 	if($param["zhuangtai"] == "交单"){
 		unset($obj["jiaodanzhe"]);
 	}
-	coll("zhuangguidan")->save($obj)
+	coll("zhuangguidan")->save($obj);
 	statExpired();
 	echo '{"success":true}';
 }else if("shanchu" == $param["caozuo"]){
