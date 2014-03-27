@@ -28,6 +28,28 @@
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
 	addQuyulist();
+	function piliangjiedan(){
+		var ids = [];
+		$(".tr_dingdan").each(function(i){
+			if($(this).find(".jiedan input").attr("checked")){
+				ids.push($(this).find("#td_bianhao").text());
+			}
+		});
+		if(ids.length == 0){
+			tip($("#th_jiedan"),"请先选择订单",1500);
+			return;
+		}
+		postJson("dingdan.php",{caozuo:"piliangjiedan",_ids:ids},function(res){
+			if(res.number){
+				tip($("#th_jiedan"),"成功接单"+res.number+"张",1500);
+				listDingdan(0);
+			}else{
+				tip($("#th_jiedan"),"接单失败！",1500);
+				listDingdan(0);
+			}			
+		});
+	}
+	$("#th_jiedan").click(piliangjiedan);
 	$("#th_quyu").attr("list","quyulist");
 	$("#th_quyu").bind("input",function(){listDingdan(0);});
 	$("#th_man").bind("input",function(){listDingdan(0);});
@@ -600,38 +622,11 @@ function _hanshuku_(){}
 		return ret;
 	}
 		//列出原稿
-	var cmd = getUrl().cmd?getUrl().cmd:"";
 	function listDingdan(offset,showId){
 		if(offset<0){
 			return;
 		}
 		$("#pager").data("offset",offset);
-		if("jiedan" == cmd){
-			$('#currLocation', window.parent.document).text("订单/待接单");
-			$("#th_zhuangtai").attr("readonly","readonlly");
-		}else if("wodexindan" == cmd){
-			$('#currLocation', window.parent.document).text("订单/我的新单");
-			$("#th_man").attr("readonly","readonlly");
-			$("#th_zhuangtai").attr("readonly","readonlly");
-		}else if("wodemandan" == cmd){
-			$('#currLocation', window.parent.document).text("订单/我的慢单");
-			$("#th_man").attr("readonly","readonlly");
-			$("#th_zhuangtai").attr("readonly","readonlly");
-		}else if("wodeweifahuo" == cmd){
-			$('#currLocation', window.parent.document).text("订单/我的未发货");
-			$("#th_zhuangtai").attr("readonly","readonlly");
-		}else if("wodedaishenjie" == cmd){
-			$('#currLocation', window.parent.document).text("订单/我的待审结");
-			$("#th_zhuangtai").attr("readonly","readonlly");
-		}else if("daixiadanshenhe" == cmd){
-			$('#currLocation', window.parent.document).text("订单/待下单审核");
-			$("#th_zhuangtai").attr("readonly","readonlly");
-		}else if("daishenjie" == cmd){
-			$('#currLocation', window.parent.document).text("订单/待审结");
-			$("#th_zhuangtai").attr("readonly","readonlly");
-		}else{
-			$('#currLocation', window.parent.document).text("订单/查询");
-		}
 		var option = $.extend({cmd:cmd},getOptions());
 		postJson("dingdans.php",{offset:offset*limit,limit:limit,option:option},function(dingdans){
 			$("#dingdantable .tr_dingdan").remove();
@@ -845,6 +840,9 @@ function _hanshuku_(){}
 				if((dingdan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
+					if(theUser._id == item.userId){
+						$("#cz_huitui",caozuoItem).show();
+					}
 					$("#cz_jiedan",caozuoItem).show();
 					$("table",tmpl).append(caozuoItem);
 				}
@@ -976,6 +974,34 @@ function _hanshuku_(){}
 	var zgd_span = $("#zgd_span").detach(); 
 	
 	var liuyanElm = $("#liuyan").liuyan({hostType:"dingdan",});
+	var cmd = getUrl().cmd?getUrl().cmd:"";
+	if("jiedan" == cmd){
+		$('#currLocation', window.parent.document).text("订单/待接单");
+		$("#th_zhuangtai").attr("readonly","readonlly");
+		$(".jiedan").show();tr_dingdan.find(".jiedan").show();
+	}else if("wodexindan" == cmd){
+		$('#currLocation', window.parent.document).text("订单/我的新单");
+		$("#th_man").attr("readonly","readonlly");
+		$("#th_zhuangtai").attr("readonly","readonlly");
+	}else if("wodemandan" == cmd){
+		$('#currLocation', window.parent.document).text("订单/我的慢单");
+		$("#th_man").attr("readonly","readonlly");
+		$("#th_zhuangtai").attr("readonly","readonlly");
+	}else if("wodeweifahuo" == cmd){
+		$('#currLocation', window.parent.document).text("订单/我的未发货");
+		$("#th_zhuangtai").attr("readonly","readonlly");
+	}else if("wodedaishenjie" == cmd){
+		$('#currLocation', window.parent.document).text("订单/我的待审结");
+		$("#th_zhuangtai").attr("readonly","readonlly");
+	}else if("daixiadanshenhe" == cmd){
+		$('#currLocation', window.parent.document).text("订单/待下单审核");
+		$("#th_zhuangtai").attr("readonly","readonlly");
+	}else if("daishenjie" == cmd){
+		$('#currLocation', window.parent.document).text("订单/待审结");
+		$("#th_zhuangtai").attr("readonly","readonlly");
+	}else{
+		$('#currLocation', window.parent.document).text("订单/查询");
+	}
 	listDingdan(0,getUrl().showId);
 	
 	//设置头部点击处理（放到当前面板）

@@ -16,15 +16,16 @@ if(isset($param["_id"])){//
 	if("jiedan" == $cmd){
 		$query["zhuangtai"] = "审核";
 	}else if("wodexindan" == $cmd){
-		$query["zhuangtai"] = array('$in'=>array("接单","下单申请","下单审核"));
+		$query["zhuangtai"] = array('$ne'=>"审结");
 		$query["mandan"] = false;
 		$query["gendanyuan"] = $_SESSION["user"]["_id"];
 	}else if("wodemandan" == $cmd){
-		$query["zhuangtai"] = array('$in'=>array("接单","下单申请","下单审核"));
+		$query["zhuangtai"] = array('$ne'=>"审结");
 		$query["mandan"] = true;
 		$query["gendanyuan"] = $_SESSION["user"]["_id"];
 	}else if("wodeweifahuo" == $cmd){
 		$query["zhuangtai"] = "下单";
+		$query["mandan"] = false;
 		$query["gendanyuan"] = $_SESSION["user"]["_id"];
 	}else if("wodedaishenjie" == $cmd){
 		$query["zhuangtai"] = array('$in'=>array("作废","发货"));
@@ -41,7 +42,7 @@ if(isset($param["_id"])){//
 			$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
 		}
 		if(isset($param["option"]["taiguodanhao"])){
-			$query["taiguoyuangao"] = $param["option"]["taiguodanhao"];
+			$query["taiguoyuangao"] = array('$regex'=>"^".$param["option"]["taiguodanhao"]);
 		}
 		if(isset($param["option"]["kehu"])){
 			$query["kehu"] = $param["option"]["kehu"];

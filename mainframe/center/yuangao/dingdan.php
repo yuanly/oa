@@ -32,13 +32,14 @@ if("liebiao" == $param["caozuo"]){
 		$dingdan["huowu"][$k]["id"] = $dingdan["_id"]."HW".$i;
 		$i ++; 
 	}
-	if(isset($dingdan["beizhu"]) && $dingdan["beizhu"]){
+	if(isset($dingdan["beizhu"])){// && $dingdan["beizhu"]){
 		$liuyan = array("hostType"=>"dingdan","hostId"=>$dingdan["_id"],"type"=>"ludanliuyan","_id"=>time(),"userId"=>$_SESSION["user"]["_id"],"neirong"=>$dingdan["beizhu"]);
 		coll("liuyan")->remove(array("hostType"=>"dingdan","hostId"=>$dingdan["_id"],"type"=>"ludanliuyan"));
 		coll("liuyan")->save($liuyan);
 		unset($dingdan["beizhu"]);
 	}
 	$dingdan["zhuangtai"] = "录单";
+	$dingdan["mandan"] = false;
 	$dingdan["liucheng"][]=array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"录单","time"=>time());
 	coll("dingdan")->save($dingdan);
 	foreach($dingdan["huowu"] as $huowu){

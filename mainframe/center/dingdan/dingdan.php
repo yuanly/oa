@@ -7,44 +7,16 @@ checkuser();
 
 $param = getJson();
 if("jiedan" == $param["caozuo"]){
-	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time());
-	$one = coll("config")->findOne(array("_id"=>"dingdanbeizhu"));
-	if(!empty($one)){
-		$beizhu=$one["beizhu"];//缺省备注
-	}else{
-		$beizhu="";
-	}
-	$dingdan = coll("dingdan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"审核"),
-								array('$set'=>array("zhuangtai"=>$liucheng["dongzuo"],"gendanyuan"=>$_SESSION["user"]["_id"],"beizhu"=>$beizhu),'$push'=>array("liucheng"=>$liucheng)));
-	/*
-		{	_id:"DD131008.1",
-		liucheng:[{userId:3,dongzuo:"录单",time:1322}],
-		mandan:true,
-		yuangao:YG131008.1,//系统原稿编号
-		taiguoyuangao:"xx",//泰国原稿编号
-		taiguobianhao:3,//该订单在原始的泰国原稿中的序号（审录单时有用）
-		zhuangtai:"录单",//录单 审核 接单（作废 接管 慢单/取消慢单） 下单申请（回退） 下单审核（打印 回退） 下单（回退） 发货 审结（回退） 作废（审结 回退） 
-		kehu:"C",
-		taiguoyangban:"xx",//从泰国原稿抄过来的，打印给泰国的柜单时有用
-		yangban:{_id:"YB223",taiguoxinghao:"xxx",zhongguoxinghao:""},
-		gonghuoshang:{_id:"SJ131110",mingchen:"大大",quyu:"xxx"},//计划装柜单的时候需要按区域查（方便装车？）
-		lianxiren:{_id:12,mingchen:"xx"},
-		gendanyuan:3,
-		xiadanshijian:13223,//可以不要。这个时间出现在列表里，方便看出是否下单。但如果用颜色来区分状态，就没必要在列表里出现下单时间
-		beizhu:"xxx",
-		fudan:"fudanid",
-		zidan:["zidanid"],//这个其实也可以不要，用父单做关联即可
-		huowu:[{id:"xx",taiguoguige:"xx",guige:"xxx",shuliang:23,danwei:"KG"}...]}	
-	*/
-	$str = "接单：<br/>";
-	var_dump($dingdan);
-	foreach($dingdan["huowu"] as $huowu){
-		$str = $str."规格：".$huowu["guige"]."数量：".$huowu["shuliang"]."单位：".$huowu["danwei"]."<br/>";
-	}
-	$liuyan = array("_id"=>time(),"hostType"=>"dingdan","hostId"=>$param["_id"],"type"=>"caozuorizhi","userId"=>(String)$_SESSION["user"]["_id"],"neirong"=>$str);
-	coll("liuyan")->save($liuyan);
+	jiedan($param["_id"]);
 	statExpired();
 	echo '{"success":true}';
+}else if("piliangjiedan" == $param["caozuo"]){
+	$number = 0;
+	foreach($param["_ids"] as $_id){
+		$number += jiedan($_id); 
+	}
+	statExpired();
+	echo '{"success":true,"number":'.$number.'}';
 }else if("mandan" == $param["caozuo"]){
 	coll("dingdan")->update(array("_id"=>$param["_id"],"gendanyuan"=>$_SESSION["user"]["_id"]),array('$set'=>array("mandan"=>true)));
 	echo '{"success":true}';
@@ -245,4 +217,28 @@ if("jiedan" == $param["caozuo"]){
 	$query = array("dingdanhuowu"=>array('$regex'=>'^'.$param["_id"]));
 	$cur = coll("huowu")->find($query);
 	echo  cur2json($cur);
+}
+
+
+
+function jiedan($_id){
+	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time());
+	$one = coll("config")->findOne(array("_id"=>"dingdanbeizhu"));
+	if(!empty($one)){
+		$beizhu=$one["beizhu"];//缺省备注
+	}else{
+		$beizhu="";
+	}
+	$dingdan = coll("dingdan")->findAndModify(array("_id"=>$_id,"zhuangtai"=>"审核"),
+								array('$set'=>array("zhuangtai"=>$liucheng["dongzuo"],"gendanyuan"=>$_SESSION["user"]["_id"],"beizhu"=>$beizhu),'$push'=>array("liucheng"=>$liucheng)));
+	if(empty($dingdan)){
+		return 0;
+	}
+	$str = "接单：<br/>";
+	foreach($dingdan["huowu"] as $huowu){
+		$str = $str."规格：".$huowu["guige"]."数量：".$huowu["shuliang"]."单位：".$huowu["danwei"]."<br/>";
+	}
+	$liuyan = array("_id"=>time(),"hostType"=>"dingdan","hostId"=>$_id,"type"=>"caozuorizhi","userId"=>$_SESSION["user"]["_id"],"neirong"=>$str);
+	coll("liuyan")->save($liuyan);
+	return 1;
 }
