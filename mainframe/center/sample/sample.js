@@ -148,6 +148,16 @@ $(function(){
 			}
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();
+			if(offset<=0){
+				$("#prevPage").css("color","gray");
+			}else{
+				$("#prevPage").css("color","blue");
+			}
+			if(samples.length<limit){
+				$("#nextPage").css("color","gray");
+			}else{
+				$("#nextPage").css("color","blue");
+			}
 		});
 	}
 	//将指定id的样板详情显示在右侧
@@ -280,7 +290,7 @@ $(function(){
 		return r;
 	} 
 	///////////////////////////////初始化/////////////////////////////////////////////
-	var limit = 20;
+	var limit = 35;
 	var currSample=null;
 	//定义左右布局
 	var layout = $("body").layout({

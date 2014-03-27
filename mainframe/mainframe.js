@@ -11,7 +11,10 @@ $(function(){
 	$("#logout_id").click(function(){
 		delTheUser();
 		location.href="../login/login.html";
-	}) 
+	})
+	$("#liucheng_help").click(function(){
+		window.open("../doc/tutorial.pdf","_blank");
+	});
 	server.getTheUser(function(resp){
 		$("#username").text(resp.username);
 	}); 

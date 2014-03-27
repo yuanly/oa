@@ -3,14 +3,14 @@
 	_id:"xx",
 	access:111232,
 	mingchen:"xxx",
-	py:"xx",
+	py:["xx"],
 	bianma:"xx",//几个英文字母缩写，打印柜单时候用到
 	quyu:"xx",//区域，如“花都”“中大”,有时需要按区域搜索商家
 	dizhi:"xxx",
 	beizhu:"xxx",
 	dianhualiebiao:["","",...],
 	zhanghuliebiao:[{zhanghao:,huming:,yinhang:,wangdian:},...],
-	shangjia:{_id:"xx",mingchen:"xx"},	//如果是商家类型，则填自己
+	shangjia:{_id:"xx",mingchen:"xx",py:[]},	//如果是商家类型，则填自己
 	leixing:"xx",//geren（个人） shangjia（商家）
 	yanyuodizhi:"xxx",//商家才需要
 	zhiwu:"xxx"//个人才需要
@@ -22,7 +22,7 @@ $(function(){
 	$('#currLocation', window.parent.document).text("联系人");
 
 	var currContact = null;
-	var limit = 20;
+	var limit = 35;
 	//定义左右布局
 	var layout = $("body").layout({
 		west__size:"auto",
@@ -155,6 +155,8 @@ $(function(){
 		}
 		$("#zhiwu").vals(contact.zhiwu);
 		$("#yanhuodizhi").vals(contact.yanhuodizhi);
+		$("#bianma").vals(contact.bianma);
+		$("#quyu").vals(contact.quyu);
 		if("个人" == contact.leixing){
 			$("#tr_geren").show();
 			$(".tr_shangjia").hide();
@@ -302,7 +304,11 @@ $(function(){
 		if(dupZhanghao(contact.zhanghuliebiao)){
 			tip($(this),"帐号不能为空，且两个账户的账号不能相同！",1500);
 			return;
-		}		
+		}
+		contact.py = makePy(contact.mingchen);
+		if(contact.shangjia && !contact.shangjia.py){
+			contact.shangjia.py = makPy(contact.shangjia.mingchen)
+		}
 		if("【新增】" == $("#bianhao").text()){		
 			postJson("contact.php",contact,function(res){
 				if(res.success == true){
@@ -314,7 +320,6 @@ $(function(){
 				}
 			});
 		}else{
-			contact.py = makePy(contact.mingchen);
 			postJson("contact.php",contact,function(res){
 				if(res.success == true){
 					//obj2form(contact);
@@ -371,6 +376,17 @@ $(function(){
 			}
 			//调整左侧宽度以便显示完整的列表
 			$("#tableheader").click();
+			
+			if(offset<=0){
+				$("#prevPage").css("color","gray");
+			}else{
+				$("#prevPage").css("color","blue");
+			}
+			if(contacts.length<limit){
+				$("#nextPage").css("color","gray");
+			}else{
+				$("#nextPage").css("color","blue");
+			}
 		});
 	}
 	$("#fangqi").click(function(){

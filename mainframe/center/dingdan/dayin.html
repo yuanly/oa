@@ -50,7 +50,7 @@
 						return false;
 					});
 					each(user.dianhualiebiao,function(i,dianhua){
-						if(dianhua.indexOf("fax")>=0){
+						if(dianhua.indexOf("fax")>=0||dianhua.indexOf("传真")>=0){
 							$("#gendanyuanchuanzhen").text(getPhoneNumber(dianhua));
 							return false;
 						}

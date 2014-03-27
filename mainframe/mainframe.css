@@ -18,7 +18,7 @@
     .ui-layout-west{
     	padding:2px
     }
-    #logout_id:hover{
+    #liucheng_help:hover,#logout_id:hover{
     	cursor:pointer;
     	color:#FF470A;
     	text-decoration:underline
