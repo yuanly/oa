@@ -449,7 +449,12 @@
 			window.open("../sample/sample.html?showId="+currDD.yangban._id,"_blank");
 		}
 	}
+	
 	function showGonghuoshang(){
+		if("" == $("#dd_gonghuoshang").val().trim()){
+			$("#dd_gonghuoshang").click(function(){tip($(this),"请通过样板指定供货商！",1500);});
+			return;
+		}
 		if(currDD.gonghuoshang && currDD.gonghuoshang._id){
 			window.open("../contact/contact.html?showId="+currDD.gonghuoshang._id,"_blank");
 		}
@@ -648,8 +653,8 @@ function _hanshuku_(){}
 				tr.find("#td_gendanyuan").text(dingdan.gendanyuan?getUser(dingdan.gendanyuan).user_name:"");
 				tr.find("#td_gonghuoshang").text(dingdan.gonghuoshang?dingdan.gonghuoshang.mingchen:"");
 				//tr.find("#td_xiadanriqi").text(dingdan.xiadanshijian?new Date(dingdan.xiadanshijian*1000).format("yy/MM/dd hh:mm"):"");
-				tr.find("#td_quyu").text(dingdan.quyu?dingdan.quyu:"");
-				tr.find("#td_man").text(dingdan.man?"慢":"");
+				tr.find("#td_quyu").text(dingdan.gonghuoshang?dingdan.gonghuoshang.quyu:"");
+				tr.find("#td_man").text(dingdan.mandan?"慢":"");
 				
 				var color = toggle("#fff","#eee");
 				tr.css("background-color",color);

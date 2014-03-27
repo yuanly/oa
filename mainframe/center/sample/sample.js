@@ -243,7 +243,7 @@ $(function(){
 		yangban.danwei = $("#xiangdan #danwei").val().trim();
 		var shangjia = $("#xiangdan #shangjia").data("shangjia");
 		if(shangjia){
-			yangban.shangjia = {_id:shangjia._id,mingchen:shangjia.mingchen,py:shangjia.py};
+			yangban.shangjia = {_id:shangjia._id,mingchen:shangjia.mingchen,py:shangjia.py,quyu:shangjia.quyu};
 		}
 		yangban.yijiazhe = getUserIdByName($("#xiangdan #yijiazhe").val().trim());
 		yangban.yijiariqi = $("#xiangdan #yijiariqi").val().trim();
