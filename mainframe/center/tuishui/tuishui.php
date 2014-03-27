@@ -84,6 +84,9 @@ if("xinjian" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("jieguan" == $param["caozuo"]){
 	coll("tuishui")->update(array("_id"=>$param["_id"]),array('$set'=>array("gendanyuan"=>$_SESSION["user"]["_id"])));
+	$liuyan = array("_id"=>time(),"hostType"=>"tuishui","hostId"=>$param["_id"],"type"=>"caozuorizhi"
+			,"userId"=>$_SESSION["user"]["_id"],"neirong"=>"接管：略");//以后改成保存整个json到另外一个表，界面是点击打开就可以像普通单一样显示详情。
+	coll("liuyan")->save($liuyan);
 	echo '{"success":true}';
 }else if("shenqingfuhe" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请复核","time"=>time());
@@ -134,9 +137,8 @@ if("xinjian" == $param["caozuo"]){
 	$query["zhuangtai"] = array('$ne'=>"作废");
 	$cur = coll("liushuizhang")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
-}else if("zuofei" == $param["caozuo"]){
-	$zuofeiliucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
-	$tuishui = coll("tuishui")->findAndModify(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$zuofeiliucheng),'$set'=>array("zhuangtai"=>"作废")));
+}else if("shanchu" == $param["caozuo"]){
+	coll("tuishui")->remove(array("_id"=>$param["_id"],"zhuangtai"=>"新建","gendanyuan"=>$_SESSION["user"]["_id"]));
 	statExpired();
 	echo '{"success":true}';
 }else if("tongji" == $param["caozuo"]){

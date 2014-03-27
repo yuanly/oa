@@ -45,7 +45,7 @@ if("shangchuan" == $param["caozuo"]){
 }else if("jieguan" == $param["caozuo"]){
 	coll("fahuodan")->update(array("_id"=>$param["_id"]),array('$set'=>array("ludanzhe"=>$_SESSION["user"]["_id"])));
 	$liuyan = array("_id"=>time(),"hostType"=>"fahuodan","hostId"=>$param["_id"],"type"=>"caozuorizhi"
-			,"userId"=>$_SESSION["user"]["_id"],"neirong"=>"略");//以后改成保存整个json到另外一个表，界面是点击打开就可以像普通单一样显示详情。
+			,"userId"=>$_SESSION["user"]["_id"],"neirong"=>"接管：略");//以后改成保存整个json到另外一个表，界面是点击打开就可以像普通单一样显示详情。
 	coll("liuyan")->save($liuyan);
 	echo '{"success":true}';
 }else if("huitui" == $param["caozuo"]){//

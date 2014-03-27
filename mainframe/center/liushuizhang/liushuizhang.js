@@ -234,6 +234,7 @@
 		currLSZ.fukuanriqi = $("#lsz_fukuanriqi").val().trim();
 		currLSZ.kemu = $("#lsz_kemu").val().trim();
 		currLSZ.zhaiyao = $("#lsz_zhaiyao").val().trim();
+		currLSZ.yinhangliushui = $("#lsz_yinhangliushui").text().trim();
 		currLSZ.jine = parseFloat3($("#lsz_jine").val().trim());
 		currLSZ.shouxufei = parseFloat3($("#lsz_shouxufei").val().trim());
 		if($("#hexiaoliushui").css("display") == "none"){
@@ -475,6 +476,7 @@ function _hanshuku_(){}
 		$("#jisuanhuilv").show();
 		$(".plainInput").removeAttr("readonly");
 		$("#lsz_fukuanriqi").datepicker();
+		$("#lsz_yinhangliushui").attr("contenteditable","true");
 		$("#liushuizhangmingxi").find(".plainBtn").show();
 		$("#bianji").hide();$("#fangqi").show();$("#baocun").show();
 		beizhuEditor.editorWritable();
@@ -488,6 +490,7 @@ function _hanshuku_(){}
 	function readOnly(){
 		editing = false;
 		$("#hexiao").hide();		
+		$("#lsz_yinhangliushui").removeAttr("contenteditable");
 		$("#jisuanhuilv").hide();
 		$("#lsz_fukuanriqi").datepicker("destroy");
 		$(".plainInput").attr("readonly","readonly"); 
@@ -520,6 +523,7 @@ function _hanshuku_(){}
 		$("#lsz_fukuanriqi").vals(lsz.fukuanriqi);
 		$("#lsz_kemu").vals(lsz.kemu);
 		$("#lsz_zhaiyao").vals(lsz.zhaiyao);
+		$("#lsz_yinhangliushui").text(lsz.yinhangliushui?lsz.yinhangliushui:"");
 		setContactName($("#lsz_fukuanfang"),lsz.fukuanfang);
 		$("#lsz_fukuanfang").data("_id",lsz.fukuanfang);
 		$("#lsz_fukuanzhanghu").vals(lsz.fukuanzhanghu);

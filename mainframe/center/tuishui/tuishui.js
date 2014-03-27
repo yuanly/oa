@@ -3,7 +3,7 @@
 	{	_id:"TS131008.1",
 		liucheng:[...],
 		gendanyuan:"xx",
-		zhuangtai:"xx",//新建（作废） 装柜 报关 付款 开票 单证 退税 申请复核 复核(通过复核确保有两个人了解业务)
+		zhuangtai:"xx",//新建（删除） 装柜 报关 付款 开票 单证 退税 申请复核 复核(通过复核确保有两个人了解业务)
 		huogui:{_id:"xx",guihao:"xx",zhuangguiriqi:"xx"},
 		guandan:{hetonghao:"xx",pinming:"xx",jine:3423,shuliang:3432,baoguanriqi:"xx",jidanriqi:"xxx",shoudanriqi:"xx"},
 		dailishang:{_id:"xx",mingchen:"xx",renminbizhanghao:"xxx",meijinzhanghao:"xx"},
@@ -569,14 +569,14 @@
 		});
 	}
 	$("#cz_zhuanggui").click(cz_zhuanggui);
-	function cz_zuofei(){
-		ask($(this),"你确定要将该退税单证记录作废吗！",function(){
-			postJson("tuishui.php",{caozuo:"zuofei",_id:currTS._id},function(res){
+	function cz_shanchu(){
+		ask($(this),"你确定要将该退税单证记录删除吗！",function(){
+			postJson("tuishui.php",{caozuo:"shanchu",_id:currTS._id},function(res){
 				showDetailById(currTS._id);
 			});
 		});
 	}	
-	$("#cz_zuofei").click(cz_zuofei);
+	$("#cz_shanchu").click(cz_shanchu);
 
 	function cz_shenqingfuhe(){
 		postJson("tuishui.php",{caozuo:"shenqingfuhe",_id:currLSZ._id},function(res){
@@ -986,7 +986,7 @@ function _hanshuku_(){}
 				var caozuoItem = caozuoTmpl.clone(true);
 				if(currTS.gendanyuan == theUser._id){
 					$("#cz_dayin",caozuoItem).show();
-					$("#cz_zuofei",caozuoItem).show();
+					$("#cz_shanchu",caozuoItem).show();
 					if((tuishui.liucheng.length - 1) == n){
 						$("#cz_zhuanggui",caozuoItem).show();
 					}
