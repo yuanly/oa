@@ -159,25 +159,25 @@ if("shangchuan" == $param["caozuo"]){
 }else if("baocun" == $param["caozuo"]){	
 	$fahuodan = $param["fahuodan"];
 	$id = $fahuodan["_id"];
-	$old = coll("fahuodan")->findOne(array("_id"=>$id),array("ludanzhe"=>1));
-	if($old["ludanzhe"] !== $_SESSION["user"]["_id"]){
-		echo '{"success":false}';
+	$old = coll("fahuodan")->findOne(array("_id"=>$id,"ludanzhe"=>$_SESSION["user"]["_id"]));
+	if(empty($old["ludanzhe"])){
+		echo '{"success":true,"err":"数据不一致，请刷新界面！"}';
 		return;
 	}
-	coll("huowu")->remove(array("fahuodan"=>$id));
+	
+	$ver = getId("huowuversion");//用它来识别出已被删除货物。
 	foreach($fahuodan["huowu"] as $huowu){
 		$hwId = $huowu["_id"];
 		unset($huowu["_id"]);
-		coll("huowu")->update(array("_id"=>$hwId),array('$set'=>$huowu),array("upsert"=>true));
+		$huowu["ver"] = $ver;
+		coll("huowu")->update(array("_id"=>$hwId),array('$set'=>$huowu),array("upsert"=>true));//考虑到有注释可能从验货单填入，不能直接save
 	}
+	coll("huowu")->remove(array("fahuodan"=>$id,"ver"=>array('$ne'=>$ver)));
+	
 	unset($fahuodan["huowu"]);
 	unset($fahuodan["liucheng"]);
 	unset($fahuodan["_id"]);
 	coll("fahuodan")->update(array("_id"=>$id),array('$set'=>$fahuodan));
-	coll("liushuizhang")->update(array("fahuodan"=>$id),array('$unset'=>array("fahuodan"=>1)),array("multiple"=>true));
-	if($fahuodan["zhuanzhang"]){
-		coll("liushuizhang")->update(array("_id"=>$fahuodan["zhuanzhang"]),array('$set'=>array("fahuodan"=>$id)));
-	}
 	echo '{"success":true}';
 }else if("chaliushui" == $param["caozuo"]){
 	$query = array();

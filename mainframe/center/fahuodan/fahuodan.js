@@ -319,7 +319,11 @@
 		}
 		currFHD.neirong = yuandanEditor.editorVal();
 		postJson("fahuodan.php",{caozuo:"baocun",fahuodan:currFHD},function(res){
-			showDetailById(currFHD._id);
+			if(res.err){
+				tip($("#baocun"),res.err,1500);
+			}else{
+				showDetailById(currFHD._id);
+			}
 		});		
 	}
 	$("#baocun").click(baocun);
@@ -547,6 +551,10 @@
 	}
 	$("#cz_jiedan").click(cz_jiedan);
 	function cz_shenqingduidan(){
+		if(!currFHD.huowu || currFHD.huowu.length<=0){
+			tip($(this),"货物不能留空！",1500);
+			return;
+		}
 		postJson("fahuodan.php",{caozuo:"shenqingduidan",_id:currFHD._id},function(res){
 			showDetailById(currFHD._id);
 		});
