@@ -440,7 +440,7 @@ function _hanshuku_(){}
 				var color = toggle("#fff","#eee");
 				tr.css("background-color",color);
 				tr.find("#td_bianhao").css("background-color",statusColor(liushuizhang.zhuangtai,color));
-				if(liushuizhang.zhuangtai == "作废"){
+				if(inLiucheng(liushuizhang.liucheng,"作废")){
 					tr.css("text-decoration","line-through");
 				}
 				$("#liushuizhangtable").append(tr);

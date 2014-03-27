@@ -27,7 +27,7 @@ if("shangchuan" == $param["caozuo"]){
 }else if("jiedan" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time());
 	coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"上传")
-			,array('$push'=>array("liucheng"=>$ludanliucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"],"ludanzhe"=>$_SESSION["user"]["_id"])));
+			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"],"ludanzhe"=>$_SESSION["user"]["_id"])));
 	statExpired();
 	echo '{"success":true}';
 }else if("shenqingduidan" == $param["caozuo"]){
@@ -83,13 +83,13 @@ if("shangchuan" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("shenqingshenjie" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请审结","time"=>time());
-	coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"装柜","ludanzhe"=>$_SESSION["user"]["_id"])
+	coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>array('$in'=>array("装柜","作废")),"ludanzhe"=>$_SESSION["user"]["_id"])
 			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
 	echo '{"success":true}';
 }else if("shenjie" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审结","time"=>time());
-	coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"申请审结","ludanzhe"=>$_SESSION["user"]["_id"])
+	coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"申请审结","ludanzhe"=>array('$ne'=>$_SESSION["user"]["_id"]))
 			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
 	echo '{"success":true}';
@@ -108,18 +108,31 @@ if("shangchuan" == $param["caozuo"]){
 }else if("chaxun" == $param["caozuo"]){
 	$cmd = $param["option"]["cmd"];
 	$query = array();
-	if("dailudan" == $cmd){
+	if("daijiedan" == $cmd){
 		$query["zhuangtai"] = "上传";
 	}else if("daiduidan" == $cmd){
 		$query["zhuangtai"] = "申请对单";
-	}else if("daifukuan" == $cmd){
-		$query["zhuangtai"] = "对单";
-	}else if("daifahuo" == $cmd){
-		$query["zhuangtai"] = "付款";
-	}else if("daifuhe" == $cmd){
-		$query["zhuangtai"] = "发货";
-	}else if(isset($param["option"]["zhuangtai"])){
-		$query["zhuangtai"] = $param["option"]["zhuangtai"];
+		$query["ludanzhe"] = array('$ne'=>$_SESSION["user"]["_id"]);
+	}else if("daishenjie" == $cmd){
+		$query["zhuangtai"] = "申请审结";
+		$query["ludanzhe"] = array('$ne'=>$_SESSION["user"]["_id"]);
+	}else if("wodedailudan" == $cmd){
+		$query["ludanzhe"] = $_SESSION["user"]["_id"];
+		$query["zhuangtai"] = "接单";
+	}else if("wodedaiduidan" == $cmd){
+		$query["ludanzhe"] = $_SESSION["user"]["_id"];
+		$query["zhuangtai"] = "申请对单";
+	}else if("wodeyiduidan" == $cmd){
+		$query["ludanzhe"] = $_SESSION["user"]["_id"];
+		$query["zhuangtai"] = array('$ne'=>"审结");
+		$query["liucheng.dongzuo"] = array('$in'=>array("对单","作废"));
+	}else if("wodedaifukuan" == $cmd){
+		$query["ludanzhe"] = $_SESSION["user"]["_id"];
+		$query["liucheng.dongzuo"] = "对单";
+		$query["liushuizhang.yifu"] = array('$ne'=>true);
+	}else if("wodedaishenjie" == $cmd){
+		$query["ludanzhe"] = $_SESSION["user"]["_id"];
+		$query["zhuangtai"] = "申请审结";
 	}
 	
 	if(isset($param["option"]["fukuan"])){
@@ -132,7 +145,7 @@ if("shangchuan" == $param["caozuo"]){
 	if(isset($param["option"]["gonghuoshang"])){
 		$query["gonghuoshang._id"] = $param["option"]["gonghuoshang"];
 	}
-	
+	//var_dump($query);
 	$cur = coll("fahuodan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("chaxunforyanhuodan" == $param["caozuo"]){

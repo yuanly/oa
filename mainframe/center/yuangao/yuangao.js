@@ -423,7 +423,7 @@
 				
 				tr.css("background-color",toggle("#fff","#eee"));
 				tr.find("#td_bianhao").css("background-color",statusColor(yuangao.zhuangtai,tr.css("background-color")));
-				if(yuangao.zhuangtai == "作废"){
+				if(inLiucheng(yuangao.liucheng,"作废")){
 					tr.css("text-decoration","line-through");
 				}
 				
