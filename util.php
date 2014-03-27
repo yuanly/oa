@@ -7,6 +7,9 @@ date_default_timezone_set("Asia/Shanghai");
 function docRoot(){
 	return "/oa/";
 }
+function upper($str){
+	return mb_strtoupper($str,"UTF-8");
+}
 /*
  * 返回mongodb collection
  */

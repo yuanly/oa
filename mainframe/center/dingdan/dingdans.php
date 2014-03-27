@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //error_log("Location: ".docRoot()."login/login.html",3,"d:/err.log");
 
 include("../../../util.php");
@@ -34,7 +34,7 @@ if(isset($param["_id"])){//
 		$query["zhuangtai"] = "下单申请";
 		$query["gendanyuan"] = array('$ne'=>$_SESSION["user"]["_id"]);
 	}else if("daishenjie" == $cmd){
-		$query["zhuangtai"] = array('$in'=>array("作废","发货"));
+		$query["zhuangtai"] = "申请审结";
 		$query["gendanyuan"] = array('$ne'=>$_SESSION["user"]["_id"]);
 	}
 	

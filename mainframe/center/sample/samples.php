@@ -16,7 +16,7 @@ if(isset($param["_id"])){//
 	}
 	echo jsonEncode($one);
 }else if(isset($param["caozuo"]) && "sfchongfu" == $param["caozuo"]){
-	$one = coll("yangban")->findOne(array("_id"=>strtoupper($param["bianhao"])));
+	$one = coll("yangban")->findOne(array("_id"=>upper($param["bianhao"])));
 	if($one){
 		echo '{"success":true,"err":"编号重复，请重置！"}';
 	}else{
@@ -26,14 +26,14 @@ if(isset($param["_id"])){//
 	$query = array();
 	if(!empty($param["option"])){
 		if(!empty($param["option"]["bianhao"])){
-			$query["_id"] = array('$regex'=>strtoupper($param["option"]["bianhao"]));
+			$query["_id"] = array('$regex'=>upper($param["option"]["bianhao"]));
 		}else if(!empty($param["option"]["shangjia"])){
 			//$query["shangjia.mingchen"] = array('$regex'=>$param["option"]["shangjia"]);
-			$query["shangjia.py"]=strtoupper($param["option"]["shangjia"]);
+			$query["shangjia.py"]=upper($param["option"]["shangjia"]);
 		}else if(!empty($param["option"]["taixing"])){
-			$query["taiguoxinghao"] = array('$regex'=>strtoupper($param["option"]["taixing"]));
+			$query["taiguoxinghao"] = array('$regex'=>upper($param["option"]["taixing"]));
 		}else if(!empty($param["option"]["zhongxing"])){
-			$query["zhongguoxinghao"] = array('$regex'=>strtoupper($param["option"]["zhongxing"]));
+			$query["zhongguoxinghao"] = array('$regex'=>upper($param["option"]["zhongxing"]));
 		}
 	}
 	$cur = coll("yangban")->find($query,array("beizhu"=>0))->sort(array("access"=>-1))->skip($param["offset"])->limit($param["limit"]);

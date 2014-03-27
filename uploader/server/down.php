@@ -25,3 +25,4 @@ function contentType($filename){
 	}
 	return "application/octet-stream";
 }
+?>

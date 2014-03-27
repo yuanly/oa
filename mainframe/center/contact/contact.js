@@ -243,8 +243,8 @@ $(function(){
 				contact.yanhuodizhi = $("#yanhuodizhi").val().trim();
 				contact.zhiwu = undefined;contact.shangjia = undefined;
 				contact.shangjia = {_id:contact._id,mingchen:contact.mingchen,py:contact.py};
-				contact.bianma = $("#bianma").val().toUpperCase();
-				contact.quyu = $("#quyu").val();
+				contact.bianma = $("#bianma").val().trim().toUpperCase();
+				contact.quyu = $("#quyu").val().trim();
 			}else if("个人" == contact.leixing){
 				contact.yanhuodizhi = undefined;
 				contact.zhiwu = $("#zhiwu").val().trim();

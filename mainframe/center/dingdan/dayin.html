@@ -59,21 +59,51 @@
 				if(dd.gonghuoshang){
 					$("#gonghuoshang").text(dd.gonghuoshang.mingchen);
 				} 
+				var lxrId = dd.gonghuoshang._id;
 				if(dd.lianxiren){
 					$("#lianxiren").text(dd.lianxiren.mingchen);
-					postJson("../contact/contacts.php",{_id:dd.lianxiren._id},function(user){
-						each(user.dianhualiebiao,function(i,dianhua){
-							$("#lianxirendianhua").text(getPhoneNumber(dianhua));
+					lxrId = dd.lianxiren._id;
+				}
+				postJson("../contact/contacts.php",{_id:lxrId},function(user){
+					var tel,fax;
+					each(user.dianhualiebiao,function(i,dianhua){
+						tel = getPhoneNumber(dianhua);
+						if(tel){
+							$("#lianxirendianhua").text(tel);
 							return false;
-						});
-						each(user.dianhualiebiao,function(i,dianhua){
-							if(dianhua.indexOf("fax")>=0){
-								$("#lianxirenchuanzhen").text(getPhoneNumber(dianhua));
+						}
+					});
+					each(user.dianhualiebiao,function(i,dianhua){
+						if(dianhua.indexOf("fax")>=0){
+							fax = getPhoneNumber(dianhua);
+							if(fax){
+								$("#lianxirenchuanzhen").text(fax);
 								return false;
 							}
-						}); 
-					});//contacts.php
-				}
+						}
+					}); 
+					if((!tel || !fax)&& dd.lianxiren){
+						postJson("../contact/contacts.php",{_id:dd.gonghuoshang._id},function(user){
+							var tel,fax;
+							each(user.dianhualiebiao,function(i,dianhua){
+								tel = getPhoneNumber(dianhua);
+								if(tel){
+									$("#lianxirendianhua").text(tel);
+									return false;
+								}
+							});
+							each(user.dianhualiebiao,function(i,dianhua){
+								if(dianhua.indexOf("fax")>=0){
+									fax = getPhoneNumber(dianhua);
+									if(fax){
+										$("#lianxirenchuanzhen").text(fax);
+										return false;
+									}
+								}
+							}); 
+						});
+					}
+				});//contacts.php
 				if(dd.yangban){
 					$("#yangban").text(dd.yangban.zhongguoxinghao);
 				}

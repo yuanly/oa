@@ -16,7 +16,7 @@
 		kehu:"C",
 		taiguoyangban:"xx",//从泰国原稿抄过来的，打印给泰国的柜单时有用
 		yangban:{_id:"YB223",taiguoxinghao:"xxx",zhongguoxinghao:"",...},
-		gonghuoshang:{_id:"SJ131110",mingchen:"大大",quyu:"xxx"},//计划装柜单的时候需要按区域查（方便装车？）
+		gonghuoshang:{_id:"SJ131110",mingchen:"大大",quyu:"xxx"},//计划装柜单的时候需要按区域查（方便装车？）//不需要py
 		lianxiren:{_id:12,mingchen:"xx"},
 		gendanyuan:3,
 		xiadanshijian:13223,//可以不要。这个时间出现在列表里，方便看出是否下单。但如果用颜色来区分状态，就没必要在列表里出现下单时间
@@ -28,6 +28,8 @@
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
 	addQuyulist();
+	$("#quyulist").prepend('<option value="区域"/>');
+	
 	function piliangjiedan(){
 		var ids = [];
 		$(".tr_dingdan").each(function(i){
@@ -145,7 +147,7 @@
 				});
 			},["_id","taiguoxinghao","zhongguoxinghao","shangjia.mingchen","zhuangtai"],function(yangban){
 				currDD.yangban = yangban;
-				currDD.gonghuoshang = yangban.shangjia;
+				currDD.gonghuoshang = {_id:yangban.shangjia._id,mingchen:yangban.shangjia.mingchen,quyu:yangban.shangjia.quyu};
 				$(this).val(yangban.zhongguoxinghao+"("+(yangban.taiguoxinghao?yangban.taiguoxinghao:"-")+"/"+(currDD.taiguoyangban?currDD.taiguoyangban:"-")+")");
 				$("#dd_gonghuoshang").val(yangban.shangjia.mingchen);
 				$(".unit").text(yangban.danwei);
@@ -250,6 +252,7 @@
 		$(".tmpl_huowu").each(function(index){
 			//规格 数量 单价 不能为空
 			var huowu = {};
+			huowu.taiguoguige = $(this).find("#mx_taiguoguige").text();
 			huowu.guige = $(this).find("#mx_guige").text().trim();
 			if("" == huowu.guige){
 				tip($(this).find("#mx_guige"),"必须填写规格！",1500);
@@ -336,6 +339,10 @@
 	}
 	$("#cz_shenqingshenjie").click(cz_shenqingshenjie);
 	function cz_xiadanshenqing(){
+		if(!currDD.huowu || currDD.huowu.length<=0){
+			tip($(this),"订单不能没有货物！",1500);
+			return;
+		}
 		postJson("dingdan.php",{caozuo:"xiadanshenqing",_id:currDD._id},function(res){
 			showDetailById(currDD._id);
 		});
@@ -366,7 +373,7 @@
 		$(".tmpl_huowu").each(function(index){
 			//规格 数量 单价 不能为空
 			var huowu = {};
-			huowu.guige = $(this).find("#mx_guige").val().trim();
+			huowu.guige = $(this).find("#mx_guige").text().trim();
 			if("" == huowu.guige){
 				tip($(this).find("#mx_guige"),"必须填写规格！",1500);
 				ret = false;
@@ -385,7 +392,10 @@
 				return false;
 			}
 		});
-		if(ret == false || "" == $("#zonge").text().trim() || $("#dd_gonghuoshang").val().trim() == "" || $("#dd_yangban").val().trim() == ""){
+		if(ret == false){
+			return;
+		}
+		if("" == $("#zonge").text().trim() || $("#dd_gonghuoshang").val().trim() == "" || $("#dd_yangban").val().trim() == ""){
 			tip($(this),"订单不完整，无法下单！",1500);
 			return;
 		}
@@ -536,6 +546,9 @@ function _hanshuku_(){}
 		}
 		if(status == "发货"){//赭
 			return "#DEB887";
+		}
+		if(status == "申请审结"){//紫色
+			return "#BA55D3";
 		}
 		if(status == "作废"){//赭
 			return "#DEB887";
@@ -744,7 +757,7 @@ function _hanshuku_(){}
 			huowu.find("#mx_jine").text(round(dd.huowu[i].shuliang*dd.huowu[i].danjia,2));
 			$("#new_huowu_item").before(huowu);
 		}
-		if(dd.huowu){
+		if(dd.huowu.length>0){
 			$(".unit").text(dd.huowu[0].danwei);
 		}
 		huizong(); 

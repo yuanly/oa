@@ -4,7 +4,7 @@
 	accesss:122, 
 	taiguoxinghao:"",
 	zhongguoxinghao:"",
-	shangjia:{_id:1,mingchen:""},
+	shangjia:{_id:1,mingchen:"",py:[],quyu:""},
 	jiage:[beizhu:"",zhi:1.2],
 	danwei:"",
 	yijiazhe:2,
@@ -20,7 +20,7 @@ $(function(){
 	function xinzengyangban_handle(){
 		currSample = null;
 		$(".ui-layout-center").show();
-		obj2form({danwei:"码",zhuangtai:"正常",yijiazhe:getTheUser()._id});
+		obj2form({danwei:"码",zhuangtai:"正常",yijiazhe:getTheUser()._id,yijiariqi:(new Date()).format("yyyy/MM/dd")});
 		bianji();
 	}
 	$("#xinzengyangban").click(xinzengyangban_handle);

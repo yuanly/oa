@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //error_log("Location: ".docRoot()."login/login.html",3,"d:/err.log");
 
 include("../../../util.php");
@@ -42,21 +42,23 @@ if("jiedan" == $param["caozuo"]){
 	statExpired();
 	echo '{"success":true}';
 }else if("zidan" == $param["caozuo"]){//生成一张子单
+	//子单是加工订单的买材料的订单。如果临时追加新订单，需要临时加一个原稿（原稿相当于采购申请，这部不能随便省 ）。
 	$dingdan = coll("dingdan")->findOne(array("_id"=>$param["_id"],"gendanyuan"=>$_SESSION["user"]["_id"])
-					,array("liucheng"=>0,"huowu"=>0));//子单是加工订单的买材料的订单。如果临时追加新订单，需要临时加一个原稿（原稿相当于采购申请，这部不能随便省 ）。
+					,array("yuangao"=>1,"taiguoyuangao"=>1,"kehu"=>1,"taiguoyangban"=>1,"gendanyuan"=>1,"taiguobianhao"=>1));
 	if(empty($dingdan)){
 		echo '{"success":false}';
 		exit;
 	}
-	$count = coll("dingdan")->count(array("_id"=>array('$regex'=>"^".$dingdan["_id"])));
+	$dingdan["mandan"] = false;
+	$dingdan["huowu"] = array();
 	$dingdan["fudan"] = $dingdan["_id"];
+	$count = coll("dingdan")->count(array("_id"=>array('$regex'=>"^".$dingdan["_id"])));
 	$dingdan["_id"] = $dingdan["_id"]."_".$count;//订单一旦被接单只能作废不能删除
-	$dingdan["liucheng"] = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time());
+	$dingdan["liucheng"] = array(array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time()));
 	coll("dingdan")->save($dingdan);
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("zidan"=>$dingdan["_id"])));
-	echo '{"success":true,"id":'.$dingdan["_id"].'}';
 	statExpired();
-	echo '{"success":true}';
+	echo '{"success":true,"id":"'.$dingdan["_id"].'"}';
 }else if("jieguan" == $param["caozuo"]){
 	$dingdan = coll("dingdan")->findAndModify(array("_id"=>$param["_id"]),array('$set'=>array("gendanyuan"=>$_SESSION["user"]["_id"])));
 	/*
@@ -127,7 +129,7 @@ if("jiedan" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("xiadan" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"下单","time"=>time());
-	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$xiadan),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
+	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
 	echo '{"success":true}';
 }else if("fahuo" == $param["caozuo"]){
