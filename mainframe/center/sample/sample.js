@@ -20,7 +20,7 @@ $(function(){
 	function xinzengyangban_handle(){
 		currSample = null;
 		$(".ui-layout-center").show();
-		obj2form({danwei:"码",zhuangtai:"正常"});
+		obj2form({danwei:"码",zhuangtai:"正常",yijiazhe:getTheUser()._id});
 		bianji();
 	}
 	$("#xinzengyangban").click(xinzengyangban_handle);
@@ -32,9 +32,9 @@ $(function(){
 		var bh = $("#bianhao").val().trim(); 
 		if(bh != "" && (currSample == null || bh != currSample._id)){
 			postJson("samples.php",{"caozuo":"sfchongfu","bianhao":bh},function(res){
-				if(res.chongfu){
+				if(res.err){
 					$("#bianhao").val("");
-					tip($("#bianhao"),"编号重复，请重置！",1500);
+					tip($("#bianhao"),res.err,1500);
 				}
 			});
 		}
@@ -57,18 +57,22 @@ $(function(){
 			xinbianhao = true;
 		} 
 		postJson("samples.php",{"caozuo":"sfchongfu","bianhao":bh},function(res){
-			if(res.chongfu && xinbianhao){
+			if(res.err && xinbianhao){
 				$("#bianhao").val("");
 				tip($("#bianhao"),"编号重复，请重置！",1500);
 			}else{
 				postJson("sample.php",yangban,function(res){
 					if(res.success == true){
+						/*
 						//location.reload();
 						currSample = yangban;
 						obj2form(yangban);
 						zhidu();
 						liuyanElm.shuaxinliebiao({hostId:yangban._id});
 						tip($("#bianji"),"成功提交样板信息！",1500);						
+						*/
+						tip(null,"成功提交样板信息！",1500);						
+						listYangban(0);
 					}else{
 						ask3(null,res.err);
 					}
