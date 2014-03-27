@@ -61,7 +61,7 @@
 					<th nowrap>金额</th>
 					<th nowrap><input id="th_leibie" class="plainTh" value="科目" style="width:80px;cursor:pointer;"/></th>
 					<!--<th nowrap><input id="th_zhifuriqi" class="plainTh" value="支付日期" style="width:90px;cursor:pointer"/></th>-->
-					<th nowrap style="width:100px">摘要</th>
+					<th nowrap style="width:100px">附言</th>
 				</tr>
 				<tr class="tr_liushuizhang">
 					<td id="td_bianhao"></td>
@@ -115,9 +115,11 @@
 				</nobr>
 				<br/>
 				<nobr>
-					摘&#12288;要：<input class="plainInput" id="lsz_zhaiyao" size=12/>，
-					付款日期：<input type="text" id="lsz_fukuanriqi" class="plainInput" style="cursor:pointer" readonly size=8 />&nbsp;&nbsp;&nbsp;
-					<span id="hexiao" class="plainBtn" style="display:none">收汇</span>
+					附&#12288;言：<input class="plainInput" id="lsz_zhaiyao" size=12 title="可以显示在统计报表中的附言，字要少"/>，
+					付款日期：<input type="text" id="lsz_fukuanriqi" class="plainInput" style="cursor:pointer" readonly size=8 />，
+					银行流水：<div id="lsz_yinhangliushui" class="myinput"></div>&nbsp;&nbsp;&nbsp;
+					<span id="hexiao" class="plainBtn" style="display:none">收汇</span>&nbsp;&nbsp;&nbsp;
+					<span class="tip" title="银行流水是指在网银查到的对应的流水号，有些网银查不到具体流水号，可以填交易时间等可以唯一定位该流水的信息；如果付款和收款都是我们的账户，则两个银行流水号都要填。">tip</span>
 				</nobr>
 				<div id="hexiaoliushui" style="display:none">
 					汇&#12288;率：<input type="text" id="lsz_huilv" class="plainInput" style="text-align:center" readonly size=12 />，

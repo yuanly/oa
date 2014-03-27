@@ -20,6 +20,9 @@
 	$('#currLocation', window.parent.document).text("退税管理");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$(".tip").click(function(){
+		tip($(this),$(this).attr("title"));
+	});
 	$("#th_guihao").change(function(){
 		listtuishui(0);
 	});	

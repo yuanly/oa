@@ -16,6 +16,7 @@
  fukuanzhanghao:"xxx",//付款账号，fukuangfang+fukuangfangzhanghao 这是账户的唯一id
  shoukuanzhanghu:"xxx",//收款账户
  shoukuanzhanghao:"xxx",//收款帐号
+ yinhangliushui:"xxx",//非必填属性，指对应的银行账户里面的流水号。如果是我司到我司流水，可以两个都填进去。
  kemu:"xx",//科目
  beizhu:"xxx",//备注
  zhaiyao:"xxx",//摘要 一行之内的，可以在报表里显示的。
@@ -47,6 +48,9 @@
 	$('#currLocation', window.parent.document).text("流水账管理");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$(".tip").click(function(){
+		tip($(this),$(this).attr("title"));
+	});
 	$("#xinzengliushui").click(function(){
 		postJson("liushuizhang.php",{caozuo:"xinjian"},function(res){
 			listliushuizhang(0);
