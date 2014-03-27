@@ -20,7 +20,7 @@ $(function(){
 	function xinzengyangban_handle(){
 		currSample = null;
 		$(".ui-layout-center").show();
-		obj2form({});
+		obj2form({danwei:"码",zhuangtai:"正常"});
 		bianji();
 	}
 	$("#xinzengyangban").click(xinzengyangban_handle);
@@ -232,9 +232,9 @@ $(function(){
 	//读取表单内容，构造对象并返回
 	function form2obj(){
 		var yangban={};
-		yangban._id = $("#xiangdan #bianhao").val().trim();
-		yangban.taiguoxinghao = $("#xiangdan #taiguoxinghao").val().trim();
-		yangban.zhongguoxinghao = $("#xiangdan #zhongguoxinghao").val().trim();
+		yangban._id = $("#xiangdan #bianhao").val().trim().toUpperCase();
+		yangban.taiguoxinghao = $("#xiangdan #taiguoxinghao").val().trim().toUpperCase();
+		yangban.zhongguoxinghao = $("#xiangdan #zhongguoxinghao").val().trim().toUpperCase();
 		yangban.jiage = getPrices($("#xiangdan #jiage").val());
 		yangban.danwei = $("#xiangdan #danwei").val().trim();
 		var shangjia = $("#xiangdan #shangjia").data("shangjia");
