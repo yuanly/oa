@@ -32,3 +32,6 @@ body{
 	color:#95B9C7;
 	cursor:pointer
 }
+#lc_anniu:hover{
+	background-color:pink
+}

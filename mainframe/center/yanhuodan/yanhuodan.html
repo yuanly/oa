@@ -52,7 +52,7 @@
 </head>
 <body style="margin:0px;padding:0px">
 	<div class="ui-layout-west">
-		<div>
+		<div id="yanhuoda_liebiao_ctr" style="display:none">
 			<div><span class="plainBtn" id="xinzengyanhuodan" style="display:none">[新增验货单]</span></div>
 			<table id="yanhuodantable"  style="min-width:500px;">
 				<tr id="tableheader">
@@ -70,6 +70,9 @@
 				<span id="prevPage" class="plainBtn">上一页</span> <span id="nextPage" class="plainBtn">下一页</span>
 				<a style="text-decoration:none;font-size:.8em;color:blue;float:right;" href="help.html" target="_blank">帮助</a>
 			</div>
+		</div>
+		<div id="huowu_liebiao_ctr">
+			haha
 		</div>
 	</div>
 	<div class="ui-layout-center">
@@ -165,10 +168,11 @@
 			<div>
 					<table style="width:100%"><tr><td style="text-align:left"><input class="plainInput" id="opt_yanhuodanid"/></td><td style="text-align:right"><span class="plainBtn" id="guanbi_sel_fahuodan">关闭</span></td></tr></table>
 					<table id="sel_fahuodan">
-						<tr><th>货物编号</th><th>客户</th><th>供货商</th><th>样板</th><th>规格</th><th>数量</th><th>单位</th><th>件数</th><th>备注</th><th>验货单</th></tr>
+						<tr><th>货物编号</th><th>客户</th><th>区域</th><th>供货商</th><th>样板</th><th>规格</th><th>数量</th><th>单位</th><th>件数</th><th>备注</th><th>验货单</th></tr>
 						<tr class="tmpl_fahuodanhuowu" style="cursor:pointer">
 							<td id="td_huowubianhao"></td>
 							<td id="td_kehu" style="text-align:center"></td>
+							<td id="td_quyu"></td>
 							<td id="td_gonghuoshang"></td>
 							<td id="td_yangban"></td>
 							<td id="td_guige"></td>

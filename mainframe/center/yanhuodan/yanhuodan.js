@@ -14,6 +14,7 @@
 状态：制单（删除 谁都可以打印） 申请受理（回退） 受理 申请审核（回退） 审核（回退，非受理者本人审核）
 只要没申请审核，制单者都可以修改甚至删除验货单（若要删除，必须已清空货物）。受理者已经拿了打印单，不用担心工作被否定。
 制单者可以是受理者。只有受理者才能修改状态，而且仅能修改状态，而且是在申请审核前。
+
 一个货物只能被一个验货单收录，如果要重复验货，被收入新验货单时，就会冲掉旧验货单信息（？）备注在选择货物的时候要带进来。
 不考虑接管，因为验货单的处理不影响其他环节。货物总可以被抢到其他验货单，受理者不登记验货结果也不影响出货。
 	*/
@@ -180,6 +181,7 @@
 				tr = tmpl_fahuodanhuowu.clone(true);
 				tr.find("#td_huowubianhao").text(huowu._id);
 				tr.find("#td_kehu").text(huowu.kehu);
+				tr.find("#td_quyu").text(huowu.gonghuoshang?huowu.gonghuoshang.quyu:"");
 				tr.find("#td_gonghuoshang").text(huowu.gonghuoshang?huowu.gonghuoshang.mingchen:"");
 				tr.find("#td_yangban").text(huowu.yangban);
 				tr.find("#td_guige").text(huowu.guige);

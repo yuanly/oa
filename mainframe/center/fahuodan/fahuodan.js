@@ -16,7 +16,7 @@
 		liucheng:[{userId:3,dongzuo:"录单",time:1322}],
 		liushuizhang:{_id:"xx",yifu:true},//保存的是流水账id，但返回时直接关联上整个流水账//一般不会有一个付款申请被分成多次支付，除非不够钱，对方要求有多少付多少，但这种情况发生可能性极低，备注注明即可。
 		zhuangtai:"录单",
-		gonghuoshang:{_id:"SJ131110",mingchen:"大大"},//收款人
+		gonghuoshang:{_id:"SJ131110",mingchen:"大大",quyu:"xxx"},//收款人,其中quyu要带到huowu去，而huowu需要quyu方便选货装柜和建验货单。
 		shoukuanzhanghu:"xxx",//收款账户 整理好的一个字符串
 		huowu:[huowu],//这个需要从huowu collection关联查询获取，不在fahuodan collection保存
 		qitafei:[{shuoming:"xxx",jine:22}],
@@ -33,7 +33,7 @@
 	huowu 的数据模型：
 	{
 		_id:"xxx",//fhd_id+hw+n
-		gonghuoshang:{_id:"xxx",mingchen:"xxx"}
+		gonghuoshang:{_id:"xxx",mingchen:"xxx",quyu:"xx"}
 		guige:"xxx",
 		danwei:"码",
 		danjia:23.1,
@@ -814,7 +814,7 @@ function _hanshuku_(){}
 	 			},["_id","mingchen"],function(vendor){
 	 				$(this).text(vendor.mingchen)
 	 				$(this).data("shangjia",vendor);
-	 				currFHD.gonghuoshang = {_id:vendor._id,mingchen:vendor.mingchen};
+	 				currFHD.gonghuoshang = {_id:vendor._id,mingchen:vendor.mingchen,quyu:vendor.quyu};
 	 				$(this).change();
 	 			},"",function(){//清空
 	 				currFHD.gonghuoshang = undefined;
@@ -1168,6 +1168,7 @@ function _hanshuku_(){}
 		$('#currLocation', window.parent.document).text("发货单/我的待审结");
 		$("#th_zhuangtai").attr("readonly","readonlly");
 	}else{
+		$("#shangchuanfahuodan").show();
 		$('#currLocation', window.parent.document).text("发货单/查询");
 	}
 	listfahuodan(0,getUrl().showId);
