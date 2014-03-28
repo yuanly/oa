@@ -58,7 +58,7 @@
 			}
 			$("#jiesuo").click(function(){
 				postJson("../liushuizhang/liushuizhang.php",{caozuo:"unlock"},function(res){
-					tip($(this),"成功解锁！",1500);	
+					tip($("#jiesuo"),"成功解锁！",1500);	
 				});
 			});
 			

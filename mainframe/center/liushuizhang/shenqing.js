@@ -38,7 +38,7 @@
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
-	function selShengchengliushui(){
+	function selShengchengliushui(event){
 		var liushui = {};
 		var shenqings = [];
 		$("#seltable").find(".tr_shenqing").each(function(i){
@@ -48,7 +48,7 @@
 			tip($(this),"必须选择申请",1500);
 			return;
 		}
-		liushui.shenqings = shenqing;
+		liushui.shenqings = shenqings;
 		liushui.jine = parseFloat($("#selSum").text());		
 		var kemu;
 		$("#seltable").find(".tr_shenqing").each(function(i){
@@ -64,7 +64,8 @@
 			if(res.err){
 				tip($("#shengchengliushui"),res.err,1500);
 			}else{
-				window.open("liushuizhang.html?showId="+res._id,"_blank");
+				//window.open("./liushuizhang.html?showId="+res._id,"_blank");
+				location = "./liushuizhang.html?showId="+res._id;
 			}
 		});
 	}
@@ -458,6 +459,8 @@ function _hanshuku_(){}
 				}
 				if(shenqing.kemu){//创建流水时用得上
 					tr.data("kemu",shenqing.kemu);
+				}else if(shenqing.type=="fahuodan"){
+					tr.data("kemu","货款");
 				}
 				tr.find("#td_jine").text(shenqing.zongjine?shenqing.zongjine:"");
 				var ops = getOperator(shenqing);

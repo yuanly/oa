@@ -326,6 +326,7 @@
 			showDetailById(currLSZ._id);
 		});
 	}
+	$("#cz_fukuan").click(cz_fukuan);
 	function cz_shenqingfuhe(){
 		postJson("liushuizhang.php",{caozuo:"shenqingfuhe",_id:currLSZ._id},function(res){
 			showDetailById(currLSZ._id);
@@ -501,8 +502,16 @@ function _hanshuku_(){}
 			$("#bianji").show();
 		}
 		$("#fangqi").hide();$("#baocun").hide();
-		$("#lsz_fukuanfang").unbind("click").click(function(){window.open("../contact/contact.html?showId="+$(this).data("_id"),"_blank");});
-		$("#lsz_shoukuanfang").unbind("click").click(function(){window.open("../contact/contact.html?showId="+$(this).data("_id"),"_blank");});
+		$("#lsz_fukuanfang").unbind("click").click(function(){
+			if($(this).data("_id")){
+				window.open("../contact/contact.html?showId="+$(this).data("_id"),"_blank");
+			}
+		});
+		$("#lsz_shoukuanfang").unbind("click").click(function(){
+			if($(this).data("_id")){
+				window.open("../contact/contact.html?showId="+$(this).data("_id"),"_blank");
+			}
+		});
 		$("#lsz_fukuanzhanghu").unbind("click");
 		$("#lsz_shoukuanzhanghu").unbind("click");
 	}

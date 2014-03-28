@@ -9,7 +9,7 @@ $param = getJson();
 $query = array();
 if($param["option"]){
 	//$query = array("mingchen"=>array('$regex'=>$param["option"]));
-	$query  = array("py"=>$param["option"]);
+	$query  = array("py"=>upper($param["option"]));
 }
 $cur = coll("contact")->find($query)->skip($param["offset"])->limit($param["limit"]);
 echo  cur2json($cur);

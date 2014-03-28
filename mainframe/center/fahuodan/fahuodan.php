@@ -98,16 +98,13 @@ if("shangchuan" == $param["caozuo"]){
 	$fhd = coll("fahuodan")->findOne($query);
 	$cur = coll("huowu")->find(array("fahuodan"=>$param["_id"]));
 	$fhd["huowu"] = c2a($cur);
-	/*
-	$lsz = coll("liushuizhang")->findOne(array("fahuodan"=>$param["_id"]));
-	if($lsz){
-		$fhd["zhuanzhang"] = $lsz["_id"];
+	if(!empty($fhd["liushuizhang"])){
+		$fhd["liushuizhang"] = coll("liushuizhang")->findOne(array("_id"=>$fhd["liushuizhang"]["_id"]));
 	}
-	*/
 	echo  jsonEncode($fhd);
 }else if("chaxun" == $param["caozuo"]){
 	$cmd = $param["option"]["cmd"];
-	$query = array();
+	$query = array("type"=>"fahuodan");
 	if("daijiedan" == $cmd){
 		$query["zhuangtai"] = "上传";
 	}else if("daiduidan" == $cmd){
@@ -136,9 +133,15 @@ if("shangchuan" == $param["caozuo"]){
 	}
 	
 	if(isset($param["option"]["fukuan"])){
-		$query["liushuizhang"] = array('$exists'=>true);
+		if($param["option"]["fukuan"] == "未记账"){
+			$query["liushuizhang"] = array('$exists'=>false);	
+		}else if($param["option"]["fukuan"] == "已记账"){
+			$query["liushuizhang"] = array('$exists'=>true);	
+			$query["liushuizhang.yifu"] = false;
+		}else if($param["option"]["fukuan"] == "已付款"){
+			$query["liushuizhang.yifu"] = true;
+		}
 	}
-	
 	if(isset($param["option"]["bianhao"])){
 		$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
 	}
@@ -177,6 +180,7 @@ if("shangchuan" == $param["caozuo"]){
 	unset($fahuodan["huowu"]);
 	unset($fahuodan["liucheng"]);
 	unset($fahuodan["_id"]);
+	unset($fahuodan["liushuizhang"]);
 	coll("fahuodan")->update(array("_id"=>$id),array('$set'=>$fahuodan));
 	echo '{"success":true}';
 }else if("chaliushui" == $param["caozuo"]){

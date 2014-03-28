@@ -40,7 +40,7 @@ if("xinjian" == $param["caozuo"]){
 			echo '{"success":true,"err","锁冲突，请重试。若连续超过3次冲突请到“其他”模块进行解锁。"}';
 			return;
 	}
-	if(coll("fahuodan")->count(array("_id"=>array('$in'=>$param["shenqings"]),"liushuizhang"=>array('$exists'=>false)))<count($param["shenqings"])){
+	if(coll("fahuodan")->count(array("_id"=>array('$in'=>$param["liushui"]["shenqings"]),"liushuizhang"=>array('$exists'=>false)))<count($param["liushui"]["shenqings"])){
 		echo '{"success":true,"err":"数据冲突，请先刷新界面！"}';	
 		unlock();
 		return;
@@ -49,11 +49,11 @@ if("xinjian" == $param["caozuo"]){
 	$n = coll("liushuizhang")->count(array("_id"=>array('$regex'=>"^".$d."")));
 	$liushuizhang["_id"] = $d.".".($n+1);
 	coll("liushuizhang")->save($liushuizhang);
-	coll("fahuodan")->update(array("_id"=>array('$in'=>$param["shenqings"]))
+	coll("fahuodan")->update(array("_id"=>array('$in'=>$param["liushui"]["shenqings"]))
 			,array('$set'=>array("liushuizhang"=>array("_id"=>$liushuizhang["_id"],"yifu"=>false))),array("multiple"=>true));
 	unlock();
 	statExpired();
-	echo '{"success":true}';
+	echo '{"success":true,"_id":"'.$liushuizhang["_id"].'"}';
 }else if("chaxun" == $param["caozuo"]){
 	$query = array();
 	if(isset($param["option"]["bianhao"])){
@@ -126,13 +126,13 @@ if("xinjian" == $param["caozuo"]){
 	$ls["zhuangtai"] = $liucheng["dongzuo"];
 	$ls["yifu"] = true;
 	//更新付款账户和收款账号余额
-	$ls["fukuanzhanghaoyue"] = getBalacne($ls["fukuanfang"],$ls["fukuanzhanghao"])-$ls["jine"];
+	$ls["fukuanzhanghaoyue"] = getBalance($ls["fukuanfang"],$ls["fukuanzhanghao"])-$ls["jine"];
 	if(empty($ls["zhuanrujine"])){
 		$skjine = $ls["jine"];
 	}else{
 		$skjine = $ls["zhuanrujine"];
 	}
-	$ls["shoukuanzhanghaoyue"] = getBalacne($ls["fukuanfang"],$ls["fukuanzhanghao"])+$skjine;
+	$ls["shoukuanzhanghaoyue"] = getBalance($ls["fukuanfang"],$ls["fukuanzhanghao"])+$skjine;
 	$ls["lastupdatetime"] = time();
 	coll("liushuizhang")->save($ls);
 	//更新所有关联的付款申请
@@ -205,13 +205,13 @@ if("xinjian" == $param["caozuo"]){
 	$ls["liucheng"][]=$liucheng;
 	$ls["zhuangtai"] = $liucheng["dongzuo"];
 	//更新付款账户和收款账号余额
-	$ls["fukuanzhanghaoyue"] = getBalacne($ls["fukuanfang"],$ls["fukuanzhanghao"]) + $ls["jine"];
+	$ls["fukuanzhanghaoyue"] = getBalance($ls["fukuanfang"],$ls["fukuanzhanghao"]) + $ls["jine"];
 	if(empty($ls["zhuanrujine"])){
 		$skjine = $ls["jine"];
 	}else{
 		$skjine = $ls["zhuanrujine"];
 	}
-	$ls["shoukuanzhanghaoyue"] = getBalacne($ls["fukuanfang"],$ls["fukuanzhanghao"]) - $skjine;
+	$ls["shoukuanzhanghaoyue"] = getBalance($ls["fukuanfang"],$ls["fukuanzhanghao"]) - $skjine;
 	$ls["lastupdatetime"] = time();
 	coll("liushuizhang")->save($ls);
 	//删除所有关联的付款申请
