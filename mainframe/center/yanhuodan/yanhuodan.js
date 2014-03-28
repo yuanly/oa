@@ -216,7 +216,11 @@
 			return;
 		}
 		postJson("yanhuodan.php",{caozuo:"shanchu",_id:currYHD._id},function(res){
-			showDetailById(currYHD._id);
+			if(res.err){
+				tip($("#cz_shanchu"),res.err,1500);
+			}else{
+				showDetailById(currYHD._id);
+			}
 		});
 	}
 	$("#cz_shanchu").click(cz_shanchu);

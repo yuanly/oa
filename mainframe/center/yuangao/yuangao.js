@@ -140,7 +140,11 @@
 	function cz_shanchu(){
 		var _id = $("#liucheng").data("_id");
 		postJson("yuangao.php",{caozuo:"shanchu",_id:_id},function(res){
-			listYuangao(0);
+			if(res.err){
+				tip($("#cz_shanchu"),res.err,1500);
+			}else{
+				listYuangao(0);
+			}
 		});
 	}
 	$("#cz_shanchu").click(cz_shanchu);
@@ -344,7 +348,11 @@
 		var that = $(this);
 		ask($(this),"确定要删除该订单吗？",function(){
 			postJson("dingdan.php",{caozuo:"shanchu",_id:that.parents("#lb_dingdan").data("dingdanId")},function(res){
-				shuaxindingdanliebiao();
+				if(res.err){
+					tip(that,res.err,1500);
+				}else{
+					shuaxindingdanliebiao();
+				}
 			});
 		});
 	}

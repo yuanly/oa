@@ -148,7 +148,11 @@
 	$("#bianji").click(edit);
 	function cz_shanchu(){
 		postJson("shenqing.php",{caozuo:"shanchu",_id:currSQ._id},function(res){
-			listShenqing(0);
+			if(res.err){
+				tip($("#cz_shanchu"),res.err,1500);
+			}else{
+				listShenqing(0);
+			}
 		});
 	}
 	$("#cz_shanchu").click(cz_shanchu);

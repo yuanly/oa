@@ -548,7 +548,11 @@
 	$("#lc_anniu").click(cz_anniu);
 	function cz_shanchu(){
 		postJson("fahuodan.php",{caozuo:"shanchu",_id:currFHD._id},function(res){
-			listfahuodan(0);
+			if(res.err){
+				tip($("#cz_shanchu"),res.err,1500);
+			}else{
+				listfahuodan(0);
+			}
 		});
 	}
 	$("#cz_shanchu").click(cz_shanchu);

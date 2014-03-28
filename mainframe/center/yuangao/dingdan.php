@@ -58,8 +58,12 @@ if("liebiao" == $param["caozuo"]){
 	}
 	echo '{"success":true}';
 }else if("shanchu" == $param["caozuo"]){
-	//coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"删除")));
-	coll("dingdan")->remove(array("_id"=>$param["_id"]));
+	$dd = coll("dingdan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"录单"),null,null,array("remove"=>true));
+	if(empty($ts)){
+		echo '{"success":true,"err":"数据不一致，请刷新界面!"}';
+		return;	
+	}
+	coll("liuyan")->remove(array("hostType"=>"dingdan","hostId"=>$param["_id"]));
 	echo '{"success":true}';
 }else if("shenqingshenhe" == $param["caozuo"]){
 	$dingdan = coll("dingdan")->findAndModify(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"申请审核")));

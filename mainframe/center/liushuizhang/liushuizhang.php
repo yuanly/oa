@@ -95,8 +95,13 @@ if("xinjian" == $param["caozuo"]){
 	}
 	coll("fahuodan")->update(array("liushuizhang._id"=>$one["_id"])
 			,array('$unset'=>array("liushuizhang"=>1)),array("multiple"=>true));
-	coll("liushuizhang")->remove(array("_id"=>$param["_id"],"zhuangtai"=>"记账"));
+	$lsz = coll("liushuizhang")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"记账"),null,null,array("remove"=>true));
 	unlock();
+	if(empty($lsz)){
+		echo '{"success":true,"err":"数据不一致，请刷新界面!"}';
+		return;	
+	}	
+	coll("liuyan")->remove(array("hostType"=>"liushuizhang","hostId"=>$param["_id"]));
 	statExpired();
 	echo '{"success":true}';
 }else if("huitui" == $param["caozuo"]){//
@@ -136,23 +141,29 @@ if("xinjian" == $param["caozuo"]){
 	$ls["lastupdatetime"] = time();
 	coll("liushuizhang")->save($ls);
 	//更新所有关联的付款申请
-	if(!empty($ls["shenqings"])){
-		coll("fahuodan")->update(array("liushuizhang._id"=>array('$in'=>$one["shenqings"]))
-				,array('$set'=>array("liushuizhang.yifu"=>true)),array("multiple"=>true));
-	}	
+	coll("fahuodan")->update(array("liushuizhang._id"=>$ls["_id"])
+			,array('$set'=>array("liushuizhang.yifu"=>true)),array("multiple"=>true));
 	unlock();
 	statExpired();
 	echo '{"success":true}';
 }else if("shenqingfuhe" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请复核","time"=>time());
-	coll("liushuizhang")->findAndModify(array("_id"=>$param["_id"],array("zhuangtai"=>array('$in'=>array("付款","作废"))),"jizhangren"=>$_SESSION["user"]["_id"])
+	$lsz = coll("liushuizhang")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>array('$in'=>array("付款","作废")),"jizhangren"=>$_SESSION["user"]["_id"])
 			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
+	if(empty($lsz)){
+		echo '{"success":true,"err":"数据不一致，请刷新界面。"}';
+		return;
+	}
 	statExpired();
 	echo '{"success":true}';
 }else if("fuhe" == $param["caozuo"]){
 	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"复核","time"=>time());
-	coll("liushuizhang")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"申请复核","jizhangren"=>$_SESSION["user"]["_id"])
+	$lsz = coll("liushuizhang")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"申请复核")
 			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
+	if(empty($lsz)){
+		echo '{"success":true,"err":"数据不一致，请刷新界面。"}';
+		return;
+	}
 	statExpired();
 	echo '{"success":true}';
 }else if("getbyid" == $param["caozuo"]){
@@ -191,6 +202,16 @@ if("xinjian" == $param["caozuo"]){
 	unlock();
 	echo '{"success":true}';
 }else if("zuofei" == $param["caozuo"]){//重算余额和去关联
+	$cur = coll("fahuodan")->find(array("liushuizhang._id"=>$param["_id"]));
+	$str = "作废,付款申请：";
+	foreach($cur as $sq){
+		if(empty($sq["kemu"])){
+			$km = "货款";
+		}else{
+			$km = $sq["kemu"];
+		}
+		$str .= "<br/>".$sq["_id"]."，".$km.$sq["zongjine"]."元，".$sq["gonghuoshang"]["mingchen"]." 申请者ID：".$sq["ludanzhe"];
+	}
 	if(!lock()){
 			echo '{"success":true,"err","锁冲突，请重试。若连续超过3次冲突请到“其他”模块进行解锁。"}';
 			return;
@@ -215,9 +236,14 @@ if("xinjian" == $param["caozuo"]){
 	$ls["lastupdatetime"] = time();
 	coll("liushuizhang")->save($ls);
 	//删除所有关联的付款申请
-	coll("fahuodan")->update(array("liushuizhang._id"=>$ls["_id"])
+	if($cur->count()>0){
+		coll("fahuodan")->update(array("liushuizhang._id"=>$ls["_id"])
 			,array('$unset'=>array("liushuizhang"=>1)),array("multiple"=>true));
+	}
 	unlock();
+	$liuyan = array("_id"=>time(),"hostType"=>"liushuizhang","hostId"=>$param["_id"],"type"=>"caozuorizhi"
+			,"userId"=>$_SESSION["user"]["_id"],"neirong"=>$str);
+	coll("liuyan")->save($liuyan);
 	statExpired();
 	echo '{"success":true}';
 }else if("tongji" == $param["caozuo"]){

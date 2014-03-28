@@ -572,7 +572,11 @@
 	function cz_shanchu(){
 		ask($(this),"你确定要将该退税单证记录删除吗！",function(){
 			postJson("tuishui.php",{caozuo:"shanchu",_id:currTS._id},function(res){
-				showDetailById(currTS._id);
+				if(res.err){
+					tip($("#cz_shanchu"),res.err,1500);
+				}else{
+					showDetailById(currTS._id);
+				}
 			});
 		});
 	}	

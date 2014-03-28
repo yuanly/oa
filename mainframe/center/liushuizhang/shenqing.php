@@ -20,7 +20,12 @@ if("xinzengshenqing" == $param["caozuo"]){
 	statExpired();
 	echo '{"success":true}';
 }else if("shanchu" == $param["caozuo"]){
-	coll("fahuodan")->remove(array("_id"=>$param["_id"],"zhuangtai"=>"制单"));
+	$sq = coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"制单"),null,null,array("remove"=>true));
+	if(empty($sq)){
+		echo '{"success":true,"err":"数据不一致，请刷新界面!"}';
+		return;	
+	}
+	coll("liuyan")->remove(array("hostType"=>"shenqing","hostId"=>$param["_id"]));
 	statExpired();
 	echo '{"success":true}';
 }else if("chaxun" == $param["caozuo"]){

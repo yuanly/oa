@@ -19,7 +19,13 @@ if("shangchuan" == $param["caozuo"]){
 	statExpired();
 	echo jsonEncode($yuangao);
 }else if("shanchu" == $param["caozuo"]){
-	coll("yuangao")->remove(array("_id"=>$param["_id"],"zhuangtai"=>"上传"));
+	//coll("yuangao")->remove(array("_id"=>$param["_id"],"zhuangtai"=>"上传"));
+	$yg = coll("yuangao")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"上传"),null,null,array("remove"=>true));
+	if(empty($yg)){
+		echo '{"success":true,"err":"数据不一致，请刷新界面!"}';
+		return;	
+	}
+	coll("liuyan")->remove(array("hostType"=>"yuangao","hostId"=>$param["_id"]));
 	statExpired();
 	echo '{"success":true}';
 }else if("zuofei" == $param["caozuo"]){

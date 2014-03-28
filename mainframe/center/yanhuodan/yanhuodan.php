@@ -58,10 +58,15 @@ if("xinjian" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("shanchu" == $param["caozuo"]){
 	if(coll("huowu")->count(array("yanghuodan._id"=>$param["_id"]))>0){
-		echo '{"success":false}';//这种情况不应该出现
-		exit;
+		echo '{"success":true,"err":"数据不一致，请刷新界面!"}';
+		return;	
 	}
-	coll("yanhuodan")->remove(array("_id"=>$param["_id"]));
+	$yhd = coll("yanhuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"制单"),null,null,array("remove"=>true));
+	if(empty($yhd)){
+		echo '{"success":true,"err":"数据不一致，请刷新界面!"}';
+		return;	
+	}
+	coll("liuyan")->remove(array("hostType"=>"yanhuodan","hostId"=>$param["_id"]));
 	statExpired();
 	echo '{"success":true}';
 }else if("shouli" == $param["caozuo"]){

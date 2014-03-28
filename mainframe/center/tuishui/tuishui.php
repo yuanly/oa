@@ -137,8 +137,13 @@ if("xinjian" == $param["caozuo"]){
 	$query["zhuangtai"] = array('$ne'=>"作废");
 	$cur = coll("liushuizhang")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
-}else if("shanchu" == $param["caozuo"]){
-	coll("tuishui")->remove(array("_id"=>$param["_id"],"zhuangtai"=>"新建","gendanyuan"=>$_SESSION["user"]["_id"]));
+}else if("shanchu" == $param["caozuo"]){	
+	$ts = coll("tuishui")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"新建","gendanyuan"=>$_SESSION["user"]["_id"]),null,null,array("remove"=>true));
+	if(empty($ts)){
+		echo '{"success":true,"err":"数据不一致，请刷新界面!"}';
+		return;	
+	}
+	coll("liuyan")->remove(array("hostType"=>"tuishui","hostId"=>$param["_id"]));
 	statExpired();
 	echo '{"success":true}';
 }else if("tongji" == $param["caozuo"]){

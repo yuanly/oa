@@ -192,7 +192,7 @@
 				postJson("lianxiren.php",{offset:page*limit,limit:limit,option:option},function(lianxirens){
 					callback(lianxirens);
 				});
-			},["_id","mingchen","shangjia.mingchen"],function(lianxiren){
+			},["_id","mingchen","shangjia.mingchen"],function(lianxiren){//选中回调
 				if(lianxiren._id != thatInput.data("_id")){
 					thatInput.siblings(".plainInput").val("");
 				}
@@ -202,6 +202,10 @@
 				}else{
 					thatInput.val(lianxiren.mingchen);
 				}
+			},"",function(){//清空回调
+					thatInput.removeData("_id");
+					thatInput.val("");
+					thatInput.siblings(".plainInput").val("");
 			});
 	}
 	function sel_zhanghu(event){
@@ -280,11 +284,10 @@
 	$(".list").dblclick(function(){$(this).val("");});
 	$("#bianji").click(edit);
 	function cz_zuofei(){
-		if(!confirm("确定要作废流水账吗？")){
-			return;
-		}
-		postJson("liushuizhang.php",{caozuo:"zuofei",_id:currLSZ._id},function(res){
-			showDetailById(currLSZ._id);
+		ask($(this),"一旦作废，关联的申请将被解除，即使回退也无法回复。确实要作废该流水吗？",function(){
+			postJson("liushuizhang.php",{caozuo:"zuofei",_id:currLSZ._id},function(res){
+				showDetailById(currLSZ._id);
+			});
 		});
 	}
 	$("#cz_zuofei").click(cz_zuofei);
@@ -329,13 +332,21 @@
 	$("#cz_fukuan").click(cz_fukuan);
 	function cz_shenqingfuhe(){
 		postJson("liushuizhang.php",{caozuo:"shenqingfuhe",_id:currLSZ._id},function(res){
-			showDetailById(currLSZ._id);
+			if(res.err){
+				tip($("#cz_shenqingfuhe"),res.err,1500);
+			}else{
+				showDetailById(currLSZ._id);
+			}
 		});
 	}
 	$("#cz_shenqingfuhe").click(cz_shenqingfuhe);
 	function cz_fuhe(){
 		postJson("liushuizhang.php",{caozuo:"fuhe",_id:currLSZ._id},function(res){
-			showDetailById(currLSZ._id);
+			if(res.err){
+				tip($("#cz_fuhe"),res.err,1500);
+			}else{
+				showDetailById(currLSZ._id);
+			}
 		});
 	}
 	$("#cz_fuhe").click(cz_fuhe);
@@ -476,6 +487,7 @@ function _hanshuku_(){}
 		$("#hexiao").show();
 		$("#jisuanhuilv").show();
 		$(".plainInput").removeAttr("readonly");
+		$(".forselect").attr("readonly","readonly");
 		$("#lsz_fukuanriqi").datepicker();
 		$("#lsz_yinhangliushui").attr("contenteditable","true");
 		$("#liushuizhangmingxi").find(".plainBtn").show();
@@ -551,6 +563,7 @@ function _hanshuku_(){}
 			$("#lsz_zhuanrujine").vals("");
 		}
 		var sum = 0;
+		$(".tr_shenqing").remove();
 		each(lsz.shenqings,function(i,sq){
 			var tr = tr_shenqing.clone(true);
 			tr.find("#sq_index").text(i+1);
@@ -622,12 +635,16 @@ function _hanshuku_(){}
 				}
 			//记账(删除) 付款（作废） 申请复核（回退） 作废（回退） 复核（回退） 
 			}else if("申请复核" == item.dongzuo){
-				("#lc_tr_panel",tmpl).attr("title","钱已付出，申请复核！");
-				if((liushuizhang.liucheng.length - 1) == n && theUser._id == item.userId){
+				("#lc_tr_panel",tmpl).attr("title","钱已付出或已作废，申请复核！");
+				if((liushuizhang.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
-					$("#cz_fuhe",caozuoItem).show();
-					$("#cz_huitui",caozuoItem).show();
+					if(theUser._id != item.userId){
+						$("#cz_fuhe",caozuoItem).show();
+					}
+					if(theUser._id == currLSZ.jizhangren){
+						$("#cz_huitui",caozuoItem).show();
+					}
 					$("table",tmpl).append(caozuoItem);
 				}
 			//记账(删除) 付款（作废） 申请复核（回退） 作废（回退） 复核（回退） 

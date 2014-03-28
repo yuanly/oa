@@ -206,7 +206,11 @@
 		}
 		ask($(this),"确定要删除吗？",function(){
 			postJson("zhuangguidan.php",{caozuo:"shanchu",_id:currZGD._id},function(res){
-				listzhuangguidan(0);
+				if(res.err){
+					tip($("#cz_shanchu"),res.err,1500);
+				}else{
+					listzhuangguidan(0);
+				}
 			});
 		});		
 	}

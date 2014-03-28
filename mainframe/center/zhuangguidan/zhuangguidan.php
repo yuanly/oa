@@ -69,11 +69,17 @@ if("xinjian" == $param["caozuo"]){
 	statExpired();
 	echo '{"success":true}';
 }else if("shanchu" == $param["caozuo"]){
-	if(coll("huowu")->count(array("zhuangguidan"=>$param["_id"]))>0){
-		echo '{"success":false}';//这种情况不应该出现
-		exit;
+	if(coll("huowu")->count(array("zhuangguidan"=>$param["_id"]))>0){//如果别人接管订单做了处理，而当前用户一直不刷新界面，这种情况就会出现
+		echo '{"success":true,"err":"数据不一致，请刷新界面！"}';
+		return;
 	}
-	coll("zhuangguidan")->remove(array("_id"=>$param["_id"]));
+	//coll("zhuangguidan")->remove(array("_id"=>$param["_id"]));
+	$zgd = coll("zhuangguidan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"制单"),null,null,array("remove"=>true));
+	if(empty($zgd)){
+		echo '{"success":true,"err":"数据不一致，请刷新界面！"}';
+		return;	
+	}
+	coll("liuyan")->remove(array("hostType"=>"zhuangguidan","hostId"=>$param["_id"]));
 	statExpired();
 	echo '{"success":true}';
 }else if("jieguan" == $param["caozuo"]){

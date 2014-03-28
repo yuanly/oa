@@ -21,7 +21,12 @@ if("shangchuan" == $param["caozuo"]){
 	statExpired();
 	echo '{"success":true}';
 }else if("shanchu" == $param["caozuo"]){
-	coll("fahuodan")->remove(array("_id"=>$param["_id"],"zhuangtai"=>"上传"));
+	$fhd = coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"上传"),null,null,array("remove"=>true));
+	if(empty($fhd)){
+		echo '{"success":true,"err":"数据不一致，请刷新界面!"}';
+		return;	
+	}
+	coll("liuyan")->remove(array("hostType"=>"fahuodan","hostId"=>$param["_id"]));
 	statExpired();
 	echo '{"success":true}';
 }else if("jiedan" == $param["caozuo"]){
