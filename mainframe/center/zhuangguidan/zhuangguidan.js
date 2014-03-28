@@ -299,33 +299,34 @@ function _hanshuku_(){}
 	//解释查询条件
 	function getOptions(){
 		var ret = {};
-		var bh = $("#th_bianhao").val().trim();
-		if("" != bh && "编号" != bh){
-			ret.bianhao = bh+"0";
+		var v = $("#th_bianhao").val().trim();
+		if("" != v && "编号" != v){
+			ret.bianhao = v+"0";
 		}
-		var gh = $("#th_guihao").val().trim();
-		if("" != gh && "柜号" != gh){
-			ret.guihao = gh;
+		v = $("#th_guihao").val().trim();
+		if("" != v && "柜号" != v){
+			ret.guihao = v;
 		}
-		var zt = $("#th_zhuangtai").val().trim();
-		if("" != zt && "状态" != zt){
-			ret.zhuangtai = zt;
+		v = $("#th_zhuangtai").val().trim();
+		if("" != v && "状态" != v){
+			ret.zhuangtai = v;
 		}
+		/*
 		var jdz = $("#th_jiaodanzhe").val().trim();
 		if("" != jdz && "交单者" != jdz){
 			ret.jiaodanzhe = getUserIdByName(jdz);
-		}
-		var zdz = $("#th_zhidanzhe").val().trim();
-		if("" != jdz && "制单者" != jdz){
+		}*/
+		v = $("#th_zhidanzhe").val().trim();
+		if("" != v && "制单者" != v){
 			ret.zhidanzhe = getUserIdByName(jdz);
 		}
-		var zgrq = $("#th_zhuangguiriqi").val().trim();
-		if("" != zgrq && "装柜日期" != zgrq){
-			ret.zhuangguiriqi = zgrq+"0";
+		v = $("#th_zhuangguiriqi").val().trim();
+		if("" != v && "装柜日期" != v){
+			ret.zhuangguiriqi = v+"0";
 		}
-		var shz = $("#th_shenhezhe").val().trim();
-		if("" != shz && "审核者" != shz){
-			ret.shenhezhe = getUserIdByName(shz);
+		v = $("#th_shenhezhe").val().trim();
+		if("" != v && "审核者" != v){
+			ret.shenhezhe = getUserIdByName(v);
 		} 
 		return ret;
 	}

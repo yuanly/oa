@@ -1,6 +1,7 @@
 ﻿/*
 //
-{_id:"A232",
+{_id:"xx",
+	index:"A232",//人工编址，索引
 	accesss:122, 
 	taiguoxinghao:"",
 	zhongguoxinghao:"",
@@ -31,7 +32,7 @@ $(function(){
 	function bianhao_change(){
 		var bh = $("#bianhao").val().trim(); 
 		if(bh != "" && (currSample == null || bh != currSample._id)){
-			postJson("samples.php",{"caozuo":"sfchongfu","bianhao":bh},function(res){
+			postJson("samples.php",{"caozuo":"sfchongfu","index":bh},function(res){
 				if(res.err){
 					$("#bianhao").val("");
 					tip($("#bianhao"),res.err,1500);
@@ -44,7 +45,7 @@ $(function(){
 	function tijiao_handle(){
 		var bh = $("#bianhao").val().trim(); 
 		if("" == bh){
-			tip($("#zhongguoxinghao"),"样板编号不能为空！",1500);
+			tip($("#bianhao"),"样板编号不能为空！",1500);
 			return;
 		}
 		var yangban = form2obj();
@@ -53,10 +54,10 @@ $(function(){
 			return;
 		}
 		var xinbianhao = false;		
-		if(currSample == null || bh != currSample._id){
+		if(currSample == null || bh != currSample.index){
 			xinbianhao = true;
 		} 
-		postJson("samples.php",{"caozuo":"sfchongfu","bianhao":bh},function(res){
+		postJson("samples.php",{"caozuo":"sfchongfu","index":bh},function(res){
 			if(res.err && xinbianhao){
 				$("#bianhao").val("");
 				tip($("#bianhao"),"编号重复，请重置！",1500);
@@ -123,7 +124,7 @@ $(function(){
 			each(samples,function(n,sample){
 				tr = tr_sample.clone(true);
 				tr.data("_id",sample._id);
-				tr.find("#td_bianhao").text(sample._id);
+				tr.find("#td_bianhao").text(sample.index);
 				tr.find("#td_taiguoxinghao").text(sample.taiguoxinghao);
 				var jiage = jiages2str(sample.jiage);
 				tr.find("#td_jiage").text(jiage).attr("title",jiage);
@@ -189,7 +190,7 @@ $(function(){
 	//用参数对象更新表单的内容
 	function obj2form(yangban){
 		$("#xiangdan").data("yangban",yangban);
-		$("#bianhao").vals(yangban._id);
+		$("#bianhao").vals(yangban.index);
 		$("#taiguoxinghao").vals(yangban.taiguoxinghao);
 		$("#zhongguoxinghao").vals(yangban.zhongguoxinghao);
 		$("#jiage").val(jiages2str(yangban.jiage));
@@ -217,9 +218,9 @@ $(function(){
 			$("#beixuan").append("该样板还没有后备，请尽快寻找！");
 		}else{
 			each(yangban.beixuan,function(n,beixuan){
-				if(beixuan._id != yangban._id){
+				if(beixuan.index != yangban.index){
 					var beixuan_elm = beixuan_tmpl.clone(true);
-					beixuan_elm.find("#beixuan_bianhao").text(beixuan._id);
+					beixuan_elm.find("#beixuan_bianhao").text(beixuan.index);
 					if(beixuan.shangjia){
 						//beixuan_elm.find("#beixuan_shangjia").vals(beixuan.shangjia.mingchen);
 						beixuan_elm.find("#beixuan_shangjia").text(beixuan.shangjia.mingchen);
@@ -235,8 +236,11 @@ $(function(){
 	}
 	//读取表单内容，构造对象并返回
 	function form2obj(){
-		var yangban={};
-		yangban._id = $("#xiangdan #bianhao").val().trim().toUpperCase();
+		var yangban = {};
+		if(currSample){
+			yangban._id = currSample._id;
+		}
+		yangban.index = $("#xiangdan #bianhao").val().trim().toUpperCase();
 		yangban.taiguoxinghao = $("#xiangdan #taiguoxinghao").val().trim().toUpperCase();
 		yangban.zhongguoxinghao = $("#xiangdan #zhongguoxinghao").val().trim().toUpperCase();
 		yangban.jiage = getPrices($("#xiangdan #jiage").val());

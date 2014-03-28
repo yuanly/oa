@@ -5,8 +5,14 @@ include("../../../util.php");
 session_start();
 checkuser();
 
+//保存|新增
 $yangban = getJson();
 $yangban["access"] = time();
+if(empty($yangban["_id"])){
+	$d = date("ymd",time());
+	$n = coll("yangban")->count(array("_id"=>array('$regex'=>"^YB".$d."")));
+	$yangban["_id"] = "YB".$d.".".($n+1);
+}
 coll("yangban")->save($yangban);
 $jg = "";
 foreach($yangban["jiage"] as $jiage){

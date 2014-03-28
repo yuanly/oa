@@ -15,18 +15,18 @@ if(isset($param["_id"])){//
 		}
 	}
 	echo jsonEncode($one);
-}else if(isset($param["caozuo"]) && "sfchongfu" == $param["caozuo"]){
-	$one = coll("yangban")->findOne(array("_id"=>upper($param["bianhao"])));
+}else if(isset($param["caozuo"]) && "sfchongfu" == $param["caozuo"]){//检查人工索引是否重复
+	$one = coll("yangban")->findOne(array("index"=>upper($param["index"])));
 	if($one){
 		echo '{"success":true,"err":"编号重复，请重置！"}';
 	}else{
 		echo '{"success":true}';
 	}
-}else{//
+}else{//列表
 	$query = array();
 	if(!empty($param["option"])){
 		if(!empty($param["option"]["bianhao"])){
-			$query["_id"] = array('$regex'=>upper($param["option"]["bianhao"]));
+			$query["index"] = array('$regex'=>upper($param["option"]["bianhao"]));
 		}else if(!empty($param["option"]["shangjia"])){
 			//$query["shangjia.mingchen"] = array('$regex'=>$param["option"]["shangjia"]);
 			$query["shangjia.py"]=upper($param["option"]["shangjia"]);

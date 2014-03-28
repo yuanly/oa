@@ -8,6 +8,9 @@ checkuser();
 $param = getJson();
 if(isset($param["_id"])){//
 	$one = coll("dingdan")->findOne(array("_id"=>$param["_id"]));
+	if(!empty($one["yangban"])&&!empty($one["yangban"]["_id"])){//重新关联出完整的样板
+		$one["yangban"] = coll("yangban")->findOne(array("_id"=>$one["yangban"]["_id"]));
+	}
 	echo jsonEncode($one);
 }else{//
 	$cmd = $param["option"]["cmd"];
@@ -48,7 +51,7 @@ if(isset($param["_id"])){//
 			$query["kehu"] = $param["option"]["kehu"];
 		}
 		if(isset($param["option"]["yangban"])){
-			$query["yangban.zhongguoxinghao"] = $param["option"]["yangban"];
+			$query["yangban._id"] = $param["option"]["yangban"];
 		}
 		if(isset($param["option"]["zhuangtai"])){
 			$query["zhuangtai"] = $param["option"]["zhuangtai"];

@@ -15,7 +15,7 @@
 		zhuangtai:"录单",//录单 审核 接单（作废 接管 慢单/取消慢单） 下单申请（回退） 下单审核（打印 回退） 下单（回退） 发货 审结（回退） 作废（审结 回退） 
 		kehu:"C",
 		taiguoyangban:"xx",//从泰国原稿抄过来的，打印给泰国的柜单时有用
-		yangban:{_id:"YB223",taiguoxinghao:"xxx",zhongguoxinghao:"",...},
+		yangban:{_id:"YB223",taiguoxinghao:"xxx",zhongguoxinghao:""},
 		gonghuoshang:{_id:"SJ131110",mingchen:"大大",quyu:"xxx"},//计划装柜单的时候需要按区域查（方便装车？）//不需要py
 		lianxiren:{_id:12,mingchen:"xx"},
 		gendanyuan:3,
@@ -145,7 +145,7 @@
 				postJson("yangban.php",{offset:page*limit,limit:limit,option:option},function(yangbans){
 					callback(yangbans);
 				});
-			},["_id","taiguoxinghao","zhongguoxinghao","shangjia.mingchen","zhuangtai"],function(yangban){
+			},["index","taiguoxinghao","zhongguoxinghao","danwei","shangjia.mingchen","zhuangtai"],function(yangban){
 				currDD.yangban = yangban;
 				currDD.gonghuoshang = {_id:yangban.shangjia._id,mingchen:yangban.shangjia.mingchen,quyu:yangban.shangjia.quyu};
 				$(this).val(yangban.zhongguoxinghao+"("+(yangban.taiguoxinghao?yangban.taiguoxinghao:"-")+"/"+(currDD.taiguoyangban?currDD.taiguoyangban:"-")+")");
@@ -159,11 +159,11 @@
 				postJson("yangban.php",{offset:page*limit,limit:limit,option:option},function(yangbans){
 					callback(yangbans);
 				});
-			},["_id","taiguoxinghao","zhongguoxinghao","shangjia.mingchen","zhuangtai"],function(yangban){//selected callback
-				$("#th_yangban").val(yangban.taiguoxinghao);
+			},["index","taiguoxinghao","zhongguoxinghao","shangjia.mingchen","zhuangtai"],function(yangban){//selected callback
+				$("#th_yangban").text(yangban.zhongguoxinghao).data("ybId",yangban._id);
 				listDingdan(0);
 			},"",function(){//清空callback
-				$("#th_yangban").val("样板");
+				$("#th_yangban").text("样板");
 				listDingdan(0);
 			});
 	}
@@ -583,6 +583,8 @@ function _hanshuku_(){}
 		editing = false;
 		if(kebianji){
 			$("#bianji").show();
+		}else{
+			$("#bianji").hide();
 		}
 		$(".myinput").removeAttr("contenteditable");
 		$("#dd_yangban").unbind("click").click(showYangban);
@@ -611,9 +613,9 @@ function _hanshuku_(){}
 		if("" != kh && "客户" != kh){
 			ret.kehu = kh;
 		}
-		var yb = $("#th_yangban").val().trim();
+		var yb = $("#th_yangban").text().trim();
 		if("" != yb && "样板" != yb){
-			ret.yangban = yb;
+			ret.yangban = $("#th_yangban").data("ybId");
 		} 
 		var zt = $("#th_zhuangtai").val().trim();
 		if("" != zt && "状态" != zt){
@@ -841,6 +843,7 @@ function _hanshuku_(){}
 	$("#shangchuandingdan").click(function(){shangchuanmoshi();});
 		
 	jQuery.fn.liucheng = function(theUser,dingdan){
+		kebianji=false;
 		var that = this.empty();
 		this.data("_id",dingdan._id);
 		each(dingdan.liucheng,function(n,item){

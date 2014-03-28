@@ -928,7 +928,7 @@ jQuery.fn.dataInc = function(name,value){
  //格式化样板为：“中国型号（泰国型号）”的格式
 	function formatYangban(yangban){
 		if(yangban){
-			var yb = "("+yangban.taiguoxinghao+")";
+			var yb = "("+(yangban.taiguoxinghao?yangban.taiguoxinghao:"-")+")";
 			if(yangban.zhongguoxinghao){
 				yb = yangban.zhongguoxinghao+yb;
 			}

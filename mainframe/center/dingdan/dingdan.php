@@ -154,6 +154,8 @@ if("jiedan" == $param["caozuo"]){
 	}
 	if(!empty($dingdan["yangban"])){
 		coll("yangban")->update(array("_id"=>$dingdan["yangban"]["_id"]),array('$set'=>array("access"=>time())));
+		$yb = $dingdan["yangban"];
+		$dingdan["yangban"] = array("_id"=>$yb["_id"],"taiguoxinghao"=>$yb["taiguoxinghao"],"zhongguoxinghao"=>$yb["zhongguoxinghao"]);//不保存样板全部信息，只保存列表需要的
 	}
 	coll("dingdan")->save($dingdan);
 	echo '{"success":true}';

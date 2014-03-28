@@ -34,13 +34,14 @@
 	{
 		_id:"xxx",//fhd_id+hw+n
 		gonghuoshang:{_id:"xxx",mingchen:"xxx",quyu:"xx"}
+		yangban:{_id:"xx",zhongguoxinghao:"xxx",taiguoxinghao:"xxx"},
 		guige:"xxx",
 		danwei:"码",
 		danjia:23.1,
 		shuliang:23,
 		jianshu:2,
 		fahuodan:"xx",
-		yanhuodan：{_id:"xxx",beizhu:[{time:"xxx",zhu:"xxx"},{}...]},
+		yanhuodan：{_id:"xxx",zhuangtai:"已通过",beizhu:[{time:"xxx",zhu:"xxx"},{}...]},
 		zhuangguidan:"xx",
 		zhu:"xxx",
 		dingdanhuowu:"xx"//DD140113.1HW1 具体到指定规格的货物
@@ -193,10 +194,10 @@
 	function sel_gonghuoshang(event){
 		var limit = 20;
 		setSelector(event,function(page,option,callback){
-				postJson("../dingdan/dingdan.php",{caozuo:"shangjia",offset:page*limit,limit:limit,option:option},function(gonghuoshangs){
+				postJson("../contact/lianxiren.php",{caozuo:"chashangjia",offset:page*limit,limit:limit,option:option},function(gonghuoshangs){
 					callback(gonghuoshangs);
 				});
-			},["_id","mingchen","dianhua","dizhi"],function(gonghuoshang){
+			},["_id","mingchen","quyu","dizhi"],function(gonghuoshang){
 				$("#th_gonghuoshang").val(gonghuoshang.mingchen);
 				$("#th_gonghuoshang").data("ghsId",gonghuoshang._id);
 				listfahuodan(0);
@@ -295,7 +296,8 @@
 			 	item.gonghuoshang = currFHD.gonghuoshang;
 			 	item._id = $(mingxi).find("#hwbianhao").text().trim();
 			 	item.kehu = $(hw).find(".dingdanhuowu").find("#kehu1").text();
-			 	item.yangban = $(hw).find("#mx_yangban").text().trim();
+			 	var yb = $(hw).find(".dingdanhuowu").data("huowu").yangban;;
+			 	item.yangban = {_id:yb._id,taiguoxinghao:yb.taiguoxinghao,zhongguoxinghao:yb.zhongguoxinghao};//$(hw).find("#mx_yangban").text().trim();
 			 	item.guige  = $(hw).find("#mx_guige").text().trim();
 			 	item.danwei = $(hw).find("#mx_danwei").val().trim();
 		 		item.danjia = $(hw).find("#mx_danjia").val().trim();
@@ -430,9 +432,9 @@
 		var huowu = $(this).data("huowu");
 		var dd = $(this).data("dingdan");
 		var tr_huowu = dingdanhuowu.clone(true);
-		tr_huowu.data("huowu",huowu);
+		huowu.yangban = dd.yangban;
+		tr_huowu.data("huowu",huowu);//TODO 这个huowu藏了yangban
 //		tr_huowu.data("dingdan",dd);
-		//tr_huowu.find("#dingdanhao").text($(this).data("dingdanId"));
 		tr_huowu.find("#dingdanhao").text(huowu.id);
 		tr_huowu.find("#kehu1").text(dd.kehu);
 		tr_huowu.find("#yangban1").text(formatYangban(dd.yangban));
@@ -905,7 +907,7 @@ function _hanshuku_(){}
 		});
 		each(huowus,function(i,huowu){
 			var hwDiv = table_huowu.clone(true);
-			hwDiv.find("#mx_yangban").text(huowu.yangban);
+			hwDiv.find("#mx_yangban").text(formatYangban(huowu.yangban));
 			hwDiv.find("#mx_guige").text(huowu.guige);
 			hwDiv.find("#mx_danwei").val(huowu.danwei);
 			hwDiv.find("#mx_danjia").val(huowu.danjia);
