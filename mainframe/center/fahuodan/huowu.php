@@ -24,10 +24,12 @@ if("chaxun" == $param["caozuo"]){
 		$query["kehu"] = $param["option"]["kehu"];
 	}
 	if(isset($param["option"]["zhuangtai"])){
-		if("待查" == $param["option"]["zhuangtai"]){
-			$query["zhuangtai"] = array('$exists'=>false);
+		if("已装柜" == $param["option"]["zhuangtai"]){
+			$query["zhuangguidan"] = array('$exists'=>true);
+		}else if("待查" == $param["option"]["zhuangtai"]){
+			$query["yanhuodan.zhuangtai"] = array('$ne'=>true);
 		}else{
-			$query["zhuangtai"] = $param["option"]["zhuangtai"];
+			$query["yanhuodan.zhuangtai"] = $param["option"]["zhuangtai"];
 		}
 	}
 		

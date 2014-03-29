@@ -30,14 +30,14 @@
 		listHuowu($("#hw_pager").data("offset")+1);
 	});
 	function statusHwColor(status){
-		if(status == "待查"){//灰色
-			return "grey";
+		if(status == "待查"){//浅紫
+			return "#CCCCFF";
 		}
-		if(status == "通过"){//绿色
-			return "green";
+		if(status == "通过"){//浅绿
+			return "#CCFFCC";
 		}
 		if(status == "不通过"){//红色
-			return "red";
+			return "#CC334D";
 		}
 	}
 	function link_dingdan(){
@@ -320,14 +320,14 @@
 		currYHD.huowu = huowu;
 		currYHD.yanhuoshougao = yuandanEditor.editorVal(); 
 		postJson("yanhuodan.php",{caozuo:"baocun",yanhuodan:currYHD},function(res){ 
-			$("#yanhuoda_liebiao_ctr").show();
+			$("#yanhuodan_liebiao_ctr").show();
 			$("#huowu_liebiao_ctr").hide();
 			showDetailById(currYHD._id);
 		});
 	}
 	$("#baocun").click(baocun);
 	$("#fangqi").click(function(){
-		$("#yanhuoda_liebiao_ctr").show();
+		$("#yanhuodan_liebiao_ctr").show();
 		$("#huowu_liebiao_ctr").hide();
 		showDetailById(currYHD._id);
 	}); 
@@ -571,13 +571,8 @@
 		yuandanEditor.editorReadonly();
 		$("#yhd_yanhuodizhi").attr("readonly","readonly");
 		$(".plainInput").attr("readonly","readonly"); 
-		if(!currYHD.qitafei){
-			$("#qita_div").hide();
-		}else{
-			$("#qita_div").show();
-		}
 		$("#yanhuodanmingxi").find(".plainBtn").hide();
-		if(kebianji){
+		if(kebianji || gaizhuangtai){
 			$("#bianji").show();
 		}
 		$("#fangqi").hide();$("#baocun").hide();
@@ -585,6 +580,11 @@
 	
 	function edit(){
 		editing = true;
+		if(gaizhuangtai){
+			$("#selhuowutable").find(".zhuangtai").removeAttr("readonly");
+			$("#selhuowutable").find(".clz_zhu").show();
+			return;
+		}
 		$(".myinput").attr("contenteditable","true");
 		$("#yhd_yanhuodizhi").removeAttr("readonly");
 		$(".plainInput").removeAttr("readonly");
@@ -604,7 +604,7 @@
 		$("#bianji").hide();$("#fangqi").show();$("#baocun").show();
 		$("#yhd_bianhao").attr("readonly","readonly");
 		
-		$("#yanhuoda_liebiao_ctr").hide();
+		$("#yanhuodan_liebiao_ctr").hide();
 		$("#huowu_liebiao_ctr").show();
 		listHuowu(0);
 	}
@@ -716,6 +716,7 @@
 制单者可以是受理者。只有受理者才能修改状态，而且仅能修改状态，而且是在申请审核前。
 一个货物只能被一个验货单收录，如果要重复验货，被收入新验货单时，就会冲掉旧验货单信息（？）备注在选择货物的时候要带进来。*/
 			}else if("申请受理" == item.dongzuo){
+				kebianji = false;
 				("#lc_tr_panel",tmpl).attr("title","验货单已编制好，申请验货员受理！");
 				if((yanhuodan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
@@ -729,13 +730,14 @@
 			}else if("受理" == item.dongzuo){
 				("#lc_tr_panel",tmpl).attr("title","验货员受理了验货单，正在按依照验货单开展验货！");
 				if((yanhuodan.liucheng.length - 1) == n && theUser._id == fahuodan.shoulizhe){
-					kebianji = true;
+					gaizhuangtai  = true;
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true); 
 					$("#cz_shenqingshenhe",caozuoItem).show();
 					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("申请审核" == item.dongzuo){ 
+				gaizhuangtai = false;
 				kebianji = false;
 				("#lc_tr_panel",tmpl).attr("title","验货员已经完成验货并录入验货结果，申请审核！");
 				if((yanhuodan.liucheng.length - 1) == n){
@@ -766,7 +768,9 @@
 	var limit=20;
 	var currYHD = null;
 	var kebianji=false;
+	var gaizhuangtai = false;
 	var editing = false;
+	
 	//定义左右布局
 	var layout = $("body").layout({
 		west__size:"auto",
@@ -790,17 +794,8 @@
 	var yuandanEditor = $("#yuandan").myeditor(700,300);
 	yuandanEditor.editorReadonly();
 	
-	$("#sel_ctnr").draggable();
-	$("#opt_yanhuodanid").datepicker();//.change(function(){$(this).val("YHD"+date2id($(this).val()))});
 	var liuyanElm = $("#liuyan").liuyan({hostType:"yanhuodan",});
-	
-	var cmd = getUrl().cmd?getUrl().cmd:"";
-	if("daishouli"== cmd){
-		$("#th_zhuangtai").val("申请受理");
-	}else if("daishenhe" == cmd){
-		$("#th_zhuangtai").val("申请审核");
-	}
-	
+		
 	var cmd = getUrl().cmd?getUrl().cmd:"";
 	if("chaxun" == cmd){		
 		$("#xinzengyanhuodan").show();

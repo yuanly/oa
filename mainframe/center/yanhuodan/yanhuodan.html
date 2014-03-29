@@ -52,7 +52,7 @@
 </head>
 <body style="margin:0px;padding:0px">
 	<div class="ui-layout-west">
-		<div id="yanhuoda_liebiao_ctr">
+		<div id="yanhuodan_liebiao_ctr">
 			<div><span class="plainBtn" id="xinzengyanhuodan" style="display:none">[新增验货单]</span></div>
 			<table id="yanhuodantable"  style="min-width:500px;">
 				<tr id="tableheader">
@@ -63,7 +63,7 @@
 					<th nowrap><input id="th_shenhezhe" class="plainTh" value="审核者" style="font-size:0.8em;width:60px;cursor:pointer"/></th>
 				</tr>
 				<tr class="tr_yanhuodan">
-					<td id="td_bianhao"></td><td id="td_zhuangtai"></td><td id="td_chuangjianzhe"></td><td id="td_shoulizhe"></td><td id="td_shenhezhe"></td></td>
+					<td id="td_bianhao"></td><td id="td_zhuangtai"></td><td id="td_chuangjianzhe"></td><td id="td_shoulizhe"></td><td id="td_shenhezhe"></td>
 				</tr>
 			</table>	
 			<div id="pager">
@@ -85,7 +85,7 @@
 					<th nowrap>数量</th>
 					<th nowrap>单位</th>
 					<th nowrap>件数</th>
-					<th nowrap id="th_hw_dingdan">订单</th>
+					<th nowrap>订单</th>
 					<th nowrap>备注</th>
 					<th nowrap>选</th>
 				</tr>
@@ -101,7 +101,7 @@
 					<td id="td_hw_shuliang" style="text-align:center">数量</td>
 					<td id="td_hw_danwei" style="text-align:center">单位</td>
 					<td id="td_hw_jianshu" style="text-align:center">件数</td>
-					<td id="td_hw_dingdan" style="cursor:pointer"></td>
+					<td id="td_hw_dingdan" style="cursor:pointer;font-size:0.8em;"></td>
 					<td id="td_hw_beizhu"></td>
 					<td class="td_right_most"><span class="plainBtn clz_xuan" id="xuan">[→]</span>
 						<span class="plainBtn clz_zhu"  style="display:none" id="jiazhu" title="给该货物添加一条备注">[注]</span></td>
@@ -189,8 +189,8 @@
 		</datalist>
 		<datalist id="zhuangtailist">
 			<option value="待查"/>
-			<option value="通过"/>
 			<option value="不通过"/>
+			<option value="通过"/>
 		</datalist>
 		<datalist id="zhuangtailist2">
 			<option value="状态"/>
