@@ -163,6 +163,9 @@
 		
 		$(".ld_huowu","#ludan").remove();
 		$("#tr_tianjiahuowu").before(tr_huowu.clone(true));
+		if(lastUnit){
+			$("#hw_danwei").val(lastUnit);
+		}
 		$("#ld_beizhu_xianshi").show();
 		ld_beizhuEditor.editorVal("");
 		ld_beizhuEditor.hide();
@@ -245,12 +248,11 @@
 		})
 	}
 	$("#cz_shenjie").click(cz_shenjie);
-	/*
+	
 	var lastUnit = "";
 	$("#hw_danwei").change(function(){
 		lastUnit = $(this).val();
 	});
-	*/
 	function ld_tianjia(){
 		var huowu = tr_huowu.clone(true);
 		huowu.find("#hw_xuhao").text($(".ld_huowu").length+1);
@@ -260,9 +262,6 @@
 			huowu.find("#hw_shuliang").text($(this).parents("tr").prev().find("#hw_shuliang").text());
 			lastUnit = huowu.find("#hw_danwei").val();
 		}
-		/*else if(lastUnit){//never in
-			huowu.find("#hw_danwei").val(lastUnit);
-		}*/
 		$(this).parents("tr").before(huowu);
 	}
 	$("#ld_tianjia","#ludan").click(ld_tianjia);

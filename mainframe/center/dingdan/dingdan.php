@@ -139,7 +139,7 @@ if("jiedan" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("shenjie" == $param["caozuo"]){
 	$shendan  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审结","time"=>time());
-	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$shendan),'$set'=>array("zhuangtai"=>"结单")));
+	coll("dingdan")->update(array("_id"=>$param["_id"],"zhuangtai"=>"申请审结"),array('$push'=>array("liucheng"=>$shendan),'$set'=>array("zhuangtai"=>"结单")));
 	statExpired();
 	echo '{"success":true}';
 }else if("baocun" == $param["caozuo"]){
@@ -159,30 +159,7 @@ if("jiedan" == $param["caozuo"]){
 	}
 	coll("dingdan")->save($dingdan);
 	echo '{"success":true}';
-}else if("ludan" == $param["caozuo"]){
-	$dingdan = coll("dingdan")->findOne(array("_id"=>$param["_id"]),array("yuangao"=>1,"kehu"=>1,"gendanyuan"=>1,"zhuangtai"=>1,"huowu"=>1,"liucheng"=>1));
-	$count = coll("dingdan")->count(array("_id"=>array('$regex'=>"^".$dingdan["_id"])));
-	$dingdan["fudan"] = $dingdan["_id"];
-	$dingdan["_id"] = $dingdan["_id"]."_".$count;
-	$liucheng = $dingdan["liucheng"];
-	$dingdan["liucheng"] = array();
-	foreach($liucheng as $i=>$v){
-		$dingdan["liucheng"][] = $v;
-		if($v["dongzuo"] == "接单"){
-			break;
-		}
-	}
-	coll("dingdan")->save($dingdan);
-	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("zidan"=>$dingdan["_id"])));
-	$liuyan = array("_id"=>time(),"hostType"=>"dingdan","hostId"=>$dingdan["_id"],"type"=>"caozuorizhi","userId"=>(String)$_SESSION["user"]["_id"],"neirong"=>"生成子单：".jsonEncode($dingdan));
-	coll("liuyan")->save($liuyan);
-	echo '{"success":true,"id":'.$dingdan["_id"].'}';
-}else if("dengban" == $param["caozuo"]){
-	$dengban  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"等版","time"=>time());
-	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$dengban),'$set'=>array("zhuangtai"=>"等版")));
-	statExpired();
-	echo '{"success":true}';
-}else if("gethuowubyid2" == $param["caozuo"]){
+}else if("gethuowubyid2" == $param["caozuo"]){//在fahuodan.js中调用
 	$dingdan  = coll("dingdan")->findOne(array("huowu.id"=>$param["huowuId"]));
 	foreach($dingdan["huowu"] as $huowu){
 		if($huowu["id"] == $param["huowuId"]){
@@ -193,7 +170,7 @@ if("jiedan" == $param["caozuo"]){
 		}
 	}
 	echo '{"success":false}';
-}else if("gethuowubyid" == $param["caozuo"]){//应该不需要了，改成gethuowubyid2，在fahuodan.js中调用
+}/*else if("gethuowubyid" == $param["caozuo"]){//应该不需要了，改成gethuowubyid2，在fahuodan.js中调用
 	$dingdan  = coll("dingdan")->findOne(array("huowu.id"=>$param["huowuId"]));
 	foreach($dingdan["huowu"] as $huowu){
 		if($huowu["id"] == $param["huowuId"]){
@@ -202,7 +179,7 @@ if("jiedan" == $param["caozuo"]){
 		}
 	}
 	echo '{"success":false}';
-}else if("lianxiren" == $param["caozuo"]){
+}*/else if("lianxiren" == $param["caozuo"]){
 	$query  = array("leixing"=>"个人");
 	if(""!=$param["option"]){
 		$query = array("leixing"=>"个人","mingchen"=>array('$regex'=>$param["option"]));

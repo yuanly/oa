@@ -354,12 +354,7 @@
 		});	
 	}
 	$("#cz_quxiaomandan").click(cz_quxiaomandan);
-	function cz_ludan(){
-		postJson("dingdan.php",{caozuo:"ludan",_id:currDD._id},function(res){
-			showDetailById(res.id);
-		});
-	}
-	$("#cz_ludan").click(cz_ludan);
+
 	function fudan(){
 		showDetailById($(this).text());
 	}
@@ -437,12 +432,6 @@
 		});
 	}
 	$("#cz_zuofei").click(cz_zuofei);
-	function cz_dengban(){
-		postJson("dingdan.php",{caozuo:"dengban",_id:currDD._id},function(res){
-			showDetailById(currDD._id);
-		});
-	}
-	$("#cz_dengban").click(cz_dengban);
 	function cz_zidan(){
 		postJson("dingdan.php",{caozuo:"zidan",_id:currDD._id},function(res){
 			showDetailById(currDD._id);

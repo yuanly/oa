@@ -66,15 +66,26 @@ if("liebiao" == $param["caozuo"]){
 	coll("liuyan")->remove(array("hostType"=>"dingdan","hostId"=>$param["_id"]));
 	echo '{"success":true}';
 }else if("shenqingshenhe" == $param["caozuo"]){
-	$dingdan = coll("dingdan")->findAndModify(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"申请审核")));
-	//coll("kehu")->update(array("_id"=>$dingdan["kehu"]),array('$set'=>array("access"=>time())),array("upsert"=>true));
+	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请审核","time"=>time());
+	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
+	statExpired();
 	echo '{"success":true}';
 }else if("quxiaoshenqing" == $param["caozuo"]){
-	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"录单")));
+	$obj = coll("dingdan")->findOne(array("_id"=>$param["_id"],"zhuangtai"=>"申请审核"));
+	if(empty($obj)){
+		echo '{"success":true,"err":"后台数据异常，请刷新界面！"}';
+		return;
+	}
+	array_pop($obj["liucheng"]);
+	$lastLC = end($obj["liucheng"]);
+	$obj["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
+	coll("dingdan")->save($obj);
+	statExpired();
 	echo '{"success":true}';
 }else if("shenhe" == $param["caozuo"]){
-	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$set'=>array("zhuangtai"=>"审核")));
-	coll("dingdan")->update(array("_id"=>$param["_id"],"zhuangtai"=>"审核"),array('$push'=>array("liucheng"=>array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审核","time"=>time()))));
+	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审核","time"=>time());
+	coll("dingdan")->update(array("_id"=>$param["_id"],"zhuangtai"=>"申请审核"),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
+	statExpired();
 	echo '{"success":true}';
 }else if("getbyid" == $param["caozuo"]){
 	$dd = coll("dingdan")->findOne(array("_id"=>$param["_id"]));
