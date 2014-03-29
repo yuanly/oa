@@ -33,10 +33,10 @@
 		listHuowu($("#hw_pager").data("offset")+1);
 	});
 	function statusHwColor(status){
-		if(status == "待查"){//浅紫
+		if(status == "未检验"){//浅紫
 			return "#CCCCFF";
 		}
-		if(status == "通过"){//浅绿
+		if(status == "已通过"){//浅绿
 			return "#CCFFCC";
 		}
 		if(status == "不通过"){//红色
@@ -167,7 +167,7 @@
 		tr_huowu.find("#td_hw_yanhuodan").text(huowu.yanghuodan?huowu.yanghuodan._id:"");
 		tr_huowu.find("#td_hw_zhuangguidan").text(huowu.zhuangguidan?huowu.zhuangguidan:"");
 		tr_huowu.find("#td_hw_beizhu").text(huowu.zhu?huowu.zhu:"");
-		var status = "待查";
+		var status = "未检验";
 		if(huowu.zhuangguidan){
 			status = "已装柜";
 		}else if(huowu.yanhuodan && huowu.yanhuodan.zhuangtai){
@@ -549,29 +549,7 @@ function _hanshuku_(){}
 			var tr_huowu = tmpl_tr_huowu.clone(true);
 			tr_huowu = feedHwTr(tr_huowu,huowu);
 			tr_huowu.find(".td_left_most").show();
-			tr_huowu.find("#xuan").hide();	
-			/*
-			tr_huowu.data("huowu",huowu);
-			tr_huowu.find("#td_huowubianhao").text(huowu._id);
-			tr_huowu.find("#td_kehu").text(huowu.kehu?huowu.kehu:"");
-			tr_huowu.find("#td_gonghuoshang").text(huowu.gonghuoshang.mingchen);
-			tr_huowu.find("#td_yangban").text(huowu.yangban);
-			tr_huowu.find("#td_guige").text(huowu.guige);
-			tr_huowu.find("#td_danwei").text(huowu.danwei);
-			tr_huowu.find("#td_shuliang").text(huowu.shuliang);
-			tr_huowu.find("#td_jianshu").text(huowu.jianshu);
-			if(huowu.yanhuodan){
-				if(huowu.yanhuodan.zhuangtai == "不通过"){
-					tr_huowu.find("#td_yanhuodan").html("<span style='font-size:0.6em;color:red'>"+huowu.yanhuodan._id+"</span>");
-				}else if(huowu.yanhuodan.zhuangtai == "通过"){
-					tr_huowu.find("#td_yanhuodan").html("<span style='font-size:0.6em;color:green'>"+huowu.yanhuodan._id+"</span>");
-				}else{
-					tr_huowu.find("#td_yanhuodan").html("<span style='font-size:0.6em;color:black'>"+huowu.yanhuodan._id+"</span>");
-				}
-			}
-			tr_huowu.find("#td_dingdan").html("<font size=0.8em>"+huowu.dingdanhuowu+"</font>");
-			tr_huowu.find("#td_zhu").text(huowu.zhu?huowu.zhu:"");
-			*/
+			tr_huowu.find("#xuan").hide();
 			$("#selhuowutable").append(tr_huowu); 
 		});
 

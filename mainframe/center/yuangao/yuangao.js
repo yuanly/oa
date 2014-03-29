@@ -284,6 +284,10 @@
 		if($(this).data("waiting")){
 			return;
 		}
+		if($("#ludan").find(".ld_huowu").length<=0){
+			tip($(this),'必须录入具体货物信息！',1500);
+			return;
+		}
 		if("" == $("#ld_kehu").val().trim()){
 			tip($(this),'"客户"不能为空！',1500);
 			return;
@@ -382,8 +386,15 @@
 			tip($(this),"必须先回到接稿状态！",1500);
 			return;
 		}
+		var that = $(this);
 		postJson("dingdan.php",{caozuo:"quxiaoshenqing",_id:$(this).parents("#lb_dingdan").data("dingdanId")},function(res){
-			shuaxindingdanliebiao();
+			if(res.err){
+				tip(that,res.err,1500);
+			}else{
+				var elm = feedDingdanDiv(lb_dingdan.clone(true),res);
+				that.parents("#lb_dingdan").after(elm);
+				that.parents("#lb_dingdan").remove();
+			}
 		});
 	}
 	$("#lb_quxiaoshenqing").click(lb_quxiaoshenqing);

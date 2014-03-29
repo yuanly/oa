@@ -146,7 +146,7 @@ if("jiedan" == $param["caozuo"]){
 	$dingdan = $param["dingdan"];
 	$old = coll("dingdan")->findOne(array("_id"=>$dingdan["_id"]),array("gendanyuan"=>1));
 	if($_SESSION["user"]["_id"] != $old["gendanyuan"]){//因为有接管功能，所以保存的时候有可能跟单员已经改变
-		echo '{"success":false}';
+		echo '{"success":true,"err":"注意，订单已被接管。"}';
 		return;
 	}
 	if(!empty($dingdan["gonghuoshang"])){
@@ -158,7 +158,7 @@ if("jiedan" == $param["caozuo"]){
 		$dingdan["yangban"] = array("_id"=>$yb["_id"],"taiguoxinghao"=>$yb["taiguoxinghao"],"zhongguoxinghao"=>$yb["zhongguoxinghao"]);//不保存样板全部信息，只保存列表需要的
 	}
 	coll("dingdan")->save($dingdan);
-	echo '{"success":true}';
+	echo jsonEncode($dingdan);
 }else if("gethuowubyid2" == $param["caozuo"]){//在fahuodan.js中调用
 	$dingdan  = coll("dingdan")->findOne(array("huowu.id"=>$param["huowuId"]));
 	foreach($dingdan["huowu"] as $huowu){

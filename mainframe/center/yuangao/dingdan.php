@@ -86,7 +86,7 @@ if("liebiao" == $param["caozuo"]){
 	$obj["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
 	coll("dingdan")->save($obj);
 	statExpired();
-	echo '{"success":true}';
+	echo jsonEncode($obj);
 }else if("shenhe" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审核","time"=>time());
 	coll("dingdan")->update(array("_id"=>$param["_id"],"zhuangtai"=>"申请审核"),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));

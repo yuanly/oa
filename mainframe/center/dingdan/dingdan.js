@@ -245,8 +245,7 @@
 	$("#mx_shuliang").change(shuliangchange);
 	$("#bianji").click(editable);
 	
-	function baocun(){ 
-		//form2obj
+	function form2Huowus(){
 		var hws = [];
 		var ret = true;
 		$(".tmpl_huowu").each(function(index){
@@ -275,7 +274,14 @@
 			huowu.id=$(this).data("id");
 			hws.push(huowu);
 		});
-		if(ret == false){
+		if(!ret){
+			return false;
+		}
+		return hws;
+	}
+	function baocun(){
+		var hws = form2Huowus();
+		if(!hws){
 			return;
 		}
 		var maxHwId=1;
@@ -299,8 +305,13 @@
 		}else{
 			$("#beizhuzhaiyao").empty();
 		}
-		postJson("dingdan.php",{caozuo:"baocun",dingdan:currDD},function(){
-			readonly();
+		postJson("dingdan.php",{caozuo:"baocun",dingdan:currDD},function(res){
+			if(res.err){
+				tip($("#baocun"),res.err,1500);
+				showDetailById(currDD._id);
+			}else{
+				showDetail(res);
+			}
 		});
 	}
 	$("#baocun").click(baocun);
@@ -339,8 +350,19 @@
 	}
 	$("#cz_shenqingshenjie").click(cz_shenqingshenjie);
 	function cz_xiadanshenqing(){
+		if(editing){
+			tip($(this),"请先退出编辑状态！",1500);
+			return;
+		}
 		if(!currDD.huowu || currDD.huowu.length<=0){
 			tip($(this),"订单不能没有货物！",1500);
+			return;
+		}
+		if(!currDD.gonghuoshang){
+			tip($(this),"下单前必须先指定具体样板！",1500);
+			return;
+		}
+		if(!form2Huowus()){
 			return;
 		}
 		postJson("dingdan.php",{caozuo:"xiadanshenqing",_id:currDD._id},function(res){
@@ -360,10 +382,6 @@
 	}
 	$("#fudan").click(fudan);
 	function cz_xiadan(){
-		if(editing){
-			tip($(this),"请先退出编辑状态！",1500);
-			return;
-		}
 			var ret = true;
 		$(".tmpl_huowu").each(function(index){
 			//规格 数量 单价 不能为空
