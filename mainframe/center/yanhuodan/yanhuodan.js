@@ -287,7 +287,7 @@
 			$(this).parents("tr").after(tr_zhu);
 		}
 		var div_zhu = tmpl_div_zhu.clone(true);
-		div_zhu.find("#riqi").text(new Date().format("yyyy-MM-dd"));
+		div_zhu.find("#zhuriqi").text(new Date().format("yyyy-MM-dd"));
 		tr_zhu.find("#td_zhu").append(div_zhu);
 	});
 	$("#huowutable").find("#td_huowubianhao").click(function(){ 
@@ -353,7 +353,7 @@
 
 	$("#bianji").click(edit);
 	function cz_shanchu(){
-		if(!currYHD.huowu){
+		if(currHWS && currHWS.length>0){
 			tip($(this),"必须清空验货单中的货物并保存，才能删除验货单！",1500);
 			return;
 		}
@@ -361,7 +361,7 @@
 			if(res.err){
 				tip($("#cz_shanchu"),res.err,1500);
 			}else{
-				showDetailById(currYHD._id);
+				listyanhuodan(0);
 			}
 		});
 	}
@@ -414,6 +414,14 @@
 	}
 	$("#cz_shenhe").click(cz_shenhe);
 	function cz_shenqingshouli(){
+		if("none" == $("#bianji").css("display")){
+			tip($(this),"请先退出编辑状态！",1500);
+			return;
+		}
+		if(!currHWS || currHWS.length==0){
+			tip($(this),"请先为验货单选择货物！",1500);
+			return;
+		}
 		postJson("yanhuodan.php",{caozuo:"shenqingshouli",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
 		});
@@ -620,6 +628,7 @@
 		
 		$("#yanhuodan_liebiao_ctr").hide();
 		$("#huowu_liebiao_ctr").show();
+		$("#bianji").hide();$("#fangqi").show();$("#baocun").show();
 		listHuowu(0);
 	}
 	
@@ -648,6 +657,7 @@
 		$("#selhuowutable .tr_huowu").remove();
 		$(".tr_zhu").remove();
 		postJson("yanhuodan.php",{caozuo:"huowu",_id:yhd._id},function(huowus){
+			currHWS = huowus;
 			var hws = huowus.sort(cmp);
 			each(hws,function(i,huowu){
 				var tr_huowu = tmpl_tr_huowu.clone(true);
@@ -744,7 +754,7 @@
 				if((yanhuodan.liucheng.length - 1) == n){
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true);
-					if(theUser._id == fahuodan.shoulizhe){
+					if(theUser._id == yanhuodan.shoulizhe){
 						$("#cz_huitui",caozuoItem).show();
 					}else{
 						$("#cz_shenhe",caozuoItem).show();
@@ -768,6 +778,7 @@
 	function _chushihua_(){} 
 	var limit=20;
 	var currYHD = null;
+	var currHWS = null;
 	var kebianji=false;
 	var gaizhuangtai = false;
 	var editing = false;
@@ -790,7 +801,6 @@
 	var table_huowu = $(".huowu").clone(true);
 	var tmpl_shuliangjianshu = $("#shuliangjianshu").clone(true);
 	var tmpl_qitafeiyong = $(".qitafeiyong").detach();
-	var tmpl_fahuodanhuowu = $(".tmpl_fahuodanhuowu").detach();
 	
 	var yuandanEditor = $("#yuandan").myeditor(700,300);
 	yuandanEditor.editorReadonly();
