@@ -1,0 +1,116 @@
+﻿<html contenteditable=true>
+	<head>
+	<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=0"> 
+	<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
+<link rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen">
+	<title>装柜单</title>
+	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
+	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+	<script src="../../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+	<script src="../../../js/my.js" type="text/javascript"></script>
+	<script src="../../../js/localstorage.js" type="text/javascript"></script>
+	<script src="../../../js/server.js" type="text/javascript"></script>
+	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+	<style> 
+		.tr_dingdanhuizong{
+			line-height:35px;
+			border:1px solid black;
+		}
+		.tr_dingdanhuizong span{
+			font-size:1.0em;
+			color:black;
+		}
+		.tr_huowumingxi td{
+			border:1px dotted gray;
+			font-size:0.8em;
+			padding-left:5px;
+		}
+	</style>
+	<script>
+		$(function(){
+			function getDDID(ddhwId){
+				return ddhwId.substr(0,ddhwId.indexOf("HW"));
+			}
+			var tmpl_tr_dingdanhuizong = $(".tr_dingdanhuizong").detach();
+			var tmpl_tr_huowumingxi = $(".tr_huowumingxi").detach();
+   		postJson("zhuangguidan.php",{caozuo:"getbyid",_id:getUrl().showId},function(zgd){
+   			$("#guihao").text(zgd.guihao);
+   			$("#bianhao").text(zgd._id);
+   			$("#zhuangguiriqi").text(zgd.zhuangguiriqi);
+   			$("#zhuangguirenyuan").text(zgd.zhuangguirenyuan);
+   			var lastDD = {dingdan:""};
+   			var tr_dingdanhuizong = null;
+   			each(zgd.huowu,function(i,hw){
+   				if(getDDID(hw.dingdanhuowu) != lastDD.dingdan){
+   					if(null != tr_dingdanhuizong){
+   						tr_dingdanhuizong.find("#zongjianshu").text(lastDD.zongjianshu);
+   					}
+   					tr_dingdanhuizong = tmpl_tr_dingdanhuizong.clone(true);
+   					lastDD = {dingdan:getDDID(hw.dingdanhuowu),zongjianshu:0};
+   					tr_dingdanhuizong.find("#kehu").text(hw.kehu);
+   					tr_dingdanhuizong.find("#dingdan").text(lastDD.dingdan);
+   					tr_dingdanhuizong.find("#yangban").text(formatYangban(hw.yangban));
+   					$("#tb_zhuangguidan").append(tr_dingdanhuizong);
+   				}
+ 					tr_huowumingxi = tmpl_tr_huowumingxi.clone(true);
+ 					tr_huowumingxi.find("#td_bianhao").text(hw._id);
+ 					tr_huowumingxi.find("#td_guige").text(hw.guige);
+ 					tr_huowumingxi.find("#td_shuliang").text(hw.shuliang);
+ 					tr_huowumingxi.find("#td_danwei").text(hw.danwei);
+ 					tr_huowumingxi.find("#td_jianshu").text(hw.jianshu);
+ 					lastDD.zongjianshu += parseInt(hw.jianshu);
+ 					$("#tb_zhuangguidan").append(tr_huowumingxi);
+   			});
+   			if(null != tr_dingdanhuizong){
+					tr_dingdanhuizong.find("#zongjianshu").text(lastDD.zongjianshu);
+				}
+				var s = {};
+				$(".tr_dingdanhuizong").each(function(i,hz){
+					var kh = $(hz).find("#kehu").text();
+					var zjs = parseInt($(hz).find("#zongjianshu").text());
+					if(undefined == s[kh]){
+						s[kh] = zjs;
+					}else {
+						s[kh] += zjs;
+					}
+				});
+				var huizong = "";
+				for(k in s){
+					huizong += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+k+":"+s[k]+"件";
+				};
+				$("#td_kehuhuizong").html(huizong);
+   		});
+		});
+	</script>
+	</head>
+<body style="margin:0px;padding:0px">
+ <div align=center>
+ 	<div style="font-size:1.2em">第<span style="font-size:1.6em" id="guihao">50</span>柜装柜清单</div>
+ 	<div style="font-size:0.7em">编号：<div id="bianhao" class="myinput"></div>&nbsp;&nbsp;装柜日期：<div id="zhuangguiriqi" class="myinput"></div>&nbsp;&nbsp;装柜人员：<div id="zhuangguirenyuan" class="myinput"></div></div>
+ </div>
+ <table style="width:100%;border-spacing:0px;border-collapse:collapse;border:1px solid;margin-top:10px;" border=1 id="tb_zhuangguidan">
+ 	<tr>
+ 		<th>编号</th><th>规格</th><th>数量</th><th>单位</th><th>件数</th><th>备注</th>
+ 	</tr>
+ 	<tr>
+ 		<td style="paddig-left:5px" id="td_kehuhuizong" colspan=6 ></td>
+ 	</tr>
+ 	<tr class="tr_dingdanhuizong">
+ 		<td colspan=6 style="color:gray;font-size:0.8em;padding-left:5px">客户：<span id="kehu"></span>， 订单：<span id="dingdan"></span>， 样板：<span id="yangban"></span>， 总件数：<span id="zongjianshu">NN</span> </td>
+ 	</tr>
+ 	<tr class="tr_huowumingxi">
+ 		<td id="td_bianhao" style="width:150px">编号</td>
+ 		<td id="td_guige">规格</td>
+ 		<td id="td_shuliang" style="width:60px;text-align:center">数量</td>
+ 		<td id="td_danwei" style="width:60px;text-align:center">单位</td>
+ 		<td id="td_jianshu" style="width:50px;text-align:center">件数</td><td style="width:25%"></td>
+ 	</tr>
+</table>
+</body>
+</html>

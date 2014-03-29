@@ -357,6 +357,9 @@
 	$("#cz_dayin").click(function(){
 		window.open("dayin.html?showId="+currZGD._id,"_blank");
 	});
+	$("#cz_dayin2").click(function(){
+		window.open("dayin2.html?showId="+currZGD._id,"_blank");
+	});
 	function cz_shenhe(){
 		postJson("zhuangguidan.php",{caozuo:"shenhe",_id:currZGD._id},function(res){
 			showDetailById(currZGD._id);
@@ -579,6 +582,7 @@ function _hanshuku_(){}
 				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 				var caozuoItem = caozuoTmpl.clone(true);
 				$("#cz_dayin",caozuoItem).show();
+				$("#cz_dayin2",caozuoItem).show();
 				if((zhuangguidan.liucheng.length - 1) == n){
 					if(theUser._id == zhuangguidan.zhidanzhe){
 						kebianji = true;

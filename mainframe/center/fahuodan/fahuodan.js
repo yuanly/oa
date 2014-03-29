@@ -35,6 +35,7 @@
 		_id:"xxx",//fhd_id+hw+n
 		gonghuoshang:{_id:"xxx",mingchen:"xxx",quyu:"xx"}
 		yangban:{_id:"xx",zhongguoxinghao:"xxx",taiguoxinghao:"xxx"},
+		kehu:"xx",
 		guige:"xxx",
 		danwei:"码",
 		danjia:23.1,

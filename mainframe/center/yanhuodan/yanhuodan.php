@@ -24,8 +24,8 @@ if("xinjian" == $param["caozuo"]){
 	if(isset($param["option"]["bianhao"])){
 		$query["_id"] = array('$lt'=>$param["option"]["bianhao"]);
 	}
-	if(isset($param["option"]["chuangjianzhe"])){
-		$query["chuangjianzhe"] = $param["option"]["chuangjianzhe"];
+	if(isset($param["option"]["zhidanzhe"])){
+		$query["zhidanzhe"] = $param["option"]["zhidanzhe"];
 	}
 	if(isset($param["option"]["shoulizhe"])){
 		$query["shoulizhe"] = $param["option"]["shoulizhe"];
@@ -52,6 +52,9 @@ if("xinjian" == $param["caozuo"]){
 	$obj["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
 	if($param["zhuangtai"] == "审核"){
 		unset($obj["shenhezhe"]);
+	}
+	if($param["zhuangtai"] == "受理"){
+		unset($obj["shoulizhe"]);
 	}
 	coll("yanhuodan")->save($obj);
 	statExpired();

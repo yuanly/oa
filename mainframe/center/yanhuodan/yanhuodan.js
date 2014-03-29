@@ -513,7 +513,7 @@
 		if("" != cjz && "制单者" != cjz){
 			var id = getUserIdByName(cjz);
 			if(id){
-				ret.chuangjianzhe = id;
+				ret.zhidanzhe = id;
 			}
 		}
 		var slz = $("#th_shoulizhe").val().trim();
@@ -542,14 +542,14 @@
 		postJson("yanhuodan.php",{caozuo:"chaxun",offset:offset*limit,limit:limit,option:option},function(yanhuodans){
 			$("#yanhuodantable .tr_yanhuodan").remove();
 			each(yanhuodans,function(n,yanhuodan){
-				var chuangjianzhe,shoulizhe,shenhezhe;
-				chuangjianzhe = yanhuodan.chuangjianzhe?getUser(yanhuodan.chuangjianzhe).user_name:"";
+				var zhidanzhe,shoulizhe,shenhezhe;
+				zhidanzhe = yanhuodan.zhidanzhe?getUser(yanhuodan.zhidanzhe).user_name:"";
 				shoulizhe = yanhuodan.shoulizhe?getUser(yanhuodan.shoulizhe).user_name:"";
 				shenhezhe = yanhuodan.shenhezhe?getUser(yanhuodan.shenhezhe).user_name:"";
 				tr = tr_yanhuodan.clone(true);
 				tr.data("_id",yanhuodan._id);
 				tr.find("#td_bianhao").text(yanhuodan._id);
-				tr.find("#td_chuangjianzhe").text(chuangjianzhe);
+				tr.find("#td_chuangjianzhe").text(zhidanzhe);
 				tr.find("#td_shoulizhe").text(shoulizhe);
 				tr.find("#td_shenhezhe").text(shenhezhe);
 				tr.find("#td_zhuangtai").text(yanhuodan.zhuangtai);
@@ -691,6 +691,7 @@
 	}
 
 	jQuery.fn.liucheng = function(theUser,yanhuodan){
+		kebianji = false;gaizhuangtai = false
 		var that = this.empty();
 		this.data("_id",yanhuodan._id);
 		each(yanhuodan.liucheng,function(n,item){
@@ -744,6 +745,7 @@
 					gaizhuangtai  = true;
 					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
 					var caozuoItem = caozuoTmpl.clone(true); 
+					$("#cz_huitui",caozuoItem).show();
 					$("#cz_shenqingshenhe",caozuoItem).show();
 					$("table",tmpl).append(caozuoItem);
 				}
