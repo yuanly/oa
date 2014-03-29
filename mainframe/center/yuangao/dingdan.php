@@ -59,7 +59,7 @@ if("liebiao" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("shanchu" == $param["caozuo"]){
 	$dd = coll("dingdan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"录单"),null,null,array("remove"=>true));
-	if(empty($ts)){
+	if(empty($dd)){
 		echo '{"success":true,"err":"数据不一致，请刷新界面!"}';
 		return;	
 	}
@@ -67,9 +67,14 @@ if("liebiao" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("shenqingshenhe" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请审核","time"=>time());
-	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
+	$dd = coll("dingdan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"录单"),
+			array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])),null,array("new"=>true));
+	if(empty($dd)){
+		echo '{"success":true,"err":"数据不一致，请刷新界面!"}';
+		return;
+	}
 	statExpired();
-	echo '{"success":true}';
+	echo jsonEncode($dd);
 }else if("quxiaoshenqing" == $param["caozuo"]){
 	$obj = coll("dingdan")->findOne(array("_id"=>$param["_id"],"zhuangtai"=>"申请审核"));
 	if(empty($obj)){

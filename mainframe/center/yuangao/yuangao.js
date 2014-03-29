@@ -356,15 +356,24 @@
 				if(res.err){
 					tip(that,res.err,1500);
 				}else{
-					shuaxindingdanliebiao();
+					//shuaxindingdanliebiao();
+					that.parents("#lb_dingdan").remove();
 				}
 			});
 		});
 	}
 	$("#lb_shanchu").click(lb_shanchudingdan);
 	function lb_shenqingshenhe(){
+		var that = $(this);
 		postJson("dingdan.php",{caozuo:"shenqingshenhe",_id:$(this).parents("#lb_dingdan").data("dingdanId")},function(res){
-			shuaxindingdanliebiao();
+			if(res.err){
+				tip(that,res.err,1500);
+			}else{
+				//shuaxindingdanliebiao();				
+				var elm = feedDingdanDiv(lb_dingdan.clone(true),res);
+				that.parents("#lb_dingdan").after(elm);
+				that.parents("#lb_dingdan").remove();
+			}
 		});
 	}
 	$("#lb_shenqingshenhe").click(lb_shenqingshenhe);
@@ -488,56 +497,52 @@
 		shuaxindingdanliebiao();
 		liuyanElm.shuaxinliebiao({hostId:currYG._id,hostType:"yuangao"});
 	}
+	function feedDingdanDiv(elm,dingdan){
+			elm.data("dingdanId",dingdan._id);
+			$("#lb_bianhao",elm).text(dingdan._id);
+			$("#lb_kehu",elm).text(dingdan.kehu);
+			$("#lb_taiguoyangban",elm).text(dingdan.taiguoyangban);
+			$("#lb_yangban",elm).text(dingdan.yangban.zhongguoxinghao);
+			$("#lb_zhuangtai",elm).text(dingdan.zhuangtai);
+			if(dingdan.zhuangtai == "录单" && getTheUser()._id == currYG.jiegaozhe){
+				$("#lb_shanchu",elm).show();
+				$("#lb_xiugai",elm).show();	
+				$("#lb_shenqingshenhe",elm).show();
+			}
+			if(dingdan.zhuangtai == "申请审核"){
+				if(getTheUser()._id == currYG.jiegaozhe){
+					$("#lb_quxiaoshenqing",elm).show();
+				}else{
+					$("#lb_shenhe",elm).show();
+				}
+			}
+			if(dingdan.zhuangtai == "作废"){
+				elm.find("div:first-child").css("background-color","#eee");
+			}
+			elm.find("#lb_taiguobianhao").text(dingdan.taiguobianhao);
+			each(dingdan.huowu,function(n,hw){
+				var hwelm = lb_hw.clone(true);
+				//$("#lb_xuhao",hwelm).text((n+1)+".");
+				$("#lb_xuhao",hwelm).text(hw.id);
+				$("#lb_taiguoguige",hwelm).text(hw.taiguoguige);
+				$("#lb_guige",hwelm).text(hw.guige);
+				$("#lb_shuliang",hwelm).text(hw.shuliang);
+				$("#lb_danwei",hwelm).text(hw.danwei);
+				elm.find("#lb_hw_out").append(hwelm);
+			});
+			if(dingdan.ludanbeizhu){
+				elm.append("<div style='margin:10px 0px 10px'><b>备注：</b>"+dingdan.ludanbeizhu+"</div>");
+				elm.find("img").css("max-width","200px");
+			}
+			return elm;
+	}
 	function shuaxindingdanliebiao(){
-		var jiegaozheid = currYG.jiegaozhe;
-		/*
-		each(currYG.liucheng,function(n,liucheng){
-			if(liucheng.dongzuo == "接稿"){
-				jiegaozheid = liucheng.userId;
-				return false;
-			}		
-		});
-		*/
+		//var jiegaozheid = currYG.jiegaozhe;
 		$("#dingdanliebiao").empty().show();
 		postJson("dingdan.php",{caozuo:"liebiao",_id:currYG._id},function(dingdans){
 			each(dingdans,function(n,dingdan){
 				var elm = lb_dingdan.clone(true);
-				elm.data("dingdanId",dingdan._id);
-				$("#lb_bianhao",elm).text(dingdan._id);
-				$("#lb_kehu",elm).text(dingdan.kehu);
-				$("#lb_taiguoyangban",elm).text(dingdan.taiguoyangban);
-				$("#lb_yangban",elm).text(dingdan.yangban.zhongguoxinghao);
-				$("#lb_zhuangtai",elm).text(dingdan.zhuangtai);
-				if(dingdan.zhuangtai == "录单" && getTheUser()._id == jiegaozheid){
-					$("#lb_shanchu",elm).show();
-					$("#lb_xiugai",elm).show();	
-					$("#lb_shenqingshenhe",elm).show();
-				}
-				if(dingdan.zhuangtai == "申请审核"){
-					if(getTheUser()._id == jiegaozheid){
-						$("#lb_quxiaoshenqing",elm).show();
-					}else{
-						$("#lb_shenhe",elm).show();
-					}
-				}
-				if(dingdan.zhuangtai == "作废"){
-					elm.find("div:first-child").css("background-color","#eee");
-				}
-				elm.find("#lb_taiguobianhao").text(dingdan.taiguobianhao);
-				each(dingdan.huowu,function(n,hw){
-					var hwelm = lb_hw.clone(true);
-					//$("#lb_xuhao",hwelm).text((n+1)+".");
-					$("#lb_xuhao",hwelm).text(hw.id);
-					$("#lb_taiguoguige",hwelm).text(hw.taiguoguige);
-					$("#lb_guige",hwelm).text(hw.guige);
-					$("#lb_shuliang",hwelm).text(hw.shuliang);
-					$("#lb_danwei",hwelm).text(hw.danwei);
-					elm.find("#lb_hw_out").append(hwelm);
-				});
-				if(dingdan.ludanbeizhu){
-					elm.append("<div style='margin:10px 0px 10px'><b>备注：</b>"+dingdan.ludanbeizhu+"</div>");
-					elm.find("img").css("max-width","200px");
-				}
+				elm = feedDingdanDiv(elm,dingdan);
 				$("#dingdanliebiao").append(elm);
 			});
 			if(dingdans && dingdans.length>0){
