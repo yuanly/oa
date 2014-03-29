@@ -55,7 +55,7 @@
    					lastDD = {dingdan:getDDID(hw.dingdanhuowu),zongjianshu:0};
    					tr_dingdanhuizong.find("#kehu").text(hw.kehu);
    					tr_dingdanhuizong.find("#dingdan").text(lastDD.dingdan);
-   					tr_dingdanhuizong.find("#yangban").text(hw.yangban);
+   					tr_dingdanhuizong.find("#yangban").text(formatYangban(hw.yangban));
    					$("#tb_zhuangguidan").append(tr_dingdanhuizong);
    				}
  					tr_huowumingxi = tmpl_tr_huowumingxi.clone(true);

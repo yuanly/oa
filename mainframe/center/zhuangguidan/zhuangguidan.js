@@ -337,8 +337,8 @@
 	}
 	$("#cz_shanchu").click(cz_shanchu);
 	function cz_jieguan(){
-		postJson("zhuangguidan.php",{caozuo:"jieguan",_id:currYHD._id},function(res){
-			showDetailById(currYHD._id);
+		postJson("zhuangguidan.php",{caozuo:"jieguan",_id:currZGD._id},function(res){
+			showDetailById(currZGD._id);
 		});
 	}
 	$("#cz_jieguan").click(cz_jieguan);
@@ -621,7 +621,7 @@ function _hanshuku_(){}
 	function _chushihua_(){} 
 	var limit=20;
 	var currZGD = null;
-	var kebianji=true;
+	var kebianji = false;
 	var editing = false;
 	//定义左右布局
 	var layout = $("body").layout({
