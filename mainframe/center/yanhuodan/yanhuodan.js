@@ -172,7 +172,11 @@
 		tr_huowu.find("#td_hw_dingdan").text(cutDDHWID(huowu.dingdanhuowu));
 		tr_huowu.find("#td_hw_yanhuodan").text(huowu.yanhuodan?huowu.yanhuodan._id:"");
 		tr_huowu.find("#td_hw_beizhu").text(huowu.zhu?huowu.zhu:"");
-		tr_huowu.find("#input_hw_zhuangtai").val(huowu.yanhuodan?huowu.yanhuodan.zhuangtai:"未检验");
+		if(huowu.yanhuodan && huowu.yanhuodan.zhuangtai){
+			tr_huowu.find("#input_hw_zhuangtai").val(huowu.yanhuodan.zhuangtai);
+		}else{
+			tr_huowu.find("#input_hw_zhuangtai").val("未检验");
+		}
 		tr_huowu.css("background-color",toggle("#fff","#eee"));
 		tr_huowu.find("#td_hw_huowubianhao").css("background-color",statusHwColor(huowu.yanhuodan?huowu.yanhuodan.zhuangtai:"未检验"));
 		return tr_huowu;
@@ -317,6 +321,9 @@
 			var obj = $(hw).data("huowu");
 			var yhd = {_id:currYHD._id,index:i};
 			yhd.zhuangtai = $(this).find("#input_hw_zhuangtai").val();
+			if("未检验" == yhd.zhuangtai){
+				yhd.zhuangtai = undefined;
+			}
 			var tr_zhu = $(this).next(".tr_zhu");
 			if(tr_zhu.length>0){
 				var beizhu = [];
@@ -379,6 +386,10 @@
 	}
 	$("#cz_shouli").click(cz_shouli);
 	function cz_shenqingshenhe(){
+		if("none" == $("#bianji").css("display")){
+			tip($(this),"请先退出编辑状态！",1500);
+			return;
+		}
 		postJson("yanhuodan.php",{caozuo:"shenqingshenhe",_id:currYHD._id},function(res){
 			showDetailById(currYHD._id);
 		});

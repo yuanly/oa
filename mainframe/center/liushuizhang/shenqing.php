@@ -71,6 +71,13 @@ if("xinzengshenqing" == $param["caozuo"]){
 }else if("getbyid" == $param["caozuo"]){
 	$query = array("_id"=>$param["_id"]);
 	$sq = coll("fahuodan")->findOne($query);
+	if($sq["type"] == "fahuodan"){
+		$cur = coll("huowu")->find(array("fahuodan"=>$param["_id"]));
+		$sq["huowu"] = c2a($cur);
+	}
+	if(!empty($sq["liushuizhang"])){
+		$sq["liushuizhang"] = coll("liushuizhang")->findOne(array("_id"=>$sq["liushuizhang"]["_id"]));
+	}
 	echo  jsonEncode($sq);
 }else if("baocun" == $param["caozuo"]){	
 	$shenqing = $param["shenqing"];

@@ -121,7 +121,7 @@
 		<div id="shenqingmingxi" style="margin-top:10px">
 			<div>
 				<div style='background-color:#eee' id="detailheader"  class="detailheader">付款信息</div>
-				<div class="myInput" id="sq_fukuanxinxi" style="margin:5px">未付款！</div>
+				<div class="myInput" id="sq_fukuanxinxi" style="margin:5px;cursor:pointer">未付款！</div>
 			</div>
 			<div style='background-color:#eee' id="detailheader"  class="detailheader">付款申请明细&nbsp;&nbsp;&nbsp;&nbsp;
 					<span id="bianji" class="plainBtn" style="display:none">[编辑]</span>
@@ -134,6 +134,56 @@
 			<div>收款人：<div class="myInput" id="sq_shoukuanren" style="min-width:120px;cursor:pointer"></div> </div>
 			<div style="margin-top:8px;margin-bottom:8px">收款账户：<div class="myInput" id="sq_shoukuanzhanghu" style="min-width:120px"></div></div>
 			<div style='background-color:#eee;min-width:10px;display:inline-block'>付款申请说明：</div>
+			<div id="fahuodanmingxi_ctr">
+				<div id="fahuodanmingxi">
+					<table class="huowu" id="mingxitable" style="border:1px solid grey;margin-top:5px">
+						<tr style="vertical-align:top">
+							<td>
+								<table id="huowu">
+									<tr><th>样板</th><th>规格</th><th>总量</th><th>单位</th><th>单价</th><th>金额</th></tr>
+									<tr>
+											<td class="myinput" id="mx_yangban" nowrap></td>
+											<td class="myinput" id="mx_guige" nowrap></td>
+											<td id="mx_shuliang"></td>
+											<td><input id="mx_danwei" size=2 class="plainInput hw_edit mx_danwei list" style="text-align:center"></td>
+											<td><input id="mx_danjia" size=4 class="plainInput mx_danjia hw_edit jinetrigger" style="text-align:center" ></td>
+											<td id="mx_jine" style="text-align:center"></td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table id="tb_dingdan" style="background-color:#f8f8f8">
+									<tr><th>订单货号</th><th>客户</th><th>样板</th><th>规格</th><th>数量</th><th>单位</th><th>单价</th><th>金额</th></tr>
+									<tr nowrap class="dingdanhuowu" >
+										<td id="dingdanhao" style="cursor:pointer;color:brown;font-size:0.7em">订单号</td>
+										<td id="kehu1"></td>
+										<td id="yangban1" nowrap></td>
+										<td id="guige1" nowrap>规格</td>
+										<td id="shuliang1">数量</td>
+										<td id="danwei1">单位</td>
+										<td id="danjia1">单价</td>
+										<td id="jine1">金额</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr><td colspan=2 id="shuliangjianshu_ctr">
+										<div id="shuliangjianshu" class="shuliangjianshu" style="margin-bottom:8px">
+											编号：<span id="hwbianhao" style="font-size:12px;color:brown"></span>
+											&nbsp;数量：<input class="plainInput jinetrigger hw_edit shuliang" size=3 style="text-align:center"/>
+											&nbsp;件数：<input class="plainInput jinetrigger hw_edit jianshu" size=2  style="text-align:center"/>
+											<span class="zhu_ctnr">&nbsp;<i>备注：</i><div id="zhu" style="display:inline-block;border-bottom:1px solid gray;min-width:50px;font-size:0.8em;color:#660033;" class="myinput" contentEditable=true ></div></span>
+											<span class="plainBtn1" id="yanhuodan" style="display:none;font-size:0.8em"></span>
+											<span class="plainBtn1" id="zhuangguidan" style="display:none;font-size:0.8em"></span>
+										</div>
+						</td></tr>
+					</table>
+					<div id="qita_div">
+						<div style="background-color:#99ccff;margin-top:10px">其他费用</div>
+						<div class="qitafeiyong">说明：<div class="myinput" id="qita_shuoming" contenteditable=true>&nbsp;</div>，金额：<input id="qita_jine" class="plainInput" style="text-align:center" size=5 />元</div>
+					</div>
+				</div>
+			</div>
 			<div id="sq_shuoming"></div>
 		</div>
 		<div id="liuyan" style="margin-top:150px">

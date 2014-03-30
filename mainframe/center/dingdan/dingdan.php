@@ -159,7 +159,7 @@ if("jiedan" == $param["caozuo"]){
 	}
 	coll("dingdan")->save($dingdan);
 	echo jsonEncode($dingdan);
-}else if("gethuowubyid2" == $param["caozuo"]){//在fahuodan.js中调用
+}else if("gethuowubyid2" == $param["caozuo"]){//在fahuodan.js & shenqing.js中调用
 	$dingdan  = coll("dingdan")->findOne(array("huowu.id"=>$param["huowuId"]));
 	foreach($dingdan["huowu"] as $huowu){
 		if($huowu["id"] == $param["huowuId"]){

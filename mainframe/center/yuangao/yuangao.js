@@ -3,6 +3,7 @@
 {	_id:"xx",
 	taiguobianhao:"xxx",
 	liucheng:[{userId:3,dongzuo:"上传",time:1322}],
+	shangchuanzhe:"xx",
 	jiegaozhe:"xx",
 	shenjiezhe:"xx",
 	zhuangtai:"xx",

@@ -344,6 +344,10 @@
 	}
 	$("#cz_jieguan").click(cz_jieguan);
 	function cz_jiaodan(){
+		if("none" == $("#bianji").css("display")){
+			tip($(this),"请先退出编辑状态！",1500);
+			return;
+		}
 		postJson("zhuangguidan.php",{caozuo:"jiaodan",_id:currZGD._id},function(res){
 			showDetailById(currZGD._id);
 		});

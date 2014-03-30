@@ -566,6 +566,10 @@
 	}
 	$("#cz_jiedan").click(cz_jiedan);
 	function cz_shenqingduidan(){
+		if("none" == $("#bianji").css("display")){
+			tip($(this),"请先退出编辑状态！",1500);
+			return;
+		}
 		if(!currFHD.huowu || currFHD.huowu.length<=0){
 			tip($(this),"货物不能留空！",1500);
 			return;
@@ -757,7 +761,9 @@ function _hanshuku_(){}
 		jisuanzonge();
 	}
 	function link_liushui(){
-		window.open("../liushuizhang/liushuizhang.html?showId="+currFHD.liushuizhang._id,"_blank");
+		if(currFHD.liushuizhang){
+			window.open("../liushuizhang/liushuizhang.html?showId="+currFHD.liushuizhang._id,"_blank");
+		}
 	}
 	function readOnly(){
 		editing = false;
@@ -925,7 +931,7 @@ function _hanshuku_(){}
 					mxDiv.find(".zhu_ctnr").hide();
 				}
 				if(mx.yanhuodan){
-					if(mx.yanhuodan.zhuangtai == "通过"){
+					if(mx.yanhuodan.zhuangtai == "已通过"){
 						mxDiv.find("#yanhuodan").html("<font color=green>"+mx.yanhuodan._id+"</font>").show();
 					}else if(mx.yanhuodan.zhuangtai == "不通过"){
 						mxDiv.find("#yanhuodan").html("<font color=red>"+mx.yanhuodan._id+"</font>").show();

@@ -26,8 +26,10 @@ if("chaxun" == $param["caozuo"]){
 	if(isset($param["option"]["zhuangtai"])){
 		if("已装柜" == $param["option"]["zhuangtai"]){
 			$query["zhuangguidan"] = array('$exists'=>true);
-		}else if("待查" == $param["option"]["zhuangtai"]){
-			$query["yanhuodan.zhuangtai"] = array('$ne'=>true);
+		}if("未装柜" == $param["option"]["zhuangtai"]){
+			$query["zhuangguidan"] = array('$exists'=>false);
+		}else if("未检验" == $param["option"]["zhuangtai"]){
+			$query["yanhuodan.zhuangtai"] = array('$exists'=>false);//array('$ne'=>true);
 		}else{
 			$query["yanhuodan.zhuangtai"] = $param["option"]["zhuangtai"];
 		}

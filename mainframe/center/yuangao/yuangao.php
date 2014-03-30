@@ -66,7 +66,7 @@ if("shangchuan" == $param["caozuo"]){
 	array_pop($obj["liucheng"]);
 	$lastLC = end($obj["liucheng"]);
 	$obj["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
-	if($param["zhuangtai"] == "审核"){
+	if($param["zhuangtai"] == "审结"){
 		unset($obj["shenjiezhe"]);
 	}
 	coll("yuangao")->save($obj);
