@@ -73,6 +73,14 @@
 		window.open("../zhuangguidan/zhuangguidan.html?showId="+id,"_blank");
 	}
 	$("#td_hw_zhuangguidan").click(link_zhuangguidan);
+	function resetZongjianshu(){
+		var zongjianshu = 0;
+		$("#selhuowutable .tr_huowu").each(function(i){
+			zongjianshu += parseInt($(this).find("#td_hw_jianshu").text());
+		});
+		$("#zgd_zongjianshu").text(zongjianshu);
+	}
+
 	function shanchuhuowu(){
 		var that = $(this).parent().parent();
 		var tr = that.detach();
@@ -80,6 +88,7 @@
 		tr.find("#xuan").show();
 		tr.css("background-color",toggle("#fff","#eee"));
 		$("#huowutable").append(tr);
+		resetZongjianshu();
 	}
 	$("#shanchuhuowu").click(shanchuhuowu);
 	
@@ -91,11 +100,12 @@
 		$("#selhuowutable .tr_huowu").each(function(i){
 			$(this).css("background-color",toggle("#fff","#eee"));	
 		});
+		resetZongjianshu();
 	} 
 	function xuan(){
 		var that = $(this).parent().parent();
 		var huowu = that.data("huowu");
-		if(huowu.zhuangguidan){
+		if(huowu.zhuangguidan && huowu.zhuangguidan != currZGD._id){
 			tip($(this),"醒醒！货物已装柜。",1500);
 			return;
 		}
@@ -309,15 +319,6 @@
 		$("#huowu_liebiao_ctr").hide();
 		showDetailById(currZGD._id);}
 	);
-	function shanchuhuowu(){
-		var that = $(this).parent().parent();
-		var tr = that.detach();
-		tr.find(".td_left_most").hide();
-		tr.find("#xuan").show();
-		tr.css("background-color",toggle("#fff","#eee"));
-		$("#huowutable").append(tr);
-	}
-	$("#shanchuhuowu").click(shanchuhuowu);
 	 
 	$("#bianji").click(edit);
 	function cz_shanchu(){
@@ -548,14 +549,16 @@ function _hanshuku_(){}
 		$("#zgd_zhuangguiriqi").val(currZGD.zhuangguiriqi);
 		$("#zhuangguirenyuan").text(currZGD.zhuangguirenyuan);
 		$(".tr_huowu").remove();
+		var zongjianshu = 0;
 		each(zgd.huowu,function(i,huowu){
 			var tr_huowu = tmpl_tr_huowu.clone(true);
 			tr_huowu = feedHwTr(tr_huowu,huowu);
 			tr_huowu.find(".td_left_most").show();
 			tr_huowu.find("#xuan").hide();
 			$("#selhuowutable").append(tr_huowu); 
+			zongjianshu += parseInt(huowu.jianshu);
 		});
-
+		$("#zgd_zongjianshu").text(zongjianshu);
 		liuyanElm.shuaxinliebiao({hostId:currZGD._id,hostType:"zhuangguidan"});
 		readOnly();
 	}
@@ -661,7 +664,12 @@ function _hanshuku_(){}
 	}
 	listzhuangguidan(0,getUrl().showId);
 	
-		 	//设置头部点击处理（放到当前面板）
+	//设置头部点击处理（放到当前面板）
+	$("#tr_huowutable_head").click(function(){
+		if(layout.state.west.innerWidth < $("#tr_huowutable_head").width()){
+			layout.sizePane("west",$("#tr_huowutable_head").width()+20);
+		}
+	});
 	$("#tableheader").click(function(){		
 		if(layout.state.west.innerWidth < $("#zhuangguidantable").width()){
 			layout.sizePane("west",$("#zhuangguidantable").width()+20);

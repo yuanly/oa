@@ -825,6 +825,11 @@
 	listyanhuodan(0,getUrl().showId);
 	
 	//设置头部点击处理（放到当前面板）
+	$("#tr_huowutable_head").click(function(){
+		if(layout.state.west.innerWidth < $("#tr_huowutable_head").width()){
+			layout.sizePane("west",$("#tr_huowutable_head").width()+20);
+		}
+	});
 	$("#tableheader").click(function(){
 		if(layout.state.west.innerWidth < $("#yanhuodantable").width()){
 			layout.sizePane("west",$("#yanhuodantable").width()+20);
