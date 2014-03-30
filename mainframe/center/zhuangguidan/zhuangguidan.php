@@ -115,4 +115,10 @@ if("xinjian" == $param["caozuo"]){
 	unset($zhuangguidan["huowu"]);
 	coll("zhuangguidan")->save($zhuangguidan);
 	echo '{"success":true}';
+}else if("getdingdanbyid" == $param["caozuo"]){
+	$one = coll("dingdan")->findOne(array("_id"=>$param["_id"]));
+	if(!empty($one["gonghuoshang"])&&!empty($one["gonghuoshang"]["_id"])){//重新关联出完整的样板
+		$one["gonghuoshang"] = coll("contact")->findOne(array("_id"=>$one["gonghuoshang"]["_id"]));
+	}
+	echo jsonEncode($one);
 }

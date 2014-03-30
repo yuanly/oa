@@ -170,16 +170,7 @@ if("jiedan" == $param["caozuo"]){
 		}
 	}
 	echo '{"success":false}';
-}/*else if("gethuowubyid" == $param["caozuo"]){//应该不需要了，改成gethuowubyid2，在fahuodan.js中调用
-	$dingdan  = coll("dingdan")->findOne(array("huowu.id"=>$param["huowuId"]));
-	foreach($dingdan["huowu"] as $huowu){
-		if($huowu["id"] == $param["huowuId"]){
-			echo jsonEncode($huowu);
-			exit;
-		}
-	}
-	echo '{"success":false}';
-}*/else if("lianxiren" == $param["caozuo"]){
+}else if("lianxiren" == $param["caozuo"]){
 	$query  = array("leixing"=>"个人");
 	if(""!=$param["option"]){
 		$query = array("leixing"=>"个人","mingchen"=>array('$regex'=>$param["option"]));
