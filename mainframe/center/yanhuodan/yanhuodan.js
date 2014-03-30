@@ -804,10 +804,11 @@
 	var tmpl_shuliangjianshu = $("#shuliangjianshu").clone(true);
 	var tmpl_qitafeiyong = $(".qitafeiyong").detach();
 	
+	var liuyanElm = $("#liuyan").liuyan({hostType:"yanhuodan",});
+	
 	var yuandanEditor = $("#yuandan").myeditor(700,300);
 	yuandanEditor.editorReadonly();
 	
-	var liuyanElm = $("#liuyan").liuyan({hostType:"yanhuodan",});
 		
 	var cmd = getUrl().cmd?getUrl().cmd:"";
 	if("chaxun" == cmd){		

@@ -1140,11 +1140,11 @@ function _hanshuku_(){}
 	var tmpl_shuliangjianshu = $("#shuliangjianshu").clone(true);
 	var tmpl_qitafeiyong = $(".qitafeiyong").detach();
 	
-	var yuandanEditor = $("#yuandan").myeditor(700,300);
-	yuandanEditor.editorReadonly();
-	 
 	var liuyanElm = $("#liuyan").liuyan({hostType:"fahuodan",});
 	
+	var yuandanEditor = $("#yuandan").myeditor(700,300);
+	yuandanEditor.editorReadonly();
+	 	
 	var cmd = getUrl().cmd?getUrl().cmd:"";
 	if("daijiedan" == cmd){
 		$('#currLocation', window.parent.document).text("发货单/待接单");

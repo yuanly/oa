@@ -315,8 +315,6 @@
 		});
 	}
 	$("#baocun").click(baocun);
-	var beizhuEditor = $("#beizhu").myeditor(700,300);
-	beizhuEditor.editorReadonly();
 
 	function cz_jiedan(){
 		//更改状态，作为留言记录订单内容；
@@ -1002,6 +1000,10 @@ function _hanshuku_(){}
 	var zgd_span = $("#zgd_span").detach(); 
 	
 	var liuyanElm = $("#liuyan").liuyan({hostType:"dingdan",});
+
+	var beizhuEditor = $("#beizhu").myeditor(700,300);
+	beizhuEditor.editorReadonly();
+	
 	var cmd = getUrl().cmd?getUrl().cmd:"";
 	if("jiedan" == cmd){
 		$('#currLocation', window.parent.document).text("订单/待接单");

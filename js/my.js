@@ -1171,90 +1171,7 @@ jQuery.fn.dataInc = function(name,value){
  		initStatus: '请选择日期', isRTL: false};
  	$.datepicker.setDefaults($.datepicker.regional['zh-CN']);
  });
- //封装xheditor封装 w:width h:height r:指当前脚本相对于root的路径（可选）
- jQuery.fn.myeditor = function (w,h,r) {
- 	if("undefined" == typeof r){
- 		r = "../../../";
- 	}
- 	
- 	//编辑器定义 “图片”和“地图”按钮
- 	 var plugins={
- 	   		map:{
- 	   			c:'btnMap',
- 	   			t:'插入地图',
- 	   			e:function(){
- 	   				var _this=this;
- 	   				_this.saveBookmark();
- 	   				_this.showIframeModal('Google 地图',r+'xheditor-1.2.1/demos/googlemap/googlemap.html',function(v){
- 	   					_this.loadBookmark();
- 	   					_this.pasteHTML('<img src="'+v+'" />');
- 	   				},538,404);		
- 	   			}
- 	   		},
- 	   		pic:{
- 	   			c:'btnPic',
- 	   			t:'插入图片',
- 	   			e:function(){
- 	   				//editor.pasteHTML("<img src='../img/attach.jpg'/>");
- 	   				var _this=this;
- 	   				//editor.showModal("上传本地图片","<div id='file-uploader-demo2'></div>",120,50,function(){});
- 	   				_this.showModal("上传本地图片","<div id='file-uploader-demo2'></div>",120,50,function(){});
- 	   				 var uploader1 = new qq.FileUploader({
- 	   		                element: $("#file-uploader-demo2")[0],
- 	   		                action: r+'uploader/server/up.php',
- 	   		                params:{'memo':'new'},
- 	   		                debug: true,
- 	   		                onComplete: function(id, fileName, respJson){
- 	   		                	//{"id":16,"success":true}
- 	   		                	var src = r+"uploader/server/down.php?id="+respJson.id;
- 	   		                	//editor.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:"+(w-20)+"px'/></a>");
- 	   		                	_this.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:"+Math.min(w-20,500)+"px'/></a>");
- 	   		                },
- 	   		            });
- 	   				//editor.removeModal();
- 	   				_this.removeModal();
- 	   				 uploader1._button.getInput().click();
- 	   			}
- 	   		},
- 	   		attach:{
- 	   			c:'btnAttach',
- 	   			t:'插入附件',
- 	   			e:function(){}
- 	   		}
- 	 };
- 	 
- 	 this.empty();
- 	 this.append('\
- 	 			<div id="editor_div1" style="font-size:80%;width:'+w+'px;border:1px solid #ede;" ></div>\
- 				<div id="editor_div2"><textarea></textarea></div>');
- 	 //编辑器设置
-   var editor = this.find("textarea").xheditor({plugins:plugins,
- 		tools:'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,Removeformat,|,Align,List,Outdent,Indent,|,Link,Unlink,Img,Hr,Emot,Table,|,Preview,Print,Fullscreen,|,map,|,pic,|,attach,|',
- 		width:w,height:h});
- 	return this;
- }
- jQuery.fn.editorWritable = function(){
- 	this.find("#editor_div1").hide();
- 	this.find("#editor_div2").show();
- 	return this;
- };
- jQuery.fn.editorReadonly = function(){
- 	this.find("#editor_div1").show();
- 	this.find("#editor_div2").hide();
- 	return this;
- };
- jQuery.fn.editorVal = function(v){
- 	if(arguments.length==0){
- 		return this.find("textarea").val().trim();
- 	}else{
- 		if("undefined" === typeof v){
- 			v="";
- 		}
- 		this.find("#editor_div1").html(v);
- 		this.find("textarea").val(v);
- 		return this;
- 	}
- }
+
  
  function parseInt2(str){
  	var ret = parseInt(str);
@@ -1387,7 +1304,7 @@ catch(e){
  	   			t:'插入图片',
  	   			e:function(){
  	   				editor.showModal("上传本地图片","<div id='file-uploader-demo2'></div>",120,50,function(){});
- 	   				 var uploader1 = new qq.FileUploader({
+ 	   				 var uploader2 = new qq.FileUploader({
  	   		                element: $("#file-uploader-demo2")[0],
  	   		                action: opt.docRoot+'uploader/server/up.php',
  	   		                params:{'memo':'new'},
@@ -1399,7 +1316,7 @@ catch(e){
  	   		                },
  	   		            });
  	   				editor.removeModal();
- 	   				 uploader1._button.getInput().click();
+ 	   				 uploader2._button.getInput().click();
  	   			}
  	   		},
  	   		attach:{
@@ -1499,6 +1416,91 @@ catch(e){
  		opt = $.extend(opt,option);
  	}
  	return this;
+ }
+ 
+ //封装xheditor封装 w:width h:height r:指当前脚本相对于root的路径（可选）
+ jQuery.fn.myeditor = function (w,h,r) {
+ 	if("undefined" == typeof r){
+ 		r = "../../../";
+ 	}
+ 	
+ 	//编辑器定义 “图片”和“地图”按钮
+ 	 var plugins={
+ 	   		map:{
+ 	   			c:'btnMap',
+ 	   			t:'插入地图',
+ 	   			e:function(){
+ 	   				var _this=this;
+ 	   				_this.saveBookmark();
+ 	   				_this.showIframeModal('Google 地图',r+'xheditor-1.2.1/demos/googlemap/googlemap.html',function(v){
+ 	   					_this.loadBookmark();
+ 	   					_this.pasteHTML('<img src="'+v+'" />');
+ 	   				},538,404);		
+ 	   			}
+ 	   		},
+ 	   		pic:{
+ 	   			c:'btnPic',
+ 	   			t:'插入图片',
+ 	   			e:function(){
+ 	   				//editor.pasteHTML("<img src='../img/attach.jpg'/>");
+ 	   				var _this=this;
+ 	   				//editor.showModal("上传本地图片","<div id='file-uploader-demo2'></div>",120,50,function(){});
+ 	   				_this.showModal("上传本地图片","<div id='file-uploader-demo1'></div>",120,50,function(){});
+ 	   				 var uploader1 = new qq.FileUploader({
+ 	   		                element: $("#file-uploader-demo1")[0],
+ 	   		                action: r+'uploader/server/up.php',
+ 	   		                params:{'memo':'new'},
+ 	   		                debug: true,
+ 	   		                onComplete: function(id, fileName, respJson){
+ 	   		                	//{"id":16,"success":true}
+ 	   		                	var src = r+"uploader/server/down.php?id="+respJson.id;
+ 	   		                	//editor.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:"+(w-20)+"px'/></a>");
+ 	   		                	_this.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:"+Math.min(w-20,500)+"px'/></a>");
+ 	   		                },
+ 	   		            });
+ 	   				//editor.removeModal();
+ 	   				_this.removeModal();
+ 	   				 uploader1._button.getInput().click();
+ 	   			}
+ 	   		},
+ 	   		attach:{
+ 	   			c:'btnAttach',
+ 	   			t:'插入附件',
+ 	   			e:function(){}
+ 	   		}
+ 	 };
+ 	 
+ 	 this.empty();
+ 	 this.append('\
+ 	 			<div id="editor_div1" style="font-size:80%;width:'+w+'px;border:1px solid #ede;" ></div>\
+ 				<div id="editor_div2"><textarea></textarea></div>');
+ 	 //编辑器设置
+   var editor = this.find("textarea").xheditor({plugins:plugins,
+ 		tools:'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,Removeformat,|,Align,List,Outdent,Indent,|,Link,Unlink,Img,Hr,Emot,Table,|,Preview,Print,Fullscreen,|,map,|,pic,|,attach,|',
+ 		width:w,height:h});
+ 	return this;
+ }
+ jQuery.fn.editorWritable = function(){
+ 	this.find("#editor_div1").hide();
+ 	this.find("#editor_div2").show();
+ 	return this;
+ };
+ jQuery.fn.editorReadonly = function(){
+ 	this.find("#editor_div1").show();
+ 	this.find("#editor_div2").hide();
+ 	return this;
+ };
+ jQuery.fn.editorVal = function(v){
+ 	if(arguments.length==0){
+ 		return this.find("textarea").val().trim();
+ 	}else{
+ 		if("undefined" === typeof v){
+ 			v="";
+ 		}
+ 		this.find("#editor_div1").html(v);
+ 		this.find("textarea").val(v);
+ 		return this;
+ 	}
  }
  	function clearSelection() { //清楚双击选择
     if(document.selection && document.selection.empty) { 

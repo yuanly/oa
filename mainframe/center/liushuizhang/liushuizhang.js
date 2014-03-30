@@ -270,6 +270,8 @@
 		if(!isEqualShengqings(shenqings,currLSZ.shenqings)){
 			currLSZ.shenqingsyibian = true;
 			currLSZ.shenqings = shenqings;
+		}else{
+			currLSZ.shenqingsyibian = false;
 		}
 		currLSZ.beizhu = beizhuEditor.editorVal();
 		postJson("liushuizhang.php",{caozuo:"baocun",liushuizhang:currLSZ},function(res){
@@ -677,12 +679,12 @@ function _hanshuku_(){}
 	var liuchengItem = $("#liuchengItem").detach();
 	var tr_liushuizhang = $(".tr_liushuizhang").detach();
 	var tr_shenqing = $(".tr_shenqing").detach();
-	var beizhuEditor = $("#beizhu").myeditor(765,100);
-	beizhuEditor.editorReadonly();
 	
 	$("#sel_ctnr").draggable();
 	var liuyanElm = $("#liuyan").liuyan({hostType:"liushuizhang",});
 	
+	var beizhuEditor = $("#beizhu").myeditor(765,300);
+	beizhuEditor.editorReadonly();
 	
 	var cmd = getUrl().cmd?getUrl().cmd:"";
 	if("chaxun" == cmd){		

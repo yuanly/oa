@@ -1,4 +1,4 @@
-﻿$(function(){
+$(function(){
 	/* 
 	{	_id:"sq131008.1",
 		type:"shenqing"/"shenqing",
@@ -530,10 +530,11 @@ function _hanshuku_(){}
 		center__maskContents:true,
 	});
 	
+	var liuyanElm = $("#liuyan").liuyan({hostType:"shenqing",});
+	
 	var shuomingEditor = $("#sq_shuoming").myeditor(700,300);
 	shuomingEditor.editorReadonly();
 	 
-	var liuyanElm = $("#liuyan").liuyan({hostType:"shenqing",});
 	
 	var cmd = getUrl().cmd?getUrl().cmd:"";
 	if("chaxun" == cmd){		
