@@ -1,4 +1,7 @@
 ﻿$(function(){
+	$(".tip").click(function(){
+		tip($(this),$(this).attr("title"));
+	});
 	$("th").attr("nowrap","nowrap").css("cursor","pointer");
 	$("td").attr("nowrap","nowrap");
 	$("th").dblclick(function(){//双击列头删除该列
