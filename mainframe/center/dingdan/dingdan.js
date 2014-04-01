@@ -779,6 +779,8 @@ function _hanshuku_(){}
 		readonly();
 		if(kebianji){
 			$("#bianji").show();
+		}else{
+			$("#bianji").hide();
 		}
 	}
 	/*

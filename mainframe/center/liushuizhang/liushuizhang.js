@@ -518,6 +518,8 @@ function _hanshuku_(){}
 		beizhuEditor.editorReadonly();
 		if(kebianji){
 			$("#bianji").show();
+		}else{
+			$("#bianji").hide();
 		}
 		$("#fangqi").hide();$("#baocun").hide();
 		$("#lsz_fukuanfang").unbind("click").click(function(){

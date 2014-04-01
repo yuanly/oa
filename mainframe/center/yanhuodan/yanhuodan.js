@@ -607,6 +607,8 @@
 		$("#yanhuodanmingxi").find(".plainBtn").hide();
 		if(kebianji || gaizhuangtai){
 			$("#bianji").show();
+		}else{
+			$("#bianji").hide();
 		}
 		$("#fangqi").hide();$("#baocun").hide();
 	}

@@ -280,6 +280,8 @@ function _hanshuku_(){}
 		$("#bianji").hide();$("#fangqi").hide();$("#baocun").hide();
 		if(kebianji){
 			$("#bianji").show();
+		}else{
+			$("#bianji").hide();
 		}
 		shuomingEditor.editorReadonly();
 		$("#sq_jine").attr("readonly","readonly");

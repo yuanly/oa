@@ -524,6 +524,8 @@ function _hanshuku_(){}
 		$("#zhuangguidanmingxi").find(".plainBtn").hide();
 		if(kebianji){
 			$("#bianji").show();
+		}else{
+			$("#bianji").hide();
 		}
 		$("#fangqi").hide();$("#baocun").hide();
 		$("#zgd_zhuangguiriqi").datepicker( "destroy" );

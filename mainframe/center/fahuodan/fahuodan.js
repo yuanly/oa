@@ -794,6 +794,8 @@ function _hanshuku_(){}
 		$("#fahuodanmingxi").find(".plainBtn").hide();
 		if(kebianji){
 			$("#bianji").show();
+		}else{
+			$("#bianji").hide();
 		}
 		if(kechaifen){
 			$("#chaifen").show();
