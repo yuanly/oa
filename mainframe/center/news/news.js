@@ -51,8 +51,10 @@ $(function(){
      		                params:{'memo':'new'},
      		                debug: true,
      		                onComplete: function(id, fileName, respJson){
+ 	   		                	var src = "../../../uploader/server/down.php?id="+respJson.id;
+ 	   		                	editor.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:400px'/></a>");
      		                	//{"id":16,"success":true}
-     		                	editor.pasteHTML("<img src='../../../uploader/server/down.php?id="+respJson.id+"'/>");
+     		                	//editor.pasteHTML("<img src='../../../uploader/server/down.php?id="+respJson.id+"'/>");
      		                },
      		            });
      				editor.removeModal();
