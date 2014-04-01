@@ -311,6 +311,10 @@
 	}
 	$("#cz_huitui").click(cz_huitui);
 	function cz_fukuan(){
+		if("none" == $("#bianji").css("display")){
+			tip($(this),"请先退出编辑状态！",1500);
+			return;
+		}
 		if(!currLSZ.jine){
 			tip($(this),"还没设置有效金额！",1500);
 			return;

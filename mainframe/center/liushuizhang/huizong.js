@@ -7,12 +7,16 @@
 		$(this).remove();
 	});
 	$("#dayin").click(function(){
+		$("#zhanghuyue_ctr").hide();
 		$("#div_options").hide();
 		$("#title_div").show();
 		$("#tb_liushui").attr("border","1").css("border-spacing","0px").css("border-collapse","collapse");
 		$("#dayinfanhui").show();
 	});
 	$("#dayinfanhui").click(function(){
+		if($("#zhanghuyue").text() != ""){
+			$("#zhanghuyue_ctr").show();
+		}
 		$("#div_options").show();
 		$("#title_div").hide();
 		$("#tb_liushui").attr("border","0").css("border-spacing","0px").css("border-collapse","collapse");
@@ -28,8 +32,13 @@
 					});
 				},["yinhang","huming","zhanghao","wangdian"],function(zhanghu){//selected
 					$(this).text(zhanghu.yinhang+" "+zhanghu.zhanghao+"("+zhanghu.huming+")").data("zhanghao",zhanghu.zhanghao);
+					postJson("liushuizhang.php",{caozuo:"chayue",lxrId:lxrId,zhanghao:zhanghu.zhanghao},function(res){
+						$("#zhanghuyue_ctr").show();
+						$("#zhanghuyue").text(res);
+					});
 				},"",function(){//clear
 					$(this).html("&nbsp;").removeData("zhanghao");
+					$("#zhanghuyue_ctr").hide();$("#zhanghuyue").text("");
 				});
 		}else{
 			tip($(this),"请先选定联系人！",1500);
@@ -42,12 +51,14 @@
  				postJson("../contact/lianxiren.php",{caozuo:"chalianxiren",offset:page*limit,limit:limit,option:option},function(vendors){
  					callback1(vendors);
  				});
- 			},["_id","mingchen"],function(lianxiren){
+ 			},["_id","mingchen"],function(lianxiren){//选择
  				$(this).data("lxrId",lianxiren._id);
 				$(this).text(lianxiren.mingchen);
- 			},"",function(){
+				$("#zhanghu").html("&nbsp;").removeData("zhanghao");$("#zhanghuyue_ctr").hide();$("#zhanghuyue").text("");
+ 			},"",function(){//清空
 				$(this).removeData("lxrId");
 				$(this).html("&nbsp;");
+				$("#zhanghu").html("&nbsp;").removeData("zhanghao");$("#zhanghuyue_ctr").hide();$("#zhanghuyue").text("");
 			});
  	});
 	$("#kaishiriqi").datepicker();
@@ -100,13 +111,14 @@
 				tr_liushui.find("#td_no").text(number++);
 				tr_liushui.find("#td_bianhao").text(liushui._id);
 				tr_liushui.find("#td_fukuanfang").text(liushui.fukuanfangname);
-				tr_liushui.find("#td_fukuanzhanghu").text(liushui.fukuanfangzhanghu);
+				tr_liushui.find("#td_fukuanzhanghu").text(liushui.fukuanzhanghu);
 				tr_liushui.find("#td_shoukuanfang").text(liushui.shoukuanfangname);
-				tr_liushui.find("#td_shoukuanzhanghu").text(liushui.shoukuanfangzhanghu);
+				tr_liushui.find("#td_shoukuanzhanghu").text(liushui.shoukuanzhanghu);
 				tr_liushui.find("#td_jine").text(liushui.jine);
 				tr_liushui.find("#td_shoukuanjine").text(liushui.zhuanrujine?liushui.zhuanrujine:liushui.jine);
 				tr_liushui.find("#td_shijihuilv").text(liushui.huilv?liushui.huilv:"");
 				tr_liushui.find("#td_shouxufei").text(liushui.shouxufei?liushui.shouxufei:"");
+				tr_liushui.find(".td_beizhu").text(liushui.zhaiyao?liushui.zhaiyao:"");
 				if(option.lxrId == liushui.fukuanfang){
 					zongzhichu += liushui.jine+(liushui.shouxufei?liushui.shouxufei:0);
 					if(option.lxrId == liushui.shoukuanfang){

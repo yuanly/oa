@@ -131,7 +131,7 @@ if("xinjian" == $param["caozuo"]){
 	$ls["zhuangtai"] = $liucheng["dongzuo"];
 	$ls["yifu"] = true;
 	//更新付款账户和收款账号余额
-	$ls["fukuanzhanghaoyue"] = getBalance($ls["fukuanfang"],$ls["fukuanzhanghao"])-$ls["jine"];
+	$ls["fukuanzhanghaoyue"] = getBalance($ls["fukuanfang"],$ls["fukuanzhanghao"])-$ls["jine"]-$ls["shouxufei"];
 	if(empty($ls["zhuanrujine"])){
 		$skjine = $ls["jine"];
 	}else{
@@ -247,20 +247,22 @@ if("xinjian" == $param["caozuo"]){
 	statExpired();
 	echo '{"success":true}';
 }else if("tongji" == $param["caozuo"]){
-	$query = array('$or'=>array(array("fukuanfang"=>$param["option"]["lxrId"]),
-								 							array("shoukuanfang"=>$param["option"]["lxrId"])),
-								 "fukuanriqi"=>array('$gte'=>$param["option"]["kaishiriqi"],
-								 '$lte'=>$param["option"]["jieshuriqi"]));
+	$query = array("yifu"=>true,"liucheng.dongzuo"=>array('$ne'=>"作废"),
+			"fukuanriqi"=>array('$gte'=>$param["option"]["kaishiriqi"],'$lte'=>$param["option"]["jieshuriqi"]));
 	if(isset($param["option"]["kemu"])){
 		$query["kemu"] = $param["option"]["kemu"];
 	}
 	if(isset($param["option"]["zhanghao"])){
-		$query['$or'] = array(array("fukuanzhanghao"=>$param["option"]["zhanghao"]),
-								 					 array("shoukuanzhanghao"=>$param["option"]["zhanghao"]));
+		$query['$or'] = array(array("fukuanfang"=>$param["option"]["lxrId"],"fukuanzhanghao"=>$param["option"]["zhanghao"]),
+								 							array("shoukuanfang"=>$param["option"]["lxrId"],"shoukuanzhanghao"=>$param["option"]["zhanghao"]));
+	}else{
+		$query['$or'] = array(array("fukuanfang"=>$param["option"]["lxrId"]),
+								 							array("shoukuanfang"=>$param["option"]["lxrId"]));
 	}
-	$query["zhuangtai"] = array('$ne'=>"作废");
 	$cur = coll("liushuizhang")->find($query)->sort(array("_id",-1));
 	echo  cur2json($cur);
+}else if("chayue" == $param["caozuo"]){//出现死锁时调用
+	echo getBalance($param["lxrId"],$param["zhanghao"]);	
 }else if("unlock" == $param["caozuo"]){//出现死锁时调用
 	unlock();
 	echo '{"success":true}';
