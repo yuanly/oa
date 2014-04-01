@@ -662,9 +662,9 @@ function _hanshuku_(){}
 				tr.find("#td_taiguodanhao").text((dingdan.taiguoyuangao?dingdan.taiguoyuangao:"-")+"("+(dingdan.taiguobianhao?dingdan.taiguobianhao:"-")+")");
 				tr.find("#td_kehu").text(dingdan.kehu);
 				if(dingdan.yangban){
-					var yb = "("+(dingdan.taiguoyangban?dingdan.taiguoyangban:"-")+")";
+					var yb = "<font style='color:grey;font-size:0.8em'>("+(dingdan.taiguoyangban?dingdan.taiguoyangban:"-")+")</font>";
 					if(dingdan.yangban.zhongguoxinghao){
-						tr.find("#td_yangban").text(dingdan.yangban.zhongguoxinghao+yb);
+						tr.find("#td_yangban").html(dingdan.yangban.zhongguoxinghao+yb);
 					}else{
 						tr.find("#td_yangban").text("-"+yb);
 					}
