@@ -82,7 +82,7 @@
 		tr.find("#jiazhu").show();
 		$("#selhuowutable").append(tr);
 		var huowu = tr.data("huowu");
-		if(huowu.yanhuodan.beizhu && huowu.yanhuodan.beizhu.length>0){
+		if(huowu.yanhuodan && huowu.yanhuodan.beizhu && huowu.yanhuodan.beizhu.length>0){
 			var tr_zhu = tmpl_tr_zhu.clone(true);
 			each(huowu.yanhuodan.beizhu,function(i,zhu){
 				var div_zhu = tmpl_div_zhu.clone(true);
@@ -164,7 +164,7 @@
 		tr_huowu.find("#td_hw_kehu").text(huowu.kehu);
 		tr_huowu.find("#td_hw_gonghuoshang").text(huowu.gonghuoshang.mingchen);
 		tr_huowu.find("#td_hw_quyu").text(huowu.gonghuoshang.quyu);
-		tr_huowu.find("#td_hw_yangban").text(formatYangban(huowu.yangban));
+		tr_huowu.find("#td_hw_yangban").html(formatYangban(huowu.yangban));
 		tr_huowu.find("#td_hw_guige").text(huowu.guige);
 		tr_huowu.find("#td_hw_danwei").text(huowu.danwei);
 		tr_huowu.find("#td_hw_shuliang").text(huowu.shuliang);
@@ -695,6 +695,10 @@
 		
 		liuyanElm.shuaxinliebiao({hostId:currYHD._id,hostType:"yanhuodan"});
 		readOnly();
+		if(getUrl().showId){
+			$("#yanhuodan_liebiao_ctr").html(currYHD.yanhuoshougao?currYHD.yanhuoshougao:"<center>暂无手稿</center>");
+			$("#yanhuodan_liebiao_ctr").css("max-width",$(window).width()/2+"px");
+		}
 	}
 	
 	function showDetailById(_id){
@@ -836,7 +840,11 @@
 	}
 	var tr = $("#tr_huowu_head").clone();
 	$("#selhuowutable").prepend();
-	listyanhuodan(0,getUrl().showId);
+	if(getUrl().showId){
+		showDetailById(getUrl().showId);
+	}else{
+		listyanhuodan(0,getUrl().showId);
+	}
 	
 	//设置头部点击处理（放到当前面板）
 	$("#tr_huowutable_head").click(function(){
@@ -850,8 +858,8 @@
 		}
 	});
 	$("#detailheader").click(function(){
-		if(layout.state.center.innerWidth < $("#huowutable").width()){
-			layout.sizePane("west",$("body").width()-$("#huowutable").width()-100);
+		if(layout.state.center.innerWidth < $("#selhuowutable").width()){
+			layout.sizePane("west",$("body").width()-$("#selhuowutable").width()-100);
 		}
 	}).dblclick(function(){layout.toggle("west");clearSelection();});
 });

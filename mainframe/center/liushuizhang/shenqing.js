@@ -38,6 +38,11 @@ $(function(){
 	*/
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("#sq_bianhao").click(function(){
+		if("" != $(this).text()){
+			window.open("shenqing.html?showId="+$(this).text(),"_blank");
+		}
+	});
 	function link_liushui(){
 		if(currSQ.liushuizhang){
 			window.open("../liushuizhang/liushuizhang.html?showId="+currSQ.liushuizhang._id,"_blank");
@@ -377,7 +382,7 @@ function _hanshuku_(){}
 			showDetail(sq);
 		});
 	}
-	function showDetail(sq){		
+	function showDetail(sq){
 		$("#ctr_shenqing").show();
 		if(isSel(sq._id)){
 			$("#xuanze").hide();$("#quxiao").show();
@@ -441,7 +446,7 @@ function _hanshuku_(){}
 			});
 			each(huowus,function(i,huowu){
 				var hwDiv = table_huowu.clone(true);
-				hwDiv.find("#mx_yangban").text(formatYangban(huowu.yangban));
+				hwDiv.find("#mx_yangban").html(formatYangban(huowu.yangban));
 				hwDiv.find("#mx_guige").text(huowu.guige);
 				hwDiv.find("#mx_danwei").val(huowu.danwei);
 				hwDiv.find("#mx_danjia").val(huowu.danjia);
@@ -478,7 +483,7 @@ function _hanshuku_(){}
 					tr_huowu.data("huowu",dd);
 					tr_huowu.find("#dingdanhao").text(dd.id);
 					tr_huowu.find("#kehu1").text(dd.kehu);
-					tr_huowu.find("#yangban1").text(formatYangban(dd.yangban));
+					tr_huowu.find("#yangban1").html(formatYangban(dd.yangban));
 					tr_huowu.find("#guige1").text(dd.guige);
 					tr_huowu.find("#shuliang1").text(dd.shuliang);
 					tr_huowu.find("#danwei1").text(dd.danwei);
@@ -506,6 +511,10 @@ function _hanshuku_(){}
  
 		liuyanElm.shuaxinliebiao({hostId:currSQ._id,hostType:"shenqing"});
 		readOnly();
+		if(getUrl().showId && getUrl().showId.indexOf("FHD") == 0){
+			$("#shenqing_liebiao_ctr").html(sq.neirong);
+			$("#shenqing_liebiao_ctr").css("max-width",$(window).width()/2+"px");
+		}
 	}
 	function jisuanjine(){
 		var tb = $(this).parents(".huowu");
@@ -687,7 +696,11 @@ function _hanshuku_(){}
 		$("#ctr_sel").show();
 	}
 	
-	listShenqing(0,getUrl().showId);
+	if(getUrl().showId && getUrl().showId.indexOf("FHD") == 0){
+		showDetailById(getUrl().showId);
+	}else{
+		listShenqing(0,getUrl().showId);
+	}
 	
 	 	//设置头部点击处理（放到当前面板）
 	$("#tableheader").click(function(){

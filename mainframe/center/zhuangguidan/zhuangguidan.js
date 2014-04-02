@@ -168,7 +168,7 @@
 		tr_huowu.find("#td_hw_kehu").text(huowu.kehu);
 		tr_huowu.find("#td_hw_gonghuoshang").text(huowu.gonghuoshang.mingchen);
 		tr_huowu.find("#td_hw_quyu").text(huowu.gonghuoshang.quyu);
-		tr_huowu.find("#td_hw_yangban").text(formatYangban(huowu.yangban));
+		tr_huowu.find("#td_hw_yangban").html(formatYangban(huowu.yangban));
 		tr_huowu.find("#td_hw_guige").text(huowu.guige);
 		tr_huowu.find("#td_hw_danwei").text(huowu.danwei);
 		tr_huowu.find("#td_hw_shuliang").text(huowu.shuliang);
@@ -260,6 +260,11 @@
 	}	
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("#zgd_bianhao").click(function(){
+		if($("#zgd_bianhao").val()!=""){
+			window.open("zhuangguidan.html?showId="+$("#zgd_bianhao").val(),"_blank");
+		}
+	});
 	$("#xinzengzhuangguidan").click(function(){
 		postJson("zhuangguidan.php",{caozuo:"xinjian"},function(res){
 			listzhuangguidan(0);

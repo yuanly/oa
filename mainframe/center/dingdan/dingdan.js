@@ -29,7 +29,11 @@
 	function _shijianchuli_(){}
 	addQuyulist();
 	$("#quyulist").prepend('<option value="区域"/>');
-	
+	$("#dd_bianhao").click(function(){
+		if($(this).text() != ""){
+			window.open("dingdan.html?showId="+$(this).text(),"_blank");
+		}
+	});
 	function piliangjiedan(){
 		var ids = [];
 		$(".tr_dingdan").each(function(i){

@@ -442,7 +442,7 @@
 //		tr_huowu.data("dingdan",dd);
 		tr_huowu.find("#dingdanhao").text(huowu.id);
 		tr_huowu.find("#kehu1").text(dd.kehu);
-		tr_huowu.find("#yangban1").text(formatYangban(dd.yangban));
+		tr_huowu.find("#yangban1").html(formatYangban(dd.yangban));
 		tr_huowu.find("#guige1").text(huowu.guige);
 		tr_huowu.find("#shuliang1").text(huowu.shuliang);
 		tr_huowu.find("#danwei1").text(huowu.danwei);
@@ -450,7 +450,7 @@
 		tr_huowu.find("#jine1").text(round(huowu.shuliang*huowu.danjia,2));
 		tr_huowu.find("#shanchudingdanhuowu").show();
 		currHuowu.find("#tr_tianjiadingdanhuowu").before(tr_huowu).hide();
-		currHuowu.find("#mx_yangban").text(formatYangban(dd.yangban));
+		currHuowu.find("#mx_yangban").html(formatYangban(dd.yangban));
 		currHuowu.find("#mx_guige").text(huowu.guige);
 		currHuowu.find("#mx_danwei").val(huowu.danwei);
 		currHuowu.find("#mx_danjia").val(huowu.danjia).change();
@@ -508,7 +508,7 @@
 				//tr.data("dingdan",dingdan);
 				tr.find("#td_bianhao").text(dingdan._id);
 				tr.find("#td_kehu").text(dingdan.kehu);
-				tr.find("#td_yangban").text(formatYangban(dingdan.yangban));
+				tr.find("#td_yangban").html(formatYangban(dingdan.yangban));
 				tr.find("#td_zhuangtai").text(dingdan.zhuangtai);				
 				tr.find("#td_gendanyuan").text(dingdan.gendanyuan?getUser(dingdan.gendanyuan).user_name:"");
 				tr.find("#td_gonghuoshang").text(dingdan.gonghuoshang?dingdan.gonghuoshang.mingchen:"");
@@ -847,7 +847,6 @@ function _hanshuku_(){}
 			}	
 		});
 		$(".shanchudingdanhuowu").show();
-		$("#yuandan_ctr").show();
 	}
 	function hwid2int(hwid){
 		return parseInt(hwid.substr(hwid.indexOf("HW")+2));
@@ -921,7 +920,7 @@ function _hanshuku_(){}
 		});
 		each(huowus,function(i,huowu){
 			var hwDiv = table_huowu.clone(true);
-			hwDiv.find("#mx_yangban").text(formatYangban(huowu.yangban));
+			hwDiv.find("#mx_yangban").html(formatYangban(huowu.yangban));
 			hwDiv.find("#mx_guige").text(huowu.guige);
 			hwDiv.find("#mx_danwei").val(huowu.danwei);
 			hwDiv.find("#mx_danjia").val(huowu.danjia);
@@ -958,7 +957,7 @@ function _hanshuku_(){}
 				tr_huowu.data("huowu",dd);
 				tr_huowu.find("#dingdanhao").text(dd.id);
 				tr_huowu.find("#kehu1").text(dd.kehu);
-				tr_huowu.find("#yangban1").text(formatYangban(dd.yangban));
+				tr_huowu.find("#yangban1").html(formatYangban(dd.yangban));
 				tr_huowu.find("#guige1").text(dd.guige);
 				tr_huowu.find("#shuliang1").text(dd.shuliang);
 				tr_huowu.find("#danwei1").text(dd.danwei);
@@ -980,8 +979,7 @@ function _hanshuku_(){}
 		readOnly();
 		if(getUrl().showId){
 			$("#yuandan_ctr_ctr").show();
-			$("#yuandan_ctr").hide();
-			$("#yuandan_ctr_ctr").html(currFHD.neirong);
+			$("#yuandan_ctr_ctr").html(currFHD.neirong?currFHD.neirong:"<center>暂无原单</center>");
 			$("#yuandan_ctr_ctr img").css("max-width",$(window).width()/2+"px");
 		}
 	}

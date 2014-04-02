@@ -48,6 +48,11 @@
 	$('#currLocation', window.parent.document).text("流水账管理");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////
 	function _shijianchuli_(){}
+	$("#lsz_liushuihao").click(function(){
+		if($(this).val() != ""){
+			window.open("liushuizhang.html?showId="+$(this).val(),"_blank");
+		}
+	});
 	$(".tip").click(function(){
 		tip($(this),$(this).attr("title"));
 	});

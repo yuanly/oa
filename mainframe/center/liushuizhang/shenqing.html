@@ -48,7 +48,7 @@
 </head>
 <body style="margin:0px;padding:0px">
 	<div class="ui-layout-west">
-		<div>
+		<div id="shenqing_liebiao_ctr">
 			<div><input type="checkbox" id="notfahuodan"/><label>非货单</label>&nbsp;&nbsp;&nbsp;&nbsp;<span class="plainBtn" id="xinzengshenqing" style="display:none">[新增付款申请]</span></div>
 			<table id="shenqingtable"  style="min-width:500px;">
 				<tr id="tableheader">
@@ -100,7 +100,7 @@
 					<tr>
 						<td style="font-size:30px" id="lc_bianhao">2</td>
 						<td><div><img id="lc_touxiang" src="/oa/logo/noface.jpg" style="width:48px;height:48px;border-radius:25px;"/></div></td>
-						<td><span style="font-size:12px" id="lc_mingchen">袁立宇</span>&nbsp;&nbsp;<span style="font-weight:bolder" id="lc_dongzuo">制单</span><div style="font-size:12px" id="lc_shijian">2013-10-3 15:59</div></td><td style="cursor:pointer"><img id="lc_anniu" src="../../../img/up.png" style="display:none"/></td>
+						<td nowrap><span style="font-size:12px" id="lc_mingchen">袁立宇</span>&nbsp;&nbsp;<span style="font-weight:bolder" id="lc_dongzuo">制单</span><div style="font-size:12px" id="lc_shijian">2013-10-3 15:59</div></td><td style="cursor:pointer"><img id="lc_anniu" src="../../../img/up.png" style="display:none"/></td>
 					</tr>
 					<tr id="lc_caozuo" style="display:none" >
 						<td colspan="4" style="text-align:center;border:1px solid #ddd">
@@ -123,16 +123,21 @@
 				<div style='background-color:#eee' id="detailheader"  class="detailheader">付款信息</div>
 				<div class="myInput" id="sq_fukuanxinxi" style="margin:5px;cursor:pointer">未付款！</div>
 			</div>
-			<div style='background-color:#eee' id="detailheader"  class="detailheader">付款申请明细&nbsp;&nbsp;&nbsp;&nbsp;
+			<div style='background-color:#eee' id="detailheader"  class="detailheader">
+				<nobr>
+					付款申请明细&nbsp;&nbsp;&nbsp;&nbsp;
 					<span id="bianji" class="plainBtn" style="display:none">[编辑]</span>
 					<span id="fangqi" class="plainBtn" style="display:none">[放弃]</span>&nbsp;&nbsp;
 					<span id="baocun" class="plainBtn" style="display:none">[保存]</span>
+				</nobr>
 			</div>
-			编号：<div class="myInput" id="sq_bianhao"></div>，
+			<nobr>
+			编号：<div class="myInput" id="sq_bianhao" style="cursor:pointer"></div>，
 			付款金额：<input type="text" class="plainInput" id="sq_jine" size=7 style="color:red;text-align:center;font-size:1.5em" readonly/>元，
 			科目：<input type="text" id="sq_kemu" class="plainInput" style="cursor:pointer" size=7 />
 			<div>收款人：<div class="myInput" id="sq_shoukuanren" style="min-width:120px;cursor:pointer"></div> </div>
 			<div style="margin-top:8px;margin-bottom:8px">收款账户：<div class="myInput" id="sq_shoukuanzhanghu" style="min-width:120px"></div></div>
+		</nobr>
 			<div style='background-color:#eee;min-width:10px;display:inline-block'>付款申请说明：</div>
 			<div id="fahuodanmingxi_ctr">
 				<div id="fahuodanmingxi">
