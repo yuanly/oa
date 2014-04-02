@@ -508,6 +508,10 @@
 		$("#ludan").hide();
 		shuaxindingdanliebiao();
 		liuyanElm.shuaxinliebiao({hostId:currYG._id,hostType:"yuangao"});
+		if("none"!=$("#shougao_ctr").css("display")){
+			$("#shougao_ctr").append($("#xianshi").detach());
+			$("#shougao_ctr img").css("max-width",$(window).width()/2+"px");
+		}
 	}
 	function feedDingdanDiv(elm,dingdan){
 			elm.data("dingdanId",dingdan._id);
@@ -691,7 +695,13 @@
 		$("#optioncontainer").hide(); 
 	}
 	var liuyanElm = $("#liuyan").liuyan({hostType:"yuangao",});
-	listYuangao(0,getUrl().showId);
+	if(getUrl().showId){//如果指定id，直接以坐标图片右边文字的形式显示指定的原稿，而不考虑列表。
+		$("#yuangaoliebao_ctr").hide();
+		$("#shougao_ctr").show();
+		showDetailById(getUrl().showId);
+	}else{
+		listYuangao(0,getUrl().showId);
+	}
 	var editor = $("#bianjikuang").myeditor(800,600).editorWritable();
 	
 		//设置头部点击处理（放到当前面板）

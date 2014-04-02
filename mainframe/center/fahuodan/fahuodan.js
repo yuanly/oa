@@ -311,6 +311,7 @@
 			});
 		});
 		if(huowu.length == 0){
+			tip($(this),"货物不能为空！",2000);
 			return;
 		}
 		currFHD.huowu = huowu;
@@ -329,6 +330,7 @@
 			currFHD.qitafei = qita;
 		}
 		currFHD.neirong = yuandanEditor.editorVal();
+		
 		postJson("fahuodan.php",{caozuo:"baocun",fahuodan:currFHD},function(res){
 			if(res.err){
 				tip($("#baocun"),res.err,1500);
@@ -338,7 +340,9 @@
 		});		
 	}
 	$("#baocun").click(baocun);
-	$("#fangqi").click(function(){showDetailById(currFHD._id);});
+	$("#fangqi").click(function(){
+		showDetailById(currFHD._id);
+	});
 	$("#shanchuqita").click(function(){
 		$(this).parents(".qitafeiyong").remove();
 		jisuanzonge();
@@ -805,7 +809,7 @@ function _hanshuku_(){}
 		$("#fangqi").hide();$("#baocun").hide();
 	}
 	
-	function edit(){
+	function edit(event){
 		editing = true;
 		$(".myinput").attr("contenteditable","true");
 		$("#fhd_zhuanzhangliushui").removeAttr("contenteditable");		
@@ -843,6 +847,7 @@ function _hanshuku_(){}
 			}	
 		});
 		$(".shanchudingdanhuowu").show();
+		$("#yuandan_ctr").show();
 	}
 	function hwid2int(hwid){
 		return parseInt(hwid.substr(hwid.indexOf("HW")+2));
@@ -973,6 +978,12 @@ function _hanshuku_(){}
 		jisuanzonge();
 		liuyanElm.shuaxinliebiao({hostId:currFHD._id,hostType:"fahuodan"});
 		readOnly();
+		if(getUrl().showId){
+			$("#yuandan_ctr_ctr").show();
+			$("#yuandan_ctr").hide();
+			$("#yuandan_ctr_ctr").html(currFHD.neirong);
+			$("#yuandan_ctr_ctr img").css("max-width",$(window).width()/2+"px");
+		}
 	}
 	
 	function showDetailById(_id){
@@ -1148,11 +1159,11 @@ function _hanshuku_(){}
 	var tmpl_shuliangjianshu = $("#shuliangjianshu").clone(true);
 	var tmpl_qitafeiyong = $(".qitafeiyong").detach();
 	
-	var liuyanElm = $("#liuyan").liuyan({hostType:"fahuodan",});
-	
 	var yuandanEditor = $("#yuandan").myeditor(700,300);
 	yuandanEditor.editorReadonly();
-	 	
+	var liuyanElm = $("#liuyan").liuyan({hostType:"fahuodan",});
+	
+		 	
 	var cmd = getUrl().cmd?getUrl().cmd:"";
 	if("daijiedan" == cmd){
 		$('#currLocation', window.parent.document).text("发货单/待接单");
@@ -1182,7 +1193,14 @@ function _hanshuku_(){}
 		$("#shangchuanfahuodan").show();
 		$('#currLocation', window.parent.document).text("发货单/查询");
 	}
-	listfahuodan(0,getUrl().showId);
+	
+	if(getUrl().showId){
+		$("#fahuodanliebiao_ctr").hide();
+		$("#yuandan_ctr_ctr").show();
+		showDetailById(getUrl().showId);
+	}else{
+		listfahuodan(0,getUrl().showId);
+	}
 
 //设置头部点击处理（放到当前面板）
 	$("#tableheader").click(function(){
