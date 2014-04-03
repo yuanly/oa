@@ -83,6 +83,7 @@ if("liebiao" == $param["caozuo"]){
 	echo jsonEncode($dd);
 }else if("quxiaoshenqing" == $param["caozuo"]){
 	$obj = coll("dingdan")->findOne(array("_id"=>$param["_id"],"zhuangtai"=>"申请审核"));
+	
 	if(empty($obj)){
 		echo '{"success":true,"err":"后台数据异常，请刷新界面！"}';
 		return;
@@ -90,6 +91,7 @@ if("liebiao" == $param["caozuo"]){
 	array_pop($obj["liucheng"]);
 	$lastLC = end($obj["liucheng"]);
 	$obj["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
+
 	coll("dingdan")->save($obj);
 	statExpired();
 	echo jsonEncode($obj);

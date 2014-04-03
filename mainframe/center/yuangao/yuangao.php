@@ -54,7 +54,9 @@ if("shangchuan" == $param["caozuo"]){
 	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请审结","time"=>time());
 	coll("yuangao")->update(array("_id"=>$param["_id"],"jiegaozhe"=>$_SESSION["user"]["_id"],"zhuangtai"=>array('$in'=>array("接稿","作废")))
 			,array('$set'=>array("zhuangtai"=>$liucheng["dongzuo"]),'$push'=>array("liucheng"=>$liucheng)));			
-	coll("dingdan")->update(array("yuangao"=>$param["_id"],"zhuangtai"=>"录单"),array('$set'=>array("zhuangtai"=>"申请审核")),array("multiple"=>true));
+	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请审核","time"=>time());
+	coll("dingdan")->update(array("yuangao"=>$param["_id"],"zhuangtai"=>"录单"),
+			array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])),array("multiple"=>true));
 	statExpired();
 	echo '{"success":true}';
 }else if("huitui" == $param["caozuo"]){
