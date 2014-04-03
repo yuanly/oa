@@ -124,7 +124,7 @@
 			编号：<div class="myinput" style="cursor:pointer" id="hg_zhuangguidan">&nbsp;</div>，
 			柜号：<div class="whitespaceinput" style="min-width:30px" id="hg_guihao"></div>，
 			装柜日期：<div class="whitespaceinput" style="width:100px" id="hg_zhuangguiriqi"></div>
-			<span class="tip" title="你可以选一个没装柜（日期）的货柜，但是等装完柜之后装柜信息不会自动不齐，需要你重新选一次。">tip</span>
+			<span class="tip" title="你可以选一个没装柜（日期）的货柜，但是等装完柜之后装柜信息不会自动补齐，需要你重新选一次。">tip</span>
 		</nobr>
 		
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>关单</div>
@@ -180,6 +180,7 @@
 			</table>
 			<span class="plainBtn" title="添加新行" id="fp_tianjiaxinhang">[+]</span>
 			<div style="font-weight:bold;margin-top:10px">
+				<nobr>
 				待开票金额：<div class="whitespaceinput" id="fp_daikaijine" style="min-width:30px;" title="关单金额按汇率折算后减去全部发票金额"></div>
 				（元，按汇率：<div class="myinput" style="text-align:center;min-width:30px;" id="fp_huilv" title="一美元兑换人民币，缺省值在‘其它/公司资料’设置">6.1</div>），
 				待开票数量：<div class="whitespaceinput" id="fp_daikaimishu" style="min-width:30px;"></div>（米）
@@ -190,12 +191,15 @@
 基于以上前提得出根据美金换算发票总额公式为：发票总额=关单金额*汇率*（1+增值税率）/（1+增值税率-退税率）
 代开票金额就是这么算的，但这个公式中汇率是固定的，而实际操作中一个关单的美金分多批汇进，
 会有多种汇率，所以这个公式计算结果跟实际情况总会有偏差，这个代开票金额不一定要控制为0，偏差不大即可。">tip</span>
+</nobr>
 			</div>
 		</div>
 		<div style="margin-top:10px;">
+			<nobr>
 		（按增值税率：<div class="myinput" id="zengzhishuilv" style="min-width:30px"></div>%，
 			退税率：<div class="myinput" id="tuishuilv" style="min-width:30px"></div>%，
 			发票总额：<div class="whitespaceinput" id="fapiaozonge" style="min-width:30px"></div>元）
+		</nobr>
 		</div>
 		<div  style='background-color:#eee;width:150px;margin-top:10px'>核销</div>
  		<nobr>
