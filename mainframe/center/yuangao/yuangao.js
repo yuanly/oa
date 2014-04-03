@@ -347,10 +347,14 @@
 		var that = $(this);
 		that.data("waiting",true);
 		postJson("dingdan.php",{caozuo:"ludan",dingdan:dingdan},function(res){
-			that.data("waiting",false);
-			tip(that,"成功提交订单！",1500); 
-			shuaxindingdanliebiao();
-			$("#ludan").hide();
+			if(res.err){
+				tip($("#ld_tijiaodingdan"),res.err,1500);
+			}else{
+				that.data("waiting",false);
+				tip(that,"成功提交订单！",1500); 
+				shuaxindingdanliebiao();
+				$("#ludan").hide();
+			}
 		});
 	}
 	$("#ld_tijiaodingdan").click(tijiaodingdan);
