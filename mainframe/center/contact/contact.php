@@ -11,7 +11,7 @@ if(isset($contact["_id"])){//修改
 	$old = coll("contact")->findOne(array("_id"=>$contact["_id"]));
 	coll("contact")->save($contact);//在客户端确保对象各属性被完整回传
 	//需要检查 mingchen py quyu 是否发生了改变，若变，则需要更新关联的样板和订单。
-	if(!empty($old)){
+	if(!empty($old) && $old["leixing"] == "商家"){
 		/*这个操作不是很妥，可能消耗很大！但要实现在其他表里能按这些属性搜索，貌似没有更好的办法。*/
 		if($old["mingchen"] != $contact["mingchen"] || $old["quyu"] != $contact["quyu"]){
 			$obj = array("_id"=>$old["_id"],"mingchen"=>$contact["mingchen"],"py"=>$contact["py"],"quyu"=>$contact["quyu"]);
