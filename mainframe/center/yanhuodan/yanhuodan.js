@@ -619,6 +619,8 @@
 		if(gaizhuangtai){
 			$("#selhuowutable").find(".zhuangtai").removeAttr("readonly");
 			$("#selhuowutable").find(".clz_zhu").show();
+			$("#yuandan_ctr").show();
+ 			yuandanEditor.editorWritable();
 			return;
 		}
 		$(".myinput").attr("contenteditable","true");

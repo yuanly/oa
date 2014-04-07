@@ -22,6 +22,8 @@ if(empty($stat) || $stat["expired"] ){//更新stat
 	$fukuanshenqing = coll("fahuodan")->count(array("typpe"=>"shenqing","zhuangtai"=>array('$in'=>array("制单","申请对单"))));
 	$jizhang = coll("liushuizhang")->count(array("zhuangtai"=>array('$in'=>array("记账","付款","作废","申请复核"))));
 	$tuishui = coll("tuishui")->count(array("zhuangtai"=>array('$in'=>array("新建","装柜","报关","付款","开票","单证","退税","申请复核"))));
+	$cur = coll("news")->find(array(),array("title"=>1))->sort(array("last"=>-1))->limit(3);
+	$news = c2a($cur);
 	$stat = array("yuangao"=>$yuangao,
 								"dingdan"=>$dingdan,
 								"dingdan2"=>$dingdan2,
@@ -34,6 +36,7 @@ if(empty($stat) || $stat["expired"] ){//更新stat
 								"fukuanshenqing"=>$fukuanshenqing,
 								"jizhang"=>$jizhang,
 								"tuishui"=>$tuishui,
+								"news"=>$news,
 								"version"=>time(),
 								"expired"=>false,
 								"_id"=>"stat");

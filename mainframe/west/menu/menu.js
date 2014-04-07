@@ -5,6 +5,9 @@ $(function(){
 		heightStyle:"content"
 	});
 	
+	$("#newstable").click(function(){
+		window.open("../../center/news/news.html","contentpane");
+	});
 	var version = 0;
 	function stat(){
 		postJson("stat.php",{version:version},function(res){//·þÎñÆ÷
@@ -21,10 +24,19 @@ $(function(){
 				$("#fukuanshenqingtip").text(res.fukuanshenqing>0?res.fukuanshenqing:"-");
 				$("#jizhangtip").text(res.jizhang>0?res.jizhang:"-");
 				$("#tuishuitip").text(res.tuishui>0?res.tuishui:"-");
+				if(res.news[0]){
+					$("#n0").text(res.news[0].title);
+					if(res.news[1]){
+						$("#n1").text(res.news[1].title);
+						if(res.news[2]){
+							$("#n2").text(res.news[2].title);
+						}
+					}
+				}
 				version = res.version;
 			}
 		});
 	}
 	stat();
-	setInterval(stat,3000);
+	setInterval(stat,15000);
 });

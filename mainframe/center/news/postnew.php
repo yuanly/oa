@@ -14,6 +14,7 @@ $new["read"] = 0;
 $new["reply"] = 0;
 $ret = newsColl()->save($new);
 if(!$ret["err"]){
+	statExpired();
 	echo '{"success":true}';
 }else{
 	echo '{"success":false,"err":"'.$ret["err"].'"}';
