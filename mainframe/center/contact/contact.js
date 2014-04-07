@@ -391,7 +391,7 @@ $(function(){
 	}
 	$("#fangqi").click(function(){
 		if("【新增】" != $("#bianhao").text().trim()){
-			showDetail($("#bianhao").text().trim());	
+			showDetail($("#bianhao").text().trim());
 		}else{
 			$("#newContact").click();
 		}

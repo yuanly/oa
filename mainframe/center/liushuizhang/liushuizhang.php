@@ -32,7 +32,12 @@ if("xinjian" == $param["caozuo"]){
 	}
 	$zhongtai = coll("config")->findOne(array("_id"=>"zhongtai"));
 	$liushuizhang["fukuanfang"] = $zhongtai["zhongtai"]["_id"];
-	$liushuizhang["fukuanfangname"] = $zhongtai["zhongtai"]["mingchen"];
+	$liushuizhang["fukuanfangname"] = $zhongtai["zhongtai"]["mingchen"];	
+	$sq = coll("fahuodan")->findOne(array("_id"=>$shenqings[0]));
+	if(!empty($sq)){
+		$liushuizhang["shoukuanfang"] = $sq["gonghuoshang"]["_id"];
+		$liushuizhang["shoukuanfangname"] = $sq["gonghuoshang"]["mingchen"];
+	}
 	$liushuizhang["fukuanriqi"] = "";
 	$liushuizhang["yifu"] = false;
 	$liushuizhang["shouxufei"]=0;
