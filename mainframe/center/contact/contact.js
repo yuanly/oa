@@ -307,7 +307,7 @@ $(function(){
 		}
 		contact.py = makePy(contact.mingchen);
 		if(contact.shangjia && !contact.shangjia.py){
-			contact.shangjia.py = makPy(contact.shangjia.mingchen)
+			contact.shangjia.py = makePy(contact.shangjia.mingchen)
 		}
 		if("【新增】" == $("#bianhao").text()){		
 			postJson("contact.php",contact,function(res){
