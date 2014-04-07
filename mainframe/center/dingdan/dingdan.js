@@ -545,7 +545,7 @@ function _hanshuku_(){}
 			return "#FF4500";
 		}
 		if(status == "下单申请"){//棕色
-			return "#FF6347";
+			return "#FFA347";
 		}
 		if(status == "下单审核"){//粉红
 			return "#FFB6C1";

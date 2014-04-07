@@ -137,7 +137,7 @@ if("xinjian" == $param["caozuo"]){
 	}else{
 		$skjine = $ls["zhuanrujine"];
 	}
-	$ls["shoukuanzhanghaoyue"] = getBalance($ls["fukuanfang"],$ls["fukuanzhanghao"])+$skjine;
+	$ls["shoukuanzhanghaoyue"] = getBalance($ls["shoukuanfang"],$ls["shoukuanzhanghao"])+$skjine;
 	$ls["lastupdatetime"] = time();
 	coll("liushuizhang")->save($ls);
 	//更新所有关联的付款申请

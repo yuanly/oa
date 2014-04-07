@@ -167,14 +167,14 @@ if("xinjian" == $param["caozuo"]){
 }
 
 function getBalance($lxrId,$zhanghao){
-	$cur = coll("liushuizhang")->find(array('$or'=>array(array("fukuanfang"=>$lxrId,"fukuanfangzhanghao"=>$zhanghao),array("shoukuanfang"=>$lxrId,"shoukuanfangzhanghao"=>$zhanghao))))->sort(array("lastupdatetime"=>-1))->limit(1);
+	$cur = coll("liushuizhang")->find(array('$or'=>array(array("fukuanfang"=>$lxrId,"fukuanzhanghao"=>$zhanghao),array("shoukuanfang"=>$lxrId,"shoukuanzhanghao"=>$zhanghao))))->sort(array("lastupdatetime"=>-1))->limit(1);
 	if($cur->hasNext()){
 		$liushui = $cur->getNext();
 	}else{
 		return 0;
 	}
 	if(isset($liushui["lastupdatetime"])){
-		if($liushui["fukuanfang"] == $lxrId && $liushui["fukuanfangzhanghao"] == $zhanghao){
+		if($liushui["fukuanfang"] == $lxrId && $liushui["fukuanzhanghao"] == $zhanghao){
 			return $liushui["fukuanzhanghaoyue"];
 		}else{
 			return $liushui["shoukuanzhanghaoyue"];
