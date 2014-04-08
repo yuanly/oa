@@ -55,6 +55,7 @@ if("jiedan" == $param["caozuo"]){
 	$count = coll("dingdan")->count(array("_id"=>array('$regex'=>"^".$dingdan["_id"])));
 	$dingdan["_id"] = $dingdan["_id"]."_".$count;//订单一旦被接单只能作废不能删除
 	$dingdan["liucheng"] = array(array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time()));
+	$dingdan["zhuangtai"] = "接单";
 	coll("dingdan")->save($dingdan);
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("zidan"=>$dingdan["_id"])));
 	statExpired();
@@ -173,7 +174,7 @@ if("jiedan" == $param["caozuo"]){
 }else if("lianxiren" == $param["caozuo"]){
 	$query  = array("leixing"=>"个人");
 	if(""!=$param["option"]){
-		$query = array("leixing"=>"个人","mingchen"=>array('$regex'=>$param["option"]));
+		$query = array("leixing"=>"个人","py"=>strtoupper($param["option"]));
 	}
 	$cur = coll("contact")->find($query)->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);

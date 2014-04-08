@@ -29,9 +29,9 @@ if("shangchuan" == $param["caozuo"]){
 	statExpired();
 	echo '{"success":true}';
 }else if("zuofei" == $param["caozuo"]){
-	$count = coll("dingdan")->count(array("yuangao"=>$param["_id"],"zhuangtai"=>array('$ne'=>"作废")));
+	$count = coll("dingdan")->count(array("yuangao"=>$param["_id"],"liucheng.dongzuo"=>array('$ne'=>"作废")));
 	if($count>0){
-		echo '{"success":false}';
+		echo '{"success":true,"err":"必须先把该原稿的所有订单删除或作废才能作废原稿！"}';
 		exit;
 	}
 	coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"接稿"),array('$set'=>array("zhuangtai"=>"作废")));

@@ -134,7 +134,11 @@
 	function cz_zuofei(){
 		var _id = $("#liucheng").data("_id");
 		postJson("yuangao.php",{caozuo:"zuofei",_id:_id},function(res){
-			listYuangao(0);
+			if(res.err){
+				tip($("#cz_zuofei"),res.err,1500);
+			}else{
+				listYuangao(0);
+			}
 		});
 	}
 	$("#cz_zuofei").click(cz_zuofei);
