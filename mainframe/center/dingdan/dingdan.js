@@ -535,7 +535,7 @@
 function _hanshuku_(){}
 	function statusColor(status,color){
 		//录单 审核 接单（作废 接管 慢单/取消慢单） 下单申请（回退） 下单审核（打印 回退） 下单（回退） 发货 审结（回退） 作废（审结 回退） 
-		if(status == "录单"){//浅蓝
+		if(status == "录单"||status == "申请审核"){//浅蓝
 			return "#ADD8E6";
 		}
 		if(status == "审核"){//绿色
@@ -998,7 +998,7 @@ function _hanshuku_(){}
 	
 	///////////////////////////////初始化/////////////////////////////////////////////
 	function _chushihua_(){} 
-	var limit=20;
+	var limit=30;
 	var currDD = null;
 	var kebianji=false;
 	var editing = false;
