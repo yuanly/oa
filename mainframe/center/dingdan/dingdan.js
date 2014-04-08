@@ -674,7 +674,11 @@ function _hanshuku_(){}
 					}
 					tr.find("#td_yangban").html(yb).attr("title",$(yb).text());
 				}
-				tr.find("#td_zhuangtai").text(dingdan.zhuangtai);				
+				if(dingdan.zhuangtai.length>2){
+					tr.find("#td_zhuangtai").html("<font style='font-size:0.8em'>"+dingdan.zhuangtai+"</font>");
+				}else{
+					tr.find("#td_zhuangtai").text(dingdan.zhuangtai);
+				}
 				tr.find("#td_gendanyuan").text(dingdan.gendanyuan?getUser(dingdan.gendanyuan).user_name:"");
 				if(dingdan.gonghuoshang){
 					tr.find("#td_gonghuoshang").text(dingdan.gonghuoshang.mingchen).attr("title",dingdan.gonghuoshang.mingchen);
