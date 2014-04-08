@@ -672,7 +672,7 @@ function _hanshuku_(){}
 						yb = dingdan.yangban.zhongguoxinghao;
 					}else{
 						//yb = "-"+yb;
-						yb= "<font style='color:grey;font-size:0.8em'>("+(dingdan.taiguoyangban?dingdan.taiguoyangban:"-")+")</font>";
+						yb= "("+(dingdan.taiguoyangban?dingdan.taiguoyangban:"-")+")";
 					}
 					//tr.find("#td_yangban").html(yb).attr("title",$(yb).text());
 					tr.find("#td_yangban").html(yb);
