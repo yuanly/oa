@@ -676,7 +676,10 @@ function _hanshuku_(){}
 				}
 				tr.find("#td_zhuangtai").text(dingdan.zhuangtai);				
 				tr.find("#td_gendanyuan").text(dingdan.gendanyuan?getUser(dingdan.gendanyuan).user_name:"");
-				tr.find("#td_gonghuoshang").text(dingdan.gonghuoshang?dingdan.gonghuoshang.mingchen:"");
+				if(dingdan.gonghuoshang){
+					tr.find("#td_gonghuoshang").text(dingdan.gonghuoshang.mingchen).attr("title",dingdan.gonghuoshang.mingchen);
+				}
+				//tr.find("#td_gonghuoshang").text(dingdan.gonghuoshang?dingdan.gonghuoshang.mingchen:"");
 				//tr.find("#td_xiadanriqi").text(dingdan.xiadanshijian?new Date(dingdan.xiadanshijian*1000).format("yy/MM/dd hh:mm"):"");
 				tr.find("#td_quyu").text(dingdan.gonghuoshang?dingdan.gonghuoshang.quyu:"");
 				tr.find("#td_man").text(dingdan.mandan?"慢":"");
