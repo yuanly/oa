@@ -666,13 +666,16 @@ function _hanshuku_(){}
 				tr.find("#td_taiguodanhao").text((dingdan.taiguoyuangao?dingdan.taiguoyuangao:"-")+"("+(dingdan.taiguobianhao?dingdan.taiguobianhao:"-")+")");
 				tr.find("#td_kehu").text(dingdan.kehu);
 				if(dingdan.yangban){
-					var yb = "<font style='color:grey;font-size:0.8em'>("+(dingdan.taiguoyangban?dingdan.taiguoyangban:"-")+")</font>";
+					var yb = "";//"<font style='color:grey;font-size:0.8em'>("+(dingdan.taiguoyangban?dingdan.taiguoyangban:"-")+")</font>";
 					if(dingdan.yangban.zhongguoxinghao){
-						yb = dingdan.yangban.zhongguoxinghao+yb;
+						//yb = dingdan.yangban.zhongguoxinghao+yb;
+						yb = dingdan.yangban.zhongguoxinghao;
 					}else{
-						yb = "-"+yb;
+						//yb = "-"+yb;
+						yb= "<font style='color:grey;font-size:0.8em'>("+(dingdan.taiguoyangban?dingdan.taiguoyangban:"-")+")</font>";
 					}
-					tr.find("#td_yangban").html(yb).attr("title",$(yb).text());
+					//tr.find("#td_yangban").html(yb).attr("title",$(yb).text());
+					tr.find("#td_yangban").html(yb);
 				}
 				if(dingdan.zhuangtai.length>2){
 					tr.find("#td_zhuangtai").html("<font style='font-size:0.8em'>"+dingdan.zhuangtai+"</font>");
