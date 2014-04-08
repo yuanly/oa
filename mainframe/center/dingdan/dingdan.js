@@ -681,7 +681,11 @@ function _hanshuku_(){}
 				}
 				tr.find("#td_gendanyuan").text(dingdan.gendanyuan?getUser(dingdan.gendanyuan).user_name:"");
 				if(dingdan.gonghuoshang){
-					tr.find("#td_gonghuoshang").text(dingdan.gonghuoshang.mingchen).attr("title",dingdan.gonghuoshang.mingchen);
+					if(dingdan.gonghuoshang.mingchen.length>10){
+						tr.find("#td_gonghuoshang").html("<font style='font-size:0.8em'>"+dingdan.gonghuoshang.mingchen+"</font>").attr("title",dingdan.gonghuoshang.mingchen);
+					}else{
+						tr.find("#td_gonghuoshang").text(dingdan.gonghuoshang.mingchen).attr("title",dingdan.gonghuoshang.mingchen);
+					}					
 				}
 				//tr.find("#td_gonghuoshang").text(dingdan.gonghuoshang?dingdan.gonghuoshang.mingchen:"");
 				//tr.find("#td_xiadanriqi").text(dingdan.xiadanshijian?new Date(dingdan.xiadanshijian*1000).format("yy/MM/dd hh:mm"):"");
