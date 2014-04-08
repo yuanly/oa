@@ -1326,7 +1326,7 @@ catch(e){
  	   		}
  	 };
  	var that = this;
- 	this.empty().css("width","100%").attr("align","center").css("margin-top","80px").css("border","1px solid gray");
+ 	this.empty().css("width","100%").attr("align","center").css("margin-top","80px").css("border","1px solid gray");//.css("box-shadow","5px 5px 5px #888888");
  	this.append("<div><span id='ly_liuyan' class='plainBtn'>留言</span></div>");
  	this.append("<div id='ly_editor' style='display:none'><textarea></textarea></div>");
  	this.append("<table id='ly_liebiao' style='font-size:14px;color:#008000;margin:10px'></table>");
