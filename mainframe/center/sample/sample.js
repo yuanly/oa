@@ -127,12 +127,24 @@ $(function(){
 				tr.find("#td_bianhao").text(sample.index);
 				tr.find("#td_taiguoxinghao").text(sample.taiguoxinghao);
 				var jiage = jiages2str(sample.jiage);
-				tr.find("#td_jiage").text(jiage).attr("title",jiage);
+				if(jiage.length>15){
+					tr.find("#td_jiage").html("<font style='font-size:0.8em'>"+jiage+"</font>").attr("title",jiage);
+				}else{
+					tr.find("#td_jiage").text(jiage).attr("title",jiage);
+				}
 				tr.find("#td_danwei").text(sample.danwei);
-				tr.find("#td_zhongguoxinghao").text(sample.zhongguoxinghao);
+				if(sample.zhongguoxinghao && sample.zhongguoxinghao.length>15){
+					tr.find("#td_zhongguoxinghao").html("<font style='font-size:0.8em'>"+sample.zhongguoxinghao+"</font>");
+				}else{
+					tr.find("#td_zhongguoxinghao").text(sample.zhongguoxinghao);
+				}
 				tr.find("#td_yijiariqi").text(sample.yijiariqi);
 				if(sample.shangjia){
-					tr.find("#td_shangjia").text(sample.shangjia.mingchen);
+					if(sample.shangjia.mingchen.length>10){
+						tr.find("#td_shangjia").html("<font style='font-size:0.8em'>"+sample.shangjia.mingchen+"</font>");
+					}else{
+						tr.find("#td_shangjia").text(sample.shangjia.mingchen);
+					}
 				}
 				tr.css("background-color",toggle("#fff","#eee"));
 				if(sample.zhuangtai == "停产"){
