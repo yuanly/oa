@@ -60,7 +60,9 @@
 	$("#th_quyu").bind("input",function(){listDingdan(0);});
 	$("#th_man").bind("input",function(){listDingdan(0);});
 	$("#th_bianhao").datepicker().change(function(){
-		$(this).val("DD"+date2id($(this).val()));
+		if($(this).val().indexOf("DD")<0){			
+			$(this).val("DD"+date2id($(this).val()));
+		}
 		listDingdan(0);
 	});
 	
@@ -130,9 +132,13 @@
 	}
 	$(".tr_dingdan").click(sel_dingdan);
 	function sel_lianxiren(event){
+		if(!currDD.gonghuoshang){
+			tip($(this),"请先通过设置样板来指定商家，再来设置联系人！",1500);
+			return;
+		}
 		var limit = 20;
 		setSelector(event,function(page,option,callback){
-				postJson("dingdan.php",{"caozuo":"lianxiren",offset:page*limit,limit:limit,option:option.trim()},function(lianxirens){
+				postJson("dingdan.php",{"caozuo":"lianxiren",shangjiaId:currDD.gonghuoshang._id,offset:page*limit,limit:limit,option:option.trim()},function(lianxirens){
 					callback(lianxirens);
 				});
 			},["_id","taiguoxinghao","mingchen","shangjia.mingchen"],function(lianxiren){//选择回调
@@ -1031,15 +1037,24 @@ function _hanshuku_(){}
 		$("#th_zhuangtai").attr("readonly","readonlly");
 		$(".jiedan").show();tr_dingdan.find(".jiedan").show();
 	}else if("wodexindan" == cmd){
-		$('#currLocation', window.parent.document).text("订单/我的新单");
+		$('#currLocation', window.parent.document).text("订单/我的未审结新单");
+		$("#th_man").attr("readonly","readonlly");
+		$("#th_zhuangtai").attr("readonly","readonlly");
+	}else if("wodeweixiadan" == cmd){
+		$('#currLocation', window.parent.document).text("订单/我的未下单新单");
+		$("#th_man").attr("readonly","readonlly");
+		$("#th_zhuangtai").attr("readonly","readonlly");
+	}else if("wodeweifahuo" == cmd){
+		$('#currLocation', window.parent.document).text("订单/我的未发货新单");
+		$("#th_man").attr("readonly","readonlly");
+		$("#th_zhuangtai").attr("readonly","readonlly");
+	}else if("wodeqita" == cmd){
+		$('#currLocation', window.parent.document).text("订单/我的其它新单");
 		$("#th_man").attr("readonly","readonlly");
 		$("#th_zhuangtai").attr("readonly","readonlly");
 	}else if("wodemandan" == cmd){
 		$('#currLocation', window.parent.document).text("订单/我的慢单");
 		$("#th_man").attr("readonly","readonlly");
-		$("#th_zhuangtai").attr("readonly","readonlly");
-	}else if("wodeweifahuo" == cmd){
-		$('#currLocation', window.parent.document).text("订单/我的未发货");
 		$("#th_zhuangtai").attr("readonly","readonlly");
 	}else if("wodedaishenjie" == cmd){
 		$('#currLocation', window.parent.document).text("订单/我的待审结");

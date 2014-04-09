@@ -174,7 +174,10 @@ if("jiedan" == $param["caozuo"]){
 }else if("lianxiren" == $param["caozuo"]){
 	$query  = array("leixing"=>"个人");
 	if(""!=$param["option"]){
-		$query = array("leixing"=>"个人","py"=>strtoupper($param["option"]));
+		$query["py"]=strtoupper($param["option"]);
+	}
+	if(!empty($param["shangjiaId"])){
+		$query["shangjia._id"] = $param["shangjiaId"];
 	}
 	$cur = coll("contact")->find($query)->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);

@@ -22,16 +22,21 @@ if(isset($param["_id"])){//
 		$query["zhuangtai"] = array('$ne'=>"审结");
 		$query["mandan"] = false;
 		$query["gendanyuan"] = $_SESSION["user"]["_id"];
-	}else if("wodemandan" == $cmd){
-		$query["zhuangtai"] = array('$ne'=>"审结");
-		$query["mandan"] = true;
+	}else if("wodeweixiadan" == $cmd){
+		$query["zhuangtai"] = "接单";
+		$query["mandan"] = false;
 		$query["gendanyuan"] = $_SESSION["user"]["_id"];
 	}else if("wodeweifahuo" == $cmd){
 		$query["zhuangtai"] = "下单";
 		$query["mandan"] = false;
 		$query["gendanyuan"] = $_SESSION["user"]["_id"];
-	}else if("wodedaishenjie" == $cmd){
-		$query["zhuangtai"] = array('$in'=>array("作废","发货"));
+	}else if("wodeqita" == $cmd){
+		$query["zhuangtai"] = array('$in'=>array("下单申请","下单审核","发货","作废","申请审结"));
+		$query["mandan"] = false;
+		$query["gendanyuan"] = $_SESSION["user"]["_id"];
+	}else if("wodemandan" == $cmd){
+		$query["zhuangtai"] = array('$ne'=>"审结");
+		$query["mandan"] = true;
 		$query["gendanyuan"] = $_SESSION["user"]["_id"];
 	}else if("daixiadanshenhe" == $cmd){
 		$query["zhuangtai"] = "下单申请";

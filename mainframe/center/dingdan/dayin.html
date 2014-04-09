@@ -74,7 +74,7 @@
 						}
 					});
 					each(user.dianhualiebiao,function(i,dianhua){
-						if(dianhua.indexOf("fax")>=0){
+						if(dianhua.indexOf("fax")>=0||dianhua.indexOf("传真")>=0){
 							fax = getPhoneNumber(dianhua);
 							if(fax){
 								$("#lianxirenchuanzhen").text(fax);
@@ -93,7 +93,7 @@
 								}
 							});
 							each(user.dianhualiebiao,function(i,dianhua){
-								if(dianhua.indexOf("fax")>=0){
+								if(dianhua.indexOf("fax")>=0||dianhua.indexOf("传真")>=0){
 									fax = getPhoneNumber(dianhua);
 									if(fax){
 										$("#lianxirenchuanzhen").text(fax);
