@@ -157,9 +157,14 @@
 				});
 			},["index","taiguoxinghao","zhongguoxinghao","danwei","shangjia.mingchen","zhuangtai"],function(yangban){
 				currDD.yangban = yangban;
-				currDD.gonghuoshang = {_id:yangban.shangjia._id,mingchen:yangban.shangjia.mingchen,quyu:yangban.shangjia.quyu};
-				$(this).val(yangban.zhongguoxinghao+"("+(yangban.taiguoxinghao?yangban.taiguoxinghao:"-")+"/"+(currDD.taiguoyangban?currDD.taiguoyangban:"-")+")");
-				$("#dd_gonghuoshang").val(yangban.shangjia.mingchen);
+				$(this).html(yangban.zhongguoxinghao+"<font style='color:grey;font-size:0.8em'>("+(yangban.taiguoxinghao?yangban.taiguoxinghao:"-")+"/"+(currDD.taiguoyangban?currDD.taiguoyangban:"-")+")</font>");
+				if(yangban.shangjia){
+					currDD.gonghuoshang = {_id:yangban.shangjia._id,mingchen:yangban.shangjia.mingchen,quyu:yangban.shangjia.quyu};
+					$("#dd_gonghuoshang").val(yangban.shangjia.mingchen);
+				}else{
+					currDD.gonghuoshang = undefined;
+					$("#dd_gonghuoshang").val("");
+				}
 				$(".unit").text(yangban.danwei);
 			},(currDD.yangban)?currDD.yangban.zhongguoxinghao:"");
 	}
@@ -367,7 +372,7 @@
 			return;
 		}
 		if(!currDD.gonghuoshang){
-			tip($(this),"下单前必须先指定具体样板！",1500);
+			tip($(this),"下单前必须先指定具体样板及供货商！",1500);
 			return;
 		}
 		if(!form2Huowus()){
@@ -416,7 +421,7 @@
 		if(ret == false){
 			return;
 		}
-		if("" == $("#zonge").text().trim() || $("#dd_gonghuoshang").val().trim() == "" || $("#dd_yangban").val().trim() == ""){
+		if("" == $("#zonge").text().trim() || $("#dd_gonghuoshang").val().trim() == "" || $("#dd_yangban").text().trim() == ""){
 			tip($(this),"订单不完整，无法下单！",1500);
 			return;
 		}
@@ -760,10 +765,10 @@ function _hanshuku_(){}
 		$("#dd_yuangao").text(dd.yuangao+"/"+dd.taiguoyuangao+"("+dd.taiguobianhao+")");
 		$("#dd_kehu").text(dd.kehu);
 		if(dd.yangban){
-			var yb = (dd.yangban.zhongguoxinghao?dd.yangban.zhongguoxinghao:"-")+"("+(dd.yangban.taiguoxinghao?dd.yangban.taiguoxinghao:"-")+"/"+(dd.taiguoyangban?dd.taiguoyangban:"-")+")"
-			$("#dd_yangban").val(yb);
+			var yb = (dd.yangban.zhongguoxinghao?dd.yangban.zhongguoxinghao:"-")+"<font style='color:grey;font-size:0.8em'>("+(dd.yangban.taiguoxinghao?dd.yangban.taiguoxinghao:"-")+"/"+(dd.taiguoyangban?dd.taiguoyangban:"-")+")</font>"
+			$("#dd_yangban").html(yb);
 		}else{
-			$("#dd_yangban").val("");
+			$("#dd_yangban").html("&nbsp;");
 		}
 		if(dd.gonghuoshang){
 			$("#dd_gonghuoshang").val(dd.gonghuoshang.mingchen).css("cursor","pointer");

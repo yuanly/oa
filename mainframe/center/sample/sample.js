@@ -205,6 +205,11 @@ $(function(){
 		$("#bianhao").vals(yangban.index);
 		$("#taiguoxinghao").vals(yangban.taiguoxinghao);
 		$("#zhongguoxinghao").vals(yangban.zhongguoxinghao);
+		if(yangban.zhongguoxinghao){
+			$("#zhongguoxinghao").text(yangban.zhongguoxinghao);
+		}else{
+			$("#zhongguoxinghao").html("&nbsp;");
+		}
 		$("#jiage").val(jiages2str(yangban.jiage));
 		if(!$("#jiage").val()){
 			$("#jiage").val("【 元】");
@@ -254,7 +259,7 @@ $(function(){
 		}
 		yangban.index = $("#xiangdan #bianhao").val().trim().toUpperCase();
 		yangban.taiguoxinghao = $("#xiangdan #taiguoxinghao").val().trim().toUpperCase();
-		yangban.zhongguoxinghao = $("#xiangdan #zhongguoxinghao").val().trim().toUpperCase();
+		yangban.zhongguoxinghao = $("#xiangdan #zhongguoxinghao").text().trim().toUpperCase();
 		yangban.jiage = getPrices($("#xiangdan #jiage").val());
 		yangban.danwei = $("#xiangdan #danwei").val().trim();
 		var shangjia = $("#xiangdan #shangjia").data("shangjia");
@@ -274,6 +279,7 @@ $(function(){
 		$("#bianji").hide();
 		$("#tijiao").show();
 		$("#jiage").val($("#jiage").val()+" 【元】 【元】 【元】");
+		$("#zhongguoxinghao").attr("contenteditable","true");
 	}
 	//进入只读状态
 	function zhidu(){
@@ -281,6 +287,7 @@ $(function(){
 		$("#beizhu").editorReadonly();
 		$("#bianji").show();
 		$("#tijiao").hide();
+		$("#zhongguoxinghao").removeAttr("contenteditable");
 	}
 	//解释价格内容
 	function getPrices(s){

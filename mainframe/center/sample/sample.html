@@ -71,9 +71,27 @@
 	<div class="ui-layout-center">
 		<table id="xiangdan" align=center style="margin-top:20px;line-height:40px;padding:10px;padding-top:2px;border:1px solid #ddd">
 			<tr id="detailheader" style="background-color:#eee;line-height:25px;"><td align=center ><span id="bianji" class="plainBtn">[编辑]</span><span id="tijiao" class="plainBtn  cBianJi">[提交]</span></td></tr>
-			<tr><td><span>编号：<span><input id="bianhao" class="plainInput" type="text" style="width:65px" /><span style="margin-left:10px">泰国型号：</span><input id="taiguoxinghao" class="plainInput"  type="text" size=29/><span style="margin-left:10px">中国型号：</span><input id="zhongguoxinghao" class="plainInput"  type="text" size=29/></td></tr>
-			<tr><td><span>价格：</span><input id="jiage" class="plainInput" type="text" style="width:550px" title="请按【<注释 ><价格>元】格式输入价格，<注释 >可以没有。如【金色 8元】【12元】"/>&nbsp;<span>单位：</span><input id="danwei" class="plainInput list" type="text" list="danweilist" style="width:50px;cursor:pointer" /></td></tr>
-			<tr><td nowrap><span>商家：<span><input id="shangjia" class="plainInput" type="text" style="width:200px;cursor:pointer" />&nbsp;<span style="margin-left:10px">议价者：</span><input id="yijiazhe" class="plainInput list"  type="text" size=8 style="cursor:pointer"/>&nbsp;<span style="margin-left:10px">议价日期：</span><input id="yijiariqi" class="plainInput"  type="text" size=12 style="cursor:pointer;"/>状态：</span><input id="zhuangtai" class="plainInput list" list="zhuangtailist"  type="text" size=4 style="background-color:white;cursor:pointer"/></td></tr>
+			<tr>
+				<td>
+					<span>编号：<span><input id="bianhao" class="plainInput" type="text" style="width:65px" />
+					<span style="margin-left:10px">泰国型号：</span><input id="taiguoxinghao" class="plainInput"  type="text" size=19/>
+					<span style="margin-left:10px">中国型号：</span><div id="zhongguoxinghao" class="myinput" style="width:260px;line-height:20px"></div><!--<input id="zhongguoxinghao" class="plainInput"  type="text" size=39/>-->
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<span>价格：</span><input id="jiage" class="plainInput" type="text" style="width:550px" title="请按【<注释 ><价格>元】格式输入价格，<注释 >可以没有。如【金色 8元】【12元】"/>&nbsp;
+					<span>单位：</span><input id="danwei" class="plainInput list" type="text" list="danweilist" style="width:50px;cursor:pointer" />
+				</td>
+			</tr>
+			<tr>
+				<td nowrap>
+					<span>商家：<span><input id="shangjia" class="plainInput" type="text" style="width:200px;cursor:pointer" />&nbsp;
+					<span style="margin-left:10px">议价者：</span><input id="yijiazhe" class="plainInput list"  type="text" size=8 style="cursor:pointer"/>&nbsp;
+					<span style="margin-left:10px">议价日期：</span><input id="yijiariqi" class="plainInput"  type="text" size=12 style="cursor:pointer;"/>
+					<span>状态：</span><input id="zhuangtai" class="plainInput list" list="zhuangtailist"  type="text" size=4 style="background-color:white;cursor:pointer"/>
+				</td>
+			</tr>
 			<tr><td>
 				<div style="vertical-align:top;">
 					备选：
