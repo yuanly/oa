@@ -170,7 +170,7 @@
 						tip($(this),"注意，该流水收款人与供货商不符！！！",1500);	
 					}
 				} 
-				var zonge = parseFloat($("#fhd_zonge").val().trim());
+				var zonge = parseFloat($("#fhd_zonge").text().trim());
 				if(!isNaN(zonge)){
 					if(zonge != liushui.jine){
 						tip($(this),"注意，该流水金额和发货单总额不符！！！",1500);	
@@ -246,7 +246,7 @@
 	$("#chai").click(chai);
 	function baocun(){
 		jisuanzonge();
-		currFHD.zongjine = parseFloat($("#fhd_zonge").val());
+		currFHD.zongjine = parseFloat($("#fhd_zonge").text());
 		if(isNaN(currFHD.zongjine)){
 			tip($("#fhd_zonge"),"无法计算总额，请确保所有栏目有效！",1500);
 			return;
@@ -372,9 +372,9 @@
 			}
 		});
 		if(!isNaN(ze)){
-			$("#fhd_zonge").val(round(ze,2));
+			$("#fhd_zonge").text(round(ze,2));
 		}else{
-			$("#fhd_zonge").val("");
+			$("#fhd_zonge").text("");
 		}
 	}
 	function jisuanjine(){
