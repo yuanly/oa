@@ -52,8 +52,8 @@ if("jiedan" == $param["caozuo"]){
 	$dingdan["mandan"] = false;
 	$dingdan["huowu"] = array();
 	$dingdan["fudan"] = $dingdan["_id"];
-	$count = coll("dingdan")->count(array("_id"=>array('$regex'=>"^".$dingdan["_id"])));
-	$dingdan["_id"] = $dingdan["_id"]."_".$count;//订单一旦被接单只能作废不能删除
+	$count = coll("dingdan")->count(array("_id"=>array('$regex'=>"^".$dingdan["_id"]."_")));
+	$dingdan["_id"] = $dingdan["_id"]."_".($count+1);//订单一旦被接单只能作废不能删除
 	$dingdan["liucheng"] = array(array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time()));
 	$dingdan["zhuangtai"] = "接单";
 	coll("dingdan")->save($dingdan);
