@@ -106,7 +106,7 @@ if("jiedan" == $param["caozuo"]){
 	}
 	$str .=",货物：<br/>";
 	foreach($dingdan["huowu"] as $huowu){
-		$str = $str."规格：".$huowu["guige"]."数量：".$huowu["shuliang"]."单位：".$huowu["danwie"]."<br/>";
+		$str = $str."规格：".$huowu["guige"]."数量：".$huowu["shuliang"]."单位：".$huowu["danwei"]."<br/>";
 	}
 	$liuyan = array("_id"=>time(),"hostType"=>"dingdan","hostId"=>$param["_id"],"type"=>"caozuorizhi","userId"=>(String)$_SESSION["user"]["_id"],"neirong"=>$str);
 	coll("liuyan")->save($liuyan);
