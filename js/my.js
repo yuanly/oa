@@ -108,7 +108,18 @@ function addQuyulist(){
 		}
 		return ret;
 	}
-	
+ //用于拼音首字母过滤，只留下大写字母和数字其他字符扔掉
+ 	function filterAZN(s){
+ 		s = s.toUpperCase();
+		var ret="";
+		for(var i=0;i<s.length;i++){
+			var c = s.charAt(i);
+			if((c>='A' && c<='Z')||(c>='0' && c<='9')){
+				ret += c;
+			}
+		}
+		return ret;
+	}	
  function isHtml5(){
  	if(isOldIE()){
  		return false;

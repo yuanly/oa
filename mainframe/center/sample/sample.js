@@ -5,6 +5,7 @@
 	accesss:122, 
 	taiguoxinghao:"",
 	zhongguoxinghao:"",
+	py:[xx],//中国型号的拼音首字母
 	shangjia:{_id:1,mingchen:"",py:[],quyu:""},
 	jiage:[beizhu:"",zhi:1.2],
 	danwei:"",
@@ -62,6 +63,8 @@ $(function(){
 				$("#bianhao").val("");
 				tip($("#bianhao"),"编号重复，请重置！",1500);
 			}else{
+				yangban.py = makePy(yangban.zhongguoxinghao);
+				console.log(yangban.py);
 				postJson("sample.php",yangban,function(res){
 					if(res.success == true){
 						/*

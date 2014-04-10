@@ -30,9 +30,9 @@ function makePy(str){
 function split(arr){
 	var ret = [];
 	for(var j=0;j<arr.length;j++){
-		var s = filterAZ(arr[j]);
-		var maxLen = 6;
-		if(s.length<6){
+		var s = filterAZN(arr[j]);
+		var maxLen = 4;
+		if(s.length<4){
 			maxLen = s.length;
 		}
 		for(var len=1;len<=maxLen;len++){

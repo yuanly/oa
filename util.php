@@ -7,8 +7,14 @@ date_default_timezone_set("Asia/Shanghai");
 function docRoot(){
 	return "/oa/";
 }
+function isUpper($str){
+	if(preg_match("/[^a-z|A-Z|0-9]/",$str)){
+		return false;
+	}
+	return true;
+}
 function upper($str){
-	return mb_strtoupper($str,"UTF-8");
+	return substr(mb_strtoupper($str,"UTF-8"),0,4);
 }
 /*
  * 返回mongodb collection

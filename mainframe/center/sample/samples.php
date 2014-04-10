@@ -33,7 +33,11 @@ if(isset($param["_id"])){//
 		}else if(!empty($param["option"]["taixing"])){
 			$query["taiguoxinghao"] = array('$regex'=>upper($param["option"]["taixing"]));
 		}else if(!empty($param["option"]["zhongxing"])){
-			$query["zhongguoxinghao"] = array('$regex'=>upper($param["option"]["zhongxing"]));
+			if(isUpper($param["option"]["zhongxing"])){
+				$query["py"] = upper($param["option"]["zhongxing"]);
+			}else{
+				$query["zhongguoxinghao"] = array('$regex'=>$param["option"]["zhongxing"]);
+			}
 		}
 	}
 	$cur = coll("yangban")->find($query,array("beizhu"=>0))->sort(array("access"=>-1))->skip($param["offset"])->limit($param["limit"]);
