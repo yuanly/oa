@@ -184,7 +184,11 @@ if("jiedan" == $param["caozuo"]){
 }else if("shangjia" == $param["caozuo"]){
 	$query  = array("leixing"=>"商家");
 	if(""!=$param["option"]){
-		$query = array("leixing"=>"商家","py"=>$param["option"]);
+		if(isUpper($param["option"])){
+			$query = array("leixing"=>"商家","py"=>upper($param["option"]));
+		}else{			
+			$query = array("leixing"=>"商家","mingchen"=>array('$regex'=>$param["option"]));
+		}
 	}
 	$cur = coll("contact")->find($query)->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);

@@ -186,7 +186,7 @@
 	function sel_gonghuoshang(event){
 		var limit = 20;
 		setSelector(event,function(page,option,callback){
-				postJson("dingdan.php",{caozuo:"shangjia",offset:page*limit,limit:limit,option:option.trim().toUpperCase()},function(gonghuoshangs){
+				postJson("dingdan.php",{caozuo:"shangjia",offset:page*limit,limit:limit,option:option.trim()},function(gonghuoshangs){
 					callback(gonghuoshangs);
 				});
 			},["_id","mingchen","dianhua","dizhi"],function(gonghuoshang){
@@ -371,7 +371,7 @@
 			tip($(this),"订单不能没有货物！",1500);
 			return;
 		}
-		if(!currDD.gonghuoshang){
+		if(!currDD.gonghuoshang||!currDD.yangban){
 			tip($(this),"下单前必须先指定具体样板及供货商！",1500);
 			return;
 		}

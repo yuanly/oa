@@ -31,8 +31,10 @@
 			listtuishui(0);
 		});	
 	});
-	$("#th_bianhao").datepicker().change(function(){
-		$(this).val("TS"+date2id($(this).val()));
+	$("#th_bianhao").datepicker().change(function(){		
+		if($(this).val().indexOf("TS")<0){			
+			$(this).val("TS"+date2id($(this).val()));
+		}
 		listtuishui(0);
 	});
 	$("#fp_kaipiaoqiye").click(sel_kaipiaoqiye);

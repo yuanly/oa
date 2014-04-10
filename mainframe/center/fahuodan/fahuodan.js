@@ -189,7 +189,9 @@
 	$("#th_zhuangtai").bind("input",function(){listfahuodan(0);});
 	$("#th_fukuan").bind("input",function(){listfahuodan(0);});
 	$("#th_bianhao").datepicker().change(function(){
-		$(this).val("FHD"+date2id($(this).val()));
+		if($(this).val().indexOf("FHD")<0){			
+			$(this).val("FHD"+date2id($(this).val()));
+		}
 		listfahuodan(0);
 	});
 	function sel_gonghuoshang(event){

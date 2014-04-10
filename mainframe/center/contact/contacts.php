@@ -13,12 +13,18 @@ if(isset($param["_id"])){//特定联系人详情
 	$query = array();
 	if(!empty($param["option"])){
 		if(!empty($param["option"]["mingchen"])){
-			//$query["mingchen"] = array('$regex'=>$param["option"]["mingchen"]);
-			$query["py"] = upper($param["option"]["mingchen"]);
+			if(isUpper($param["option"]["mingchen"])){
+				$query["py"] = upper($param["option"]["mingchen"]);
+			}else{
+				$query["mingchen"] = array('$regex'=>$param["option"]["mingchen"]);
+			}
 		}
 		if(!empty($param["option"]["shangjia"])){
-			//$query["shangjia.mingchen"] = array('$regex'=>$param["option"]["shangjia"]);
-			$query["shangjia.py"] = upper($param["option"]["shangjia"]);
+			if(isUpper($param["option"]["shangjia"])){
+				$query["shangjia.py"] = upper($param["option"]["shangjia"]);
+			}else{
+				$query["shangjia.mingchen"] = array('$regex'=>$param["option"]["shangjia"]);
+			}
 		}
 		if("y" == $param["option"]["onlyshangjia"]){
 			$query["leixing"] = "商家";

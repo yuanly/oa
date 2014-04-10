@@ -526,7 +526,11 @@
 			$("#lb_bianhao",elm).text(dingdan._id);
 			$("#lb_kehu",elm).text(dingdan.kehu);
 			$("#lb_taiguoyangban",elm).text(dingdan.taiguoyangban);
-			$("#lb_yangban",elm).text(dingdan.yangban.zhongguoxinghao);
+			if(dingdan.yangban){//子单如果没下单可以没有样板
+				$("#lb_yangban",elm).text(dingdan.yangban.zhongguoxinghao);
+			}else{
+				$("#lb_yangban",elm).text();
+			}
 			$("#lb_zhuangtai",elm).text(dingdan.zhuangtai);
 			if(dingdan.zhuangtai == "录单" && getTheUser()._id == currYG.jiegaozhe){
 				$("#lb_shanchu",elm).show();

@@ -6,7 +6,15 @@ session_start();
 checkuser();
 
 $param = getJson();
-$query["zhongguoxinghao"] = array('$regex'=>upper($param["option"]));
+if(empty($param["option"])){
+	$query = array();
+}else{
+	if(isUpper($param["option"])){
+		$query["py"] = upper($param["option"]);
+	}else{
+		$query["zhongguoxinghao"] = array('$regex'=>$param["option"]);
+	}
+}
 //$query = array('$or'=>array(array("taiguoxinghao"=>array('$regex'=>$param["option"])),array("zhongguoxinghao"=>array('$regex'=>$param["option"]))));
 $cur = coll("yangban")->find($query,array("beizhu"=>0))->sort(array("access"=>-1))->skip($param["offset"])->limit($param["limit"]);
 

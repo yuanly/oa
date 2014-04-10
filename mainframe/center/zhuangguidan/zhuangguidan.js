@@ -119,7 +119,9 @@
 	}
 	$("#xuan").click(xuan);
 	$("#th_hw_huowubianhao").datepicker().change(function(){
-		$(this).val("FHD"+date2id($(this).val()));
+		if($(this).val().indexOf("ZGD")<0){			
+			$(this).val("ZGD"+date2id($(this).val()));
+		}
 		listHuowu(0);
 	});
 	$("#th_hw_zhuangtai").bind("input",function(){listHuowu(0);});

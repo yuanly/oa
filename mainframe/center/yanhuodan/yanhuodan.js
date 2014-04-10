@@ -117,8 +117,10 @@
 		}
 	}
 	$("#xuan").click(xuan);
-	$("#th_hw_huowubianhao").datepicker().change(function(){
-		$(this).val("FHD"+date2id($(this).val()));
+	$("#th_hw_huowubianhao").datepicker().change(function(){		
+		if($(this).val().indexOf("YHD")<0){			
+			$(this).val("YHD"+date2id($(this).val()));
+		}
 		listHuowu(0);
 	});
 	$("#th_hw_zhuangtai").bind("input",function(){listHuowu(0);});
