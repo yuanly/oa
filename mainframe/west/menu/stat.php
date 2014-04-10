@@ -13,8 +13,8 @@ if(empty($stat) || $stat["expired"] ){//更新stat
 	$yuangao = coll("yuangao")->count(array("zhuangtai"=>array('$in'=>array("上传","接稿","申请审结"))));
 	$dingdan = coll("dingdan")->count(array("zhuangtai"=>"审核"));
 	$dingdan2 = coll("dingdan")->count(array("zhuangtai"=>array('$in'=>array("录单","申请审核","审核","接单","作废","下单申请","下单审核","下单","发货","申请审结"))));
-	$fahuodan = coll("fanhuodan")->count(array("type"=>"fahuodan","zhuangtai"=>"申请对单"));
-	$fahuodan2 = coll("fanhuodan")->count(array("type"=>"fahuodan","zhuangtai"=>array('$in'=>array("上传","接单","作废","申请对单","对单","收货","装柜","申请审结"))));
+	$fahuodan = coll("fahuodan")->count(array("type"=>"fahuodan","zhuangtai"=>"申请对单"));
+	$fahuodan2 = coll("fahuodan")->count(array("type"=>"fahuodan","zhuangtai"=>array('$in'=>array("上传","接单","作废","申请对单","对单","收货","装柜","申请审结"))));
 	$yanhuodan = coll("yanhuodan")->count(array("zhuangtai"=>"申请审核"));
 	$yanhuodan2 = coll("yanhuodan")->count(array("zhuangtai"=>array('$in'=>array("制单","申请受理","受理","申请审核"))));
 	$zhuangguidan = coll("zhuangguidan")->count(array("zhuangtai"=>"交单"));
@@ -40,8 +40,7 @@ if(empty($stat) || $stat["expired"] ){//更新stat
 								"version"=>time(),
 								"expired"=>false,
 								"_id"=>"stat");
+							
 	coll("config")->save($stat);
 }
-echo jsonEncode($stat);
-
-
+echo jsonEncode($stat); 
