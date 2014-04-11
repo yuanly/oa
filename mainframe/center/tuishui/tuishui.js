@@ -970,7 +970,9 @@ function _hanshuku_(){}
 		});
 	}
 	function showDetailById(_id){
+		tip(null,"正在加载...");
 		postJson("tuishui.php",{caozuo:"getbyid",_id:_id},function(ts){
+			untip();
 			showDetail(ts);
 		});
 	}

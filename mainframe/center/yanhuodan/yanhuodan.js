@@ -705,8 +705,10 @@
 		}
 	}
 	
-	function showDetailById(_id){
+	function showDetailById(_id){		
+		tip(null,"正在加载...");
 		postJson("yanhuodan.php",{caozuo:"getbyid",_id:_id},function(yhd){
+			untip();
 			showDetail(yhd);
 		});
 	}

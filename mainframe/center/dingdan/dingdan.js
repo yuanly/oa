@@ -864,8 +864,10 @@ function _hanshuku_(){}
 		});
 	}
 	*/
-	function showDetailById(_id){
+	function showDetailById(_id){		
+		tip(null,"正在加载...");
 		postJson("dingdans.php",{_id:_id},function(dd){
+			untip();
 			showDetail(dd);			
 		});
 	}

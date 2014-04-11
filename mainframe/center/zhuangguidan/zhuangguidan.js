@@ -577,7 +577,9 @@ function _hanshuku_(){}
 	}
 	
 	function showDetailById(_id){
+		tip(null,"正在加载...");
 		postJson("zhuangguidan.php",{caozuo:"getbyid",_id:_id},function(zgd){
+			untip();
 			showDetail(zgd);			
 		});
 	}
