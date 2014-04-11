@@ -68,6 +68,9 @@ getUser=function(id){
 			return users[i];
 		}
 	}
+	if(id){
+		return {_id:id,user_name:id,mingchen:id,photo:getDocRoot()+"logo/noface.jpg"}
+	}
 	return null;
 }
 getUserName = function(id){
