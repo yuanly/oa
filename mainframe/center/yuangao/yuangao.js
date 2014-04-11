@@ -582,7 +582,10 @@
 		if(_id.indexOf("#")>=0){
 			_id = _id.substr(0,_id.indexOf("#"));
 		}
+		
+		tip(null,"正在加载...");
 		postJson("yuangaos.php",{_id:_id},function(yg){
+			untip();
 			showDetail(yg);
 		});
 	}

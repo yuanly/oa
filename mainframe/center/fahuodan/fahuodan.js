@@ -854,6 +854,7 @@ function _hanshuku_(){}
 		return parseInt(hwid.substr(hwid.indexOf("HW")+2));
 	}
 	function showDetail(fhd){//我承认，这个实现很烂！
+		$("#mingxi_ctr").show();
 		currFHD = fhd;
 		currFHD.lastId = 0;
 		each(fhd.huowu,function(i,hw){
@@ -990,7 +991,10 @@ function _hanshuku_(){}
 		kebianji = false;
 		kechaifen = false;
 		editing = false;
+		$("#mingxi_ctr").hide();
+		tip(null,"正在加载...");
 		postJson("fahuodan.php",{caozuo:"getbyid",_id:_id},function(fhd){//这里是把关联的货物放到一起了
+			untip();
 			showDetail(fhd);
 		});
 	}

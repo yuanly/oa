@@ -33,7 +33,7 @@ if("xinjian" == $param["caozuo"]){
 	if(isset($param["option"]["shenhezhe"])){
 		$query["shenhezhe"] = $param["option"]["shenhezhe"];
 	}
-	$cur = coll("yanhuodan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	$cur = coll("yanhuodan")->find($query,array("yanhuoshougao"=>0))->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("shenqingshouli" == $param["caozuo"]){
 	$liucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请受理","time"=>time());
