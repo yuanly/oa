@@ -35,7 +35,8 @@ if("shangchuan" == $param["caozuo"]){
 		exit;
 	}
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
-	coll("yuangao")->update(array("_id"=>$param["_id"],"jiegaozhe"=>$_SESSION["user"]["_id"],"zhuangtai"=>"接稿"),
+	//coll("yuangao")->update(array("_id"=>$param["_id"],"jiegaozhe"=>$_SESSION["user"]["_id"],"zhuangtai"=>"接稿"),
+	coll("yuangao")->update(array("_id"=>$param["_id"],"jiegaozhe"=>$_SESSION["user"]["_id"]),
 								array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
 	echo '{"success":true}';
