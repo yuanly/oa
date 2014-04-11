@@ -34,7 +34,9 @@ if("shangchuan" == $param["caozuo"]){
 		echo '{"success":true,"err":"必须先把该原稿的所有订单删除或作废才能作废原稿！"}';
 		exit;
 	}
-	coll("yuangao")->update(array("_id"=>$param["_id"],"zhuangtai"=>"接稿"),array('$set'=>array("zhuangtai"=>"作废")));
+	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
+	coll("dingdan")->update(array("_id"=>$param["_id"],"jiegaozhe"=>$_SESSION["user"]["_id"],"zhuangtai"=>"接稿"),
+								array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
 	echo '{"success":true}';
 }else if("jiegao" == $param["caozuo"]){
