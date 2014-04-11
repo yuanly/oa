@@ -29,7 +29,8 @@
  lastupdatetime:123213213,//最近更新时间
  
  shenqings:[],//付款申请，从fahuodan表关联，不保存
- shenqingsyibian:true//客户端用于通知是否改了申请，不保存
+ shenqingsyibian:true,//客户端用于通知是否改了申请，不保存
+ jiaofu:true//科目是订金时有意义；表示订金对应的货物已交付，无需继续关注。
 }
 流水号
 状态
@@ -298,6 +299,18 @@
 		});
 	}
 	$("#cz_zuofei").click(cz_zuofei);
+	function cz_yijiaofu(){
+		postJson("liushuizhang.php",{caozuo:"yijiaofu",_id:currLSZ._id},function(res){
+			showDetailById(currLSZ._id);
+		});
+	}
+	$("#cz_yijiaofu").click(cz_yijiaofu);
+	function cz_weijiaofu(){
+		postJson("liushuizhang.php",{caozuo:"weijiaofu",_id:currLSZ._id},function(res){
+			showDetailById(currLSZ._id);
+		});
+	}
+	$("#cz_weijiaofu").click(cz_weijiaofu);
 	function cz_shanchu(){
 		postJson("liushuizhang.php",{caozuo:"shanchu",_id:currLSZ._id},function(res){
 			listliushuizhang(0);
@@ -626,6 +639,15 @@ function _hanshuku_(){}
 					$("#cz_fukuan",caozuoItem).show();
 					$("#cz_shanchu",caozuoItem).show();
 					$("table",tmpl).append(caozuoItem);
+				}else if(currLSZ.kemu == "订金" && theUser._id == item.userId){
+					$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+					var caozuoItem = caozuoTmpl.clone(true);
+					if(currLSZ.jiaofu){
+						$("#cz_weijiaofu",caozuoItem).show();
+					}else{
+						$("#cz_yijiaofu",caozuoItem).show();
+					}					
+					$("table",tmpl).append(caozuoItem);
 				}
 			}else if("付款" == item.dongzuo){
 				kebianji = false;
@@ -707,7 +729,8 @@ function _hanshuku_(){}
 	}else if("daifuheliushui"== cmd){
 		$('#currLocation', window.parent.document).text("财账/待复核流水");
 		$("#th_zhuangtai").val("申请复核").attr("readonly","readonly");
-		$("#ctr_sel").show();
+	}else if("weijiaofudingjin"== cmd){
+		$('#currLocation', window.parent.document).text("财账/未交付订金");
 	}
 	listliushuizhang(0,getUrl().showId);
 	

@@ -82,8 +82,8 @@ if("xinjian" == $param["caozuo"]){
 	if(isset($param["option"]["jizhangren"])){
 		$query["jizhangren"] = $param["option"]["jizhangren"];
 	}
-	if($param["option"]["cmd"] == "daifu"){
-		$query["fukuanriqi"] = "";
+	if($param["option"]["cmd"] == "weijiaofudingjin"){
+		$query = array("kemu"=>"订金","jiaofu"=>array('$ne'=>true));
 	}
 	$cur = coll("liushuizhang")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
@@ -271,6 +271,10 @@ if("xinjian" == $param["caozuo"]){
 }else if("unlock" == $param["caozuo"]){//出现死锁时调用
 	unlock();
 	echo '{"success":true}';
+}else if("yijiaofu" == $param["caozuo"]){
+	coll("liushuizhang")->update(array("_id"=>$param["_id"]),array('$set'=>array("jiaofu"=>true)));
+}else if("weijiaofu" == $param["caozuo"]){
+	coll("liushuizhang")->update(array("_id"=>$param["_id"]),array('$unset'=>array("jiaofu"=>1)));
 }
 
 //帐号余额被记录在每一笔流水里。最新流水（根据lastupdatetime判断，包括作废的）就是最新的余额，这样可以保证更新流水和余额在一个事务里完成。

@@ -1208,15 +1208,18 @@ function parseFloat3(str){
  function getKemu(){
 	return ["货款",
 					"开票",
+					"订金",
 					"收汇",
+					"报销",
 					"核销",
 					"退税",
 					"快递费",
 					"泰国进账",
-					"薪金",
+					"工资",
 					"办公费",
 					"社保",
-					"租金",
+					"收租金",
+					"付租金",
 					"运费",
 					"活动费",
 					"银行手续费",
@@ -1228,7 +1231,6 @@ function parseFloat3(str){
 					"代理费",
 					"平帐",
 					"备用1",
-					"备用2",
 					"其他"];
  }
  jQuery.fn.kemu = function(items){
