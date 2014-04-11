@@ -10,7 +10,7 @@ if(isset($param["_id"])){//
 	$one = coll("yuangao")->findOne(array("_id"=>$param["_id"]));
 	echo jsonEncode($one);
 }else{//
-	$query = array("zhuangtai"=>array('$in'=>array("上传","接稿","申请审结","审结")));//排除“删除”
+	$query = array();//排除“删除”
 	if("jiegao" == $param["option"]["cmd"]){
 		$query = array("zhuangtai"=>"上传");
 	}else if("ludan" == $param["option"]["cmd"]){
