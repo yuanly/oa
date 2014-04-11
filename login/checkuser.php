@@ -13,7 +13,7 @@ if(isset($_REQUEST["password"])){
 
 if (!check_user(urldecode($user_id), $password)){
 	if(isMasterDB()){
-		logColl()->save(array("action"=>"checkuser","user"=>$_SESSION['user']["mingchen"],"result"=>"fail"));
+		logColl()->save(array("action"=>"checkuser","user"=>$user_id,"result"=>"fail"));
 	}
 	echo "false";
 }else{
