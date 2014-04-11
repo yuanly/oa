@@ -84,7 +84,7 @@
 		listDingdan(0);
 	});
  
-	$("#th_zhuangtai").myselector(["状态","录单","审核","接单","下单申请","下单审核","下单","发货","结单","作废"]).bind("input",function(){listDingdan(0);});
+	$("#th_zhuangtai").myselector(["状态","录单","审核","接单","下单申请","下单审核","下单","发货","审结","作废"]).bind("input",function(){listDingdan(0);});
 	$("#fangqi").click(function(){
 		showDetailById(currDD._id);
 	});
