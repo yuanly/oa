@@ -139,8 +139,9 @@ if("jiedan" == $param["caozuo"]){
 	statExpired();
 	echo '{"success":true}';
 }else if("shenjie" == $param["caozuo"]){
-	$shendan  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审结","time"=>time());
-	coll("dingdan")->update(array("_id"=>$param["_id"],"zhuangtai"=>"申请审结"),array('$push'=>array("liucheng"=>$shendan),'$set'=>array("zhuangtai"=>"结单")));
+	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审结","time"=>time());
+	coll("dingdan")->update(array("_id"=>$param["_id"],"zhuangtai"=>"申请审结"),
+			array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
 	echo '{"success":true}';
 }else if("baocun" == $param["caozuo"]){
