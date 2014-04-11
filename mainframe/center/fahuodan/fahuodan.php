@@ -154,7 +154,7 @@ if("shangchuan" == $param["caozuo"]){
 		$query["gonghuoshang._id"] = $param["option"]["gonghuoshang"];
 	}
 	//var_dump($query);
-	$cur = coll("fahuodan")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	$cur = coll("fahuodan")->find($query,array("neirong"=>0))->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("chaxunforyanhuodan" == $param["caozuo"]){
 	$yhdId = $param["option"]["yhdId"];
