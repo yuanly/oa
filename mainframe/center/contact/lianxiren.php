@@ -28,4 +28,12 @@ if("chashangjia" == $param["caozuo"]){
 	}
 	$cur = coll("contact")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
+}if("chongming" == $param["caozuo"]){
+	$contact = $param["contact"];
+	$count = coll("contact")->count(array("mingchen"=>$contact["mingchen"]));
+	if((empty($contact["_id"]) && $count>0) || ($count>1)){
+		echo '{"success":true,"err":"重名了"}';
+	}else{
+		echo '{"success":true}';
+	}
 }

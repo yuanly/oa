@@ -309,28 +309,21 @@ $(function(){
 		if(contact.shangjia && !contact.shangjia.py){
 			contact.shangjia.py = makePy(contact.shangjia.mingchen)
 		}
-		if("【新增】" == $("#bianhao").text()){		
-			postJson("contact.php",contact,function(res){
-				if(res.success == true){
-					//window.location.reload();
-					tip(null,"成功增加联系人信息！",1500);
+		postJson("lianxiren.php",{caozuo:"chongming",contact:contact},function(res){
+			if(res.err){
+				ask($("#tijiao"),"已存在同名联系人，确定他们不是同一个联系人吗？",function(){
+					postJson("contact.php",contact,function(res){
+						tip(null,"成功提交联系人信息！",1500);
+						listContacts(0);
+					});
+				});
+			}else{
+				postJson("contact.php",contact,function(res){
+					tip(null,"成功提交联系人信息！",1500);
 					listContacts(0);
-				}else{
-					ask3(null,res.err);
-				}
-			});
-		}else{
-			postJson("contact.php",contact,function(res){
-				if(res.success == true){
-					//obj2form(contact);
-					//readonlyContact();
-					tip(null,"成功修改联系人信息！",1500);
-					listContacts(0);
-				}else{
-					ask3(null,res.err);
-				}
-			});
-		}
+				});
+			}
+		});
 	});
 	
 	function showdianhuas(dianhualiebiao){
