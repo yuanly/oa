@@ -887,8 +887,13 @@ function _hanshuku_(){}
 			var tmpl = liuchengItem.clone(true);
 			$("#lc_bianhao",tmpl).text(n+1);
 			var usr = getUser(item.userId);
-			$("#lc_touxiang",tmpl).attr("src",usr.photo);
-			$("#lc_mingchen",tmpl).text(usr.user_name);
+			if(usr){//一个bug，用户可以随便加一个账户上来做操作，然后又把这个账户改成非公司用户。
+				$("#lc_touxiang",tmpl).attr("src",usr.photo);
+				$("#lc_mingchen",tmpl).text(usr.user_name);
+			}else{
+				$("#lc_touxiang",tmpl).attr("src",getDocRoot()+"logo/noface.jpg");
+				$("#lc_mingchen",tmpl).text(item.userId);
+			}
 			$("#lc_dongzuo",tmpl).text(item.dongzuo);
 			$("#lc_shijian",tmpl).text(new Date(item.time*1000).format("yyyy-MM-dd hh:mm"));
 			/*录单 审核 接单（作废 接管 慢单/取消慢单 子单） 下单申请（回退） 下单审核（打印 回退） 
