@@ -378,7 +378,9 @@ function _hanshuku_(){}
 		//}
 	}
 	function showDetailById(_id){
+		tip(null,"正在加载...");
 		postJson("shenqing.php",{caozuo:"getbyid",_id:_id},function(sq){//这里是把关联的货物放到一起了
+			untip();
 			showDetail(sq);
 		});
 	}
