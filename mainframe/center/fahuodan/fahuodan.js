@@ -592,8 +592,10 @@
 	}
 	$("#cz_zuofei").click(cz_zuofei);
 	function cz_jieguan(){
-		postJson("fahuodan.php",{caozuo:"jieguan",_id:currFHD._id},function(res){
-			showDetailById(currFHD._id);
+		ask($(this),"确定要接管吗？",function(){
+			postJson("fahuodan.php",{caozuo:"jieguan",_id:currFHD._id},function(res){
+				showDetailById(currFHD._id);
+			});
 		});
 	}
 	$("#cz_jieguan").click(cz_jieguan);

@@ -339,8 +339,10 @@
 	}
 	$("#cz_jiedan").click(cz_jiedan);
 	function cz_jieguan(){
-		postJson("dingdan.php",{caozuo:"jieguan",_id:currDD._id},function(res){
-			showDetailById(currDD._id);
+		ask($(this),"确定要接管吗？",function(){
+			postJson("dingdan.php",{caozuo:"jieguan",_id:currDD._id},function(res){
+				showDetailById(currDD._id);
+			});
 		});
 	}
 	$("#cz_jieguan").click(cz_jieguan);

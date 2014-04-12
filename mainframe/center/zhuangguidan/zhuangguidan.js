@@ -345,8 +345,10 @@
 	}
 	$("#cz_shanchu").click(cz_shanchu);
 	function cz_jieguan(){
-		postJson("zhuangguidan.php",{caozuo:"jieguan",_id:currZGD._id},function(res){
-			showDetailById(currZGD._id);
+		ask($(this),"确定要接管吗？",function(){
+			postJson("zhuangguidan.php",{caozuo:"jieguan",_id:currZGD._id},function(res){
+				showDetailById(currZGD._id);
+			});
 		});
 	}
 	$("#cz_jieguan").click(cz_jieguan);

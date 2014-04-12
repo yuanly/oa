@@ -679,8 +679,10 @@
 	}
 	$("#cz_quxiao").click(cz_quxiao);
 	function cz_jieguan(){
-		postJson("tuishui.php",{caozuo:"jieguan",_id:currTS._id},function(res){
-			showDetailById(currTS._id);
+		ask($(this),"确定要接管吗？",function(){
+			postJson("tuishui.php",{caozuo:"jieguan",_id:currTS._id},function(res){
+				showDetailById(currTS._id);
+			});
 		});
 	}
 	$("#cz_jieguan").click(cz_jieguan);

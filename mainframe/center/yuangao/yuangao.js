@@ -225,8 +225,10 @@
 		});
 	});
 	function cz_jieguan(){
-		postJson("yuangao.php",{caozuo:"jieguan",_id:currYG._id},function(res){
-			showDetailById(currYG._id);
+		ask($(this),"确定要接管吗？",function(){
+			postJson("yuangao.php",{caozuo:"jieguan",_id:currYG._id},function(res){
+				showDetailById(currYG._id);
+			});
 		});
 	}
 	$("#cz_jieguan").click(cz_jieguan);
