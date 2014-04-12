@@ -180,6 +180,7 @@ function _hanshuku_(){}
 			users = tmpUsers;
 		}
 		users.unshift({_id:"LXR0",mingchen:"公司"});
+		each(users,function(i,user){console.log(user.rcOrder+":"+user.mingchen)});
 		$(".tr_richeng").remove();	
 		var lastUser;
 		each(users,function(i,user){

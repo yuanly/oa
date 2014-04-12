@@ -66,7 +66,7 @@ if("xinzengshenqing" == $param["caozuo"]){
 	if(isset($param["option"]["type"])){
 		$query["type"] = "shenqing";
 	}
-	$cur = coll("fahuodan")->find($query)->sort(array("subid"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	$cur = coll("fahuodan")->find($query,array("neirong"=>0))->sort(array("subid"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("getbyid" == $param["caozuo"]){
 	$query = array("_id"=>$param["_id"]);
