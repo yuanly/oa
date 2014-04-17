@@ -39,9 +39,21 @@ if("shangchuan" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"申请对单","time"=>time());
 	coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"接单","ludanzhe"=>$_SESSION["user"]["_id"])
 			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
+	coll("huowu")->update(array("fahuodan"=>$param["_id"]),array('$set'=>array("beihuo"=>true)),array("multiple"=>true));
 	statExpired();
 	echo '{"success":true}';
 }else if("zuofei" == $param["caozuo"]){
+	$cur = coll("huowu")->find(array("fahuodan"=>$param["_id"]));
+	$str = "作废：";
+	foreach($cur as $hw){
+		$str .= "<p>".$hw["dingdanhuowu"]."-".$hw["yangban"]["zhongguoxinghao"]."-".$hw["guige"]."</p>";
+	}
+	$liuyan = array("_id"=>time(),"hostType"=>"fahuodan","hostId"=>$param["_id"],"type"=>"caozuorizhi"
+			,"userId"=>$_SESSION["user"]["_id"],"neirong"=>$str);//以后改成保存整个json到另外一个表，界面是点击打开就可以像普通单一样显示详情。
+	coll("liuyan")->save($liuyan);
+	
+	coll("huowu")->remove(array("fahuodan"=>$param["_id"]));
+
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"作废","time"=>time());
 	coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"接单","ludanzhe"=>$_SESSION["user"]["_id"])
 			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
@@ -66,6 +78,9 @@ if("shangchuan" == $param["caozuo"]){
 	}
 	$obj["zhuangtai"] = $lastLC["dongzuo"];//刚好状态与流程动作一一对应	
 	coll("fahuodan")->save($obj);
+	if($obj["zhuangtai"] == "接单"){
+		coll("huowu")->update(array("fahuodan"=>$param["_id"]),array('$unset'=>array("beihuo"=>1)),array("multiple"=>true));
+	}
 	statExpired();
 	echo '{"success":true}';
 }else if("duidan" == $param["caozuo"]){

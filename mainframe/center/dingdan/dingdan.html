@@ -45,6 +45,9 @@
 		}
 		th input{
 		}
+		.clz_fahuo{
+			display:none;
+		}
 	</style>
 </head>
 <body style="margin:0px;padding:0px">
@@ -110,6 +113,7 @@
 								<span id="cz_xiadanshenhe" class="plainBtn" style="margin-right:10px;display:none">下单审核</span>
 								<span id="cz_dayin" class="plainBtn" style="margin-right:10px;display:none">打印</span>
 								<span id="cz_xiadan" class="plainBtn" style="margin-right:10px;display:none">下单</span>
+								<span id="cz_fahuodan" class="plainBtn" style="margin-right:10px;display:none" title="为订单创建发货单">发货单</span>
 								<span id="cz_fahuo" class="plainBtn" style="margin-right:10px;display:none">发货</span>
 								<span id="cz_shenqingshenjie" class="plainBtn" style="margin-right:10px;display:none">申请审结</span>
 								<span id="cz_shenjie" class="plainBtn" style="margin-right:10px;display:none">审结</span>							
@@ -147,7 +151,17 @@
 				</nobr></div>
 				<table id="tb_huowu">
 					<!-- 发货分拆为二级表：单号 数量 金额 以及 总计 -->
-				<tr><th nowrap>序号</th><th nowrap>泰规格</th><th nowrap>规格</th><th nowrap>数量</th><th nowrap>单位</th><th nowrap>单价<font style="font-size:70%">(元)</font></th><th nowrap>金额</th><th class="delete_huowu"> </th></tr>
+				<tr>
+					<th nowrap>序号</th>
+					<th nowrap>泰规格</th>
+					<th nowrap>规格</th>
+					<th nowrap>数量</th>
+					<th nowrap>单位</th>
+					<th nowrap>单价<font style="font-size:70%">(元)</font></th>
+					<th nowrap>金额</th>
+					<th nowrap class="clz_fahuo">已发货量</th>
+					<th class="delete_huowu"> </th>
+				</tr>
 				<tr class="tmpl_huowu">
 					<td id="mx_xuhao"></td>
 					<td id="mx_taiguoguige" style="font-size:0.8em"></td>
@@ -155,7 +169,9 @@
 					<td><input id="mx_shuliang" size=4 class="plainInput editable"></td>
 					<td><input id="mx_danwei" size=2 class="plainInput mx_danwei"  style="cursor:pointer" list="danweilist"></td>
 					<td><input id="mx_danjia" size=4 class="plainInput mx_danjia" readonly style="cursor:pointer"></td>
-					<td id="mx_jine"></td><td class="hw_cz"><span id="shanchuhuowu" class="plainBtn delete_huowu" style="font-size:80%">[ - ]</span></td>
+					<td id="mx_jine"></td>
+					<td id="mx_yifahuoliang" class="clz_fahuo"></td>
+					<td class="hw_cz"><span id="shanchuhuowu" class="plainBtn delete_huowu" style="font-size:80%">[ - ]</span></td>
 				</tr>
 				<tr id="new_huowu_item"><td colspan=5 class="hw_cz"><span id="zengjiahuowu" class="plainBtn" style="font-size:80%">[ + ]</span></td></tr>
 				<tr style="font-weight:bold"><td colspan=2 align=right>总量:</td><td><span id="zongliang">33</span><span class="unit" id="unit">米</span></td><td align=right>总额:</td><td><span id="zonge">22</span>元</td></tr>

@@ -35,13 +35,13 @@
 	<script>
 		$(function(){
 			function getDDID(id){
-				return id.substr(0,id.indexOf("HW"));
+				return id.substr(0,id.toUpperCase().indexOf("HW"));
 			}
 			function shortHWID(id){//FHD140330.2HW2 to 0330.2-2
 				return id.substring(5).replace("HW","-");
 			}
 			function shortDDID(id){//DD140328.2HW1 to 0328.2
-				return id.substr(0,id.indexOf("HW")).substring(4);
+				return id.substr(0,id.toUpperCase().indexOf("HW")).substring(4);
 			}
    		function zongjianshu(hws){
    			var zjs=0;

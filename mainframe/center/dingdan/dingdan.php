@@ -138,6 +138,49 @@ if("jiedan" == $param["caozuo"]){
 	coll("dingdan")->update(array("_id"=>$param["_id"]),array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
 	echo '{"success":true}';
+}else if("fahuodan" == $param["caozuo"]){
+	$dd = coll("dingdan")->findOne(array("_id"=>$param["_id"],"liucheng.dongzuo"=>"下单"));
+	if(empty($dd)){
+		echo '{"success":true,"err":"后台数据异常，请刷新界面！"}';
+		return;
+	}
+	$jiedanliucheng = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time());
+	$fahuodan["ludanzhe"] = $_SESSION["user"]["_id"];
+	$fahuodan["type"] = "fahuodan";
+	$fahuodan["zhuangtai"] = $jiedanliucheng["dongzuo"];
+	$fahuodan["lastId"] = 0;
+	$fahuodan["liucheng"][] = $jiedanliucheng;
+	$d = date("ymd",time());
+	$n = coll("fahuodan")->count(array("_id"=>array('$regex'=>"^FHD".$d."")));
+	$fahuodan["subid"] = $d.".".($n+1);
+	$fahuodan["_id"] = "FHD".$fahuodan["subid"];
+	$fahuodan["gonghuoshang"] = $dd["gonghuoshang"];
+	coll("fahuodan")->save($fahuodan);
+	$n=1;
+	foreach($dd["huowu"] as $huowu){
+		if(coll("huowu")->count(array("dingdanhuowu"=>$huowu["id"])) == 0){
+			$hw["dingdanhuowu"]	= $huowu["id"];
+			$hw["gonghuoshang"] = $dd["gonghuoshang"];
+			$hw["yangban"] = $dd["yangban"];
+			$hw["kehu"] = $dd["kehu"];
+			$hw["guige"] = $huowu["guige"];
+			$hw["danwei"] = $huowu["danwei"];
+			$hw["danjia"] = $huowu["danjia"];
+			$hw["shuliang"] = $huowu["shuliang"];
+			$hw["jianshu"] = 1;
+			$hw["fahuodan"] = $fahuodan["_id"];
+			$hw["_id"] = $fahuodan["_id"]."HW".$n;
+			$n = $n + 1;
+			coll("huowu")->save($hw);
+		}
+	}
+	if($n == 1){
+		coll("fahuodan")->remove(array("_id"=>$fahuodan["_id"]));
+		echo '{"success":true,"err":"所有货物已入发货单，若确实要为订单建发货单，请到发货单模块创建！"}';
+		return;
+	}
+	statExpired();
+	echo '{"success":true,"_id":"'.$fahuodan["_id"].'"}';
 }else if("shenjie" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审结","time"=>time());
 	coll("dingdan")->update(array("_id"=>$param["_id"],"zhuangtai"=>"申请审结"),

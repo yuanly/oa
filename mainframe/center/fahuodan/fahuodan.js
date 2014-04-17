@@ -42,6 +42,7 @@
 		shuliang:23,
 		jianshu:2,
 		fahuodan:"xx",
+		beihuo:true,//对应的发货单已经申请对单（说明供货商已经收到了发货单传真；否则说明只是备好了货，但没收到传真，可以作为装柜候选）
 		yanhuodan：{_id:"xxx",zhuangtai:"已通过",beizhu:[{time:"xxx",zhu:"xxx"},{}...]},
 		zhuangguidan:"xx",
 		zhu:"xxx",
@@ -84,6 +85,7 @@
 	$('#currLocation', window.parent.document).text("发货单管理");
 	///////////////////////////////////////事件定义//////////////////////////////////////////////////////	
 	function _shijianchuli_(){}
+	$("#sel_ctnr").draggable();
 	$("#fhd_zhuanzhangliushui").click(function(){
 		if(currFHD.liushuizhang){
 			window.open("../liushuizhang/liushuizhang.html?showId="+currFHD.liushuizhang._id,"_blank");
@@ -435,9 +437,7 @@
 		window.open("../dingdan/dingdan.html?showId="+ddId,"_blank");
 	}
 	$("#dingdanhao").click(showDingdan);
-	function sel_huowu(){
-		var huowu = $(this).data("huowu");
-		var dd = $(this).data("dingdan");
+	function sel_huowu_sure(huowu,dd){
 		var tr_huowu = dingdanhuowu.clone(true);
 		huowu.yangban = dd.yangban;
 		tr_huowu.data("huowu",huowu);//TODO 这个huowu藏了yangban
@@ -458,6 +458,20 @@
 		currHuowu.find("#mx_danjia").val(huowu.danjia).change();
 		$("#sel_ctnr").hide();
 	}
+	function sel_huowu(){
+		var that = $(this);
+		var huowu = $(this).data("huowu");
+		var dd = $(this).data("dingdan");
+		postJson("huowu.php",{caozuo:"chadingdanhuowu",dingdanhuowu:huowu.id},function(res){
+			if(res.fahuodan){
+				ask(that,"该货物已在发货单（"+res.fahuodan+"）中，确定要选吗？",function(){
+					sel_huowu_sure(huowu,dd)
+				});
+			}else{
+				sel_huowu_sure(huowu,dd);
+			}
+		});
+	}
 	$(".tmpl_huowu").click(sel_huowu);
 	function guanbi_sel_huowu(){
 		$("#sel_huowu").hide();
@@ -474,7 +488,7 @@
 				huowu.data("huowu",dd.huowu[i]);
 				//huowu.data("dingdanId",dd._id);
 				huowu.data("dingdan",dd);
-				huowu.find("#mx_xuhao").text(i);
+				huowu.find("#mx_xuhao").text(dd.huowu[i].id);
 				huowu.find("#mx_guige").text(dd.huowu[i].guige);
 				huowu.find("#mx_shuliang").text(dd.huowu[i].shuliang);
 				huowu.find("#mx_danwei").text(dd.huowu[i].danwei);
@@ -484,7 +498,7 @@
 				tb_huowu.append(huowu);
 			}
 		});
-		$("#sel_huowu").show().css("top",event.clientY-40);
+		$("#sel_huowu").show();
 	}
 	//$("#zhankai").click(zhankai);<td><span class="plainBtn" id="zhankai">[展开]</span>
 	$(".tmpl_dingdan").click(zhankai)
@@ -586,8 +600,18 @@
 	}
 	$("#cz_shenqingduidan").click(cz_shenqingduidan);
 	function cz_zuofei(){
-		postJson("fahuodan.php",{caozuo:"zuofei",_id:currFHD._id},function(res){
-			showDetailById(currFHD._id);
+		if("none" == $("#bianji").css("display")){
+			tip($(this),"请先退出编辑状态！",1500);
+			return;
+		}
+		ask($(this),"确实要作废发货单吗？其所有货物将被删除！",function(){
+			postJson("fahuodan.php",{caozuo:"zuofei",_id:currFHD._id},function(res){
+				if(res.err){
+					tip($("#cz_zuofei"),res.err,1500);
+				}else{
+					showDetailById(currFHD._id);
+				}
+			});		
 		});
 	}
 	$("#cz_zuofei").click(cz_zuofei);

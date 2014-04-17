@@ -308,7 +308,7 @@
 		}); 
 		each(hws,function(i,hw){
 			if(!hw.id){
-				hw.id = currDD._id+"hw"+maxHwId;
+				hw.id = currDD._id+"HW"+maxHwId;
 				maxHwId ++;
 			}
 		});
@@ -444,6 +444,18 @@
 		});		
 	}
 	$("#cz_fahuo").click(cz_fahuo);
+	function cz_fahuodan(){
+		var that = $(this);
+		postJson("dingdan.php",{caozuo:"fahuodan",_id:currDD._id},function(res){
+			if(res.err){
+				tip(that,res.err,3000);
+			}else{
+				//showDetailById(currDD._id);
+				window.open("../fahuodan/fahuodan.html?showId="+res._id,"_blank");
+			}
+		});		
+	}
+	$("#cz_fahuodan").click(cz_fahuodan);
 	function cz_huitui(){
 		var that = $(this);
 		postJson("dingdan.php",{caozuo:"huitui",_id:currDD._id,zhuangtai:currDD.zhuangtai},function(res){
@@ -584,7 +596,7 @@ function _hanshuku_(){}
 		if(!hwId){
 			return 0;
 		}
-		return parseInt(hwId.substr(hwId.lastIndexOf("hw")+2));
+		return parseInt(hwId.substr(hwId.toUpperCase().lastIndexOf("HW")+2));
 	}
 	function editable(){
 		editing = true;
@@ -965,15 +977,16 @@ function _hanshuku_(){}
 				$("table",tmpl).append(caozuoItem);
 			}else if("下单" == item.dongzuo){//下单（回退-跟单员未发货 发货-跟单员未发货）
 				("#lc_tr_panel",tmpl).attr("title","订单已经发给供货商，等待供货商发货！");
+				$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
+				var caozuoItem = caozuoTmpl.clone(true);
+				$("#cz_fahuodan",caozuoItem).show();
 				if((dingdan.liucheng.length - 1) == n){
 					if(theUser._id == currDD.gendanyuan){
-						$("#lc_anniu",tmpl).show().attr("src","../../../img/down.png");
-						var caozuoItem = caozuoTmpl.clone(true);
 						$("#cz_huitui",caozuoItem).show();
 						$("#cz_fahuo",caozuoItem).show();
-						$("table",tmpl).append(caozuoItem);
 					}
 				}
+				$("table",tmpl).append(caozuoItem);
 			}else if("发货" == item.dongzuo){//发货（回退-跟单员未审结 审结-非跟单员）
 				("#lc_tr_panel",tmpl).attr("title","已发货，申请审结中！");
 				if((dingdan.liucheng.length - 1) == n && theUser._id == currDD.gendanyuan){

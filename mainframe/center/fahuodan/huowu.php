@@ -26,15 +26,27 @@ if("chaxun" == $param["caozuo"]){
 	if(isset($param["option"]["zhuangtai"])){
 		if("已装柜" == $param["option"]["zhuangtai"]){
 			$query["zhuangguidan"] = array('$exists'=>true);
-		}if("未装柜" == $param["option"]["zhuangtai"]){
+		}else if("未装柜" == $param["option"]["zhuangtai"]){
 			$query["zhuangguidan"] = array('$exists'=>false);
+		}else if("未备货" == $param["option"]["zhuangtai"]){
+			$query["beihuo"] = array('$exists'=>false);
 		}else if("未检验" == $param["option"]["zhuangtai"]){
+			$query["beihuo"] = array('$exists'=>true);
 			$query["yanhuodan.zhuangtai"] = array('$exists'=>false);//array('$ne'=>true);
 		}else{
+			$query["beihuo"] = array('$exists'=>true);
 			$query["yanhuodan.zhuangtai"] = $param["option"]["zhuangtai"];
 		}
 	}
 		
 	$cur = coll("huowu")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
+}else if("chadingdanhuowu" == $param["caozuo"]){
+	$ddhw = $param["dingdanhuowu"];
+	$hw = coll("huowu")->findOne(array("dingdanhuowu"=>$ddhw));
+	if(empty($hw)){
+		echo '{"success":true}';
+	}else{
+		echo '{"success":true,"fahuodan":"'.$hw["fahuodan"].'"}';
+	}
 }

@@ -212,24 +212,36 @@
 			<option value="已记账"/>
 			<option value="已付款"/>
 		</datalist>
-	<div style="display:none;position:absolute;z-index:100;border:1px solid gray;background-color:white;" id="sel_ctnr">
+	<div style="display:none;position:absolute;z-index:90;border:1px solid gray;background-color:white;" id="sel_ctnr">
 		<div style="width:100%;background-color:#99ccff;text-align:center">选择订单货物</div>
 		<div style="padding:10px;min-width:600px">
-			<div>
-					<div style="text-align:right"><span class="plainBtn" id="guanbi_sel_dingdan">关闭</span></div>
-					<table id="sel_dingdan">
-						<tr class="tmpl_dingdan" style="cursor:pointer"><td id="td_bianhao">1</td><td id="td_kehu"></td><td id="td_yangban"></td><td id="td_zhuangtai"></td><td id="td_gendanyuan"></td><td id="td_gonghuoshang"></td></td></tr>
-					</table>
-					<div style="text-align:right"><span class="plainBtn" id="sel_dingdan_pager">更多...</span></div>
-			</div>
-			<div id="sel_huowu" style="display:none;position:absolute;z-index:101;background-color:#fff;border:1px solid gray">
-				<table>
-					<tr><th>序号</th><th>规格</th><th>数量</th><th>单位</th><th>单价<font style="font-size:70%">(元)</font></th><th>金额</th></tr>
-					<tr class="tmpl_huowu" style="cursor:pointer"><td id="mx_xuhao"></td><td id="mx_guige"></td><td id="mx_shuliang"></td><td id="mx_danwei"></td><td id="mx_danjia"></td><td id="mx_jine"></td></tr>
+				<div style="text-align:right"><span class="plainBtn" id="guanbi_sel_dingdan">关闭</span></div>
+				<table id="sel_dingdan">
+					<tr class="tmpl_dingdan" style="cursor:pointer">
+						<td id="td_bianhao">1</td>
+						<td id="td_kehu"></td>
+						<td id="td_yangban"></td>
+						<td id="td_zhuangtai"></td>
+						<td id="td_gendanyuan"></td>
+						<td id="td_gonghuoshang"></td>
+					</tr>
 				</table>
-				<div style="text-align:center"><span class="plainBtn" id="guanbi_sel_huowu">关闭</span></div>
-			</div>
+				<div style="text-align:right"><span class="plainBtn" id="sel_dingdan_pager">更多...</span></div>
 		</div>
-	</div>
+		<div id="sel_huowu" style="display:none;position:relative;left:0;top:0;background-color:#fff;border:1px solid gray">
+			<table style="width:100%">
+				<tr><th>货物编号</th><th>规格</th><th>数量</th><th>单位</th><th>单价<font style="font-size:70%">(元)</font></th><th>金额</th></tr>
+				<tr class="tmpl_huowu" style="cursor:pointer">
+					<td id="mx_xuhao" style="text-align:center"></td>
+					<td id="mx_guige"></td>
+					<td id="mx_shuliang" style="text-align:center"></td>
+					<td id="mx_danwei" style="text-align:center"></td>
+					<td id="mx_danjia" style="text-align:center"></td>
+					<td id="mx_jine" style="text-align:center"></td>
+				</tr>
+			</table>
+			<div style="text-align:center"><span class="plainBtn" id="guanbi_sel_huowu">关闭</span></div>
+		</div>
+		</div>
 </body>
 </html>
