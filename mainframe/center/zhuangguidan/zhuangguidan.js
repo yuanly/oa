@@ -329,7 +329,7 @@
 	 
 	$("#bianji").click(edit);
 	function cz_shanchu(){
-		if(!currZGD.huowu){
+		if(currZGD.huowu){
 			tip($(this),"必须清空装柜单中的货物并保存，才能删除装柜单！",1500);
 			return;
 		}
@@ -546,6 +546,7 @@ function _hanshuku_(){}
 		$("#zgd_yanhuodizhi").removeAttr("readonly");
 		$(".plainInput").removeAttr("readonly");
 		$("#zhuangguidanmingxi").find(".plainBtn").show();
+		$("#zhuangguidanmingxi").find(".clz_xuan").hide();
  		$("#zgd_gonghuoshang").css("cursor","pointer").xuanzeshangjia("",function(vendor){
  			currZGD.gonghuoshang = {_id:vendor._id,mingchen:vendor.mingchen};
  		}).attr("readonly","readonly");

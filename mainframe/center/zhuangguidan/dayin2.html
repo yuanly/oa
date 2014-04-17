@@ -101,7 +101,7 @@
 			function dingdanHuizong(tr,id,trs){
 				postJson("zhuangguidan.php",{caozuo:"getdingdanbyid",_id:id},function(res){
 					tr.find("#kehu").text(res.kehu);
-					var yb = (res.taiguoyangban?res.taiguoyangban:"-")+"("+res.yangban.zhongguoxinghao+")";
+					var yb = (res.taiguoyangban?res.taiguoyangban:"-");//+"("+res.yangban.zhongguoxinghao+")";
 					tr.find("#yangban").text(yb);
 					var dd = res.taiguoyuangao+"("+(res.taiguobianhao?res.taiguobianhao:"-")+")";
 					tr.find("#dingdan").text(dd);
