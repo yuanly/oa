@@ -99,7 +99,7 @@
 				var tr = tmpl_tr_gonghuoshanghuizong.clone(true);
 				tr.find("#quyu").text(hws[0].gonghuoshang.quyu?hws[0].gonghuoshang.quyu:"-");
 				tr.find("#gonghuoshang").text(hws[0].gonghuoshang.mingchen);
-				tr.find("#yangban").text(formatYangban(hws[0].yangban));
+				tr.find("#yangban").html(formatYangban(hws[0].yangban));
 				tr.find("#dingdan").text(getDDID(hws[0].dingdanhuowu));
 				tr.find("#kehu").text(hws[0].kehu);
 				tr.find("#zongjianshu").text(zongjianshu);
