@@ -25,7 +25,7 @@ if("liebiao" == $param["caozuo"]){
 	if(empty($dingdan["_id"])){
 		$dingdan["_id"] = "DD".date("ymd",time());
 		$n = coll("dingdan")->count(array("_id"=>array('$regex'=>"^".$dingdan["_id"])));
-		if($n>9){
+		if($n>8){
 			$dingdan["_id"] .=".".($n+1);
 		}else{
 				$dingdan["_id"] .=".0".($n+1);//如果一天内订单数不超过99条，就能保证新录入的订单排前面

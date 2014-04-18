@@ -597,7 +597,19 @@ function _hanshuku_(){}
 			tr.find("#sq_shoukuanren").text(sq.gonghuoshang.mingchen);
 			tr.find("#sq_jine").text(sq.zongjine);
 			sum += sq.zongjine;
-			tr.find("#sq_kemu").text(sq.kemu);
+			if(sq.type == "fahuodan"){
+				tr.find("#sq_kemu").text("货款");
+				var zy = "";
+				if(sq.zhaiyao && sq.zhaiyao.length>0){
+					each(sq.zhaiyao,function(i,id){
+						zy = "<a href='../dingdan/dingdan.html?showId="+id+"'>"+id+"</a>&nbsp;"
+					});
+				}
+				$("#sq_zhaiyao").html(zy);
+			}else{
+				tr.find("#sq_kemu").text(sq.kemu);
+				tr.find("#sq_zhaiyao").text(sq.zhaiyao);
+			}
 			tr.find("#sq_shenqingzhe").text(getUserName(sq.ludanzhe));
 			tr.find("#sq_duidanzhe").text(getUserName(sq.duidanzhe));
 			tr.find("#sq_shoukuanzhanghu").text(sq.shoukuanzhanghu?sq.shoukuanzhanghu:"");

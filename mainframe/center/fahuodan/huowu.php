@@ -23,6 +23,9 @@ if("chaxun" == $param["caozuo"]){
 	if(isset($param["option"]["kehu"])){
 		$query["kehu"] = $param["option"]["kehu"];
 	}
+	if(isset($param["option"]["dingdan"])){
+		$query["dingdanhuowu"] = array('$regex'=>"^".$param["option"]["dingdan"]);
+	}
 	if(isset($param["option"]["zhuangtai"])){
 		if("已装柜" == $param["option"]["zhuangtai"]){
 			$query["zhuangguidan"] = array('$exists'=>true);

@@ -59,9 +59,13 @@
 	$("#th_quyu").attr("list","quyulist");
 	$("#th_quyu").bind("input",function(){listDingdan(0);});
 	$("#th_man").bind("input",function(){listDingdan(0);});
-	$("#th_bianhao").datepicker().change(function(){
-		if($(this).val().indexOf("DD")<0){			
-			$(this).val("DD"+date2id($(this).val()));
+	$("#th_bianhao").datepicker({ dateFormat: "yy-mm-dd._" }).change(function(){
+		if($(this).val().indexOf("DD")<0){
+			if($(this).val().indexOf("._")>0){
+				$(this).val("DD"+date2id($(this).val()));
+			}else{
+				$(this).val("DD"+$(this).val());
+			}
 		}
 		listDingdan(0);
 	});

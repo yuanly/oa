@@ -146,6 +146,7 @@ $(function(){
 	function baocun(){
 		currSQ.zongjine = parseFloat2($("#sq_jine").val().trim());
 		currSQ.kemu = $("#sq_kemu").val().trim();
+		currSQ.zhaiyao = $("#sq_zhaiyao").text().trim();
 		//收款人在选择的时候就已经设置
 		currSQ.shoukuanzhanghu = $("#sq_shoukuanzhanghu").text().trim();
 		currSQ.neirong = shuomingEditor.editorVal();
@@ -275,6 +276,7 @@ function _hanshuku_(){}
  		$("#sq_kemu").removeAttr("readonly");
 		$("#sq_shoukuanren").unbind("click").click(sel_lianxiren);
 		$("#sq_shoukuanzhanghu").click(sel_zhanghu).css("cursor","pointer");
+		$("#sq_zhaiyao").attr("contenteditable","true");
 	}	
 	function link_lianxiren(){
 		if(currSQ.gonghuoshang){
@@ -293,6 +295,7 @@ function _hanshuku_(){}
 		$("#sq_kemu").attr("readonly","readonly");
 		$("#sq_shoukuanren").unbind("click").click(link_lianxiren);
 		$("#sq_shoukuanzhanghu").unbind("click").css("cursor","default");
+		$("#sq_zhaiyao").removeAttr("contenteditable");
 	}
 
 	function sel_lianxiren(event){
@@ -392,6 +395,7 @@ function _hanshuku_(){}
 			$("#xuanze").show();$("#quxiao").hide();
 		}
 		currSQ = sq; 
+		
 		$("#liucheng").show().liucheng(getTheUser(),sq);
 		if(sq.liushuizhang){
 			var lsz = sq.liushuizhang;
@@ -405,9 +409,18 @@ function _hanshuku_(){}
 		$("#sq_jine").val(currSQ.zongjine?currSQ.zongjine:""); 
 		if(sq.type == "fahuodan"){
 			$("#sq_kemu").val("货款"); 
+			var zy = "&nbsp;";
+			if(sq.zhaiyao && sq.zhaiyao.length>0){
+				each(sq.zhaiyao,function(i,id){
+					zy = "<a href='../dingdan/dingdan.html?showId="+id+"' target='_blank'>"+id+"</a>&nbsp;"
+				});
+			}
+			$("#sq_zhaiyao").html(zy);
 		}else{
 			$("#sq_kemu").val(currSQ.kemu?currSQ.kemu:""); 
+			$("#sq_zhaiyao").html(currSQ.zhaiyao?currSQ.zhaiyao:"&nbsp;");
 		}
+		
 		$("#sq_shoukuanren").html(currSQ.gonghuoshang?currSQ.gonghuoshang.mingchen:"&nbsp;"); 
 		$("#sq_shoukuanzhanghu").text(currSQ.shoukuanzhanghu?currSQ.shoukuanzhanghu:""); 
 		
@@ -510,6 +523,7 @@ function _hanshuku_(){}
 		
 		
 		shuomingEditor.editorVal(currSQ.neirong);
+	
  
 		liuyanElm.shuaxinliebiao({hostId:currSQ._id,hostType:"shenqing"});
 		readOnly();
@@ -620,7 +634,7 @@ function _hanshuku_(){}
 				}else{
 					tr.find("#td_fukuan").text("");
 				}
-				
+				tr.find("#td_zhaiyao").text(shenqing.zhaiyao);
 				var color = toggle("#fff","#eee");
 				tr.css("background-color",color);
 				if(!shenqing.liushuizhang){

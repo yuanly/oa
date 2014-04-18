@@ -9,6 +9,7 @@
 
 	{	_id:"FHD131008.1",
 		subid:"xx",//不带FHD和SQ的id，方便两种类型混一起排序和查询
+		zhaiyao:[id,...]|"xxx",//如果是发货单，其内容是系统自动填写的订单id数组；如果是付款申请则是由用户填写字符串。显示在列表中，方便用户理解
 		type:"fahuodan"/"shenqing",
 		zongjine:213.2,//付款申请要手工输入，发货单则自动计算
 		kemu:"",//付款申请才需要
@@ -90,6 +91,14 @@
 		if(currFHD.liushuizhang){
 			window.open("../liushuizhang/liushuizhang.html?showId="+currFHD.liushuizhang._id,"_blank");
 		}	
+	});
+	var users = getUsers();users.unshift({"user_name":"录单者","_id":"-1"});
+	$("#th_ludanzhe").myselector(users,"user_name").bind("input",function(){
+		listfahuodan(0);
+	});
+	users.shift();users.unshift({"user_name":"对单者","_id":"-1"});
+	$("#th_duidanzhe").myselector(users,"user_name").bind("input",function(){
+		listfahuodan(0);
 	});
 	function sel_zhanghu(event){
 		if(!currFHD.gonghuoshang){
@@ -248,6 +257,9 @@
 		});
 	}
 	$("#chai").click(chai);
+	function getDDID(id){
+		return id.substr(0,id.toUpperCase().indexOf("HW"));
+	}
 	function baocun(){
 		jisuanzonge();
 		currFHD.zongjine = parseFloat($("#fhd_zonge").text());
@@ -285,6 +297,7 @@
 			return;
 		}
 		var huowu = [];
+		var zy = [];
 		$(".huowu").each(function(i,hw){
 			if("" == $(hw).find("#mx_yangban").text().trim()){
 		 		tip($(hw).find("#mx_yangban"),"样板不能为空！",2000);
@@ -295,6 +308,10 @@
 		 		tip($(hw).find("#mx_guige"),"规格不能为空！",2000);
 		 		huowu = [];
 		 		return false;
+		 	}
+		 	var ddId = getDDID($(hw).find(".dingdanhuowu").data("huowu").id);
+		 	if(zy.indexOf(ddId)<0){
+		 		zy.push(ddId);
 		 	}
 			$(hw).find(".shuliangjianshu").each(function(j,mingxi){
 			 	var item = {};
@@ -334,7 +351,8 @@
 			currFHD.qitafei = qita;
 		}
 		currFHD.neirong = yuandanEditor.editorVal();
-		
+				
+		currFHD.zhaiyao = zy;
 		postJson("fahuodan.php",{caozuo:"baocun",fahuodan:currFHD},function(res){
 			if(res.err){
 				tip($("#baocun"),res.err,1500);
@@ -710,6 +728,14 @@ function _hanshuku_(){}
 		if("" != fk && "付款" != fk){
 			ret.fukuan = fk;
 		}
+		var v = $("#th_ludanzhe").val().trim();
+		if("" != v && "录单者" != v){
+			ret.ludanzhe = getUserIdByName(v);
+		}
+		var v = $("#th_duidanzhe").val().trim();
+		if("" != v && "对单者" != v){
+			ret.duidanzhe = getUserIdByName(v);
+		}
 		return ret;
 	}
 	function getOperator(fhd){
@@ -753,6 +779,7 @@ function _hanshuku_(){}
 						tr.find("#td_fukuan").text("已记账");
 					}
 				}
+				tr.find("#td_zhaiyao").text(fahuodan.zhaiyao);
 				
 				var color = toggle("#fff","#eee");
 				tr.css("background-color",color);
@@ -910,6 +937,13 @@ function _hanshuku_(){}
 		}else{
 			$("#fhd_zhuanzhangliushui").html("");
 		}
+		var zy = "&nbsp;";
+		if(fhd.zhaiyao && fhd.zhaiyao.length>0){
+			each(fhd.zhaiyao,function(i,id){
+				zy = "<a href='../dingdan/dingdan.html?showId="+id+"' target='_blank'>"+id+"</a>&nbsp;"
+			});
+		}
+		$("#fhd_zhaiyao").html(zy);
 		$("#fhd_gonghuoshang").html(currFHD.gonghuoshang?currFHD.gonghuoshang.mingchen:"&nbsp;");
 		$("#fhd_shoukuanzhanghu").html(currFHD.shoukuanzhanghu?currFHD.shoukuanzhanghu:"&nbsp;");
 		$("#fhd_yanhuodizhi").text(currFHD.yanhuodizhi?currFHD.yanhuodizhi:"");
@@ -1207,18 +1241,23 @@ function _hanshuku_(){}
 	}else if("wodedailudan" == cmd){
 		$('#currLocation', window.parent.document).text("发货单/我的待录单");
 		$("#th_zhuangtai").attr("readonly","readonlly");
+		$("#th_ludanzhe").attr("readonly","readonlly");
 	}else if("wodedaiduidan" == cmd){
 		$('#currLocation', window.parent.document).text("发货单/我的待对单");
 		$("#th_zhuangtai").attr("readonly","readonlly");
+		$("#th_ludanzhe").attr("readonly","readonlly");
 	}else if("wodeyiduidan" == cmd){
 		$('#currLocation', window.parent.document).text("发货单/我的已对单");
 		$("#th_zhuangtai").attr("readonly","readonlly");
+		$("#th_ludanzhe").attr("readonly","readonlly");
 	}else if("wodedaifukuan" == cmd){
 		$('#currLocation', window.parent.document).text("发货单/我的待付款");
 		$("#th_fukuan").attr("readonly","readonlly");
+		$("#th_ludanzhe").attr("readonly","readonlly");
 	}else if("wodedaishenjie" == cmd){
 		$('#currLocation', window.parent.document).text("发货单/我的待审结");
 		$("#th_zhuangtai").attr("readonly","readonlly");
+		$("#th_ludanzhe").attr("readonly","readonlly");
 	}else{
 		$("#shangchuanfahuodan").show();
 		$('#currLocation', window.parent.document).text("发货单/查询");

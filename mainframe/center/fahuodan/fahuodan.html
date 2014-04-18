@@ -45,19 +45,21 @@
 					<th nowrap><input id="th_bianhao" class="plainTh" value="编号" style="width:120px;cursor:pointer"/></th>
 					<th nowrap><input id="th_zhuangtai" class="plainTh" value="状态" style="width:55px;cursor:pointer" list="zhuangtailist"/></th>
 					<th nowrap><input id="th_gonghuoshang" class="plainTh" value="供货商" style="width:120px;cursor:pointer"/></th>
-					<th nowrap>录单者</th>
-					<th nowrap>对单者</th>
+					<th nowrap><input id="th_ludanzhe" class="plainTh" value="录单者" style="width:55px;font-size:0.8em"/></th>
+					<th nowrap><input id="th_duidanzhe" class="plainTh" value="对单者" style="width:55px;font-size:0.8em"/></th>
 					<th nowrap>审结者</th>
 					<th nowrap><input id="th_fukuan" class="plainTh" value="付款" style="width:55px;cursor:pointer" list="fukuanlist"/></th>
+					<th >摘要</th>
 				</tr>
 				<tr class="tr_fahuodan">
 					<td id="td_bianhao"></td>
-					<td id="td_zhuangtai" style="text-align:center"></td>
-					<td id="td_gonghuoshang"></td>
+					<td id="td_zhuangtai" style="text-align:center;font-size:0.8em"></td>
+					<td id="td_gonghuoshang" style="font-size:0.8em"></td>
 					<td id="td_ludanzhe" style="text-align:center"></td>
 					<td id="td_duidanzhe" style="text-align:center"></td>
 					<td id="td_fuhezhe" style="text-align:center"></td>
 					<td id="td_fukuan" style="text-align:center"></td>
+					<td id="td_zhaiyao" style="font-size:0.8em"></td>
 				</tr>
 			</table>	
 			<div id="pager">
@@ -114,7 +116,8 @@
 						编号：<input type="text" id="fhd_bianhao" class="plainInput" readonly style="width:90px;cursor:pointer"/>，
 						<!--总额：<input type="text" id="fhd_zonge" class="plainInput" readonly style="color:red;font-size:1.2em;width:45px;text-align:center"/>元，-->
 						总额：<div id="fhd_zonge" class="myinput" style="color:red;font-size:1.2em;min-width:45px;text-align:center"></div>元，
-						转账流水：<div class="myinput" id="fhd_zhuanzhangliushui" style="cursor:pointer"></div><br/>
+						转账流水：<div class="myinput" id="fhd_zhuanzhangliushui" style="cursor:pointer"></div>，
+						摘要：<div class="myinput" id="fhd_zhaiyao" style="font-size:0.8em"></div><br/>
 						供货商：<div id="fhd_gonghuoshang" class="myinput" style="min-width:150px;cursor:pointer"></div>，
 						验货地址：<div id="fhd_yanhuodizhi" class="myinput" style="min-width:150px"></div><br/>
 						收款账户：<div id="fhd_shoukuanzhanghu" class="myinput" style="min-width:200px;cursor:pointer">&nbsp;</nobr></div>

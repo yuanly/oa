@@ -125,6 +125,7 @@
 	});
 	$("#th_hw_zhuangtai").bind("input",function(){listHuowu(0);});
 	$("#th_hw_kehu").bind("input",function(){listHuowu(0);});
+	$("#th_hw_dingdan").bind("input",function(){listHuowu(0);});
 	$("#th_hw_gonghuoshang").click(sel_gonghuoshang);
 	addQuyulist();
 	$("#quyulist").prepend('<option value="区域"/>');
@@ -167,7 +168,11 @@
 		tr_huowu.find("#td_hw_gonghuoshang").text(huowu.gonghuoshang.mingchen);
 		tr_huowu.find("#td_hw_quyu").text(huowu.gonghuoshang.quyu);
 		tr_huowu.find("#td_hw_yangban").html(formatYangban(huowu.yangban));
-		tr_huowu.find("#td_hw_guige").text(huowu.guige);
+		if(huowu.guige.length>12){
+			tr_huowu.find("#td_hw_guige").html("<fosnt style='font-size:0.8em'>"+huowu.guige+"</font>");
+		}else{
+			tr_huowu.find("#td_hw_guige").text(huowu.guige);
+		}
 		tr_huowu.find("#td_hw_danwei").text(huowu.danwei);
 		tr_huowu.find("#td_hw_shuliang").text(huowu.shuliang);
 		tr_huowu.find("#td_hw_jianshu").text(huowu.jianshu);
@@ -208,6 +213,10 @@
 		v = $("#th_hw_yangban").text().trim();
 		if("" != v && "样板" != v){
 			ret.yangban = $("#th_hw_yangban").data("ybId");
+		}
+		v = $("#th_hw_dingdan").text().toUpperCase().trim();
+		if("" != v && "订单" != v){
+			ret.dingdan = v;
 		}
 		return ret;
 	}

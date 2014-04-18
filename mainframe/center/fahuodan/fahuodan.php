@@ -14,9 +14,14 @@ if("shangchuan" == $param["caozuo"]){
 	$fahuodan["lastId"] = 0;
 	$fahuodan["liucheng"][] = $shangchuanliucheng;
 	$d = date("ymd",time());
-	$n = coll("fahuodan")->count(array("_id"=>array('$regex'=>"^FHD".$d."")));
-	$fahuodan["subid"] = $d.".".($n+1);
-	$fahuodan["_id"] = "FHD".$fahuodan["subid"];
+	$n = coll("fahuodan")->count(array("subid"=>array('$regex'=>"^".$d."")));
+	if($n>8){
+		$fahuodan["subid"] = $d.".".($n+1);
+	}else{
+		$fahuodan["subid"] = $d.".0".($n+1);
+	}
+	$fahuodan["_id"] = "FHD".$shenqing["subid"];
+	
 	coll("fahuodan")->save($fahuodan);
 	statExpired();
 	echo '{"success":true}';
@@ -167,6 +172,12 @@ if("shangchuan" == $param["caozuo"]){
 	}
 	if(isset($param["option"]["gonghuoshang"])){
 		$query["gonghuoshang._id"] = $param["option"]["gonghuoshang"];
+	}
+	if(isset($param["option"]["ludanzhe"])){
+		$query["ludanzhe"] = $param["option"]["ludanzhe"];
+	}
+	if(isset($param["option"]["duidanzhe"])){
+		$query["duidanzhe"] = $param["option"]["duidanzhe"];
 	}
 	//var_dump($query);
 	$cur = coll("fahuodan")->find($query,array("neirong"=>0))->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);

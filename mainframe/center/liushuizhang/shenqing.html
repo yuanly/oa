@@ -62,15 +62,17 @@
 					<th nowrap><input id="th_shenqingzhe" class="plainTh" value="申请者" style="width:55px;font-size:0.8em"/></th>
 					<th nowrap><input id="th_shenhezhe" class="plainTh" value="审核者" style="width:55px;font-size:0.8em"/></th>
 					<th nowrap><input id="th_fukuan" class="plainTh" value="付款" style="width:60px;font-size:0.8em;cursor:pointer" list="fukuanlist"/></th>
+					<th nowrap>摘要</th>
 				</tr>
 				<tr class="tr_shenqing">
 					<td id="td_bianhao"></td>
-					<td id="td_zhuangtai"></td>
-					<td id="td_shoukuanren"></td>
+					<td id="td_zhuangtai" style="font-size:0.8em"></td>
+					<td id="td_shoukuanren" style="font-size:0.8em;max-width:120px;overflow:hidden"></td>
 					<td id="td_jine"></td>
 					<td id="td_shenqingzhe"></td>
 					<td id="td_shenhezhe"></td>
 					<td id="td_fukuan"></td>
+					<td id="td_zhaiyao" style="font-size:0.7em"></td>
 				</tr>
 			</table>	
 			<div id="pager">
@@ -144,7 +146,8 @@
 				<nobr>
 					编号：<div class="myInput" id="sq_bianhao" style="cursor:pointer"></div>，
 					付款金额：<input type="text" class="plainInput" id="sq_jine" size=7 style="color:red;text-align:center;font-size:1.5em" readonly/>元，
-					科目：<input type="text" id="sq_kemu" class="plainInput" style="cursor:pointer" size=7 />
+					科目：<input type="text" id="sq_kemu" class="plainInput" style="cursor:pointer" size=7 />，
+					摘要：<div class="myinput" id="sq_zhaiyao" title="可以显示在列表中的附言，字要少" style="font-size:0.8em">&nbsp;</div>
 					<div>收款人：<div class="myInput" id="sq_shoukuanren" style="min-width:120px;cursor:pointer"></div> </div>
 					<div style="margin-top:8px;margin-bottom:8px">收款账户：<div class="myInput" id="sq_shoukuanzhanghu" style="min-width:120px"></div></div>
 				</nobr>
