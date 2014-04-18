@@ -554,6 +554,7 @@
 			}else{
 				$("#fahuodan_out").hide();
 			}
+			//获取发货单状态，然后统计每个订单货物的发货状况 TODO ...
 		});
 	}
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
@@ -827,57 +828,6 @@ function _hanshuku_(){}
 			$("#bianji").hide();
 		}
 	}
-	/*
-	function shuaxindingdanliebiao(){
-		var jiegaozheid = null;
-		each(currYG.liucheng,function(n,liucheng){
-			if(liucheng.dongzuo == "接稿"){
-				jiegaozheid = liucheng.userId;
-				return false;
-			}		
-		});
-		$("#dingdanliebiao").empty().show();
-		postJson("dingdan.php",{caozuo:"liebiao",_id:currYG._id},function(dingdans){
-			each(dingdans,function(n,dingdan){
-				var elm = lb_dingdan.clone(true);
-				elm.data("dingdanId",dingdan._id);
-				$("#lb_bianhao",elm).text(dingdan._id);
-				$("#lb_kehu",elm).text(dingdan.kehu);
-				$("#lb_yangban",elm).text(dingdan.yangban.taiguoxinghao);
-				$("#lb_zhuangtai",elm).text(dingdan.zhuangtai);
-				if(dingdan.zhuangtai == "录单" && getTheUser()._id == jiegaozheid){
-					$("#lb_shanchu",elm).show();
-					$("#lb_shenqingshenhe",elm).show();
-				}
-				if(dingdan.zhuangtai == "申请审核"){
-					if(getTheUser()._id == jiegaozheid){
-						$("#lb_quxiaoshenqing",elm).show();
-					}else{
-						$("#lb_shenhe",elm).show();
-					}
-				}
-				if(dingdan.zhuangtai == "作废"){
-					elm.find("div:first-child").css("background-color","#eee");
-				}
-				each(dingdan.huowu,function(n,hw){
-					var hwelm = lb_hw.clone(true); 
-					$("#lb_xuhao",hwelm).text((n+1)+".");
-					$("#lb_guige",hwelm).text(hw.guige);
-					$("#lb_shuliang",hwelm).text(hw.shuliang);
-					$("#lb_danwei",hwelm).text(hw.danwei);
-					elm.append(hwelm);
-				});
-				if(dingdan.ludanbeizhu){
-					elm.append("<div style='margin:10px 0px 10px'><b>备注：</b>"+dingdan.ludanbeizhu+"</div>");
-				}
-				$("#dingdanliebiao").append(elm);
-			});
-			if(dingdans && dingdans.length>0){
-				$("#dingdanliebiao").prepend("<p style='background-color:#eee'>已录订单</p>");
-			}
-		});
-	}
-	*/
 	function showDetailById(_id){		
 		tip(null,"正在加载...");
 		postJson("dingdans.php",{_id:_id},function(dd){

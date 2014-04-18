@@ -108,7 +108,8 @@ if("xinjian" == $param["caozuo"]){
 	echo  jsonEncode($zgd);
 }else if("baocun" == $param["caozuo"]){
 	$zhuangguidan = $param["zhuangguidan"];	
-	coll("huowu")->update(array("zhuangguidan"=>$zhuangguidan["_id"]),array('$unset'=>array("zhuangguidan"=>1)),array("multiple"=>true));
+	coll("huowu")->update(array("zhuangguidan"=>$zhuangguidan["_id"]),
+			array('$unset'=>array("zhuangguidan"=>1)),array("multiple"=>true));
 	foreach($zhuangguidan["huowu"] as $huowu){
 		coll("huowu")->update(array("_id"=>$huowu["_id"]),array('$set'=>array("zhuangguidan"=>$zhuangguidan["_id"],"zgdIdx"=>$huowu["zgdIdx"])));
 	}

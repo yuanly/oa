@@ -335,7 +335,7 @@
 
 	function baocun(){
 		var huowu = [];
-		$(".tr_huowu").each(function(i,hw){
+		$("#selhuowutable .tr_huowu").each(function(i,hw){
 			var obj = $(hw).data("huowu");
 			obj.zgdIdx = i;
 		 	huowu.push(obj);
