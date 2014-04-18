@@ -241,7 +241,11 @@ if("jiedan" == $param["caozuo"]){
 	$query = array("dingdanhuowu"=>array('$regex'=>'^'.$param["_id"]));
 	$cur = coll("huowu")->find($query);
 	echo  cur2json($cur);
+}else if("fahuodanzhuangtai" == $param["caozuo"]){
+	$fhd = coll("fahuodan")->findOne(array("_id"=>$param["fhdId"]),array("zhuangtai"=>1));
+	echo  jsonEncode($fhd);
 }
+
 
 
 

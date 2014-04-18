@@ -515,6 +515,7 @@
 			var fhds = [];
 			var yhds = [];
 			var zgds = [];
+			var ddhws = [];
 			each(huowus,function(i,hw){
 				if(hw.fahuodan && fhds.indexOf(hw.fahuodan)<0){
 					fhds.push(hw.fahuodan);
@@ -525,14 +526,26 @@
 				if(hw.zhuangguidan && zgds.indexOf(hw.zhuangguidan)<0){
 					zgds.push(hw.zhuangguidan);
 				}
+				if(ddhws.indexOf(hw.dingdanhuowu)<0){
+					ddhws.push(hw.dingdanhuowu);
+				}
 			});
 			
 			if(fhds.length>0){
 				$("#fahuodan_out").show().html("发货单：");
 				each(fhds,function(i,fhd){
 					var fhd_1 = fhd_span.clone(true);
-					fhd_1.text(fhd);
+					//fhd_1.text(fhd);
 					$("#fahuodan_out").append(fhd_1).append("&nbsp;");
+					postJson("dingdan.php",{caozuo:"fahuodanzhuangtai",fhdId:fhd},function(res){
+						if(res.zhuangtai == "上传"||res.zhuangtai == "接单"){
+							fhd_1.html("<font style='color:red'>"+fhd+"</font>");
+						}else if(res.zhuangtai == "申请对单"||res.zhuangtai == "对单"){
+							fhd_1.html("<font style='color:blue'>"+fhd+"</font>");
+						}else{
+							fhd_1.text(fhd);
+						}
+					});
 				});
 				if(yhds.length>0){
 					$("#fahuodan_out").append("，验货单：");
@@ -546,7 +559,6 @@
 					$("#fahuodan_out").append("，装柜单：");
 					each(zgds,function(i,zgd){
 						var zgd_1 = zgd_span.clone(true);
-						console.log(zgd);
 						zgd_1.text(zgd);
 						$("#fahuodan_out").append(zgd_1).append("&nbsp;");
 					});
@@ -554,8 +566,45 @@
 			}else{
 				$("#fahuodan_out").hide();
 			}
-			//获取发货单状态，然后统计每个订单货物的发货状况 TODO ...
+			//统计每个订单货物的发货状况:数量和备货状态 ...
+			if(!inLiucheng(currDD.liucheng,"下单")){
+				$(".clz_fahuo").hide();
+				return;
+			}
+			var hwtjs=[];
+			each(ddhws,function(i,ddhwId){
+				var tj = {id:ddhwId,shuliang:0,beihuo:true};				
+				each(huowus,function(i,hw){
+					if(hw.dingdanhuowu == ddhwId){
+						tj.shuliang += (hw.shuliang * hw.jianshu);
+						if(!hw.beihuo){
+							tj.beihuo = false;
+						}
+					}
+				});
+				hwtjs.push(tj);
+			});
+			$(".clz_fahuo").show();
+			$(".tmpl_huowu").each(function(i,tr){
+				var tj = getFahuotongji($(tr).data("id"),hwtjs);
+				console.log(tj);
+				var txt = "<font style='color:red'>"+tj.shuliang+"</font>";
+				if(tj.beihuo){
+					txt = "<font style='color:blue'>"+tj.shuliang+"</font>";
+				}
+				$(tr).find("#mx_yifahuoliang").html(txt);
+			});
 		});
+	}
+	function getFahuotongji(ddhwId,tjs){
+		var ret = {id:ddhwId,shuliang:0,beihuo:false};
+		each(tjs,function(i,tj){
+			if(tj.id==ddhwId){
+				ret = tj; 
+				return false;
+			}
+		});
+		return ret;
 	}
 	///////////////////////////////独立函数///////////////////////////////////////////////////////////////
 function _hanshuku_(){}
