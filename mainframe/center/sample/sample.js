@@ -252,7 +252,8 @@ $(function(){
 				}
 			});
 		}
-		$("#beizhu").editorVal(yangban.beizhu);
+		//$("#beizhu").editorVal(yangban.beizhu);
+		beizhuEditor.editorVal(yangban.beizhu);
 	}
 	//读取表单内容，构造对象并返回
 	function form2obj(){
@@ -271,14 +272,14 @@ $(function(){
 		}
 		yangban.yijiazhe = getUserIdByName($("#xiangdan #yijiazhe").val().trim());
 		yangban.yijiariqi = $("#xiangdan #yijiariqi").val().trim();
-		yangban.beizhu = $("#xiangdan #beizhu").editorVal();
+		yangban.beizhu = beizhuEditor.editorVal();//$("#xiangdan #beizhu").editorVal();
 		yangban.zhuangtai = $("#zhuangtai").val().trim();
 		return yangban
 	}
 	//进入编辑状态
 	function bianji(){
 		$("#xiangdan").find(".plainInput").removeAttr("disabled");
-		$("#beizhu").editorWritable();
+		beizhuEditor.editorWritable();//$("#beizhu").editorWritable();
 		$("#bianji").hide();
 		$("#tijiao").show();
 		$("#jiage").val($("#jiage").val()+" 【元】 【元】 【元】");
@@ -287,7 +288,7 @@ $(function(){
 	//进入只读状态
 	function zhidu(){
 		$("#xiangdan").find(".plainInput").attr("disabled",true);
-		$("#beizhu").editorReadonly();
+		beizhuEditor.editorReadonly();//$("#beizhu").editorReadonly();
 		$("#bianji").show();
 		$("#tijiao").hide();
 		$("#zhongguoxinghao").removeAttr("contenteditable");
@@ -332,7 +333,7 @@ $(function(){
 	//定义议价日期 的 日期控件
 	$("#yijiariqi").datepicker().attr("disabled",true);
 	//定义备注 的 编辑器
-	$("#beizhu").myeditor(700,200).editorReadonly();
+	beizhuEditor = $("#beizhu").myeditor(700,200);beizhuEditor.editorReadonly();
 
 	$("#jiage").change(function(){
  		$(this).val(jiages2str(getPrices($(this).val())));
