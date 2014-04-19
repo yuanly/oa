@@ -20,7 +20,7 @@ if("shangchuan" == $param["caozuo"]){
 	}else{
 		$fahuodan["subid"] = $d.".0".($n+1);
 	}
-	$fahuodan["_id"] = "FHD".$shenqing["subid"];
+	$fahuodan["_id"] = "FHD".$fahuodan["subid"];
 	
 	coll("fahuodan")->save($fahuodan);
 	statExpired();
