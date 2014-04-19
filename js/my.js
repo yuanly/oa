@@ -1491,6 +1491,7 @@ catch(e){
    var editor = this.find("textarea").xheditor({plugins:plugins,
  		tools:'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,Removeformat,|,Align,List,Outdent,Indent,|,Link,Unlink,Img,Hr,Emot,Table,|,Preview,Print,Fullscreen,|,map,|,pic,|,attach,|',
  		width:w,height:h});
+ 		this.editor = editor;
  	return this;
  }
  jQuery.fn.editorWritable = function(){
@@ -1505,7 +1506,8 @@ catch(e){
  };
  jQuery.fn.editorVal = function(v){
  	if(arguments.length==0){
- 		return this.find("textarea").val().trim();
+ 		//return this.find("textarea").val().trim();
+ 		return this.editor.getSource().trim();
  	}else{
  		if("undefined" === typeof v){
  			v="";

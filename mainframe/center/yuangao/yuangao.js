@@ -349,7 +349,8 @@
 			dingdan.beizhu = $("#ld_beizhu").val().trim();
 		}*/
 		dingdan.beizhu = ld_beizhuEditor.editorVal();
-		console.log(dingdan.beizhu);
+		console.log(dingdan.beizhu);return;
+		
 		var that = $(this);
 		that.data("waiting",true);
 		postJson("dingdan.php",{caozuo:"ludan",dingdan:dingdan},function(res){
