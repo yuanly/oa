@@ -333,7 +333,7 @@ $(function(){
 	//定义议价日期 的 日期控件
 	$("#yijiariqi").datepicker().attr("disabled",true);
 	//定义备注 的 编辑器
-	beizhuEditor = $("#beizhu").myeditor(700,200);beizhuEditor.editorReadonly();
+	var beizhuEditor = $("#beizhu").myeditor(700,200);beizhuEditor.editorReadonly();
 
 	$("#jiage").change(function(){
  		$(this).val(jiages2str(getPrices($(this).val())));
