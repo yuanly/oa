@@ -547,7 +547,8 @@
 						}else if(res.zhuangtai == "申请对单"||res.zhuangtai == "对单"){
 							fhd_1.html("<font style='color:blue'>"+fhd+"</font>");
 						}else{
-							fhd_1.text(fhd);
+							fhd_1.html("<font style='color:black'>"+fhd+"</font>");
+							//fhd_1.text(fhd);
 						}
 					});
 				});
