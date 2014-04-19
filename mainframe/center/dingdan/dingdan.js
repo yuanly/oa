@@ -592,7 +592,7 @@
 			$(".clz_fahuo").show();
 			$(".tmpl_huowu").each(function(i,tr){
 				var tj = getFahuotongji($(tr).data("id"),hwtjs);
-				console.log(tj);
+				
 				var txt = "<font style='color:red'>"+tj.shuliang+"</font>";
 				if(tj.beihuo){
 					txt = "<font style='color:blue'>"+tj.shuliang+"</font>";
