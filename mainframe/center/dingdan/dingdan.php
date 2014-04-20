@@ -238,7 +238,9 @@ if("jiedan" == $param["caozuo"]){
 	echo  cur2json($cur);
 }else if("huowu" == $param["caozuo"]){
 	//$query = array("dingdanhuowu"=>'/^'.$param["_id"].'/');
-	$query = array("dingdanhuowu"=>array('$regex'=>'^'.$param["_id"]));
+	//$query = array("dingdanhuowu"=>array('$regex'=>'^'.$param["_id"]));//因为历史原因导致有些货物id用了小写的hw，所以改用下面的规则表达式。以后再改回来
+	$regexObj = new MongoRegex("/^".$param["_id"]."HW/i");
+	$query = array("dingdanhuowu"=>$regexObj);
 	$cur = coll("huowu")->find($query);
 	echo  cur2json($cur);
 }else if("fahuodanzhuangtai" == $param["caozuo"]){
