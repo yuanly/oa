@@ -1316,7 +1316,8 @@ catch(e){
  	   			c:'btnPic',
  	   			t:'插入图片',
  	   			e:function(){
- 	   				editor.showModal("上传本地图片","<div id='file-uploader-demo2'></div>",120,50,function(){});
+ 	   				var _this = this;
+ 	   				_this.showModal("上传本地图片","<div id='file-uploader-demo2'></div>",120,50,function(){});
  	   				 var uploader2 = new qq.FileUploader({
  	   		                element: $("#file-uploader-demo2")[0],
  	   		                action: opt.docRoot+'uploader/server/up.php',
@@ -1325,10 +1326,10 @@ catch(e){
  	   		                onComplete: function(id, fileName, respJson){
  	   		                	var src = opt.docRoot+"uploader/server/down.php?id="+respJson.id;
  	   		                	//editor.pasteHTML("<img src="+opt.docRoot+"uploader/server/down.php?id="+respJson.id+"' style='max-width:400px;cursor:pointer'/>");
- 	   		                	editor.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:400px'/></a>");
+ 	   		                	_this.pasteHTML("<a href='"+src+"' target=_blank ><img src='"+src+"' style='max-width:400px'/></a>");
  	   		                },
  	   		            });
- 	   				editor.removeModal();
+ 	   				_this.removeModal();
  	   				 uploader2._button.getInput().click();
  	   			}
  	   		},
@@ -1344,7 +1345,7 @@ catch(e){
  	this.append("<div id='ly_editor' style='display:none'><textarea></textarea></div>");
  	this.append("<table id='ly_liebiao' style='font-size:14px;color:#008000;margin:10px'></table>");
  	this.append("<div><span class='plainBtn' id='ly_gengduo'>更多...</span></div>");
- 	var editor = $("textarea",this).xheditor({plugins:plugins,
+ 	this.editor = $("textarea",this).xheditor({plugins:plugins,
  		tools:'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,Removeformat,|,Align,List,Outdent,Indent,|,Link,Unlink,Img,Hr,Emot,Table,|,Preview,Print,Fullscreen,|,map,|,pic,|,attach,|',
  		width:opt.width,height:opt.height});
  	$("#ly_editor",this).append("<div style='margin-top:10px'><span id='ly_tijiao' class='plainBtn' style='margin-right:50px'>提交</span><span id='ly_fangqi' class='plainBtn'>放弃</span></div>");
@@ -1488,10 +1489,9 @@ catch(e){
  	 			<div id="editor_div1" style="font-size:80%;width:'+w+'px;border:1px solid #ede;" ></div>\
  				<div id="editor_div2"><textarea></textarea></div>');
  	 //编辑器设置
-   var editor = this.find("textarea").xheditor({plugins:plugins,
+   this.editor = this.find("textarea").xheditor({plugins:plugins,
  		tools:'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,Removeformat,|,Align,List,Outdent,Indent,|,Link,Unlink,Img,Hr,Emot,Table,|,Preview,Print,Fullscreen,|,map,|,pic,|,attach,|',
  		width:w,height:h});
- 		this.editor = editor;
  	return this;
  }
  jQuery.fn.editorWritable = function(){
