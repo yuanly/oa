@@ -357,7 +357,7 @@
 	 
 	$("#bianji").click(edit);
 	function cz_shanchu(){
-		if(currZGD.huowu){
+		if(currZGD.huowu && currZGD.huowu.length>0){
 			tip($(this),"必须清空装柜单中的货物并保存，才能删除装柜单！",1500);
 			return;
 		}
