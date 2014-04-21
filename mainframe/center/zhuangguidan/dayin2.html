@@ -19,7 +19,7 @@
 	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
 	<style> 
 		.tr_kehuhuizong{
-			line-height:35px;
+			background-color:#eee;
 			border:1px solid black;
 		}
 		.tr_kehuhuizong span{
@@ -34,6 +34,11 @@
 	</style>
 	<script>
 		$(function(){
+			$(".tr_kehuhuizong").dblclick(function(){
+				var tr = $("<tr style='border:0px '><td colspan=8 style='border:0px'>&nbsp;</td></tr>");
+				$(this).before(tr);
+				tr.dblclick(function(){$(this).remove();});
+			});
 			function getDDID(id){
 				return id.substr(0,id.toUpperCase().indexOf("HW"));
 			}
@@ -205,7 +210,7 @@
  		LoadDate：<div id="zhuangguiriqi" class="myinput"></div>,&nbsp;&nbsp;
  		Total PCS：<div id="zongjianshu" class="myinput" style="min-width:30px"></div>
  </div>
- <table style="width:100%;border-spacing:0px;border-collapse:collapse;border:1px solid black;margin-top:10px;" border=1 id="tb_zhuangguidan">
+ <table style="width:100%;border-spacing:0px;border-collapse:collapse;border:0px solid black;margin-top:10px;" border=1 id="tb_zhuangguidan">
  	<tr>
  		<th>Product Code</th><th>Specification</th><th>Quantity</th><th>PCS</th><th style="width:25%">Memo</th>
  	</tr>
@@ -222,7 +227,7 @@
  		</td>
  	</tr>
  	<tr class="tr_huowumingxi">
- 		<td id="td_bianhao" style="width:70px">编号</td>
+ 		<td id="td_bianhao" style="width:70px;border-left:1px solid black">编号</td>
  		<td id="td_guige">规格</td>
  		<td id="td_shuliang" style="width:60px;text-align:center">数量</td>
  		<td id="td_jianshu" style="width:50px;text-align:center">件数</td>

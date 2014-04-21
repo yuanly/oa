@@ -101,7 +101,9 @@
 		var that = $(this).parent().parent();
 		var huowu = that.data("huowu");
 		if(huowu.zhuangguidan){
-			tip($(this),"醒醒！货物已装柜。",1500);
+			ask($(this),"货物已选入柜单，确定还需要验货吗？",function(){
+				xuanCallback(that);
+			});
 			return;
 		}
 		if(huowu.yanhuodan && huowu.yanhuodan._id != currYHD._id){

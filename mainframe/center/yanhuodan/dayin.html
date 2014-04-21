@@ -18,13 +18,22 @@
 	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
 	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
 	<style>
-		tb_yanhuodan td{
+		#tb_yanhuodan td{
 			border:1px dotted black;
+		}
+		th{
+			border:1px solid black;
 		}
 	</style>
 	<script>
+			
 		$(function(){
-			tip(null,"按CTR+P打印。验货单涉及商业信息，切勿乱放，注意保密！",1500);
+			$("#tr_gonghuoshang").dblclick(function(){
+				var tr = $("<tr style='border:0px solid white '><td colspan=5 style='border:0px'>&nbsp;</td></tr>");
+				$(this).before(tr);
+				tr.dblclick(function(){$(this).remove();});
+			});
+			//tip(null,"按CTR+P打印。验货单涉及商业信息，切勿乱放，注意保密！",1500);
     var yhdId = getUrl().showId;
     var jiami = getUrl().jiami;
     var shangjia = getUrl().shangjia;
@@ -84,17 +93,17 @@
 	</head>
 <body style="margin:0px;padding:0px">
 <table style="width:100%;"><tr><td style="width:30%"></td><td id="td_yanhuodanId" style="text-align:center"></td><td style="width:30%;font-size:0.8em">验货员：<input class="plainInput" size=10 ><br/>日&#12288;期：<input class="plainInput" size=10></td></tr><table>
-	<table style="width:100%;border-spacing:0px;border-collapse:collapse;border:1px solid" border=1 id="tb_yanhuodan">
+	<table style="width:100%;border-spacing:0px;border-collapse:collapse;" id="tb_yanhuodan">
 		<tr>
 			<th>编号</th><th>规格</th><th>数量</th><th style="width:35px">件数</th><th>检验结果</th>
 		</tr>
-		<tr id="tr_gonghuoshang"><td colspan=5 style="font-size:0.8em;line-height:25px;border-top:1px solid black" id="td_gonghuoshang"></td></tr>
+		<tr id="tr_gonghuoshang"><td colspan=5 style="background-color:#eee;font-size:0.8em;line-height:25px;border:1px solid black" id="td_gonghuoshang"></td></tr>
 		<tr id="tr_huowu">
-			<td id="td_bianhao"  style="width:85px;padding-left:3px;font-size:0.7em"></td>
+			<td id="td_bianhao"  style="border-left:1px solid black;width:85px;padding-left:3px;font-size:0.7em"></td>
 			<td id="td_guige" style="padding-left:3px"></td>
 			<td style="text-align:center;width:50px" id="td_shuliang"></td>
 			<td style="text-align:center" id="td_jianshu"></td>
-			<td style="width:50%" id="id_jieguo"></td>
+			<td style="width:50%;border-right:1px solid black;" id="id_jieguo"></td>
 		</tr>
 	</table>
 </body>
