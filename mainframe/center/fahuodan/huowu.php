@@ -41,6 +41,9 @@ if("chaxun" == $param["caozuo"]){
 			$query["yanhuodan.zhuangtai"] = $param["option"]["zhuangtai"];
 		}
 	}
+	if(isset($param["option"]["foryanhuodan"])){
+		$query["yangban._id"] = array('$exists'=>true);
+	}	
 		
 	$cur = coll("huowu")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);

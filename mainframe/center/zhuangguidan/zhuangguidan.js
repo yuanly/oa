@@ -660,6 +660,7 @@ function _hanshuku_(){}
 				var caozuoItem = caozuoTmpl.clone(true);
 				$("#cz_dayin",caozuoItem).show();
 				$("#cz_dayin2",caozuoItem).show();
+				$("#cz_dayin3",caozuoItem).show();
 				if((zhuangguidan.liucheng.length - 1) == n){
 					if(theUser._id == zhuangguidan.zhidanzhe){
 						kebianji = true;

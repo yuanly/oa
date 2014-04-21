@@ -34,6 +34,14 @@ if("shangchuan" == $param["caozuo"]){
 	coll("liuyan")->remove(array("hostType"=>"fahuodan","hostId"=>$param["_id"]));
 	statExpired();
 	echo '{"success":true}';
+}else if("daifu" == $param["caozuo"]){
+	coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"上传")
+			,array('$set'=>array("daifu"=>true,"zhaiyao"=>"待付")));
+	statExpired();
+	$liuyan = array("_id"=>time(),"hostType"=>"fahuodan","hostId"=>$param["_id"],"type"=>"caozuorizhi"
+			,"userId"=>$_SESSION["user"]["_id"],"neirong"=>"设为待付！");//以后改成保存整个json到另外一个表，界面是点击打开就可以像普通单一样显示详情。
+	coll("liuyan")->save($liuyan);
+	echo '{"success":true}';
 }else if("jiedan" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"接单","time"=>time());
 	coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"上传")

@@ -238,6 +238,7 @@
 		}
 		$("#hw_pager").data("offset",offset);
 		var option = getHwOptions();
+		option.foryanhuodan = true;
 		postJson("../fahuodan/huowu.php",{caozuo:"chaxun",offset:offset*limit,limit:limit,option:option},function(huowus){
 			$("#huowutable .tr_huowu").remove();
 			each(huowus,function(n,huowu){
