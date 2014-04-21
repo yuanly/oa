@@ -126,7 +126,17 @@
 					tr.data("hwId",hw.dingdanhuowu);
 					tr.find("#td_bianhao").text(hw._id);
  					tr.find("#td_guige").text("("+hw.guige+")");
- 					tr.find("#td_shuliang").text(hw.shuliang+hw.danwei);
+ 					var dw = hw.danwei;
+ 					var sl = hw.shuliang;
+ 					if(hw.danwei == "码"){
+ 						dw = "Y";
+ 					}else if(hw.danwei == "米"){
+ 						dw = "Y";
+ 						sl = round(hw.shuliang * 1.0936132983377,2);
+ 					}else if(hw.danwei == "件"){
+ 						dw = "PCS";
+ 					}
+ 					tr.find("#td_shuliang").text(sl+dw);
  					tr.find("#td_jianshu").text(hw.jianshu);
  					$("#tb_zhuangguidan").append(tr);
  					trs.push(tr);
