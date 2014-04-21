@@ -35,7 +35,7 @@
 	{
 		_id:"xxx",//fhd_id+hw+n
 		gonghuoshang:{_id:"xxx",mingchen:"xxx",quyu:"xx"}
-		yangban:{_id:"xx",zhongguoxinghao:"xxx",taiguoxinghao:"xxx"},
+		yangban:{_id:"xx",zhongguoxinghao:"xxx",taiguoxinghao:"xxx"},//如果是待付，没有_id和中国型号。以此作为区分待付的依据！
 		kehu:"xx",
 		guige:"xxx",
 		danwei:"码",
@@ -47,7 +47,7 @@
 		yanhuodan：{_id:"xxx",zhuangtai:"已通过",beizhu:[{time:"xxx",zhu:"xxx"},{}...]},
 		zhuangguidan:"xx",
 		zhu:"xxx",
-		dingdanhuowu:"xx"//DD140113.1HW1 具体到指定规格的货物
+		dingdanhuowu:"xx"//DD140113.1HW1 具体到指定规格的货物//如果是待付，这是原始发货单（或者说订单）的编号，打印柜单时对应原稿编号。
 		}
 		
 	一件货物可能对应多张订单？（这种情况不多，用备注记录）
