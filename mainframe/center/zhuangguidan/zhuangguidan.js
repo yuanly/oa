@@ -103,16 +103,20 @@
 		var tr = that.detach();
 		tr.find(".td_left_most").show();
 		tr.find("#xuan").hide();
-	//	$("#selhuowutable").append(tr);
 		if($("#selhuowutable .tr_huowu").length>0){
+			var append=false;
 			$("#selhuowutable .tr_huowu").each(function(i){
-				var a = tr.data("huowu");
-				var b = $(this).data("huowu");
+				var a = tr.data("huowu"); 
+				var b = $(this).data("huowu"); 
 				if(sortHuowu(a,b)<0){
 					$(this).before(tr);
+					append = true;
 					return false;
 				}
 			});
+			if(!append){
+				$("#selhuowutable").append(tr);
+			}
 		}else{
 			$("#selhuowutable").append(tr);
 		}
@@ -405,6 +409,11 @@
 	});
 	$("#cz_dayin2").click(function(){
 		window.open("dayin2.html?showId="+currZGD._id,"_blank");
+	});
+	$("#cz_dayin3").click(function(){
+		ask2($(this),"test",function(input){
+			window.open("dayin2.html?showId="+currZGD._id+"&kehu="+input,"_blank");
+		});
 	});
 	function cz_shenhe(){
 		postJson("zhuangguidan.php",{caozuo:"shenhe",_id:currZGD._id},function(res){

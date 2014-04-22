@@ -1,0 +1,185 @@
+﻿<html contenteditable=true>
+	<head>
+	<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=0"> 
+	<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
+<link rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen">
+	<title>装柜单打印（泰国版）</title>
+	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
+	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+	<script src="../../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+	<script src="../../../js/my.js" type="text/javascript"></script>
+	<script src="../../../js/localstorage.js" type="text/javascript"></script>
+	<script src="../../../js/server.js" type="text/javascript"></script>
+	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+	<style> 
+ 		th{
+ 			
+ 		}
+	</style>
+	<script>
+		/*
+		[
+			{
+				vendorId:"xx",//根据id在显示的时候异步获取商家简码显示
+				pcs:23,
+				amount:2342.23,
+				orders:[{
+									orderId:"xxx",
+									amount:234.22,
+									row:3,//行数
+									products:[{
+															productId:"xxx",
+															row:2,
+															specs:[{
+																			specId:"xx",
+																			pcs:3,
+																			quantity:23,
+																			unit:"x",
+																			price:23.22
+																			}...]
+														}...]	
+								}...]
+			}...
+		]
+		*/
+		$(function(){
+			var kehu = getUrl().kehu;
+			if(!kehu){
+				$("body").html("<center><h3>必须先指定代付客户！</h3></center>");
+				return;
+			}
+			var tr_vendor = $("#tr_vendor").detach();
+			var tr_order = $("#tr_order").detach();
+			var tr_product = $("#tr_product").detach();
+			var tr_specs = $("#tr_specs").detach();
+			
+			$("#kehu").text(kehu);
+   		postJson("zhuangguidan.php",{caozuo:"getdaifubyid",_id:getUrl().showId,kehu:kehu},function(zgd){
+   			$("#guihao").text(zgd.guihao);
+				dayin(zgd.huowu);
+   		});
+   		function dayin(huowus){
+   			vendors = marshalVendors(huowus);
+   			showVendors(vendors);
+   		}
+   		function showVendors(vendors){
+   			each(vendors,function(i,vendor){
+   				var tr = tr_vendor.clone(true);
+   				var str = "";
+   				tr.html(str);
+   				$("#tb_zhuangguidan").append(tr);
+   			});
+   		}
+   		function marshalVendors(huowus){
+				var vendors = [];
+   			//找出所有vendor
+   			var vendorIds = [];
+   			each(huowus,function(i,hw){
+   				if(vendorIds.indexOf(hw.gonghuoshang._id)<0){
+   					vendorIds.push(hw.gonghuoshang._id);
+   				}
+   			});
+   			each(vendorIds,function(i,vendorId){
+   				var vendor = {vendorId:vendorId};
+   				var vHuowus = [];
+   				var vAmount = 0;
+   				var pcs = 0;
+   				each(huowus,function(i,hw){
+   					if(hw.gonghuoshang._id == vendorId){
+   						vHuowus.push(hw);
+   						vAmount += parseInt(hw.jianshu) * parseFloat(hw.shuliang) * parseFloat(hw.danjia);
+   						pcs += parseInt(hw.jianshu);
+   					}
+   				});
+   				vendor.pcs = pcs;
+   				vendor.amount = round(vAmount,2);
+   				vendor.orders = marshalOrders(vHuowus);
+   				vendors.push(vendor);
+   			});
+   			return vendors;
+   		}
+   		function marshalOrders(huowus){
+   			var orders = [];
+   			//找出所有order
+   			var orderIds = [];
+   			each(huowus,function(i,hw){
+   				if(orderIds.indexOf(hw.daifudanhao)<0){
+   					orderIds.push(hw.daifudanhao);
+   				}
+   			});
+   			each(orderIds,function(i,orderId){
+   				var order = {orderId:orderId};
+   				var vHuowus = [];
+   				var vAmount = 0;
+   				each(huowus,function(i,hw){
+   					if(hw.daifudanhao == orderId){
+   						vHuowus.push(hw);
+   						vAmount += parseInt(hw.jianshu) * parseFloat(hw.shuliang) * parseFloat(hw.danjia);
+   					}
+   				});
+   				order.row = vHuowus.length;
+   				order.amount = round(vAmount,2);
+   				order.products = marshalProducts(vHuowus);
+   				orders.push(order);
+   			});
+   			return orders;
+   		}
+   		function marshalProducts(huowus){
+   			var products = [];
+   			//找出所有product
+   			var productIds = [];
+   			each(huowus,function(i,hw){
+   				if(productIds.indexOf(hw.yangban.taiguoxinghao)<0){
+   					productIds.push(hw.yangban.taiguoxinghao);
+   				}
+   			});
+   			each(productIds,function(i,productId){
+   				var product = {productId:productId};
+   				var vHuowus = [];
+   				each(huowus,function(i,hw){
+   					if(hw.yangban.taiguoxinghao == productId){
+   						vHuowus.push(hw);
+   					}
+   				});
+   				product.row = vHuowus.length;
+   				product.specs = vHuowus;
+   				products.push(product);
+   			});
+   			return products;
+   		}
+		});
+	</script>
+	</head>
+<body style="margin:0px;padding:0px">
+ <div align=center>
+ 	<div style="font-size:1.2em">Cargo No.<span style="font-size:1.6em" id="guihao">50</span></div>
+ 	<div style="font-size:0.7em">
+ 		Customer：<div id="kehu" class="myinput" style="font-size:24px"></div>,&nbsp;&nbsp;
+ 		Total PCS：<div id="zongjianshu" class="myinput" style="min-width:30px"></div>
+ </div>
+ <table style="width:100%;border-spacing:0px;border-collapse:collapse;border:0px solid black;margin-top:10px;" border=1 id="tb_zhuangguidan">
+ 	<tr>
+ 		<th>Order</th>
+ 		<th>Order Amount</th>
+ 		<th>Product</th>
+ 		<th>Specs</th>
+ 		<th>PCS</th>
+ 		<th>Unit</th>
+ 		<th>PCS</th>
+ 		<th>Price</th>
+ 		<th>Amount</th>
+ 		<th style="width:25%">Memo</th>
+ 	</tr>
+	<tr id="tr_vendor" style="background-color:#eee;"><td colspan="10">Vendor VendorPCS VendorAmount</td></tr>
+	<tr id="tr_order"><td rowspan=3>Order</td><td rowspan=3>OrderAmount</td><td rowspan=2>Product</td><td>Specs</td><td>PCS</td><td>Unit</td><td>PCS</td><td>Price</td><td>Amount</td><td style="widtd:25%">Memo</td>	</tr>
+	<tr id="tr_specs"><td>Specs</td><td>PCS</td><td>Unit</td><td>PCS</td><td>Price</td><td>Amount</td><td style="widtd:25%">Memo</td>	</tr>
+	<tr id="tr_product"><td>Product</td><td>Specs</td><td>PCS</td><td>Unit</td><td>PCS</td><td>Price</td><td>Amount</td><td style="widtd:25%">Memo</td>	</tr>
+</table>
+</body>
+</html>

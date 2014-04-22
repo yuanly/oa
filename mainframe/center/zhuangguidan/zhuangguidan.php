@@ -103,7 +103,13 @@ if("xinjian" == $param["caozuo"]){
 }else if("getbyid" == $param["caozuo"]){
 	$query = array("_id"=>$param["_id"]);
 	$zgd = coll("zhuangguidan")->findOne($query);
-	$cur = coll("huowu")->find(array("zhuangguidan"=>$param["_id"]))->sort(array("zgdIdx"=>1));
+	$cur = coll("huowu")->find(array("zhuangguidan"=>$param["_id"]));//->sort(array("zgdIdx"=>1));
+	$zgd["huowu"] = c2a($cur);
+	echo  jsonEncode($zgd);
+}else if("getdaifubyid" == $param["caozuo"]){
+	$query = array("_id"=>$param["_id"]);
+	$zgd = coll("zhuangguidan")->findOne($query);
+	$cur = coll("huowu")->find(array("zhuangguidan"=>$param["_id"],"daifudanhao"=>array('$exists'=>true),"kehu"=>$param["kehu"]));
 	$zgd["huowu"] = c2a($cur);
 	echo  jsonEncode($zgd);
 }else if("baocun" == $param["caozuo"]){
