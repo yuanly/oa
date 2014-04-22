@@ -114,7 +114,7 @@
 				</div>
 				<div>
 					<div style="width:650px;"><nobr>
-						编号：<input type="text" id="fhd_bianhao" class="plainInput" readonly style="width:90px;cursor:pointer"/>，
+						编号：<input type="text" id="fhd_bianhao" class="plainInput" readonly style="width:100px;cursor:pointer"/>，
 						<!--总额：<input type="text" id="fhd_zonge" class="plainInput" readonly style="color:red;font-size:1.2em;width:45px;text-align:center"/>元，-->
 						总额：<div id="fhd_zonge" class="myinput" style="color:red;font-size:1.2em;min-width:45px;text-align:center"></div>元，
 						转账流水：<div class="myinput" id="fhd_zhuanzhangliushui" style="cursor:pointer"></div>，
@@ -133,7 +133,7 @@
 										<td class="myinput clz_mx_yangban" contentEditable=true  id="mx_yangban" style="font-size:0.8em;min-width:120px;max-width:150px;white-space:normal;"></td>
 										<td class="myinput" contentEditable=true id="mx_guige"  style="max-width:130px;"></td>
 										<td id="mx_shuliang" style=""></td>
-										<td><input id="mx_danwei" size=2 class="plainInput hw_edit mx_danwei list"  list="danweilist" style="text-align:center"></td>
+										<td><input id="mx_danwei" size=2 class="plainInput hw_edit mx_danwei list" value="码" list="danweilist" style="text-align:center"></td>
 										<td><input id="mx_danjia" size=4 class="plainInput mx_danjia hw_edit jinetrigger" style="text-align:center" ></td>
 										<td id="mx_jine" style="text-align:center"></td>
 								</tr>
@@ -141,17 +141,18 @@
 						</td>
 						<td>
 							<table id="tb_dingdan">
-								<tr><th>订单货号</th><th>客户</th><th>样板</th><th>规格</th><th>数量</th><th>单位</th><th>单价</th><th>金额</th><th></th></tr>
-								<tr nowrap class="dingdanhuowu"  style="background-color:#f0f0f0">
-									<td id="dingdanhao" class="clz_daifu" style="cursor:pointer;color:brown;font-size:0.7em"></td>
+								<tr><th>订单货号</th><th>客户</th><th class="th_daifu" style="display:none">代付单号</th><th class="th_dingdan">样板</th><th class="th_dingdan">规格</th><th class="th_dingdan">数量</th><th class="th_dingdan">单位</th><th class="th_dingdan">单价</th><th class="th_dingdan">金额</th><th></th></tr>
+								<tr nowrap class="dingdanhuowu"  style="background-color:#98ff98">
+									<td id="dingdanhao" style="cursor:pointer;color:brown;font-size:0.7em"></td>
 									<td id="kehu1" class="clz_daifu" style="text-align:center"></td>
-									<td id="yangban1" style="font-size:0.8em;min-width:120px;max-width:150px;white-space:normal"></td>
-									<td id="guige1" style="max-width:130px"></td>
-									<td id="shuliang1" style="text-align:center"></td>
-									<td id="danwei1" style="text-align:center"></td>
-									<td id="danjia1" style="text-align:center"></td>
-									<td id="jine1" style="text-align:center"></td>
-									<td nowrap ><span id="shanchudingdanhuowu" class="plainBtn shanchudingdanhuowu" style="display:none">[-]</span></td></tr>
+									<td id="daifudanhao" class="clz_daifu" style="display:none;"></td>
+									<td id="yangban1" class="th_dingdan" style="font-size:0.8em;min-width:120px;max-width:150px;white-space:normal"></td>
+									<td id="guige1" class="th_dingdan" style="max-width:130px"></td>
+									<td id="shuliang1" class="th_dingdan" style="text-align:center"></td>
+									<td id="danwei1" class="th_dingdan" style="text-align:center"></td>
+									<td id="danjia1" class="th_dingdan" style="text-align:center"></td>
+									<td id="jine1" class="th_dingdan" style="text-align:center"></td>
+									<td nowrap  class="th_dingdan"><span id="shanchudingdanhuowu" class="plainBtn shanchudingdanhuowu" style="display:none">[-]</span></td></tr>
 								<tr id="tr_tianjiadingdanhuowu" class="tianjiadingdanhuowuclz"><td><span class="plainBtn" id="tianjiadingdanhuowu">[+]</span></td></tr>
 							</table>
 						</td>

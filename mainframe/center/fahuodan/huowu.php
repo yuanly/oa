@@ -42,7 +42,7 @@ if("chaxun" == $param["caozuo"]){
 		}
 	}
 	if(isset($param["option"]["foryanhuodan"])){
-		$query["yangban._id"] = array('$exists'=>true);
+		$query["daifudanhao"] = array('$exists'=>false);
 	}	
 		
 	$cur = coll("huowu")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);

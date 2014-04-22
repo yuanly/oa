@@ -36,7 +36,7 @@
 	{
 		_id:"xxx",//fhd_id+hw+n
 		gonghuoshang:{_id:"xxx",mingchen:"xxx",quyu:"xx"}
-		yangban:{_id:"xx",zhongguoxinghao:"xxx",taiguoxinghao:"xxx"},//如果是待付，没有_id和中国型号。以此作为区分待付的依据！
+		yangban:{_id:"xx",zhongguoxinghao:"xxx",taiguoxinghao:"xxx"},//如果是代付，没有_id和中国型号。
 		kehu:"xx",
 		guige:"xxx",
 		danwei:"码",
@@ -48,7 +48,8 @@
 		yanhuodan：{_id:"xxx",zhuangtai:"已通过",beizhu:[{time:"xxx",zhu:"xxx"},{}...]},
 		zhuangguidan:"xx",
 		zhu:"xxx",
-		dingdanhuowu:"xx"//DD140113.1HW1 具体到指定规格的货物//如果是待付，这是原始发货单（或者说订单）的编号，打印柜单时对应原稿编号。
+		dingdanhuowu:"xx",//DD140113.1HW1 具体到指定规格的货物
+		daifudanhao:"xx"//如果是代付，这是原始代付发货单（或者说订单）的编号，打印柜单时对应原稿编号。以此作为区分代付的依据！
 		}
 		
 	一件货物可能对应多张订单？（这种情况不多，用备注记录）
@@ -312,7 +313,7 @@
 			var daifukong = false;
 			$(".clz_daifu").each(function(i,df){
 				if($(this).text().trim() == ""){
-		 			tip($(this),"订单号和客户不能为空！",2000);
+		 			tip($(this),"代付单号和客户不能为空！",2000);
 		 			daifukong = true;
 		 			return false;
 		 		}
@@ -347,6 +348,7 @@
 			 	item.kehu = $(hw).find(".dingdanhuowu").find("#kehu1").text();
 			 	if(currFHD.daifu){
 			 		item.yangban = {taiguoxinghao:$(hw).find("#mx_yangban").text().trim()};
+			 		item.daifudanhao = $(hw).find("#daifudanhao").text().trim();
 			 	}else{
 				 	var yb = $(hw).find(".dingdanhuowu").data("huowu").yangban;;
 				 	item.yangban = {_id:yb._id,taiguoxinghao:yb.taiguoxinghao,zhongguoxinghao:yb.zhongguoxinghao};//$(hw).find("#mx_yangban").text().trim();
@@ -472,16 +474,38 @@
 		jisuanzonge();
 	}
 	$("#shanchuhuowu").click(shanchuhuowu);
+	function cloneHW(hw){//代付发货单，新增货物时，从最后那个货物那里拷贝数据预填充到新增货物。
+		var lastHW = $(".huowu").last();
+		if(lastHW.length>0){
+			hw.find("#mx_yangban").text(lastHW.find("#mx_yangban").text());
+			hw.find("#mx_danwei").val(lastHW.find("#mx_danwei").val());
+			hw.find("#mx_danjia").val(lastHW.find("#mx_danjia").val());
+			hw.find("#daifudanhao").text(lastHW.find("#daifudanhao").text());
+			hw.find("#kehu1").text(lastHW.find("#kehu1").text());
+			hw.find(".shuliang").val(lastHW.find(".shuliang").val());
+			hw.find(".jianshu").val(lastHW.find(".jianshu").val());
+		}
+	}
+	
 	function tianjiahuowu(){
 		var tb_hw = table_huowu.clone(true);
 		currFHD.lastId ++;
 		tb_hw.find("#hwbianhao").text(currFHD._id+"HW"+currFHD.lastId);
+		if(currFHD.daifu){
+			var dfId = "DF"+currFHD._id.substr(3)+"HW"+($(".huowu").length+1);
+			var ddhw  = dingdanhuowu.clone(true);
+			ddhw.find(".clz_daifu").addClass("myinput").attr("contenteditable","true").css("cursor","text").unbind("click");
+			ddhw.find("#dingdanhao").unbind("click").css("cursor","default").text(dfId);
+			tb_hw.find("#tr_tianjiadingdanhuowu").before(ddhw).hide();
+			cloneHW(tb_hw);
+		}
 		$(this).before(tb_hw);
 		if(currFHD.daifu){
-			var ddhw  = dingdanhuowu.clone(true);
-			ddhw.find(".clz_daifu").addClass("myinput").attr("contenteditable","true").css("cursor","default").unbind("click");
-			tb_hw.find("#tr_tianjiadingdanhuowu").before(ddhw).hide();
+			tb_hw.find(".th_dingdan").hide();
+			tb_hw.find(".clz_daifu").show();
+			tb_hw.find(".th_daifu").show();
 		}
+		tb_hw.find(".jianshu").change();
 	}
 	$("#tianjiahuowu").click(tianjiahuowu);
 	$(".list").dblclick(function(){$(this).val("");});
@@ -1076,8 +1100,9 @@ function _hanshuku_(){}
 			jisuanjine.call(hwDiv.find("#mx_danjia"));
 			if(fhd.daifu){
 				var tr_huowu = dingdanhuowu.clone(true);
-				tr_huowu.find("#dingdanhao").text(huowu.dingdanhuowu).css("cursor","default").unbind("click");
+				tr_huowu.find("#dingdanhao").text(huowu.dingdanhuowu).css("cursor","text").unbind("click");
 				tr_huowu.find("#kehu1").text(huowu.mingxi[0].kehu);
+				tr_huowu.find("#daifudanhao").text(huowu.mingxi[0].daifudanhao);
 				hwDiv.find("#tr_tianjiadingdanhuowu").before(tr_huowu);
 			}else{
 				postJson("../dingdan/dingdan.php",{caozuo:"gethuowubyid2",huowuId:huowu.dingdanhuowu},function(dd){
@@ -1110,6 +1135,11 @@ function _hanshuku_(){}
 			$("#yuandan_ctr_ctr").show();
 			$("#yuandan_ctr_ctr").html(currFHD.neirong?currFHD.neirong:"<center>暂无原单</center>");
 			$("#yuandan_ctr_ctr img").css("max-width",$(window).width()/2+"px");
+		}
+		if(fhd.daifu){
+			$(".th_dingdan").hide();
+			$(".th_daifu").show();
+			$(".clz_daifu").show();
 		}
 	}
 	

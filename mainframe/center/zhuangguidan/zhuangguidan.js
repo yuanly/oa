@@ -51,7 +51,11 @@
 	}
 	function link_dingdan(){
 		var id = $(this).text();
-		window.open("../dingdan/dingdan.html?showId="+id,"_blank");
+		if(id.indexOf("DD") == 0){
+			window.open("../dingdan/dingdan.html?showId="+id,"_blank");
+		}else if(id.indexOf("DF") == 0){
+			window.open("../fahuodan/fahuodan.html?showId="+"FHD"+id.substr(2),"_blank");
+		}
 	}
 	$("#td_hw_dingdan").click(link_dingdan);
 	function link_fahuodan(){
