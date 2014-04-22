@@ -36,7 +36,7 @@
 	</style>
 	<script>
 		$(function(){
-			$(".tr_gonghuoshanghuizong").dblclick(function(){
+			$("tr").dblclick(function(){
 				var tr = $("<tr style='border:0px '><td colspan=8>&nbsp;</td></tr>");
 				$(this).before(tr);
 				tr.dblclick(function(){$(this).remove();});
@@ -224,13 +224,13 @@
  		装柜人员：<div id="zhuangguirenyuan" class="myinput"></div></div>
  </div>
  <table style="width:100%;border-spacing:0px;border-collapse:collapse;border:0px solid black;margin-top:10px;" border=0 id="tb_zhuangguidan">
- 	<tr>
+ 	<tr style="background-color:#eee">
  		<th>货物编号</th><th>规格</th><th>数量</th><th>件数</th><th style="width:25%" nowrap>备注</th>
  	</tr>
  	<tr>
  		<td style="border:1px solid black;paddig-left:5px;text-align:left;font-size:0.8em" id="td_kehuhuizong" colspan=8 ></td>
  	</tr>
- 	<tr class="tr_gonghuoshanghuizong" style="background-color:#efefef">
+ 	<tr class="tr_gonghuoshanghuizong" style="border-top:2px solid black;">
  		<td colspan=8 style="color:gray;font-size:0.6em;padding-left:5px">
  			区域：<span id="quyu" style="font-size:1em;font-weight:bolder;"></span>，
  			商家：<span id="gonghuoshang" style="font-size:1em;font-weight:bolder;"></span>，

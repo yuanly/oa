@@ -411,13 +411,16 @@ function addQuyulist(){
 */
 round = function(v,l){
 	if(isNaN(v)){
-		return 0;
+		return 0.00;
 	}
 	var e = 1;
 	for(var i=0;i<l;i++){
 		e = e*10;
 	}
-	return Math.round(v*e)/e;
+	return parseFloat(Math.round(v*e)/e);
+}
+roundFix = function(v,l){
+	return round(v,l).toFixed(l);
 }
  /*
  Date.prototype.format = function(format)

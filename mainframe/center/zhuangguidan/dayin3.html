@@ -7,7 +7,7 @@
 	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
 	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
 <link rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen">
-	<title>装柜单打印（泰国版）</title>
+	<title>装柜单打印（代付版）</title>
 	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
 	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
 	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
@@ -54,10 +54,18 @@
 				$("body").html("<center><h3>必须先指定代付客户！</h3></center>");
 				return;
 			}
+			$(".clz_splitter").dblclick(function(){
+				var tr = $("<tr style='border:0px '><td colspan=10 style='border:0px'>&nbsp;</td></tr>");
+				$(this).before(tr);
+				tr.dblclick(function(){$(this).remove();});
+			});
+			
+			var tr_header = $("#tr_header").detach();
 			var tr_vendor = $("#tr_vendor").detach();
 			var tr_order = $("#tr_order").detach();
 			var tr_product = $("#tr_product").detach();
 			var tr_specs = $("#tr_specs").detach();
+			
 			
 			$("#kehu").text(kehu);
    		postJson("zhuangguidan.php",{caozuo:"getdaifubyid",_id:getUrl().showId,kehu:kehu},function(zgd){
@@ -65,15 +73,93 @@
 				dayin(zgd.huowu);
    		});
    		function dayin(huowus){
+   			setTotal(huowus);
    			vendors = marshalVendors(huowus);
    			showVendors(vendors);
+   		}
+   		function setTotal(huowus){
+   			var ttp = 0;
+   			var tta = 0;
+   			each(huowus,function(i,hw){
+   				ttp += parseInt(hw.jianshu);
+   				tta += parseInt(hw.jianshu) * parseFloat(hw.shuliang) * parseFloat(hw.danjia);
+   			});
+   			$("#zongjianshu").text(ttp);
+   			$("#zongjine").text(roundFix(tta,2)+"¥");
    		}
    		function showVendors(vendors){
    			each(vendors,function(i,vendor){
    				var tr = tr_vendor.clone(true);
-   				var str = "";
-   				tr.html(str);
    				$("#tb_zhuangguidan").append(tr);
+   				$("#tb_zhuangguidan").append(tr_header.clone(true));
+   				postJson("zhuangguidan.php",{caozuo:"chalianxiren",lxrId:vendor.vendorId},function(lxr){
+	   				var str = "Vendor:";
+	   				if(lxr.bianma){
+	   					str += "<b style='color:black'>"+lxr.bianma+"</b>";
+	   				}else{
+	   					str += "<b style='color:black'>"+lxr.mingchen+"</b>";
+	   				}
+	   				str += ", PCS:<b style='color:black'>"+vendor.pcs+"</b>, Amount:<b style='color:black'>"+roundFix(vendor.amount,2)+"</b>¥";
+	   				tr.find("td").html(str);
+   				});
+   				showOrders(vendor.orders);
+   			});
+   		}
+   		function showOrders(orders){
+   			each(orders,function(i,order){
+   				/*
+									orderId:"xxx",
+									amount:234.22,
+									row:3,//行数
+									products:[{
+   				*/
+   				var tr = tr_order.clone(true);
+   				//setting order props.
+   				tr.find("#order").text(order.orderId).attr("rowspan",order.row);
+   				tr.find("#orderamount").text(roundFix(order.amount,2)+"¥").attr("rowspan",order.row);
+   				showProducts(order.products,tr);
+   			});
+   		}
+   		function showProducts(products,tr){
+   			each(products,function(i,product){
+   				/*
+															productId:"xxx",
+															row:2,
+															specs:[{
+   				*/
+   				if(i>0){
+	   				tr = tr_product.clone(true);
+	   			}
+   				//setting products props.
+   				tr.find("#product").text(product.productId).attr("rowspan",product.row);
+   				showSpecs(product.specs,tr);
+   			});
+   		}
+   		function showSpecs(specs,tr){
+   			each(specs,function(i,spec){
+   				/*
+																			specId:"xx",
+																			pcs:3,
+																			quantity:23,
+																			unit:"x",
+																			price:23.22
+																			}...]
+   				*/
+   				if(i>0){
+	   				tr = tr_specs.clone(true);
+	   			}
+	   			//setting specs to tr
+	   			tr.find("#specs").text(spec.guige);
+	   			tr.find("#pcs").text(spec.jianshu);
+	   			tr.find("#quant").text(spec.shuliang);
+	   			var dw = spec.danwei;
+	   			if("码" == dw){
+	   				dw = "Y";
+	   			}
+	   			tr.find("#unit").text(dw);
+	   			tr.find("#price").text(spec.danjia);
+	   			tr.find("#amount").text(roundFix(parseFloat(spec.danjia) * parseFloat(spec.shuliang) * parseInt(spec.jianshu),2)+"¥");
+	   			$("#tb_zhuangguidan").append(tr);
    			});
    		}
    		function marshalVendors(huowus){
@@ -88,7 +174,7 @@
    			each(vendorIds,function(i,vendorId){
    				var vendor = {vendorId:vendorId};
    				var vHuowus = [];
-   				var vAmount = 0;
+   				var vAmount = 0.0;
    				var pcs = 0;
    				each(huowus,function(i,hw){
    					if(hw.gonghuoshang._id == vendorId){
@@ -161,25 +247,52 @@
  	<div style="font-size:1.2em">Cargo No.<span style="font-size:1.6em" id="guihao">50</span></div>
  	<div style="font-size:0.7em">
  		Customer：<div id="kehu" class="myinput" style="font-size:24px"></div>,&nbsp;&nbsp;
- 		Total PCS：<div id="zongjianshu" class="myinput" style="min-width:30px"></div>
+ 		Total PCS：<div id="zongjianshu" class="myinput" style="font-size:24px;min-width:30px"></div>
+ 		Total Amount：<div id="zongjine" class="myinput" style="font-size:24px;min-width:30px"></div>
  </div>
  <table style="width:100%;border-spacing:0px;border-collapse:collapse;border:0px solid black;margin-top:10px;" border=1 id="tb_zhuangguidan">
- 	<tr>
+ 	<tr style="background-color:#eee" id="tr_header">
  		<th>Order</th>
- 		<th>Order Amount</th>
+ 		<th style="font-size:0.8em;">OrderAmount</th>
  		<th>Product</th>
  		<th>Specs</th>
- 		<th>PCS</th>
+ 		<th>Qunt.</th>
  		<th>Unit</th>
  		<th>PCS</th>
  		<th>Price</th>
  		<th>Amount</th>
- 		<th style="width:25%">Memo</th>
+ 		<th style="width:15%">Memo</th>
  	</tr>
-	<tr id="tr_vendor" style="background-color:#eee;"><td colspan="10">Vendor VendorPCS VendorAmount</td></tr>
-	<tr id="tr_order"><td rowspan=3>Order</td><td rowspan=3>OrderAmount</td><td rowspan=2>Product</td><td>Specs</td><td>PCS</td><td>Unit</td><td>PCS</td><td>Price</td><td>Amount</td><td style="widtd:25%">Memo</td>	</tr>
-	<tr id="tr_specs"><td>Specs</td><td>PCS</td><td>Unit</td><td>PCS</td><td>Price</td><td>Amount</td><td style="widtd:25%">Memo</td>	</tr>
-	<tr id="tr_product"><td>Product</td><td>Specs</td><td>PCS</td><td>Unit</td><td>PCS</td><td>Price</td><td>Amount</td><td style="widtd:25%">Memo</td>	</tr>
+	<tr id="tr_vendor" class="clz_splitter" style="color:#888;border-top:2px solid black"><td colspan="10">Vendor VendorPCS VendorAmount</td></tr>
+	<tr id="tr_order" class="clz_splitter">
+		<td rowspan=3 id="order" >Order</td>
+		<td rowspan=3 id="orderamount" style="text-align:center">OrderAmount</td>
+		<td rowspan=2 id="product">Product</td>
+		<td id="specs">Specs</td>
+		<td id="quant" style="text-align:center">Quant.</td>
+		<td id="unit" style="text-align:center">Unit</td>
+		<td id="pcs" style="text-align:center">PCS</td>
+		<td id="price" style="text-align:center">Price</td>
+		<td id="amount" style="text-align:center">Amount</td>
+		<td style="widtd:15%"></td>
+	</tr>
+	<tr id="tr_specs">
+		<td id="specs">Specs</td>
+		<td id="quant" style="text-align:center">Quant.</td>
+		<td id="unit" style="text-align:center">Unit</td>
+		<td id="pcs" style="text-align:center">PCS</td>
+		<td id="price" style="text-align:center">Price</td>
+		<td id="amount" style="text-align:center">Amount</td>
+		<td style="widtd:15%"></td>	</tr>
+	<tr id="tr_product">
+		<td id="product">Product</td>
+		<td id="specs">Specs</td>
+		<td id="quant" style="text-align:center">Quant.</td>
+		<td id="unit" style="text-align:center">Unit</td>
+		<td id="pcs" style="text-align:center">PCS</td>
+		<td id="price" style="text-align:center">Price</td>
+		<td id="amount" style="text-align:center">Amount</td>
+		<td style="widtd:15%"></td>	</tr>
 </table>
 </body>
 </html>

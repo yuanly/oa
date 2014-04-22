@@ -411,8 +411,8 @@
 		window.open("dayin2.html?showId="+currZGD._id,"_blank");
 	});
 	$("#cz_dayin3").click(function(){
-		ask2($(this),"test",function(input){
-			window.open("dayin2.html?showId="+currZGD._id+"&kehu="+input,"_blank");
+		ask2($(this),"请输入代付客户的代码：",function(input){
+			window.open("dayin3.html?showId="+currZGD._id+"&kehu="+input,"_blank");
 		});
 	});
 	function cz_shenhe(){

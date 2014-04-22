@@ -128,4 +128,7 @@ if("xinjian" == $param["caozuo"]){
 		$one["gonghuoshang"] = coll("contact")->findOne(array("_id"=>$one["gonghuoshang"]["_id"]));
 	}
 	echo jsonEncode($one);
+}else if("chalianxiren" == $param["caozuo"]){
+	$one = coll("contact")->findOne(array("_id"=>$param["lxrId"]));
+	echo jsonEncode($one);
 }
