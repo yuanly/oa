@@ -581,7 +581,7 @@
 				var tj = {id:ddhwId,shuliang:0,beihuo:true};				
 				each(huowus,function(i,hw){
 					if(hw.dingdanhuowu == ddhwId){
-						tj.shuliang += (hw.shuliang * hw.jianshu);
+						tj.shuliang += (parseFloat(hw.shuliang) * parseInt(hw.jianshu));
 						if(!hw.beihuo){
 							tj.beihuo = false;
 						}
@@ -593,9 +593,9 @@
 			$(".tmpl_huowu").each(function(i,tr){
 				var tj = getFahuotongji($(tr).data("id"),hwtjs);
 				
-				var txt = "<font style='color:red'>"+tj.shuliang+"</font>";
+				var txt = "<font style='color:red'>"+tj.shuliang.toFixed(2)+"</font>";
 				if(tj.beihuo){
-					txt = "<font style='color:blue'>"+tj.shuliang+"</font>";
+					txt = "<font style='color:blue'>"+tj.shuliang.toFixed(2)+"</font>";
 				}
 				$(tr).find("#mx_yifahuoliang").html(txt);
 			});
