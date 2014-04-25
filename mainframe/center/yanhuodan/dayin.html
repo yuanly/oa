@@ -80,6 +80,7 @@
 				if(!shangjia){//仅打印商家信息则不显示货物
 					var tr_huowu = tmpl_tr_huowu.clone(true);
 					tr_huowu.find("#td_bianhao").text(huowu._id.substring(3));
+					tr_huowu.find("#td_yangban").html(formatYangban(huowu.yangban));
 					tr_huowu.find("#td_guige").text(huowu.guige);
 					tr_huowu.find("#td_shuliang").text(huowu.shuliang+huowu.danwei);
 					tr_huowu.find("#td_jianshu").text(huowu.jianshu);
@@ -95,15 +96,16 @@
 <table style="width:100%;"><tr><td style="width:30%"></td><td id="td_yanhuodanId" style="text-align:center"></td><td style="width:30%;font-size:0.8em">验货员：<input class="plainInput" size=10 ><br/>日&#12288;期：<input class="plainInput" size=10></td></tr><table>
 	<table style="width:100%;border-spacing:0px;border-collapse:collapse;" id="tb_yanhuodan">
 		<tr>
-			<th>编号</th><th>规格</th><th>数量</th><th style="width:35px">件数</th><th>检验结果</th>
+			<th>编号</th><th>样板</th><th>规格</th><th>数量</th><th style="width:35px">件数</th><th>检验结果</th>
 		</tr>
-		<tr id="tr_gonghuoshang"><td colspan=5 style="background-color:#eee;font-size:0.8em;line-height:25px;border:1px solid black" id="td_gonghuoshang"></td></tr>
+		<tr id="tr_gonghuoshang"><td colspan=6 style="background-color:#eee;font-size:0.8em;line-height:25px;border:1px solid black" id="td_gonghuoshang"></td></tr>
 		<tr id="tr_huowu">
 			<td id="td_bianhao"  style="border-left:1px solid black;width:85px;padding-left:3px;font-size:0.7em"></td>
+			<td id="td_yangban" style="padding-left:3px"></td>
 			<td id="td_guige" style="padding-left:3px"></td>
 			<td style="text-align:center;width:50px" id="td_shuliang"></td>
 			<td style="text-align:center" id="td_jianshu"></td>
-			<td style="width:50%;border-right:1px solid black;" id="id_jieguo"></td>
+			<td style="width:25%;border-right:1px solid black;" id="id_jieguo"></td>
 		</tr>
 	</table>
 </body>
