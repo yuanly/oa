@@ -74,14 +74,27 @@
 	}
 	$("#shanchuhuowu").click(shanchuhuowu);
 	
+	function findTR(hw){
+		var theTR = $("#tr_huowu_head");
+		$("#selhuowutable .tr_huowu").each(function(i,tr){
+			if(cmp(hw,$(tr).data("huowu"))<=0){
+				return false;
+			}
+			theTR = $(tr);
+		});
+		return theTR;
+	}
 	function xuanCallback(that){
 		var tr = that.detach();
 		tr.find(".td_left_most").show();
 		tr.find("#xuan").hide();
 		tr.find("#td_hw_yanhuodan").hide();
 		tr.find("#jiazhu").show();
-		$("#selhuowutable").append(tr);
+		var theTR = findTR(tr.data("huowu"));		
+		//$("#selhuowutable").append(tr);
+		theTR.after(tr);
 		var huowu = tr.data("huowu");
+		theTR = tr;
 		if(huowu.yanhuodan && huowu.yanhuodan.beizhu && huowu.yanhuodan.beizhu.length>0){
 			var tr_zhu = tmpl_tr_zhu.clone(true);
 			each(huowu.yanhuodan.beizhu,function(i,zhu){
@@ -90,7 +103,9 @@
 				div_zhu.find("#zhu").text(zhu.zhu);
 				tr_zhu.find("#td_zhu").append(div_zhu);
 			});
-			$("#selhuowutable").append(tr_zhu);
+			//$("#selhuowutable").append(tr_zhu);
+			theTR.after(tr_zhu);
+			theTR = tr_zhu;
 		}
 		
 		$("#selhuowutable .tr_huowu").each(function(i){
@@ -412,7 +427,7 @@
 	}
 	$("#cz_shenqingshenhe").click(cz_shenqingshenhe);
 	function cz_dayin(){
-		window.open("dayin.html?showId="+currYHD._id,"_blank");
+		window.open("dayin2.html?showId="+currYHD._id,"_blank");
 	}
 	function cz_miyin(){
 		window.open("dayin.html?showId="+currYHD._id+"&jiami=ture","_blank");
@@ -666,7 +681,9 @@
 	function cutDDHWID(id){
 		return id.substr(0,id.indexOf("HW"));
 	}
-	function cmp(hw1,hw2){
+	
+	function cmp(hw1,hw2){//区域 商家 样板 规格
+		/*
 		if(!hw1.yanhuodan.index){
 			return -1;
 		}
@@ -674,6 +691,48 @@
 			return 1;
 		}
 		return hw1.yanhuodan.index - hw2.yanhuodan.index;
+		*/
+		var qy1 = hw1.gonghuoshang.quyu;
+		var qy2 = hw2.gonghuoshang.quyu;
+		if(!qy1){
+			qy1 = "";
+		}
+		if(!qy2){
+			qy2 = "";
+		}
+		if(qy1>qy2){
+			return 1; 
+		}else if(qy1<qy2){
+			return -1;
+		}else{
+			if(hw1.gonghuoshang.mingchen>hw2.gonghuoshang.mingchen){
+				return 1; 
+			}else if(hw1.gonghuoshang.mingchen<hw2.gonghuoshang.mingchen){
+				return -1;
+			}else{
+				var yb1 = hw1.yangban.zhongguoxinghao;
+				var yb2 = hw2.yangban.zhongguoxinghao;
+				if(!yb1){yb1="";};
+				if(!yb2){yb2="";};
+				if(yb1>yb2){
+					return 1; 
+				}else if(yb1<yb2){
+					return -1;
+				}else{
+					var gg1 = hw1.guige;
+					var gg2 = hw2.guige;
+					if(!gg1){gg1="";};
+					if(!gg2){gg2="";};
+					if(gg1>gg2){
+						return 1; 
+					}else if(gg1<gg2){
+						return -1;
+					}else{
+						return 0;
+					}					
+				}
+			}
+		}
 	}
 	function showDetail(yhd){
 		currYHD = yhd;

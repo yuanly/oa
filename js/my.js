@@ -565,7 +565,7 @@ jQuery.fn.dataInc = function(name,value){
  function ask(elm,msg,callback,location){
  	$("body").find("#yuanliyusask").remove();
  	$("body").append('<div class="yuanliyusask" id="yuanliyusask" style="position:absolute;z-index:200"></div>');
- 	 
+ 	$("body").find("#yuanliyusask").draggable(); 
  	$("#yuanliyusask").append(
  		'<div id="ask_box" class="circle_border_8" style="background-color:white;border:5px solid #ddd;padding:10px;">\
  			<table>\

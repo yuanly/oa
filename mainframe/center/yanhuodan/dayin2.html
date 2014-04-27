@@ -1,0 +1,289 @@
+﻿<html contenteditable=true>
+	<head>
+	<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=0"> 
+	<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
+<link rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen">
+	<title>验货单</title>
+	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
+	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+	<script src="../../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+	<script src="../../../js/my.js" type="text/javascript"></script>
+	<script src="../../../js/localstorage.js" type="text/javascript"></script>
+	<script src="../../../js/server.js" type="text/javascript"></script>
+	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+	<style>
+		#tb_yanhuodan td{
+			border:1px dotted black;
+		}
+		th{
+			border:1px solid black;
+		}
+	</style>
+	<script>
+			
+		$(function(){
+			/*
+		gonghuoshangs:[{
+							lxrId:"xx",
+							jianshu:23,
+							yangbans:[{
+												yangban:"xx",//中国样板
+												jianshu:2,
+												row:3,
+												dingdans:[{
+																	ddId:"xxx",
+																	jianshu:2,
+																	row:3,
+																	guiges:[{
+																					guige:"xxx",
+																					//row:1,huowus.length
+																					huowus:[{huowu}]
+																					}...]
+																	}...]
+												}...]
+							}...]
+    */
+			$(".clz_split").dblclick(function(){
+				var tr = $("<tr style='border:0px solid white '><td colspan=5 style='border:0px'>&nbsp;</td></tr>");
+				$(this).parent().before(tr);
+				tr.dblclick(function(){$(this).remove();});
+			});
+	    var yhdId = getUrl().showId;
+	    $("#td_yanhuodanId").text(yhdId);
+	    var tmpl_tr_gonghuoshang = $("#tr_gonghuoshang").detach();
+	    var tmpl_tr_huowu = $("#tr_huowu").detach();			
+	    postJson("yanhuodan.php",{caozuo:"huowu",_id:yhdId},function(huowus){
+	    	huowus = huowus.sort(cmp);
+	    	var gonghuoshangs = marshalGonghuoshang(huowus);
+	    	showGonghuoshangs(gonghuoshangs);
+	    });
+	    function showGonghuoshangs(ghss){
+	    	each(ghss,function(i,ghs){
+		    	var tr_gonghuoshang = tmpl_tr_gonghuoshang.clone(true);
+					setGonghuoshang(tr_gonghuoshang,ghs);
+					$("#tb_yanhuodan").append(tr_gonghuoshang);
+					//showDingdans(ghs.dingdans);	    	
+					showYangbans(ghs.yangbans);
+	    	});
+	    }
+	    function showYangbans(yangbans){
+	    	each(yangbans,function(i,yangban){
+					var tr_huowu = tmpl_tr_huowu.clone(true);
+					tr_huowu.find("#td_yangban").html(yangban.yangban+"<br/>("+yangban.jianshu+"件)").attr("rowspan",yangban.row);
+					showDingdans(tr_huowu,yangban.dingdans);
+	    	});
+	    }
+	    function showDingdans(tr,dingdans){
+	    	each(dingdans,function(i,dingdan){
+	    		if(i>0){
+						tr = tmpl_tr_huowu.clone(true);
+						tr.find("#td_yangban").remove();
+					}
+					tr.find("#td_bianhao").html(dingdan.ddId+"<br/>("+dingdan.jianshu+"件)").attr("rowspan",dingdan.row);
+					showGuiges(tr,dingdan.guiges);
+	    	});
+	    }
+	    function showGuiges(tr,guiges){
+	    	each(guiges,function(i,guige){
+	    		if(i>0){
+	    			tr = tmpl_tr_huowu.clone(true);
+	    			tr.find("#td_bianhao").remove();
+	    			tr.find("#td_yangban").remove();
+	    		}
+	    		tr.find("#td_guige").text(guige.guige).attr("rowspan",guige.huowus.length);
+	    		showShuliangJianshus(tr,guige.huowus);
+	    	});
+	    }
+	    function showShuliangJianshus(tr,huowus){
+	    	each(huowus,function(i,huowu){
+	    		if(i>0){
+	    			tr = tmpl_tr_huowu.clone(true);
+	    			tr.find("#td_bianhao").remove();
+	    			tr.find("#td_yangban").remove();
+	    			tr.find("#td_guige").remove();
+	    		}
+					tr.find("#td_shuliang").text(huowu.shuliang+huowu.danwei);
+					tr.find("#td_jianshu").text(huowu.jianshu);
+					$("#tb_yanhuodan").append(tr);
+	    	});	    	
+	    }
+	    function setGonghuoshang(tr,ghs){
+	    	postJson("../contact/contacts.php",{_id:ghs.lxrId},function(lxr){
+	    		var dizhi = "<font style='color:gray'>验货地址：</font>"+lxr.yanhuodizhi;
+	    		if(!lxr.yanhuodizhi){
+	    			dizhi = "<font style='color:gray'>地址：</font>"+lxr.dizhi;
+	    		}
+	    		var dianhua = "<font style='color:gray'>电话：</font>";
+	    		each(lxr.dianhualiebiao,function(i,dh){
+	    			dianhua = dianhua + dh+" ";
+	    			if(i>0){
+	    				return false;
+	    			}
+	    		});
+	    		var sHtml = lxr.mingchen+"("+dizhi+"&nbsp;&nbsp;"+dianhua+")<b style='float:right'>"+ghs.jianshu+"件</b>"
+	    		tr.find("#td_gonghuoshang").html(sHtml);
+	    	});
+	    }
+			function cmp(hw1,hw2){//区域 商家 样板 规格 
+				var qy1 = hw1.gonghuoshang.quyu;
+				var qy2 = hw2.gonghuoshang.quyu;
+				if(!qy1){
+					qy1 = "";
+				}
+				if(!qy2){
+					qy2 = "";
+				}
+				if(qy1>qy2){
+					return 1; 
+				}else if(qy1<qy2){
+					return -1;
+				}else{
+					if(hw1.gonghuoshang.mingchen>hw2.gonghuoshang.mingchen){
+						return 1; 
+					}else if(hw1.gonghuoshang.mingchen<hw2.gonghuoshang.mingchen){
+						return -1;
+					}else{
+						var yb1 = hw1.yangban.zhongguoxinghao;
+						var yb2 = hw2.yangban.zhongguoxinghao;
+						if(!yb1){yb1="";};
+						if(!yb2){yb2="";};
+						if(yb1>yb2){
+							return 1; 
+						}else if(yb1<yb2){
+							return -1;
+						}else{
+							var gg1 = hw1.guige;
+							var gg2 = hw2.guige;
+							if(!gg1){gg1="";};
+							if(!gg2){gg2="";};
+							if(gg1>gg2){
+								return 1; 
+							}else if(gg1<gg2){
+								return -1;
+							}else{
+								return 0;
+							}					
+						}
+					}
+				}
+			}
+	    function marshalGonghuoshang(huowus){
+	    	var ret = [];
+	    	var lxrIds = [];
+	    	each(huowus,function(i,hw){
+	    		if(lxrIds.indexOf(hw.gonghuoshang._id)<0){
+	    			lxrIds.push(hw.gonghuoshang._id);
+	    		}
+	    	});
+	    	each(lxrIds,function(i,lxrId){
+	    		var ghsHuowus = [];
+	    		var jianshu = 0;
+		    	each(huowus,function(i,hw){
+		    		if(lxrId == hw.gonghuoshang._id){
+		    			ghsHuowus.push(hw);
+		    			jianshu += parseInt(hw.jianshu);
+		    		}
+		    	});
+		    	var gonghuoshangHW = {lxrId:lxrId,jianshu:jianshu};
+		    	//gonghuoshangHW.dingdans = marshalDingdan(ghsHuowus);
+		    	gonghuoshangHW.yangbans = marshalYangban(ghsHuowus);
+		    	ret.push(gonghuoshangHW);
+	    	});
+	    	return ret;
+	    }
+	    function marshalYangban(huowus){
+	    	var ret = [];
+	    	var ybIds = [];
+	    	each(huowus,function(i,hw){
+	    		if(ybIds.indexOf(hw.yangban._id)<0){
+	    			ybIds.push(hw.yangban._id);
+	    		}
+	    	});
+	    	each(ybIds,function(i,ybId){
+	    		var ybHuowus = [];
+	    		var jianshu = 0;
+		    	each(huowus,function(i,hw){
+		    		if(ybId == hw.yangban._id){
+		    			ybHuowus.push(hw);
+		    			jianshu += parseInt(hw.jianshu);
+		    		}
+		    	});
+		    	var yangbanHW = {jianshu:jianshu,yangban:formatYangban(ybHuowus[0].yangban),row:ybHuowus.length};
+		    	yangbanHW.dingdans = marshalDingdan(ybHuowus);
+		    	ret.push(yangbanHW);
+	    	});
+	    	return ret;
+	    }
+    	function getDDID(id){
+				return id.substr(0,id.toUpperCase().indexOf("HW"));
+			}
+	    function marshalDingdan(huowus){
+	    	var ret = [];
+	    	var ddIds = [];
+	    	each(huowus,function(i,hw){
+	    		if(ddIds.indexOf(getDDID(hw.dingdanhuowu))<0){
+	    			ddIds.push(getDDID(hw.dingdanhuowu));
+	    		}
+	    	});
+	    	each(ddIds,function(i,ddId){
+	    		var ddHuowus = [];
+	    		var jianshu = 0;
+		    	each(huowus,function(i,hw){
+		    		if(ddId == getDDID(hw.dingdanhuowu)){
+		    			ddHuowus.push(hw);
+		    			jianshu += parseInt(hw.jianshu);
+		    		}
+		    	});
+		    	var dingdanHW = {ddId:ddId,jianshu:jianshu,yangban:formatYangban(ddHuowus[0].yangban),row:ddHuowus.length};
+		    	dingdanHW.guiges = marshalGuige(ddHuowus);
+		    	ret.push(dingdanHW);
+	    	});
+	    	return ret;
+	    }
+	    function marshalGuige(huowus){
+	    	var ret = [];
+	    	var guiges = [];
+	    	each(huowus,function(i,hw){
+	    		if(guiges.indexOf(hw.guige)<0){
+	    			guiges.push(hw.guige);
+	    		}
+	    	});
+	    	each(guiges,function(i,guige){
+	    		var ggHuowus = [];
+		    	each(huowus,function(i,hw){
+		    		if(guige == hw.guige){
+		    			ggHuowus.push(hw);
+		    		}
+		    	});
+		    	guigeHW = {guige:guige,huowus:ggHuowus};
+		    	ret.push(guigeHW);
+	    	});
+	    	return ret;
+	    }
+		});
+	</script>
+	</head>
+<body style="margin:0px;padding:0px;">
+<table style="width:100%;"><tr><td style="width:30%"></td><td id="td_yanhuodanId" style="text-align:center"></td><td style="width:30%;font-size:0.8em">验货员：<input class="plainInput" size=10 ><br/>日&#12288;期：<input class="plainInput" size=10></td></tr><table>
+	<table style="width:100%;border-spacing:0px;border-collapse:collapse;font-size:12px" id="tb_yanhuodan">
+		<tr>
+			<th>样板</th><th>订单号</th><th>规格</th><th nowrap>数量</th><th>件数</th><th>检验结果</th>
+		</tr>
+		<tr id="tr_gonghuoshang"><td class="clz_split" colspan=6 style="background-color:#eee;font-size:0.8em;line-height:25px;border:1px solid black" id="td_gonghuoshang"></td></tr>
+		<tr id="tr_huowu">
+			<td id="td_yangban" class="clz_split" style="padding-left:3px;"></td>
+			<td id="td_bianhao" class="clz_split" style="border-left:1px solid black;width:85px;padding-left:3px;font-size:0.7em"></td>
+			<td id="td_guige" style="padding-left:3px;min-width:150px"></td>
+			<td style="text-align:center;" id="td_shuliang" nowrap></td>
+			<td style="text-align:center" id="td_jianshu"></td>
+			<td style="width:25%;border-right:1px solid black;" id="id_jieguo"></td>
+		</tr>
+	</table>
+</body>
+</html>
