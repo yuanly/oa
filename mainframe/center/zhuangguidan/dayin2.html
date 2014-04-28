@@ -18,36 +18,66 @@
 	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
 	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
 	<style> 
-		.tr_kehuhuizong{
+		.tr_gonghuoshang{
 			border:1px solid black;
-			border-top:2px solid black;
-		}
-		.tr_kehuhuizong span{
-			font-size:1.0em;
-			color:black;
-		}
-		.tr_huowumingxi td{
+		} 
+		#tr_huowu td{
 			border:1px dotted black;
 			font-size:0.8em;
 			padding-left:5px;
 		}
+		th{
+			border:1px solid black;
+		}
 	</style>
 	<script>
+			/*
+		kehus:[{
+							kehu:"xx",
+							jianshu:23,
+							yangbans:[{
+												yangban:"xx",//泰国样板，没有才用中国样板（订单里也有）
+												ghsCode:"xx",//供货商代码，没有就用中文名代替 需要到后台提取
+												zongliang:232,
+												danwei:"xx",
+												jianshu:2,
+												row:3,
+												dingdans:[{
+																	ddId:"xxx",//关联的原稿订单号
+																	taiguoyangban:"",//这是录单时录进去的泰国样板，如果与前面的样板不一致，就显示。否则不显示
+																	zongliang:232,
+																	danwei:"xx",
+																	jianshu:2,
+																	row:3,
+																	guiges:[{
+																					guige:"xxx",//录进去的泰国规格，若没有则先填中国规格
+																					zongliang:232,
+																					danweie:"xx",
+																					//row:1,huowus.length
+																					huowus:[{huowu}]
+																					}...]
+																	}...]
+												}...]
+							}...]
+    */
 		$(function(){
-			$("tr").dblclick(function(){
-				var tr = $("<tr style='border:0px '><td colspan=8 style='border:0px'>&nbsp;</td></tr>");
-				$(this).before(tr);
+			$(".clz_split").dblclick(function(){
+				var tr = $("<tr style='border:0px '><td colspan=8>&nbsp;</td></tr>");
+				$(this).parent().before(tr);
 				tr.dblclick(function(){$(this).remove();});
 			});
-			function getDDID(id){
-				return id.substr(0,id.toUpperCase().indexOf("HW"));
-			}
-			function shortHWID(id){//FHD140330.2HW2 to 0330.2-2
-				return id.substring(5).replace("HW","-");
-			}
-			function shortDDID(id){//DD140328.2HW1 to 0328.2
-				return id.substr(0,id.toUpperCase().indexOf("HW")).substring(4);
-			}
+	    var tmpl_tr_gonghuoshang = $("#tr_gonghuoshang").detach();
+	    var tmpl_tr_huowu = $("#tr_huowu").detach();
+	    var gZGD = null;
+   		postJson("zhuangguidan.php",{caozuo:"getbyidfortai",_id:getUrl().showId},function(zgd){
+   			gZGD = zgd;
+   			$("#guihao").text(zgd.guihao);
+   			$("#bianhao").text(zgd._id);
+   			$("#zhuangguiriqi").text(zgd.zhuangguiriqi);
+   			$("#zongjianshu").text(zongjianshu(zgd.huowu));
+   			$("#zhuangguirenyuan").text(zgd.zhuangguirenyuan);
+				dayin(zgd.huowu);
+   		});
    		function zongjianshu(hws){
    			var zjs=0;
    			each(hws,function(i,hw){
@@ -55,134 +85,23 @@
    			});
    			return zjs;
    		}
-			var tmpl_tr_kehuhuizong = $(".tr_kehuhuizong").detach();
-			var tmpl_tr_huowumingxi = $(".tr_huowumingxi").detach();
-   		
-   		postJson("zhuangguidan.php",{caozuo:"getbyid",_id:getUrl().showId},function(zgd){
-   			$("#guihao").text(zgd.guihao);
-   			$("#bianhao").text(zgd._id);
-   			$("#zhuangguiriqi").text(zgd.zhuangguiriqi);
-   			$("#zongjianshu").text(zongjianshu(zgd.huowu));
-				dayin(zgd.huowu);
-   		});
 			function dayin(huowus){
+				huowus = changeUnit(huowus);
 				kehuhuizong(huowus);
-				var kehuHuowus = kehuGroup(huowus);
-				each(kehuHuowus,function(i,kehuHuowus){
-					dayinKehuHuowu(kehuHuowus);
-				});
+				huowus = huowus.sort(cmp);
+	    	var kehus = marshalKehu(huowus);
+	    	showKehus(kehus);
 			}
-			function dayinKehuHuowu(hws){
-				var ddHuowus = dingdanGroup(hws);
-				each(ddHuowus,function(i,huowus){
-					dayinDingdanHuowu(huowus);
-				});
-			}
-			function dingdanGroup(huowus){
-				var map = {};
+			function changeUnit(huowus){
 				each(huowus,function(i,hw){
-					if(undefined == map[getDDID(hw.dingdanhuowu)]){
-						map[getDDID(hw.dingdanhuowu)] = [hw];
-					}else{
-						map[getDDID(hw.dingdanhuowu)].push(hw);
-					}
+    			if(hw.danwei == "码"){
+    				hw.danwei = "Y";
+    			}else if(hw.danwei == "米"){
+    				hw.danwei = "Y";
+    				hw.shuliang = roundFix(parseFloat(hw.shuliang) * 1.0936132983377,2);
+    			}
 				});
-				var ret = [];
-				for(k in map){
-					ret.push(map[k]);
-				}
-				return ret;
-			}
-			function getDingdanHuowu(dd,hwId){
-				var ret = null;
-				each(dd.huowu,function(i,hw){
-					if(hw.id == hwId){
-						ret = hw;
-						return false;
-					}
-				});
-				return ret;
-			}
-			function dingdanHuizong(tr,id,trs){
-				postJson("zhuangguidan.php",{caozuo:"getdingdanbyid",_id:id},function(res){
-					tr.find("#kehu").text(res.kehu);
-					var yb = (res.taiguoyangban?res.taiguoyangban:"-");//+"("+res.yangban.zhongguoxinghao+")";
-					tr.find("#yangban").text(yb);
-					var dd = res.taiguoyuangao+"("+(res.taiguobianhao?res.taiguobianhao:"-")+")";
-					tr.find("#dingdan").text(dd);
-					tr.find("#gonghuoshang").text((res.gonghuoshang.bianma?res.gonghuoshang.bianma:"-"));
-					each(trs,function(i,hwtr){
-						var hw = getDingdanHuowu(res,hwtr.data("hwId"));
-						if(hw && hw.taiguoguige){
-							hwtr.find("#td_guige").text(hw.taiguoguige);
-						}
-					});
-				});
-			}
-			function dayinDingdanHuowu(hws){
-				//地区：xx 供货商：xxx  样板：xxx  订单：xx 总件数： nn
-				var hztr = tmpl_tr_kehuhuizong.clone(true);
-				$("#tb_zhuangguidan").append(hztr);
-				var zongjianshu = 0;
-				hws = hws.sort(cmpDingdan);
-				var trs = [];
-				each(hws,function(i,hw){
-					var tr = tmpl_tr_huowumingxi.clone(true);
-					tr.data("hwId",hw.dingdanhuowu);
-					tr.find("#td_bianhao").text(hw._id);
- 					tr.find("#td_guige").text("("+hw.guige+")");
- 					var dw = hw.danwei;
- 					var sl = hw.shuliang;
- 					if(hw.danwei == "码"){
- 						dw = "Y";
- 					}else if(hw.danwei == "米"){
- 						dw = "Y";
- 						sl = round(hw.shuliang * 1.0936132983377,2);
- 					}else if(hw.danwei == "件"){
- 						dw = "PCS";
- 					}
- 					tr.find("#td_shuliang").text(sl+dw);
- 					tr.find("#td_jianshu").text(hw.jianshu);
- 					$("#tb_zhuangguidan").append(tr);
- 					trs.push(tr);
- 					zongjianshu += parseInt(hw.jianshu);
-				});
-				hztr.find("#zongjianshu").text(zongjianshu);
-				dingdanHuizong(hztr,getDDID(hws[0].dingdanhuowu),trs);
-			}
-			function cmpDingdan(a,b){
-				if(a.dingdanhuowu>b.dingdanhuowu){
-					return 1;
-				}else if(a.dingdanhuowu>b.dingdanhuowu){
-					return -1;
-				}
-				return 0;
-			}
-			function gonghuoshanghuizong(ghsHuowus){
-				var str = "<hr style='border:1px dashed'/>";
-				each(ghsHuowus,function(i,huowus){
-					var zongjianshu = 0;
-					each(huowus,function(i,hw){
-						zongjianshu += parseInt(hw.jianshu);	
-					});
-					str += huowus[0].gonghuoshang.mingchen+"：<b>"+zongjianshu+"</b>件&nbsp;&nbsp;&nbsp;&nbsp;";
-				});
-				$("#td_kehuhuizong").append(str);
-			}
-			function kehuGroup(huowus){
-				var map = {};
-				each(huowus,function(i,hw){
-					if(undefined == map[hw.kehu]){
-						map[hw.kehu] = [hw];
-					}else{
-						map[hw.kehu].push(hw);
-					}
-				});
-				var ret = [];
-				for(k in map){
-					ret.push(map[k]);
-				}
-				return ret;
+				return huowus;
 			}
 			function kehuhuizong(hws){
 				var s = {};
@@ -195,10 +114,272 @@
 				});
 				var huizong = "";
 				for(k in s){
-					huizong += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+k+":<b>"+s[k]+"</b>pcs";
+					huizong += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+k+":<b>"+s[k]+"</b>R";
 				};
 				$("#td_kehuhuizong").html(huizong);
 			}
+	    function showKehus(ghss){
+	    	each(ghss,function(i,ghs){
+		    	var tr_gonghuoshang = tmpl_tr_gonghuoshang.clone(true);
+	    		var sHtml = (i+1)+".&nbsp;&nbsp;&nbsp;<span style='color:grey'>Customer：<b style='color:black'>"+ghs.kehu+"</b></span><span style='float:right;color:grey'>Total: <b style='color:black'>"+ghs.jianshu+"</b>R</span>"
+	    		tr_gonghuoshang.find("#td_gonghuoshang").html(sHtml);					
+					$("#tb_zhuangguidan").append(tr_gonghuoshang);
+					showYangbans(ghs.yangbans);
+	    	});
+	    }
+	    function showYangbans(yangbans){
+	    	each(yangbans,function(i,yangban){
+					var tr_huowu = tmpl_tr_huowu.clone(true);
+					tr_huowu.find("#td_yangban").html(yangban.yangban
+							+"<br/>(<span style='color:grey'>Vendor: <b style='color:black'>"+yangban.ghsCode+"</b>, <b style='color:black'>"+yangban.jianshu+"</b>R,&nbsp;<b style='color:black'>"+yangban.zongliang+"</b>"+yangban.danwei+"</span>)").attr("rowspan",yangban.row);
+					showDingdans(tr_huowu,yangban.dingdans,yangban.yangban);
+	    	});
+	    }
+	    function showDingdans(tr,dingdans,yangban){
+	    	each(dingdans,function(i,dingdan){
+	    		if(i>0){
+						tr = tmpl_tr_huowu.clone(true);
+						tr.find("#td_yangban").remove();
+					}
+					var str ="";
+					if(yangban == dingdan.taiguoyangban || !dingdan.taiguoyangban){
+						str = dingdan.ddId+"<br/>(<span style='color:grey'><b style='color:black'>"+dingdan.jianshu+"</b>R,&nbsp;<b style='color:black'>"+dingdan.zongliang+"</b>"+dingdan.danwei+"</span>)";
+					}else{
+						str = dingdan.ddId+"<br/>("+dingdan.taiguoyangban+"<span style='color:grey'>, <b style='color:black'>"+dingdan.jianshu+"</b>R,&nbsp;<b style='color:black'>"+dingdan.zongliang+"</b>"+dingdan.danwei+"</span>)";
+					}
+					tr.find("#td_bianhao").html(str).attr("rowspan",dingdan.row);
+					showGuiges(tr,dingdan.guiges);
+	    	});
+	    }
+	    function showGuiges(tr,guiges){
+	    	each(guiges,function(i,guige){
+	    		if(i>0){
+	    			tr = tmpl_tr_huowu.clone(true);
+	    			tr.find("#td_bianhao").remove();
+	    			tr.find("#td_yangban").remove();
+	    		}
+	    		tr.find("#td_guige").html(guige.guige).attr("rowspan",guige.huowus.length);
+	    		tr.find("#td_totalquant").html(guige.zongliang+guige.danwei).attr("rowspan",guige.huowus.length);
+	    		showShuliangJianshus(tr,guige.huowus);
+	    	});
+	    }
+	    function showShuliangJianshus(tr,huowus){
+	    	each(huowus,function(i,huowu){
+	    		if(i>0){
+	    			tr = tmpl_tr_huowu.clone(true);
+	    			tr.find("#td_bianhao").remove();
+	    			tr.find("#td_yangban").remove();
+	    			tr.find("#td_guige").remove();
+	    			tr.find("#td_totalquant").remove();
+	    		}
+					tr.find("#td_shuliang").text(huowu.shuliang+huowu.danwei);
+					tr.find("#td_jianshu").text(huowu.jianshu);
+					$("#tb_zhuangguidan").append(tr);
+	    	});	    	
+	    }
+			function cmp(hw1,hw2){//客户 样板 订单id 规格 
+				var kh1 = hw1.kehu;
+				var kh2 = hw2.kehu;
+				if(!kh1){kh1 = "";}
+				if(!kh2){kh2 = "";}
+				if(kh1>kh2){
+					return 1; 
+				}else if(kh1<kh2){
+					return -1;
+				}else{
+					var yb1= hw1.yangban.taiguoxinghao;
+					var yb2 = hw2.yangban.taiguoxinghao;
+					if(!yb1){yb1 = "";}
+					if(!yb2){yb2 = "";}
+					if(yb1>yb2){
+						return 1; 
+					}else if(yb1<yb2){
+						return -1;
+					}else{
+						var dd1 = getDDID(hw1);
+						var dd2 = getDDID(hw2);
+						if(!dd1){dd1="";};
+						if(!dd2){dd2="";};
+						if(dd1>dd2){
+							return 1; 
+						}else if(dd1<dd2){
+							return -1;
+						}else{
+							var gg1 = hw1.guige;
+							var gg2 = hw2.guige;
+							if(!gg1){gg1="";};
+							if(!gg2){gg2="";};
+							if(gg1>gg2){
+								return 1; 
+							}else if(gg1<gg2){
+								return -1;
+							}else{
+								return 0;
+							}					
+						}
+					}
+				}
+			}
+	    function marshalKehu(huowus){
+	    	var ret = [];
+	    	var khs = [];
+	    	each(huowus,function(i,hw){
+	    		if(khs.indexOf(hw.kehu)<0){
+	    			khs.push(hw.kehu);
+	    		}
+	    	});
+	    	each(khs,function(i,kh){
+	    		var khHuowus = [];
+	    		var jianshu = 0;
+		    	each(huowus,function(i,hw){
+		    		if(kh == hw.kehu){
+		    			khHuowus.push(hw);
+		    			jianshu += parseInt(hw.jianshu);
+		    		}
+		    	});
+		    	var khHW = {kehu:kh,jianshu:jianshu};
+		    	khHW.yangbans = marshalYangban(khHuowus);
+		    	ret.push(khHW);
+	    	});
+	    	return ret;
+	    }
+	    function marshalYangban(huowus){
+	    	var ret = [];
+	    	var ybIds = [];
+	    	each(huowus,function(i,hw){
+	    		if(ybIds.indexOf(hw.yangban._id)<0){
+	    			ybIds.push(hw.yangban._id);
+	    		}
+	    	});
+	    	each(ybIds,function(i,ybId){
+	    		var ybHuowus = [];
+	    		var jianshu = 0;
+	    		var zl = 0;
+		    	each(huowus,function(i,hw){
+		    		if(ybId == hw.yangban._id){
+		    			ybHuowus.push(hw);
+		    			jianshu += parseInt(hw.jianshu);
+		    			zl += parseFloat(hw.shuliang) * parseInt(hw.jianshu);
+		    		}
+		    	});
+		    	var yangban = ybHuowus[0].yangban.taiguoxinghao;
+		    	if(!yangban){
+		    		yangban = "<span style='color:grey'>("+ybHuowus[0].yangban.zhongguoxinghao+")</span>";
+		    	}
+		    	var ghsCode = getGhsCode(ybHuowus[0].gonghuoshang._id);
+		    	if(!ghsCode){
+		    		ghsCode = "("+ybHuowus[0].gonghuoshang.mingcheng+")";
+		    	}
+		    	var yangbanHW = {jianshu:jianshu,yangban:yangban,ghsCode:ghsCode,row:ybHuowus.length};
+		    	yangbanHW.dingdans = marshalDingdan(ybHuowus);
+		    	yangbanHW.zongliang = roundFix(zl,2);
+		    	yangbanHW.danwei = ybHuowus[0].danwei;
+		    	ret.push(yangbanHW);
+	    	});
+	    	return ret;
+	    }
+	    function getGhsCode(ghsId){
+	    	var ret = "";
+	    	each(gZGD.gonghuoshangs,function(i,ghs){
+	    		if(ghs._id == ghsId){
+	    			ret = ghs.bianma;
+	    			return false;
+	    		}
+	    	});
+	    	return ret;
+	    }
+    	function getDDID(hw){
+    		if(hw.daifudanhao){
+    			return "(PROXY)"+hw.daifudanhao;
+    		}
+    		var id = hw.dingdanhuowu;
+				return id.substr(0,id.toUpperCase().indexOf("HW"));
+			}
+	    function marshalDingdan(huowus){
+	    	var ret = [];
+	    	var ddIds = [];
+	    	each(huowus,function(i,hw){
+	    		if(ddIds.indexOf(getDDID(hw))<0){
+	    			ddIds.push(getDDID(hw));
+	    		}
+	    	});
+	    	each(ddIds,function(i,ddId){
+	    		var ddHuowus = [];
+	    		var jianshu = 0;
+	    		var zl = 0;
+		    	each(huowus,function(i,hw){
+		    		if(ddId == getDDID(hw)){
+		    			ddHuowus.push(hw);
+		    			jianshu += parseInt(hw.jianshu);
+		    			zl += parseFloat(hw.shuliang) * parseInt(hw.jianshu);
+		    		}
+		    	});
+		    	var dingdanHW = { jianshu:jianshu,row:ddHuowus.length};
+		    	var dd = getDingdan(ddId);
+		    	
+		    	if(dd){
+		    		dingdanHW.ddId = dd.taiguoyuangao+"("+dd.taiguobianhao+")";
+		    		dingdanHW.taiguoyangban = (dd.taiguoyangban?dd.taiguoyangban:"");
+		    	}else{//代付
+		    		dingdanHW.ddId = ddId;
+		    	}
+		    	
+		    	dingdanHW.guiges = marshalGuige(dd,ddHuowus);
+		    	dingdanHW.zongliang = roundFix(zl,2);
+		    	dingdanHW.danwei = ddHuowus[0].danwei;
+		    	ret.push(dingdanHW);
+	    	});
+	    	return ret;
+	    }
+	    function getDingdan(ddId){
+	    	var ret = null;
+	    	each(gZGD.dingdans,function(i,dd){
+	    		if(dd._id == ddId){
+	    			ret = dd;
+	    			return false;
+	    		}
+	    	});
+	    	return ret;
+	    }
+	    function marshalGuige(dd,huowus){
+	    	var ret = [];
+	    	var guiges = [];
+	    	each(huowus,function(i,hw){
+	    		if(guiges.indexOf(hw.dingdanhuowu)<0){
+	    			guiges.push(hw.dingdanhuowu);
+	    		}
+	    	});
+	    	each(guiges,function(i,guige){
+	    		var ggHuowus = [];
+	    		var zl = 0;
+		    	each(huowus,function(i,hw){
+		    		if(guige == hw.dingdanhuowu){
+		    			ggHuowus.push(hw);
+		    			zl += parseFloat(hw.shuliang) * parseInt(hw.jianshu);
+		    		}
+		    	});
+		    	var taiguoguige = getTaiguoguige(dd,guige);
+		    	guigeHW = {guige:taiguoguige,huowus:ggHuowus};
+		    	guigeHW.zongliang = roundFix(zl,2);
+		    	guigeHW.danwei = huowus[0].danwei;
+		    	ret.push(guigeHW);
+	    	});
+	    	return ret;
+	    }
+	    function getTaiguoguige(dd,guige){
+	    	if(!dd){return "";};
+	    	var ret = "";
+	    	each(dd.huowu,function(i,hw){
+	    		if(hw.id == guige){
+	    			ret = hw.taiguoguige;
+	    			if(!ret){
+	    				ret = "<span style='color:grey'>("+hw.guige+")</span>";
+	    			}
+	    			return false;
+	    		}
+	    	});
+	    	return ret;
+	    }
 		});
 	</script>
 	</head>
@@ -210,29 +391,23 @@
  		LoadDate：<div id="zhuangguiriqi" class="myinput"></div>,&nbsp;&nbsp;
  		Total PCS：<div id="zongjianshu" class="myinput" style="min-width:30px"></div>
  </div>
- <table style="width:100%;border-spacing:0px;border-collapse:collapse;border:0px solid black;margin-top:10px;" border=1 id="tb_zhuangguidan">
- 	<tr style="background-color:#eee">
- 		<th>ProductID</th><th>Specification</th><th>Quantity</th><th>PCS</th><th style="width:25%">Memo</th>
- 	</tr>
- 	<tr>
- 		<td style="paddig-left:5px;text-align:center;font-size:0.8em" id="td_kehuhuizong" colspan=8 ></td>
- 	</tr>
- 	<tr class="tr_kehuhuizong">
- 		<td colspan=8 style="color:gray;font-size:0.8em;padding-left:5px">
- 			Customer：<span id="kehu" style="font-size:1em;font-weight:bolder;"></span>，
- 			Product：<span id="yangban" style="font-size:1em;font-weight:bolder;"></span>，
- 			Order：<span id="dingdan" style="font-size:1em;font-weight:bolder;"></span>，
- 			Vendor：<span id="gonghuoshang" style="font-size:1em;font-weight:bolder;"></span>
- 			<span style="float:right">Total：<span id="zongjianshu" style="font-size:1.2em;font-weight:bolder;"></span>pcs&nbsp;&nbsp;</span>
- 		</td>
- 	</tr>
- 	<tr class="tr_huowumingxi">
- 		<td id="td_bianhao" style="width:70px;border-left:1px solid black">编号</td>
- 		<td id="td_guige">规格</td>
- 		<td id="td_shuliang" style="width:60px;text-align:center">数量</td>
- 		<td id="td_jianshu" style="width:50px;text-align:center">件数</td>
- 		<td style="width:25%;border-right:1px solid"></td>
- 	</tr>
+ <table style="width:100%;border-spacing:0px;border-collapse:collapse;border:0px solid black;margin-top:10px;" border=0 id="tb_zhuangguidan">
+		<tr>
+			<th>Product</th><th nowrap>Order</th><th>Specs</th><th nowrap>Quant.</th><th nowrap>PCS</th><th>Total</th><th>Memo</th>
+		</tr>
+	 	<tr>
+	 		<td style="border:1px solid black;paddig-left:5px;text-align:left;font-size:0.8em" id="td_kehuhuizong" colspan=7></td>
+	 	</tr>
+		<tr id="tr_gonghuoshang"><td class="clz_split" colspan=7 style="background-color:#eee;font-size:0.8em;line-height:25px;border:1px solid black" id="td_gonghuoshang"></td></tr>
+		<tr id="tr_huowu">
+			<td id="td_yangban" class="clz_split" style="border-left:1px solid black;padding-left:3px;min-width:180px"></td>
+			<td id="td_bianhao" style="width:85px;padding-left:3px;font-size:0.7em;white-space:nowrap;"></td>
+			<td id="td_guige" style="padding-left:3px;min-width:150px"></td>
+			<td style="text-align:center;" id="td_shuliang" nowrap></td>
+			<td style="text-align:center" id="td_jianshu"></td>
+			<td style="text-align:center" id="td_totalquant"></td>
+			<td style="width:100px;border-right:1px solid black;" id="id_jieguo"></td>
+		</tr>
 </table>
 </body>
 </html>

@@ -106,6 +106,35 @@ if("xinjian" == $param["caozuo"]){
 	$cur = coll("huowu")->find(array("zhuangguidan"=>$param["_id"]));//->sort(array("zgdIdx"=>1));
 	$zgd["huowu"] = c2a($cur);
 	echo  jsonEncode($zgd);
+}else if("getbyidfortai" == $param["caozuo"]){//打印泰国装柜表，用到很多关联信息，这里先关联好
+	$query = array("_id"=>$param["_id"]);
+	$zgd = coll("zhuangguidan")->findOne($query);
+	$cur = coll("huowu")->find(array("zhuangguidan"=>$param["_id"]),array("yanhuodan"=>0,"guige"=>0));//->sort(array("zgdIdx"=>1));
+	$zgd["huowu"] = c2a($cur);
+	$ghsIds = [];
+	$ddIds = [];
+	foreach($zgd["huowu"] as $hw){
+		$ghsIds[] = $hw["gonghuoshang"]["_id"];
+		$ddIds[] = substr($hw["dingdanhuowu"],0,stripos($hw["dingdanhuowu"],"H"));
+	}
+	$ghsIds = array_unique($ghsIds);
+	$ddIds == array_unique($ddIds);
+	
+	$zgd["gonghuoshangs"] = [];
+	foreach($ghsIds as $ghsId){
+		$ghs = coll("contact")->findOne(array("_id"=>$ghsId),array("bianma"=>1));
+		if($ghs){
+			$zgd["gonghuoshangs"][] =$ghs;
+		}
+	}
+	$zgd["dingdans"] = [];
+	foreach($ddIds as $ddId){
+		$dd = coll("dingdan")->findOne(array("_id"=>$ddId),array("huowu"=>1,"taiguoyuangao"=>1,"taiguobianhao"=>1,"taiguoyangban"=>1));
+		if($dd){
+			$zgd["dingdans"][] = $dd;
+		}
+	}
+	echo  jsonEncode($zgd);
 }else if("getdaifubyid" == $param["caozuo"]){
 	$query = array("_id"=>$param["_id"]);
 	$zgd = coll("zhuangguidan")->findOne($query);
