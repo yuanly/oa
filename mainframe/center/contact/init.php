@@ -2,7 +2,6 @@
 //error_log("Location: ".docRoot()."login/login.html",3,"d:/err.log");
 
 include("../../../util.php");
-
 if(coll("contact")->count()>0){
 	$db = new MongoClient();
 	//$db->oa->createCollection("taiguige",array("capped"=>true,"max"=>100));

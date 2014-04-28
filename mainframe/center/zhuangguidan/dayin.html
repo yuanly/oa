@@ -63,14 +63,40 @@
 			});
 	    var tmpl_tr_gonghuoshang = $("#tr_gonghuoshang").detach();
 	    var tmpl_tr_huowu = $("#tr_huowu").detach();
-   		postJson("zhuangguidan.php",{caozuo:"getbyid",_id:getUrl().showId},function(zgd){
+	    var gZGD = null;
+   		postJson("zhuangguidan.php",{caozuo:"getbyidforchina",_id:getUrl().showId},function(zgd){
+   			gZGD = zgd;
    			$("#guihao").text(zgd.guihao);
    			$("#bianhao").text(zgd._id);
    			$("#zhuangguiriqi").text(zgd.zhuangguiriqi);
    			$("#zongjianshu").text(zongjianshu(zgd.huowu));
    			$("#zhuangguirenyuan").text(zgd.zhuangguirenyuan);
 				dayin(zgd.huowu);
+   			setQuyu(zgd);
    		});
+   		function setQuyu(zgd){
+   			var qy = [];
+   			each(zgd.huowu,function(i,hw){
+   				if(qy.indexOf(hw.gonghuoshang.quyu)<0){
+   					qy.push(hw.gonghuoshang.quyu);
+   				}
+   			});
+   			var hzs = [];
+   			each(qy,function(i,qy){
+   				var hz={quyu:qy,jianshu:0};
+   				each(zgd.huowu,function(i,hw){
+   					if(hw.gonghuoshang.quyu == qy){
+   						hz.jianshu += parseInt(hw.jianshu);
+   					}
+   				});
+   				hzs.push(hz);
+   			});
+   			var s="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+   			each(hzs,function(i,hz){
+   				s += hz.quyu+":"+hz.jianshu+"件&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+   			});
+   			$("#td_kehuhuizong").append("<hr/>"+s);
+   		}
    		function zongjianshu(hws){
    			var zjs=0;
    			each(hws,function(i,hw){
@@ -99,10 +125,24 @@
 				};
 				$("#td_kehuhuizong").html(huizong);
 			}
+			function getDianhua(lxrId){
+				var ret = "";
+				each(gZGD.gonghuoshangs,function(i,ghs){
+					if(ghs._id == lxrId){
+						if(ghs.dianhualiebiao && ghs.dianhualiebiao.length>0){
+							ret = ghs.dianhualiebiao[0]
+						}
+						return false;
+					}
+				});
+				return ret;
+			}
 	    function showGonghuoshangs(ghss){
 	    	each(ghss,function(i,ghs){
 		    	var tr_gonghuoshang = tmpl_tr_gonghuoshang.clone(true);
-	    		var sHtml = (i+1)+".&nbsp;&nbsp;&nbsp;<span style='color:grey'>区域：<b style='color:black'>"+ghs.quyu+"</b>，商家：<b style='color:black'>"+ghs.mingchen+"</b></span><b style='float:right'>"+ghs.jianshu+"件</b>"
+		    	var dianhua = getDianhua(ghs.lxrId);
+	    		var sHtml = (i+1)+".&nbsp;&nbsp;&nbsp;<span style='color:grey'>区域：<b style='color:black'>"+ghs.quyu
+	    			+"</b>，商家：<b style='color:black'>"+ghs.mingchen+"</b>("+dianhua+")</span><b style='float:right'>"+ghs.jianshu+"件</b>"
 	    		tr_gonghuoshang.find("#td_gonghuoshang").html(sHtml);					
 					$("#tb_zhuangguidan").append(tr_gonghuoshang);
 					//showDingdans(ghs.dingdans);	    	

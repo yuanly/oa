@@ -7,6 +7,12 @@ checkuser();
 
 $contact = getJson();
 if(isset($contact["_id"])){//修改
+	if($contact["haiguanma"]){
+		if(coll("contact")->findOne(array("haiguanma"=>$contact["haiguanma"],"_id"=>array('$ne'=>$contact["_id"])))){
+			echo '{"success":true,"err":"海关码重复，提交失败！"}';
+			return;
+		}
+	}
 	$contact["access"] = time();
 	$old = coll("contact")->findOne(array("_id"=>$contact["_id"]));
 	coll("contact")->save($contact);//在客户端确保对象各属性被完整回传
@@ -23,6 +29,12 @@ if(isset($contact["_id"])){//修改
 	}
 	echo '{"success":true}';
 }else{//新增
+	if($contact["haiguanma"]){
+		if(coll("contact")->findOne(array("haiguanma"=>$contact["haiguanma"]))){
+			echo '{"success":true,"err":"海关码重复，提交失败！"}';
+			return;
+		}
+	}
 	$contact["_id"] = "LXR".getId("contact");
 	$contact["access"] = time();
 	coll("contact")->save($contact);

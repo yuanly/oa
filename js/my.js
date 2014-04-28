@@ -422,6 +422,16 @@ round = function(v,l){
 roundFix = function(v,l){
 	return round(v,l).toFixed(l);
 }
+fix1 = function(v){
+	var f = Math.floor(parseFloat(v));
+	if((v-f)<0.25){
+		return f;
+	}
+	if((v-f)<0.75){
+		return f+0.5;
+	}
+	return f+1;
+}
  /*
  Date.prototype.format = function(format)
  {

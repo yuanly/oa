@@ -106,6 +106,24 @@ if("xinjian" == $param["caozuo"]){
 	$cur = coll("huowu")->find(array("zhuangguidan"=>$param["_id"]));//->sort(array("zgdIdx"=>1));
 	$zgd["huowu"] = c2a($cur);
 	echo  jsonEncode($zgd);
+}else if("getbyidforchina" == $param["caozuo"]){//需要关联上商家电话
+	$query = array("_id"=>$param["_id"]);
+	$zgd = coll("zhuangguidan")->findOne($query);
+	$cur = coll("huowu")->find(array("zhuangguidan"=>$param["_id"]));//->sort(array("zgdIdx"=>1));
+	$zgd["huowu"] = c2a($cur);
+	$ghsIds = [];
+	foreach($zgd["huowu"] as $hw){
+		$ghsIds[] = $hw["gonghuoshang"]["_id"];
+	}
+	$ghsIds = array_unique($ghsIds);
+	$zgd["gonghuoshangs"] = [];
+	foreach($ghsIds as $ghsId){
+		$ghs = coll("contact")->findOne(array("_id"=>$ghsId),array("dianhualiebiao"=>1));
+		if($ghs){
+			$zgd["gonghuoshangs"][] =$ghs;
+		}
+	}
+	echo  jsonEncode($zgd);
 }else if("getbyidfortai" == $param["caozuo"]){//打印泰国装柜表，用到很多关联信息，这里先关联好
 	$query = array("_id"=>$param["_id"]);
 	$zgd = coll("zhuangguidan")->findOne($query);
@@ -113,13 +131,17 @@ if("xinjian" == $param["caozuo"]){
 	$zgd["huowu"] = c2a($cur);
 	$ghsIds = [];
 	$ddIds = [];
+	$ybIds = [];
 	foreach($zgd["huowu"] as $hw){
 		$ghsIds[] = $hw["gonghuoshang"]["_id"];
 		$ddIds[] = substr($hw["dingdanhuowu"],0,stripos($hw["dingdanhuowu"],"H"));
+		if(!empty($hw["yangban"]["_id"])){
+			$ybIds[] = $hw["yangban"]["_id"];
+		}
 	}
 	$ghsIds = array_unique($ghsIds);
 	$ddIds == array_unique($ddIds);
-	
+	$ybIds =  array_unique($ybIds);
 	$zgd["gonghuoshangs"] = [];
 	foreach($ghsIds as $ghsId){
 		$ghs = coll("contact")->findOne(array("_id"=>$ghsId),array("bianma"=>1));
@@ -132,6 +154,13 @@ if("xinjian" == $param["caozuo"]){
 		$dd = coll("dingdan")->findOne(array("_id"=>$ddId),array("huowu"=>1,"taiguoyuangao"=>1,"taiguobianhao"=>1,"taiguoyangban"=>1));
 		if($dd){
 			$zgd["dingdans"][] = $dd;
+		}
+	}
+	$zgd["yangbans"] = [];
+	foreach($ybIds as $ybId){
+		$yb = coll("yangban")->findOne(array("_id"=>$ybId),array("taiguoxinghao"=>1));
+		if($yb){
+			$zgd["yangbans"][] = $yb;
 		}
 	}
 	echo  jsonEncode($zgd);

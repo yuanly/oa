@@ -28,7 +28,7 @@ if("chashangjia" == $param["caozuo"]){
 	}
 	$cur = coll("contact")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
-}if("chongming" == $param["caozuo"]){
+}else if("chongming" == $param["caozuo"]){
 	$contact = $param["contact"];
 	$count = coll("contact")->count(array("mingchen"=>$contact["mingchen"]));
 	if((empty($contact["_id"]) && $count>0) || ($count>1)){
@@ -36,4 +36,17 @@ if("chashangjia" == $param["caozuo"]){
 	}else{
 		echo '{"success":true}';
 	}
+}else if("haiguanmajiancha" == $param["caozuo"]){
+	if(empty($param["_id"])){
+		if(coll("contact")->findOne(array("haiguanma"=>$param["haiguanma"]))){
+			echo '{"success":true,"err":"海关码重复了！"}';
+			return;
+		}
+	}else{
+		if(coll("contact")->findOne(array("haiguanma"=>$param["haiguanma"],"_id"=>array('$ne'=>$param["_id"])))){
+			echo '{"success":true,"err":"海关码重复了！"}';
+			return;
+		}
+	} 
+	echo '{"success":true}'; 
 }

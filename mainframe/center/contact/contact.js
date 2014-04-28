@@ -5,6 +5,7 @@
 	mingchen:"xxx",
 	py:["xx"],
 	bianma:"xx",//几个英文字母缩写，打印柜单时候用到
+	haiguanma:"21",//让供货商写在货物上方便海关查验时确认是哪件货
 	quyu:"xx",//区域，如“花都”“中大”,有时需要按区域搜索商家
 	dizhi:"xxx",
 	beizhu:"xxx",
@@ -115,6 +116,18 @@ $(function(){
 	}
 	//添加账户
 	$("#jiazhanghu").click(tianjiazhanghu);
+	$("#haiguanma").change(function(){
+		var id=undefined;
+		if(currContact){
+			id = currContact._id;
+		}
+		postJson("lianxiren.php",{caozuo:"haiguanmajiancha",haiguanma:$("#haiguanma").val().trim(),_id:id},function(res){
+			if(res.err){
+				tip($("#haiguanma"),res.err,1500);
+				$("#haiguanma").val("");
+			}
+		});
+	});
 	//商家选择
 	function shangjiaclickhandler(event){
 		var limit = 20;
@@ -156,6 +169,7 @@ $(function(){
 		$("#zhiwu").vals(contact.zhiwu);
 		$("#yanhuodizhi").vals(contact.yanhuodizhi);
 		$("#bianma").vals(contact.bianma);
+		$("#haiguanma").vals(contact.haiguanma);
 		$("#quyu").vals(contact.quyu);
 		if("个人" == contact.leixing){
 			$("#tr_geren").show();
@@ -244,6 +258,7 @@ $(function(){
 				contact.zhiwu = undefined;contact.shangjia = undefined;
 				contact.shangjia = {_id:contact._id,mingchen:contact.mingchen,py:contact.py};
 				contact.bianma = $("#bianma").val().trim().toUpperCase();
+				contact.haiguanma = $("#haiguanma").val().trim();
 				contact.quyu = $("#quyu").val().trim();
 			}else if("个人" == contact.leixing){
 				contact.yanhuodizhi = undefined;
@@ -313,14 +328,22 @@ $(function(){
 			if(res.err){
 				ask($("#tijiao"),"已存在同名联系人，确定他们不是同一个联系人吗？",function(){
 					postJson("contact.php",contact,function(res){
-						tip(null,"成功提交联系人信息！",1500);
-						listContacts(0);
+						if(res.err){
+							tip(null,res.err,1500);
+						}else{
+							tip(null,"成功提交联系人信息！",1500);
+							listContacts(0);
+						}
 					});
 				});
 			}else{
 				postJson("contact.php",contact,function(res){
-					tip(null,"成功提交联系人信息！",1500);
-					listContacts(0);
+					if(res.err){
+						tip(null,res.err,1500);
+					}else{
+						tip(null,"成功提交联系人信息！",1500);
+						listContacts(0);
+					}
 				});
 			}
 		});
@@ -349,7 +372,11 @@ $(function(){
 				tr = tr_contact.clone(true);
 				tr.data("_id",contact._id);
 				tr.find("#td_bianhao").text(contact._id);
-				tr.find("#td_mingchen").text(contact.mingchen);
+				if(contact.haiguanma){
+					tr.find("#td_mingchen").text(contact.mingchen+"<"+contact.haiguanma+">");
+				}else{
+					tr.find("#td_mingchen").text(contact.mingchen);
+				}
 				tr.find("#td_dianhua").text(showdianhuas(contact.dianhualiebiao));
 				if(contact.shangjia){
 					tr.find("#td_shangjia").text(contact.shangjia.mingchen).attr("title",contact.shangjia.mingchen);
