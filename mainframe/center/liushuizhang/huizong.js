@@ -122,19 +122,32 @@
 				tr_liushui.find("#td_shijihuilv").text(liushui.huilv?liushui.huilv:"");
 				tr_liushui.find("#td_shouxufei").text(liushui.shouxufei?liushui.shouxufei:"");
 				tr_liushui.find(".td_beizhu").text(liushui.zhaiyao?liushui.zhaiyao:"");
-				if(option.lxrId == liushui.fukuanfang){
-					zongzhichu += liushui.jine+(liushui.shouxufei?liushui.shouxufei:0);
-					if(option.lxrId == liushui.shoukuanfang){
-						tr_liushui.find("#td_jine").css("color","black");
-					}else{
-						tr_liushui.find("#td_jine").css("color","red");
+				if(!option.zhanghao){
+					if(option.lxrId == liushui.fukuanfang){
+						zongzhichu += liushui.jine+(liushui.shouxufei?liushui.shouxufei:0);
+						if(option.lxrId == liushui.shoukuanfang){
+							tr_liushui.find("#td_jine").css("color","black");
+						}else{
+							tr_liushui.find("#td_jine").css("color","red");
+						}
 					}
-				}
-				if(option.lxrId == liushui.shoukuanfang){
-					if(liushui.zhuanrujine){
-						zongshouru += liushui.zhuanrujine;
-					}else{
-						zongshouru += liushui.jine;
+					if(option.lxrId == liushui.shoukuanfang){
+						if(liushui.zhuanrujine){
+							zongshouru += liushui.zhuanrujine;
+						}else{
+							zongshouru += liushui.jine;
+						}
+					}
+				}else{//option.zhanghao
+					if(option.lxrId == liushui.fukuanfang && liushui.fukuanzhanghao == option.zhanghao){
+						zongzhichu += liushui.jine+(liushui.shouxufei?liushui.shouxufei:0);
+						tr_liushui.find("#td_jine").css("color","red");
+					}else {
+						if(liushui.zhuanrujine){
+							zongshouru += liushui.zhuanrujine;
+						}else{
+							zongshouru += liushui.jine;
+						}
 					}
 				}
 				tr_liushui.find("#td_yue").text(zongshouru - zongzhichu + chushiyue);
