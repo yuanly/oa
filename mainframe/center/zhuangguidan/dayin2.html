@@ -32,6 +32,10 @@
 	</style>
 	<script>
 		$(function(){
+			$("#guihao").dblclick(function(){
+				console.log("he");
+				window.open("dayin22.html?showId="+getUrl().showId,"_blank");	
+			});
 			$(".clz_split").dblclick(function(){
 				var tr = $("<tr style='border:0px '><td colspan=8>&nbsp;</td></tr>");
 				$(this).parent().before(tr);
