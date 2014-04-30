@@ -37,9 +37,10 @@
 		开始日期：<input id="kaishiriqi" class="plainInput" style="cursor:pointer;width:70px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		结束日期：<input id="jieshuriqi" class="plainInput" style="cursor:pointer;width:70px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		科目：<input id="kemu" class="plainInput" style="cursor:pointer;width:70px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		状态：<input id="zhuangtai" class="plainInput" style="cursor:pointer;width:45px;" value="已付" list=zhuangtailist />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<span class="plainBtn" id="tongji">统计</span>&nbsp;&nbsp;
 		<span class="plainBtn" id="dayin">打印</span>&nbsp;&nbsp;
-		<span class="tip" title="双击列头可以删除该列！">tip</span>
+		<span class="tip" title="双击列头可以删除该列！<br/>即使是未付流水，也必须设置付款时间才能被统计到！">tip</span>
 	</div>
 	<div align=center id="title_div" style="display:none">
 		<h3>收支流水对账单</h3>
@@ -86,5 +87,10 @@
 	</table>
 	<div id="zhanghuyue_ctr" style="text-align:center;display:none;font-size:0.8em">（账户全盘余额：<span id="zhanghuyue"></span>）</div>
 	<span class="plainBtn" id="dayinfanhui" style="display:none">←</span>
+		<datalist id="zhuangtailist">
+			<option value="已付"/>
+			<option value="未付"/>
+			<option value="全部"/>
+		</datalist>
 </body>
 </html>

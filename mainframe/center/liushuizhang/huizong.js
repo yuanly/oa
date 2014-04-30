@@ -97,6 +97,7 @@
 		if("" != $("#kemu").val().trim()){
 			option.kemu = $("#kemu").val().trim();
 		}
+		option.zhuangtai = $("#zhuangtai").val();
 		postJson("liushuizhang.php",{caozuo:"tongji",option:option},function(liushuis){
 			$("#tr_header").remove()
 			$("#tb_liushui").append(tmpl_tr_header.clone(true));

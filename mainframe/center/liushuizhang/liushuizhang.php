@@ -252,8 +252,14 @@ if("xinjian" == $param["caozuo"]){
 	statExpired();
 	echo '{"success":true}';
 }else if("tongji" == $param["caozuo"]){
-	$query = array("yifu"=>true,"liucheng.dongzuo"=>array('$ne'=>"作废"),
-			"fukuanriqi"=>array('$gte'=>$param["option"]["kaishiriqi"],'$lte'=>$param["option"]["jieshuriqi"]));
+	$query = array("liucheng.dongzuo"=>array('$ne'=>"作废"),"fukuanriqi"=>array('$gte'=>$param["option"]["kaishiriqi"],'$lte'=>$param["option"]["jieshuriqi"]));
+	if($param["option"]["zhuangtai"] == "已付"){
+		$query["yifu"] = true;
+		;
+	}else if($param["option"]["zhuangtai"] == "未付"){
+		$query["yifu"] = false;
+		$query["jine"] = array('$exists'=>true);
+	}
 	if(isset($param["option"]["kemu"])){
 		$query["kemu"] = $param["option"]["kemu"];
 	}
@@ -264,6 +270,7 @@ if("xinjian" == $param["caozuo"]){
 		$query['$or'] = array(array("fukuanfang"=>$param["option"]["lxrId"]),
 								 							array("shoukuanfang"=>$param["option"]["lxrId"]));
 	}
+	//var_dump($query);
 	$cur = coll("liushuizhang")->find($query)->sort(array("_id",-1));
 	echo  cur2json($cur);
 }else if("chayue" == $param["caozuo"]){//出现死锁时调用
