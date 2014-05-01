@@ -217,6 +217,7 @@
 				$("#th_gonghuoshang").val(gonghuoshang.mingchen);
 				$("#th_gonghuoshang").data("ghsId",gonghuoshang._id);
 				listfahuodan(0);
+				postJson("../contact/lianxiren.php",{caozuo:"access",_id:gonghuoshang._id},function(res){});
 			},"",function(){
 				$("#th_gonghuoshang").val("供货商");
 				listfahuodan(0);

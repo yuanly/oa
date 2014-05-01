@@ -157,6 +157,7 @@
  				$(this).data("lxrId",lianxiren._id);
 				$(this).val(lianxiren.mingchen);
 				listliushuizhang(0);
+				postJson("../contact/lianxiren.php",{caozuo:"access",_id:lianxiren._id},function(res){});
  			},"",function(){
  				$(this).val("收款方");
  				listliushuizhang(0);
@@ -172,6 +173,7 @@
  				$(this).data("lxrId",lianxiren._id);
 				$(this).val(lianxiren.mingchen);
 				listliushuizhang(0);
+				postJson("../contact/lianxiren.php",{caozuo:"access",_id:lianxiren._id},function(res){});
  			},"",function(){
  				$(this).val("付款方");
  				listliushuizhang(0);
@@ -208,6 +210,7 @@
 				}else{
 					thatInput.val(lianxiren.mingchen);
 				}
+				postJson("../contact/lianxiren.php",{caozuo:"access",_id:lianxiren._id},function(res){});
 			},"",function(){//清空回调
 					thatInput.removeData("_id");
 					thatInput.val("");

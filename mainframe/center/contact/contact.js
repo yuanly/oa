@@ -141,6 +141,7 @@ $(function(){
 				if("" == $("#dizhi").val().trim()){
 					$("#dizhi").vals(vendor.dizhi);
 				}
+				postJson("lianxiren.php",{caozuo:"access",_id:vendor._id},function(res){});
 			},"",function(){//清空回调
 				$("#shangjia").val("");
 				$("#shangjia").removeData("shangjia");

@@ -234,7 +234,7 @@ if("jiedan" == $param["caozuo"]){
 			$query = array("leixing"=>"商家","mingchen"=>array('$regex'=>$param["option"]));
 		}
 	}
-	$cur = coll("contact")->find($query)->skip($param["offset"])->limit($param["limit"]);
+	$cur = coll("contact")->find($query)->sort(array("access"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("huowu" == $param["caozuo"]){
 	//$query = array("dingdanhuowu"=>'/^'.$param["_id"].'/');

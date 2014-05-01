@@ -15,7 +15,7 @@ if("chashangjia" == $param["caozuo"]){
 			$query["mingchen"] = array('$regex'=>$param["option"]);
 		}
 	}
-	$cur = coll("contact")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	$cur = coll("contact")->find($query)->sort(array("access"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("chalianxiren" == $param["caozuo"]){
 	$query = array();
@@ -26,7 +26,7 @@ if("chashangjia" == $param["caozuo"]){
 			$query["mingchen"] = array('$regex'=>$param["option"]);
 		}
 	}
-	$cur = coll("contact")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	$cur = coll("contact")->find($query)->sort(array("access"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("chongming" == $param["caozuo"]){
 	$contact = $param["contact"];
@@ -48,5 +48,8 @@ if("chashangjia" == $param["caozuo"]){
 			return;
 		}
 	} 
+	echo '{"success":true}'; 
+}else if("access" == $param["caozuo"]){
+	coll("contact")->update(array("_id"=>$param["_id"]),array('$set'=>array("access"=>time())));
 	echo '{"success":true}'; 
 }

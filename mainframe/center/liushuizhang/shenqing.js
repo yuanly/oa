@@ -110,6 +110,7 @@ $(function(){
  				$(this).data("lxrId",lianxiren._id);
 				$(this).val(lianxiren.mingchen);
 				listShenqing(0);
+				postJson("../contact/lianxiren.php",{caozuo:"access",_id:lianxiren._id},function(res){});
  			},"",function(){
  				$(this).val("收款人");
  				listShenqing(0);
@@ -315,6 +316,7 @@ function _hanshuku_(){}
 				}else{
 					thatInput.text(lianxiren.mingchen);
 				}
+				postJson("../contact/lianxiren.php",{caozuo:"access",_id:lianxiren._id},function(res){});
 			});
 	}
 	jQuery.fn.liucheng = function(theUser,shenqing){

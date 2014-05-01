@@ -117,7 +117,7 @@ if("xinjian" == $param["caozuo"]){
 	if($param["option"]){
 		$query["mingchen"] = array('$regex'=>$param["option"]);
 	}
-	$cur = coll("contact")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	$cur = coll("contact")->find($query)->sort(array("access"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
 }else if("chazhanghao" == $param["caozuo"]){
 	$query = array("_id"=>$param["lxrId"]);
