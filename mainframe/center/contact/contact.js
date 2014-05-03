@@ -239,6 +239,7 @@ $(function(){
 		$(".yinhang").unbind("click");
 		$(".jian").hide();
 		$(".jia").hide();
+		$("#haiguanma").attr("readonly","readonly");
 	}
 	function newContact(){
 		obj2form({})
