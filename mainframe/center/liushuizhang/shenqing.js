@@ -76,7 +76,7 @@ $(function(){
 				tip($("#shengchengliushui"),res.err,1500);
 			}else{
 				//window.open("./liushuizhang.html?showId="+res._id,"_blank");
-				location = "./liushuizhang.html?showId="+res._id;
+				location = "./liushuizhang.html?showId="+res._id+"&checkdingjin=true";
 			}
 		});
 	}

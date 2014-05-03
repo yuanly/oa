@@ -87,6 +87,13 @@ if("xinjian" == $param["caozuo"]){
 	}
 	$cur = coll("liushuizhang")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
+}else if("weijiaofudingjin" == $param["caozuo"]){//检查商家是否有未交付订金
+	$query = array("kemu"=>"订金","jiaofu"=>array('$ne'=>true),"shoukuanfang"=>$param["shoukuanfang"]);
+	if(coll("liushuizhang")->findOne($query)){
+		echo '{"success":true,"dingjin":true}';
+	}else{
+		echo '{"success":true,"dingjin":false}';
+	}
 }else if("shanchu" == $param["caozuo"]){
 	if(!lock()){
 			echo '{"success":true,"err","锁冲突，请重试。若连续超过3次冲突请到“其他”模块进行解锁。"}';

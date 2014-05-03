@@ -210,6 +210,13 @@
 				}else{
 					thatInput.val(lianxiren.mingchen);
 				}
+				if(thatInput.attr("id") == "lsz_shoukuanfang"){
+					postJson("liushuizhang.php",{caozuo:"weijiaofudingjin",shoukuanfang:lianxiren._id},function(res){
+						if(res.dingjin){
+							ask3(thatInput,"特别提醒："+lianxiren.mingchen+"有未交付订金，请勿重复付款！！！");
+						}
+					});
+				}
 				postJson("../contact/lianxiren.php",{caozuo:"access",_id:lianxiren._id},function(res){});
 			},"",function(){//清空回调
 					thatInput.removeData("_id");
@@ -453,7 +460,7 @@ function _hanshuku_(){}
 		return ret;
 	}
 		//列出原稿
-	function listliushuizhang(offset,showId){
+	function listliushuizhang(offset,showId,checkdingjin){
 		if(offset<0){
 			return;
 		}
@@ -485,7 +492,7 @@ function _hanshuku_(){}
 				$("#liushuizhangtable").append(tr);
 			});
 			if(showId){
-				showDetailById(showId);
+				showDetailById(showId,checkdingjin);
 				layout.close("west");
 			}else{				
 				//调整左侧宽度以便显示完整的列表
@@ -561,6 +568,8 @@ function _hanshuku_(){}
 			postJson("../contact/contacts.php",{_id:lxrId},function(lxr){
 				input.vals(lxr.mingchen);
 			});
+		}else{
+			input.val("");
 		}
 	}	
 	function showDetail(lsz){
@@ -575,11 +584,19 @@ function _hanshuku_(){}
 		$("#lsz_zhaiyao").vals(lsz.zhaiyao);
 		$("#lsz_yinhangliushui").text(lsz.yinhangliushui?lsz.yinhangliushui:"");
 		setContactName($("#lsz_fukuanfang"),lsz.fukuanfang);
-		$("#lsz_fukuanfang").data("_id",lsz.fukuanfang);
+		if(lsz.fukuanfang){
+			$("#lsz_fukuanfang").data("_id",lsz.fukuanfang);
+		}else{
+			$("#lsz_fukuanfang").removeData("_id");
+		}
 		$("#lsz_fukuanzhanghu").vals(lsz.fukuanzhanghu);
 		$("#lsz_fukuanzhanghu").data("zhanghao",lsz.fukuanzhanghao);
 		setContactName($("#lsz_shoukuanfang"),lsz.shoukuanfang);
-		$("#lsz_shoukuanfang").data("_id",lsz.shoukuanfang);
+		if(lsz.shoukuanfang){
+			$("#lsz_shoukuanfang").data("_id",lsz.shoukuanfang);
+		}else{
+			$("#lsz_shoukuanfang").removeData("_id");
+		}
 		$("#lsz_shoukuanzhanghu").vals(lsz.shoukuanzhanghu);
 		$("#lsz_shoukuanzhanghu").data("zhanghao",lsz.shoukuanzhanghao);
 		if(lsz.zhuanrujine){
@@ -627,9 +644,16 @@ function _hanshuku_(){}
 		readOnly();
 	}
 	
-	function showDetailById(_id){
+	function showDetailById(_id,checkdingjin){
 		postJson("liushuizhang.php",{caozuo:"getbyid",_id:_id},function(lsz){
-			showDetail(lsz);			
+			showDetail(lsz);
+			if(checkdingjin){
+				postJson("liushuizhang.php",{caozuo:"weijiaofudingjin",shoukuanfang:lsz.shoukuanfang},function(res){
+					if(res.dingjin){
+						ask3(null,"特别提醒："+lsz.shoukuanfangname+"有未交付订金，请勿重复付款！！！");
+					}
+				});
+			}
 		});
 	}
 
@@ -747,7 +771,7 @@ function _hanshuku_(){}
 	}else if("weijiaofudingjin"== cmd){
 		$('#currLocation', window.parent.document).text("财账/未交付订金");
 	}
-	listliushuizhang(0,getUrl().showId);
+	listliushuizhang(0,getUrl().showId,getUrl().checkdingjin);
 	
 	 	//设置头部点击处理（放到当前面板）
 	$("#tableheader").click(function(){
