@@ -1384,7 +1384,8 @@ catch(e){
  			hostId:opt.hostId,
  			userId:getTheUser()._id,
  			type:"留言",
- 			neirong:$("textarea",that).val().trim()
+ 			//neirong:$("textarea",that).val().trim()
+ 			neirong:that.editor.getSource().trim()
  			};
  		postJson(opt.docRoot+"liuyan/liuyan.php",obj,function(res){
  			tip(null,"成功提交留言！",2000);
