@@ -40,6 +40,7 @@
 																	ddId:"xxx",
 																	jianshu:2,
 																	row:3,
+																	kehu:"c",
 																	guiges:[{
 																					guige:"xxx",
 																					//row:1,huowus.length
@@ -85,7 +86,7 @@
 						tr = tmpl_tr_huowu.clone(true);
 						tr.find("#td_yangban").remove();
 					}
-					tr.find("#td_bianhao").html(dingdan.ddId+"<br/>("+dingdan.jianshu+"件)").attr("rowspan",dingdan.row);
+					tr.find("#td_bianhao").html(dingdan.ddId+"<br/>("+dingdan.kehu+"，"+dingdan.jianshu+"件)").attr("rowspan",dingdan.row);
 					showGuiges(tr,dingdan.guiges);
 	    	});
 	    }
@@ -240,7 +241,7 @@
 		    			jianshu += parseInt(hw.jianshu);
 		    		}
 		    	});
-		    	var dingdanHW = {ddId:ddId,jianshu:jianshu,yangban:formatYangban(ddHuowus[0].yangban),row:ddHuowus.length};
+		    	var dingdanHW = {ddId:ddId,jianshu:jianshu,yangban:formatYangban(ddHuowus[0].yangban),kehu:ddHuowus[0].kehu,row:ddHuowus.length};
 		    	dingdanHW.guiges = marshalGuige(ddHuowus);
 		    	ret.push(dingdanHW);
 	    	});
