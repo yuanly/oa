@@ -27,7 +27,7 @@
 				} 
 				postJson("./fahuodan.php",{caozuo:"shangchuan",fahuodan:fahuodan},function(fhd){
 					if(fhd.err){
-						tip(null,fhd.err,1500);
+						ask3(null,fhd.err);
 					}else{
 						window.open("fahuodan.html?cmd=chaxun","_self");
 					}
