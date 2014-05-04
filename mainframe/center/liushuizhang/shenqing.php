@@ -13,8 +13,7 @@ if("xinzengshenqing" == $param["caozuo"]){
 	$shenqing["ludanzhe"] = $_SESSION["user"]["_id"];
 	$shenqing["liucheng"][] = $liucheng;
 	$d = date("ymd",time());
-	//$n = coll("fahuodan")->count(array("_id"=>array('$regex'=>"^SQ".$d."")));
-	$n = coll("fahuodan")->count(array("subid"=>array('$regex'=>"^".$d."")));
+	$n = coll("fahuodan")->count(array("subid"=>array('$regex'=>"^".$d.".")));
 	if($n>8){
 		$shenqing["subid"] = $d.".".($n+1);
 	}else{
