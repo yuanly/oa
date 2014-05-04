@@ -21,9 +21,13 @@ if("shangchuan" == $param["caozuo"]){
 		$fahuodan["subid"] = $d.".0".($n+1);
 	}
 	$fahuodan["_id"] = "FHD".$fahuodan["subid"];
-	coll("fahuodan")->save($fahuodan);
-	statExpired();
-	echo '{"success":true}';
+	if(coll("fahuodan")->findOne(array("_id"=>$fahuodan["_id"]))){
+		echo '{"success":true,"err":"新增发货单失败，请联系技术人员！"}';
+	}else{
+		coll("fahuodan")->save($fahuodan);
+		statExpired();
+		echo '{"success":true}';
+	}
 }else if("shanchu" == $param["caozuo"]){
 	$fhd = coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"上传"),null,null,array("remove"=>true));
 	if(empty($fhd)){

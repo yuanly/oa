@@ -26,7 +26,11 @@
 					return;
 				} 
 				postJson("./fahuodan.php",{caozuo:"shangchuan",fahuodan:fahuodan},function(fhd){
-					window.open("fahuodan.html?cmd=chaxun","_self");
+					if(fhd.err){
+						tip(null,fhd.err,1500);
+					}else{
+						window.open("fahuodan.html?cmd=chaxun","_self");
+					}
 				});
 			}
 			$("#tijiao").click(tijiaoyuangao);
