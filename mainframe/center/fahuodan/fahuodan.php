@@ -14,7 +14,7 @@ if("shangchuan" == $param["caozuo"]){
 	$fahuodan["lastId"] = 0;
 	$fahuodan["liucheng"][] = $shangchuanliucheng;
 	$d = date("ymd",time());
-	$n = coll("fahuodan")->count(array("subid"=>array('$regex'=>"^".$d.".")));
+	$n = coll("fahuodan")->count(array("subid"=>array('$regex'=>"^".$d)));
 	if($n>8){
 		$fahuodan["subid"] = $d.".".($n+1);
 	}else{
