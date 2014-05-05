@@ -19,10 +19,22 @@ if("xinzengshenqing" == $param["caozuo"]){
 	}else{
 		$shenqing["subid"] = $d.".0".($n+1);
 	}
-	$shenqing["_id"] = "SQ".$shenqing["subid"];
-	coll("fahuodan")->save($shenqing);
-	statExpired();
-	echo '{"success":true}';
+	while(coll("fahuodan")->findOne(array("subid"=>$shenqing["subid"])){
+		$n ++;
+		if($n>8){
+			$shenqing["subid"] = $d.".".($n+1);
+		}else{
+			$shenqing["subid"] = $d.".0".($n+1);
+		}
+	}
+	$shenqing["_id"] = "SQ".$shenqing["subid"];	
+	if(coll("fahuodan")->findOne(array("_id"=>$shenqing["_id"]))){
+		echo '{"success":true,"err":"新增付款申请失败，请联系技术人员！"}';
+	}else{
+		coll("fahuodan")->save($shenqing);
+		statExpired();
+		echo '{"success":true}';
+	}
 }else if("shanchu" == $param["caozuo"]){
 	$sq = coll("fahuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"制单"),null,null,array("remove"=>true));
 	if(empty($sq)){

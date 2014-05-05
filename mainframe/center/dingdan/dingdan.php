@@ -151,10 +151,26 @@ if("jiedan" == $param["caozuo"]){
 	$fahuodan["lastId"] = 0;
 	$fahuodan["liucheng"][] = $jiedanliucheng;
 	$d = date("ymd",time());
-	$n = coll("fahuodan")->count(array("_id"=>array('$regex'=>"^FHD".$d."")));
-	$fahuodan["subid"] = $d.".".($n+1);
+	$n = coll("fahuodan")->count(array("subid"=>array('$regex'=>"^".$d)));
+	if($n>8){
+		$fahuodan["subid"] = $d.".".($n+1);
+	}else{
+		$fahuodan["subid"] = $d.".0".($n+1);
+	}
+	while(coll("fahuodan")->findOne(array("subid"=>$fahuodan["subid"])){
+		$n ++;
+		if($n>8){
+			$fahuodan["subid"] = $d.".".($n+1);
+		}else{
+			$fahuodan["subid"] = $d.".0".($n+1);
+		}
+	}
 	$fahuodan["_id"] = "FHD".$fahuodan["subid"];
 	$fahuodan["gonghuoshang"] = $dd["gonghuoshang"];
+	if(coll("fahuodan")->findOne(array("_id"=>$fahuodan["_id"]))){
+		echo '{"success":true,"err":"新增发货单失败，请联系技术人员！"}';
+		return;
+	}
 	coll("fahuodan")->save($fahuodan);
 	$n=1;
 	foreach($dd["huowu"] as $huowu){
