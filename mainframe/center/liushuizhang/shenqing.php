@@ -19,7 +19,7 @@ if("xinzengshenqing" == $param["caozuo"]){
 	}else{
 		$shenqing["subid"] = $d.".0".($n+1);
 	}
-	while(coll("fahuodan")->findOne(array("subid"=>$shenqing["subid"])){
+	while(coll("fahuodan")->findOne(array("subid"=>$shenqing["subid"]))){
 		$n ++;
 		if($n>8){
 			$shenqing["subid"] = $d.".".($n+1);
