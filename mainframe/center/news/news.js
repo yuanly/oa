@@ -79,7 +79,8 @@ $(function(){
 	//“提交”消息按钮 新增 回复
 	$("#submitNew").click(function(){
 		if("回复消息" == $("#handle_name").text()){ 
-			var reply ={newId:currNew._id,content:$("#editor").val().trim()};
+			//var reply ={newId:currNew._id,content:$("#editor").val().trim()};
+			var reply ={newId:currNew._id,content:editor.getSource().trim()};
 			if("" == reply.content){
 				ask3(null,"不能发空回复！")
 				return;
@@ -91,7 +92,8 @@ $(function(){
 			});
 			return;
 		}
-		var theNew = {title:$("#title").val().trim(),type:$("#type").val(),content:$("#editor").val().trim()};//author time 
+		//var theNew = {title:$("#title").val().trim(),type:$("#type").val(),content:$("#editor").val().trim()};//author time 
+		var theNew = {title:$("#title").val().trim(),type:$("#type").val(),content:editor.getSource().trim()};//author time 
 		console.log(theNew);
 		if(!theNew.title){
 			ask3(null,"消息标题不能为空！")
