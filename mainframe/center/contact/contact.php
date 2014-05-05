@@ -1,4 +1,4 @@
-<?php
+ï»¿<?php
 //error_log("Location: ".docRoot()."login/login.html",3,"d:/err.log");
 
 include("../../../util.php");
@@ -6,32 +6,32 @@ session_start();
 checkuser();
 
 $contact = getJson();
-if(isset($contact["_id"])){//ĞŞ¸Ä
+if(isset($contact["_id"])){//ä¿®æ”¹
 	if($contact["haiguanma"]){
 		if(coll("contact")->findOne(array("haiguanma"=>$contact["haiguanma"],"_id"=>array('$ne'=>$contact["_id"])))){
-			echo '{"success":true,"err":"º£¹ØÂëÖØ¸´£¬Ìá½»Ê§°Ü£¡"}';
+			echo '{"success":true,"err":"æµ·å…³ç é‡å¤ï¼Œæäº¤å¤±è´¥ï¼"}';
 			return;
 		}
 	}
 	$contact["access"] = time();
 	$old = coll("contact")->findOne(array("_id"=>$contact["_id"]));
-	coll("contact")->save($contact);//ÔÚ¿Í»§¶ËÈ·±£¶ÔÏó¸÷ÊôĞÔ±»ÍêÕû»Ø´«
-	//ĞèÒª¼ì²é mingchen py quyu ÊÇ·ñ·¢ÉúÁË¸Ä±ä£¬Èô±ä£¬ÔòĞèÒª¸üĞÂ¹ØÁªµÄÑù°åºÍ¶©µ¥¡£
-	if(!empty($old) && $old["leixing"] == "ÉÌ¼Ò"){
-		/*Õâ¸ö²Ù×÷²»ÊÇºÜÍ×£¬¿ÉÄÜÏûºÄºÜ´ó£¡µ«ÒªÊµÏÖÔÚÆäËû±íÀïÄÜ°´ÕâĞ©ÊôĞÔËÑË÷£¬Ã²ËÆÃ»ÓĞ¸üºÃµÄ°ì·¨¡£*/
-		if($old["mingchen"] != $contact["mingchen"] || $old["quyu"] != $contact["quyu"]){
+	coll("contact")->save($contact);//åœ¨å®¢æˆ·ç«¯ç¡®ä¿å¯¹è±¡å„å±æ€§è¢«å®Œæ•´å›ä¼ 
+	//éœ€è¦æ£€æŸ¥ mingchen py quyu æ˜¯å¦å‘ç”Ÿäº†æ”¹å˜ï¼Œè‹¥å˜ï¼Œåˆ™éœ€è¦æ›´æ–°å…³è”çš„æ ·æ¿å’Œè®¢å•ã€‚
+	if(!empty($old) && $old["leixing"] == "å•†å®¶"){
+		/*è¿™ä¸ªæ“ä½œä¸æ˜¯å¾ˆå¦¥ï¼Œå¯èƒ½æ¶ˆè€—å¾ˆå¤§ï¼ä½†è¦å®ç°åœ¨å…¶ä»–è¡¨é‡Œèƒ½æŒ‰è¿™äº›å±æ€§æœç´¢ï¼Œè²Œä¼¼æ²¡æœ‰æ›´å¥½çš„åŠæ³•ã€‚*/
+		if($old["mingchen"] != $contact["mingchen"] || $old["quyu"] != $contact["quyu"]){			
 			$obj = array("_id"=>$old["_id"],"mingchen"=>$contact["mingchen"],"py"=>$contact["py"],"quyu"=>$contact["quyu"]);
 			coll("yangban")->update(array("shangjia._id"=>$old["_id"]),array('$set'=>array("shangjia"=>$obj)),array("multiple"=>true));
-			unset($obj["py"]);//¶©µ¥²»Òªpy
+			unset($obj["py"]);//è®¢å•ä¸è¦py
 			coll("dingdan")->update(array("gonghuoshang._id"=>$old["_id"]),array('$set'=>array("gonghuoshang"=>$obj)),array("multiple"=>true));
 			coll("huowu")->update(array("gonghuoshang._id"=>$old["_id"]),array('$set'=>array("gonghuoshang"=>$obj)),array("multiple"=>true));
 		}
 	}
 	echo '{"success":true}';
-}else{//ĞÂÔö
+}else{//æ–°å¢
 	if($contact["haiguanma"]){
 		if(coll("contact")->findOne(array("haiguanma"=>$contact["haiguanma"]))){
-			echo '{"success":true,"err":"º£¹ØÂëÖØ¸´£¬Ìá½»Ê§°Ü£¡"}';
+			echo '{"success":true,"err":"æµ·å…³ç é‡å¤ï¼Œæäº¤å¤±è´¥ï¼"}';
 			return;
 		}
 	}
