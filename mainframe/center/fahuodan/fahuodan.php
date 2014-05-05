@@ -174,6 +174,8 @@ if("shangchuan" == $param["caozuo"]){
 	}else if("wodedaishenjie" == $cmd){
 		$query["ludanzhe"] = $_SESSION["user"]["_id"];
 		$query["zhuangtai"] = "申请审结";
+	}else if(!empty($param["option"]["zhuangtai"])){
+		$query["zhuangtai"] = $param["option"]["zhuangtai"];
 	}
 	
 	if(isset($param["option"]["fukuan"])){
