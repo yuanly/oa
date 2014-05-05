@@ -20,7 +20,7 @@ if("shangchuan" == $param["caozuo"]){
 	}else{
 		$fahuodan["subid"] = $d.".0".($n+1);
 	}
-	while(coll("fahuodan")->findOne(array("subid"=>$fahuodan["subid"])){
+	while(coll("fahuodan")->findOne(array("subid"=>$fahuodan["subid"]))){
 		$n ++;
 		if($n>8){
 			$fahuodan["subid"] = $d.".".($n+1);
