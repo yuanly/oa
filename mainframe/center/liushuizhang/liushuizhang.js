@@ -115,7 +115,7 @@
 		}
 		var limit = 20;
 		setSelector(event,function(page,option,callback){
-			postJson("liushuizhang.php",{caozuo:"chashenqing",ghsId:ghsId,offset:page*limit,limit:limit,option:option},function(shenqings){
+			postJson("liushuizhang.php",{caozuo:"chashenqing",lszId:currLSZ._id,ghsId:ghsId,offset:page*limit,limit:limit,option:option},function(shenqings){
 				callback(shenqings);
 			});
 		},["_id","ludanzhe","duidanzhe","zongjine","kemu","gonghuoshang.mingchen"],function(sq){//选择
