@@ -257,6 +257,40 @@
 	    	});
 	    	return ret;
 	    }
+	    function smallYB(yb){//把样板中括号里面的字体变小
+	    	var s = yb.indexOf("（");
+	    	if(-1 == s){
+	    		s = yb.indexOf("(");
+	    	}
+	    	if(-1 == s){
+	    		return yb;
+	    	}
+	    	var e = yb.lastIndexOf("）");
+	    	if(-1 == e){
+	    		e = yb.lastIndexOf(")");
+	    	}
+	    	if(-1 == e){
+	    		return yb;
+	    	}
+	    	if(s>=e){
+	    		return yb;
+	    	}
+	    	var yb1 = yb.substring(0,s);
+	    	var yb2 = yb.substring(s,e+1);
+	    	var yb3 = yb.substr(e+1);
+	    	return yb1+"<span style='font-size:0.8em;color:grey'>"+yb2+"</span>"+yb3;
+	    }
+			function formatYB(yangban){
+				if(yangban){
+					var yb = "<font style='font-size:0.8em;color:grey;white-space:nowrap;'>("+(yangban.taiguoxinghao?yangban.taiguoxinghao:"-")+")</font>";
+					if(yangban.zhongguoxinghao){
+						yb = smallYB(yangban.zhongguoxinghao)+yb;
+					}
+					return yb;
+				}else{
+					return ""
+				}
+			}
 	    function marshalYangban(huowus){
 	    	var ret = [];
 	    	var ybIds = [];
