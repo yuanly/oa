@@ -78,10 +78,11 @@
 		var sum = 0;
 		$(".tr_shenqing").each(function(i){
 			$(this).find("#sq_index").text(i+1);
-			sum += parseFloat(tr.find("#sq_jine").text());
+			sum += parseFloat($(this).find("#sq_jine").text());
 		});
 		$("#selNum").text($(".tr_shenqing").length);
 		$("#selSum").text(sum);
+		$("#lsz_jine").val(sum);
 	}
 	function tianjiashenqingTR(sq){
 		var tr = tr_shenqing.clone(true); 
@@ -107,9 +108,14 @@
 		return ret;
 	}
 	function tianjiashenqing(){
+		var ghsId = $("#lsz_shoukuanfang").data("_id");
+		if(!ghsId){
+			tip($(this),"请先设置收款方！",1500);
+			return;
+		}
 		var limit = 20;
 		setSelector(event,function(page,option,callback){
-			postJson("liushuizhang.php",{caozuo:"chashenqing",offset:page*limit,limit:limit,option:option},function(shenqings){
+			postJson("liushuizhang.php",{caozuo:"chashenqing",ghsId:ghsId,offset:page*limit,limit:limit,option:option},function(shenqings){
 				callback(shenqings);
 			});
 		},["_id","ludanzhe","duidanzhe","zongjine","kemu","gonghuoshang.mingchen"],function(sq){//选择

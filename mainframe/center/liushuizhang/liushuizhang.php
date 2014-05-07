@@ -87,6 +87,10 @@ if("xinjian" == $param["caozuo"]){
 	}
 	$cur = coll("liushuizhang")->find($query)->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
 	echo  cur2json($cur);
+}else if("chashenqing" == $param["caozuo"]){//
+	$cur = coll("fahuodan")->find(array("gonghuoshang._id"=>$param["ghsId"],
+		"liushuizhang"=>array('$exists'=>false)))->sort(array("_id"=>-1))->skip($param["offset"])->limit($param["limit"]);
+	echo cur2json($cur);
 }else if("weijiaofudingjin" == $param["caozuo"]){//检查商家是否有未交付订金
 	$query = array("kemu"=>"订金","jiaofu"=>array('$ne'=>true),"shoukuanfang"=>$param["shoukuanfang"]);
 	if(coll("liushuizhang")->findOne($query)){
