@@ -92,7 +92,7 @@ if("xinjian" == $param["caozuo"]){
 	echo '{"success":true}';
 }else if("shenhe" == $param["caozuo"]){
 	$liucheng  = array("userId"=>$_SESSION["user"]["_id"],"dongzuo"=>"审核","time"=>time());
-	coll("yanhuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"申请受理")
+	coll("yanhuodan")->findAndModify(array("_id"=>$param["_id"],"zhuangtai"=>"申请审核")
 			,array('$push'=>array("liucheng"=>$liucheng),'$set'=>array("shenhezhe"=>$_SESSION["user"]["_id"],"zhuangtai"=>$liucheng["dongzuo"])));
 	statExpired();
 	echo '{"success":true}';
