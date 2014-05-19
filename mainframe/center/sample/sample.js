@@ -8,7 +8,9 @@
 	py:[xx],//中国型号的拼音首字母
 	shangjia:{_id:1,mingchen:"",py:[],quyu:""},
 	jiage:[beizhu:"",zhi:1.2],
-	danwei:"",
+	danwei:"件",
+	jianmashu:23.1,//
+	jiandanwei:"码",//jianmashu和jiandanwei在danwei=="件"时有效
 	yijiazhe:2,
 	yijiariqi:"2013/09/28",
 	zhuantai:"",
@@ -53,6 +55,12 @@ $(function(){
 		if(!yangban.zhongguoxinghao){
 			tip(null,"中国型号不能为空！",1500);
 			return;
+		}
+		if("件" == yangban.danwei){
+			if(!yangban.jianmashu || !yangban.jiandanwei){
+				tip(null,"每件数量/单位不能为空！",1500);
+				return;
+			}
 		}
 		var xinbianhao = false;		
 		if(currSample == null || bh != currSample.index){
@@ -218,6 +226,15 @@ $(function(){
 			$("#jiage").val("【 元】");
 		}
 		$("#danwei").vals(yangban.danwei);
+		if(yangban.danwei == "件"){
+			$("#tr_jianmashu").show();
+			$("#jianmashu").vals(yangban.jianmashu);
+			$("#jiandanwei").val(yangban.jiandanwei?yangban.jiandanwei:"码");
+		}else{
+			$("#jianmashu").vals("");
+			$("#jiandanwei").val("码");
+			$("#tr_jianmashu").hide();
+		}
 		if(yangban.shangjia){
 			$("#shangjia").vals(yangban.shangjia.mingchen);
 			$("#shangjia").data("shangjia",yangban.shangjia);
@@ -255,6 +272,13 @@ $(function(){
 		//$("#beizhu").editorVal(yangban.beizhu);
 		beizhuEditor.editorVal(yangban.beizhu);
 	}
+	$("#danwei").bind("input",function(){
+		if("件" == $(this).val()){
+			$("#tr_jianmashu").show();
+		}else{
+			$("#tr_jianmashu").hide();
+		}
+	});
 	//读取表单内容，构造对象并返回
 	function form2obj(){
 		var yangban = {};
@@ -266,6 +290,10 @@ $(function(){
 		yangban.zhongguoxinghao = $("#xiangdan #zhongguoxinghao").text().trim().toUpperCase();
 		yangban.jiage = getPrices($("#xiangdan #jiage").val());
 		yangban.danwei = $("#xiangdan #danwei").val().trim();
+		if("件" == yangban.danwei){
+			yangban.jianmashu = parseFloat($("#jianmashu").val());
+			yangban.jiandanwei = $("#jiandanwei").val();
+		}
 		var shangjia = $("#xiangdan #shangjia").data("shangjia");
 		if(shangjia){
 			yangban.shangjia = {_id:shangjia._id,mingchen:shangjia.mingchen,py:shangjia.py,quyu:shangjia.quyu};

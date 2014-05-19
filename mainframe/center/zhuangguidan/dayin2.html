@@ -33,7 +33,6 @@
 	<script>
 		$(function(){
 			$("#guihao").dblclick(function(){
-				console.log("he");
 				window.open("dayin22.html?showId="+getUrl().showId,"_blank");	
 			});
 			$(".clz_split").dblclick(function(){
@@ -45,8 +44,8 @@
 	    var tmpl_tr_huowu = $("#tr_huowu").detach();
 	    var gZGD = null;
    		postJson("zhuangguidan.php",{caozuo:"getbyidfortai",_id:getUrl().showId},function(zgd){
-				zgd.huowu = changeUnit(zgd.huowu);
-   			gZGD = zgd;
+				gZGD = zgd;
+				gZGD.huowu = changeUnit(zgd.huowu);   			
    			$("#guihao").text(zgd.guihao);
    			$("#bianhao").text(zgd._id);
    			$("#zhuangguiriqi").text(zgd.zhuangguiriqi);
@@ -73,7 +72,7 @@
 	    	});
    			var s = ""
 	    	each(zongliangs,function(i,zongliang){
-	    		s +="<b style='color:black'>"+fix1(zongliang.zongliang)+"</b>"+zongliang.danwei+", ";
+	    		s +="<b style='color:black'>"+round(zongliang.zongliang,1)+"</b>"+zongliang.danwei+", ";
 	    	});
 	    	s +="<b style='color:black'>"+zongjianshu(gZGD.huowu)+"</b>R";
    			$("#zongjianshu").html(s);
@@ -98,7 +97,25 @@
     				hw.danwei = "Y";
     			}else if(hw.danwei == "米"){
     				hw.danwei = "Y";
-    				hw.shuliang = roundFix(parseFloat(hw.shuliang) * 1.0936132983377,2);
+    				hw.shuliang = parseFloat(hw.shuliang) * 1.0936132983377;//roundFix(parseFloat(hw.shuliang) * 1.0936132983377,2);
+    				hw.danjia = parseFloat(hw.danjia)/1.0936132983377
+    			}else if(hw.danwei == "件"){
+    				var yb = getYB(hw.yangban._id);
+    				if(!yb || !yb.jianmashu){
+    					tip(null,"请先给样板：("+hw.yangban.zhongguoxinghao+")录入每件的码数！",3000);
+    					throw Error("出错退出！");
+    				}
+    				hw.danwei = "Y";
+    				if(yb.jiandanwei == "码"){
+    					hw.shuliang = parseFloat(yb.jianmashu) * parseFloat(hw.shuliang);
+    					hw.danjia = parseFloat(hw.danjia)/hw.shuliang;
+    				}else if(yb.jiandanwei == "米"){
+    					hw.shuliang = parseFloat(yb.jianmashu) * parseFloat(hw.shuliang) * 1.0936132983377;
+    					hw.danjia = parseFloat(hw.danjia)/hw.shuliang/1.0936132983377;
+    				}else{
+    					tip(null,"样板：("+hw.yangban.zhongguoxinghao+")每件的码数单位不对，只能是'码'或'米'！",3000);
+    					throw Error("出错退出！");
+    				}
     			}
 				});
 				return huowus;
@@ -108,7 +125,7 @@
 				each(kehus,function(i,kehu){
 					var zl = "";
 		    	each(kehu.zongliangs,function(i,zongliang){
-		    		zl +="<b style='color:black'>"+fix1(zongliang.zongliang)+"</b>"+zongliang.danwei+", ";
+		    		zl +="<b style='color:black'>"+round(zongliang.zongliang,1)+"</b>"+zongliang.danwei+", ";
 		    	});
 		    	s += "<span style=''>"+kehu.kehu+":("+zl+kehu.jianshu+"R)</span>&nbsp;&nbsp;"
 				});
@@ -119,7 +136,7 @@
 		    	var tr_gonghuoshang = tmpl_tr_gonghuoshang.clone(true);
 		    	var zl = "";
 		    	each(ghs.zongliangs,function(i,zongliang){
-		    		zl +="<b style='color:black'>"+fix1(zongliang.zongliang)+"</b>"+zongliang.danwei+", ";
+		    		zl +="<b style='color:black'>"+round(zongliang.zongliang,1)+"</b>"+zongliang.danwei+", ";
 		    	});
 	    		var sHtml = (i+1)+".&nbsp;&nbsp;&nbsp;<span style='color:grey'>Customer：<b style='color:black'>"+ghs.kehu
 	    									+"</b></span><span style='float:right;color:grey'>Total: "+zl+"<b style='color:black'>"+ghs.jianshu+"</b>R</span>"
@@ -133,7 +150,7 @@
 					var tr_huowu = tmpl_tr_huowu.clone(true);
 					tr_huowu.find("#td_yangban").html(yangban.yangban
 							+"<br/>(<span style='color:grey'>Vendor: <b style='color:black'>"+yangban.ghsCode
-							+"</b>,&nbsp;<b style='color:black'>"+fix1(yangban.zongliang)+"</b>"+yangban.danwei+", <b style='color:black'>"+yangban.jianshu+"</b>R</span>)").attr("rowspan",yangban.row);
+							+"</b>,&nbsp;<b style='color:black'>"+round(yangban.zongliang,1)+"</b>"+yangban.danwei+", <b style='color:black'>"+yangban.jianshu+"</b>R</span>)").attr("rowspan",yangban.row);
 					showDingdans(tr_huowu,yangban.dingdans,yangban.yangban);
 	    	});
 	    }
@@ -145,10 +162,9 @@
 					}
 					var str ="";
 					if(yangban == dingdan.taiguoyangban || !dingdan.taiguoyangban){
-						str = dingdan.ddId+"<br/>(<span style='color:grey'>&nbsp;<b style='color:black'>"+fix1(dingdan.zongliang)+"</b>"+dingdan.danwei+", <b style='color:black'>"+dingdan.jianshu+"</b>R</span>)";
-					}
-else{
-						str = dingdan.ddId+"<br/>("+dingdan.taiguoyangban+"<span style='color:grey'>,&nbsp;<b style='color:black'>"+fix1(dingdan.zongliang)+"</b>"+dingdan.danwei+", <b style='color:black'>"+dingdan.jianshu+"</b>R</span>)";
+						str = dingdan.ddId+"<br/>(<span style='color:grey'>&nbsp;<b style='color:black'>"+round(dingdan.zongliang,1)+"</b>"+dingdan.danwei+", <b style='color:black'>"+dingdan.jianshu+"</b>R</span>)";
+					}else{
+						str = dingdan.ddId+"<br/>("+dingdan.taiguoyangban+"<span style='color:grey'>,&nbsp;<b style='color:black'>"+round(dingdan.zongliang,1)+"</b>"+dingdan.danwei+", <b style='color:black'>"+dingdan.jianshu+"</b>R</span>)";
 					}
 					tr.find("#td_bianhao").html(str).attr("rowspan",dingdan.row);
 					showGuiges(tr,dingdan.guiges);
@@ -162,7 +178,7 @@ else{
 	    			tr.find("#td_yangban").remove();
 	    		}
 	    		tr.find("#td_guige").html(guige.guige).attr("rowspan",guige.huowus.length);
-	    		tr.find("#td_totalquant").html(guige.zongliang+guige.danwei).attr("rowspan",guige.huowus.length);
+	    		tr.find("#td_totalquant").html(round(guige.zongliang,1)+guige.danwei).attr("rowspan",guige.huowus.length);
 	    		showShuliangJianshus(tr,guige.huowus);
 	    	});
 	    }
@@ -175,8 +191,9 @@ else{
 	    			tr.find("#td_guige").remove();
 	    			tr.find("#td_totalquant").remove();
 	    		}
-					tr.find("#td_shuliang").text(huowu.shuliang+huowu.danwei);
+					tr.find("#td_shuliang").text(round(huowu.shuliang,2)+huowu.danwei);
 					tr.find("#td_jianshu").text(huowu.jianshu);
+					tr.find("#td_memo").html("<span style='display:none' class='clz_jiage'>"+round(huowu.danjia,2)+"</span>");
 					$("#tb_zhuangguidan").append(tr);
 	    	});	    	
 	    }
@@ -262,6 +279,16 @@ else{
 	    	});
 	    	return ret;
 	    }
+	    function getYB(id){
+	    	var ret = null;
+	    	each(gZGD.yangbans,function(i,yb){
+	    		if(yb._id == id){
+	    			ret = yb;
+	    			return false;
+	    		}
+	    	});
+	    	return ret;
+	    }
 	    function getYangban(id){
 	    	var ret = "";
 	    	each(gZGD.yangbans,function(i,yb){
@@ -304,7 +331,7 @@ else{
 		    	}
 		    	var yangbanHW = {jianshu:jianshu,yangban:yangban,ghsCode:ghsCode,row:ybHuowus.length};
 		    	yangbanHW.dingdans = marshalDingdan(ybHuowus);
-		    	yangbanHW.zongliang = roundFix(zl,2);
+		    	yangbanHW.zongliang = zl;//roundFix(zl,2);
 		    	yangbanHW.danwei = ybHuowus[0].danwei;
 		    	ret.push(yangbanHW);
 	    	});
@@ -357,7 +384,7 @@ else{
 		    	}
 		    	
 		    	dingdanHW.guiges = marshalGuige(dd,ddHuowus);
-		    	dingdanHW.zongliang = roundFix(zl,2);
+		    	dingdanHW.zongliang = zl;//roundFix(zl,2);
 		    	dingdanHW.danwei = ddHuowus[0].danwei;
 		    	ret.push(dingdanHW);
 	    	});
@@ -392,7 +419,7 @@ else{
 		    	});
 		    	var taiguoguige = getTaiguoguige(dd,guige);
 		    	guigeHW = {guige:taiguoguige,huowus:ggHuowus};
-		    	guigeHW.zongliang = roundFix(zl,2);
+		    	guigeHW.zongliang = zl;//roundFix(zl,2);
 		    	guigeHW.danwei = huowus[0].danwei;
 		    	ret.push(guigeHW);
 	    	});
@@ -412,6 +439,12 @@ else{
 	    	});
 	    	return ret;
 	    }
+	    
+			$("#th_memo").toggle(function(){
+				$(".clz_jiage").show();	
+			},function(){
+				$(".clz_jiage").hide();	
+			});
 		});
 
 			/*
@@ -472,7 +505,6 @@ else{
 							}...]
 
     */
-
 	</script>
 	</head>
 <body style="margin:0px;padding:0px;">
@@ -485,7 +517,7 @@ else{
  </div>
  <table style="width:100%;border-spacing:0px;border-collapse:collapse;border:0px solid black;margin-top:10px;font-size:1.0em" border=0 id="tb_zhuangguidan">
 		<tr>
-			<th>Product</th><th nowrap>Order</th><th>Specs</th><th nowrap>Quant.</th><th nowrap>PCS</th><th>Total</th><th>Memo</th>
+			<th>Product</th><th nowrap>Order</th><th>Specs</th><th nowrap>Quant.</th><th nowrap>PCS</th><th>Total</th><th id="th_memo">Memo</th>
 		</tr>
 	 	<tr>
 	 		<td style="border:1px solid black;paddig-left:5px;text-align:left;font-size:0.8em" id="td_kehuhuizong" colspan=7></td>
@@ -498,7 +530,7 @@ else{
 			<td style="text-align:center;" id="td_shuliang" nowrap></td>
 			<td style="text-align:center" id="td_jianshu"></td>
 			<td style="text-align:center" id="td_totalquant"></td>
-			<td style="width:100px;border-right:1px solid black;" id="id_jieguo"></td>
+			<td style="width:100px;border-right:1px solid black;" id="td_memo"></td>
 		</tr>
 </table>
 </body>

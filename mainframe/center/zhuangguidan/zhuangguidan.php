@@ -158,7 +158,7 @@ if("xinjian" == $param["caozuo"]){
 	}
 	$zgd["yangbans"] = [];
 	foreach($ybIds as $ybId){
-		$yb = coll("yangban")->findOne(array("_id"=>$ybId),array("taiguoxinghao"=>1));
+		$yb = coll("yangban")->findOne(array("_id"=>$ybId),array("taiguoxinghao"=>1,"jianmashu"=>1,"jiandanwei"=>1));
 		if($yb){
 			$zgd["yangbans"][] = $yb;
 		}

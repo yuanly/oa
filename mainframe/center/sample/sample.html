@@ -85,6 +85,12 @@
 					<span>单位：</span><input id="danwei" class="plainInput list" type="text" list="danweilist" style="width:50px;cursor:pointer" />
 				</td>
 			</tr>
+			<tr id="tr_jianmashu" style="display:none">
+				<td align=right>
+					每件：<input id="jianmashu" class="plainInput" type="text" style="width:50px;text-align:center"/>
+					<input id="jiandanwei" class="plainInput list" type="text" list="jiandanweilist" value="码" style="width:30px;cursor:pointer" />
+				</td>
+			</tr>
 			<tr>
 				<td nowrap>
 					<span>商家：<span><input id="shangjia" class="plainInput" type="text" style="width:200px;cursor:pointer" />&nbsp;
@@ -129,6 +135,10 @@
 			<option value="卷"/>
 			<option value="条"/>
 			<option value="张"/>
+		</datalist>
+		<datalist id="jiandanweilist">
+			<option value="码"/>
+			<option value="米"/>
 		</datalist>
 	</div>
 </body>

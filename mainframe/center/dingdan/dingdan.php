@@ -182,8 +182,13 @@ if("jiedan" == $param["caozuo"]){
 			$hw["guige"] = $huowu["guige"];
 			$hw["danwei"] = $huowu["danwei"];
 			$hw["danjia"] = $huowu["danjia"];
-			$hw["shuliang"] = $huowu["shuliang"];
-			$hw["jianshu"] = 1;
+			if("件" == $hw["danwei"]){
+				$hw["shuliang"] = 1;
+				$hw["jianshu"] = $huowu["shuliang"];
+			}else{
+				$hw["shuliang"] = $huowu["shuliang"];
+				$hw["jianshu"] = 1;
+			}
 			$hw["fahuodan"] = $fahuodan["_id"];
 			$hw["_id"] = $fahuodan["_id"]."HW".$n;
 			$n = $n + 1;
