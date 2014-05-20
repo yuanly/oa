@@ -176,7 +176,7 @@ else{
 	    			tr.find("#td_yangban").remove();
 	    		}
 	    		tr.find("#td_guige").html(guige.guige).attr("rowspan",guige.huowus.length);
-	    		tr.find("#td_totalquant").html(guige.zongliang).attr("rowspan",guige.huowus.length);
+	    		tr.find("#td_totalquant").html(round(guige.zongliang,1)).attr("rowspan",guige.huowus.length);
 	    		showShuliangJianshus(tr,guige.huowus);
 	    	});
 	    }
@@ -189,7 +189,7 @@ else{
 	    			tr.find("#td_guige").remove();
 	    			tr.find("#td_totalquant").remove();
 	    		}
-					tr.find("#td_shuliang").text(huowu.shuliang+huowu.danwei);
+					tr.find("#td_shuliang").text(round(huowu.shuliang,2)+huowu.danwei);
 					tr.find("#td_jianshu").text(huowu.jianshu);
 					$("#tb_zhuangguidan").append(tr);
 	    	});	    	
