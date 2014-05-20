@@ -41,8 +41,8 @@
 	    var tmpl_tr_huowu = $("#tr_huowu").detach();
 	    var gZGD = null;
    		postJson("zhuangguidan.php",{caozuo:"getbyidfortai",_id:getUrl().showId},function(zgd){
-				zgd.huowu = changeUnit(zgd.huowu);
-   			gZGD = zgd;
+				gZGD = zgd;
+				gZGD.huowu = changeUnit(zgd.huowu); 
    			$("#guihao").text(zgd.guihao);
    			$("#bianhao").text(zgd._id);
    			$("#zhuangguiriqi").text(zgd.zhuangguiriqi);
@@ -94,7 +94,25 @@
     				hw.danwei = "Y";
     			}else if(hw.danwei == "米"){
     				hw.danwei = "Y";
-    				hw.shuliang = parseFloat(hw.shuliang) * 1.0936132983377,2;
+    				hw.shuliang = parseFloat(hw.shuliang) * 1.0936132983377;//roundFix(parseFloat(hw.shuliang) * 1.0936132983377,2);
+    				hw.danjia = parseFloat(hw.danjia)/1.0936132983377
+    			}else if(hw.danwei == "件"){
+    				var yb = getYB(hw.yangban._id);
+    				if(!yb || !yb.jianmashu){
+    					tip(null,"请先给样板：("+hw.yangban.zhongguoxinghao+")录入每件的码数！",3000);
+    					throw Error("出错退出！");
+    				}
+    				hw.danwei = "Y";
+    				if(yb.jiandanwei == "码"){
+    					hw.shuliang = parseFloat(yb.jianmashu) * parseFloat(hw.shuliang);
+    					hw.danjia = parseFloat(hw.danjia)/hw.shuliang;
+    				}else if(yb.jiandanwei == "米"){
+    					hw.shuliang = parseFloat(yb.jianmashu) * parseFloat(hw.shuliang) * 1.0936132983377;
+    					hw.danjia = parseFloat(hw.danjia)/hw.shuliang/1.0936132983377;
+    				}else{
+    					tip(null,"样板：("+hw.yangban.zhongguoxinghao+")每件的码数单位不对，只能是'码'或'米'！",3000);
+    					throw Error("出错退出！");
+    				}
     			}
 				});
 				return huowus;
