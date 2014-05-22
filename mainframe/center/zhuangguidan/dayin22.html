@@ -276,6 +276,16 @@ else{
 	    	});
 	    	return ret;
 	    }
+	    function getYB(id){
+	    	var ret = null;
+	    	each(gZGD.yangbans,function(i,yb){
+	    		if(yb._id == id){
+	    			ret = yb;
+	    			return false;
+	    		}
+	    	});
+	    	return ret;
+	    }
 	    function getYangban(id){
 	    	var ret = "";
 	    	each(gZGD.yangbans,function(i,yb){
