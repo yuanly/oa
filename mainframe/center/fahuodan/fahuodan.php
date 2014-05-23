@@ -227,6 +227,10 @@ if("shangchuan" == $param["caozuo"]){
 		$huowu["ver"] = $ver;
 		coll("huowu")->update(array("_id"=>$hwId),array('$set'=>$huowu),array("upsert"=>true));//考虑到有注释可能从验货单填入，不能直接save
 	}
+	if(count($fahuodan["huowu"]) != coll("huowu")->count(array("ver"=>$ver))){//出现过丢货物的情况，不知道是否这里丢的。
+		echo '{"success":true,"err":"内部错误！请通知技术人员。"}';
+		return;
+	}
 	coll("huowu")->remove(array("fahuodan"=>$id,"ver"=>array('$ne'=>$ver)));
 	
 	unset($fahuodan["huowu"]);

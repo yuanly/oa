@@ -371,6 +371,10 @@
 			return;
 		}
 		currFHD.huowu = huowu;
+		if(huowu.length != $(".shuliangjianshu").length){//发现有丢货物的情况，这里增加校验
+			tip($(this),"客户端错误！请通知技术人员。",2000);
+			return;
+		}
 		var qita = [];
 		$(".qitafeiyong").each(function(i,feiyong){
 			var qtfy = {};
