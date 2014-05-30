@@ -227,12 +227,20 @@ if("shangchuan" == $param["caozuo"]){
 		$huowu["ver"] = $ver;
 		coll("huowu")->update(array("_id"=>$hwId),array('$set'=>$huowu),array("upsert"=>true));//考虑到有注释可能从验货单填入，不能直接save
 	}
+	coll("huowu")->remove(array("fahuodan"=>$id,"ver"=>array('$ne'=>$ver)));
 	if(count($fahuodan["huowu"]) != coll("huowu")->count(array("ver"=>$ver))){//出现过丢货物的情况，不知道是否这里丢的。
 		echo '{"success":true,"err":"内部错误！请通知技术人员。"}';
 		return;
 	}
-	coll("huowu")->remove(array("fahuodan"=>$id,"ver"=>array('$ne'=>$ver)));
-	
+	//还是有总金额跟货物金额汇总不一致的情况！干脆在这里重新计算总金额。财账那边是直接显示这里保存的结果。
+	$zongjine = 0;
+	foreach($fahuodan["huowu"] as $huowu){
+		$zongjine += $huowu["danjia"]*$huowu["shuliang"];
+	}
+	foreach($fahuodan["qitafei"] as $qita){
+		$zongjine += $qita["jine"];
+	}
+	$fahuodan["zongjine"] = $zongjine;
 	unset($fahuodan["huowu"]);
 	unset($fahuodan["liucheng"]);
 	unset($fahuodan["_id"]);
