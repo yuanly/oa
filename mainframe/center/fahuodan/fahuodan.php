@@ -215,11 +215,11 @@ if("shangchuan" == $param["caozuo"]){
 	$fahuodan = $param["fahuodan"];
 	$id = $fahuodan["_id"];
 	$old = coll("fahuodan")->findOne(array("_id"=>$id,"ludanzhe"=>$_SESSION["user"]["_id"]));
+	
 	if(empty($old["ludanzhe"])){
 		echo '{"success":true,"err":"数据不一致，请刷新界面！"}';
 		return;
 	}
-	
 	$ver = getId("huowuversion");//用它来识别出已被删除货物。
 	foreach($fahuodan["huowu"] as $huowu){
 		$hwId = $huowu["_id"];
@@ -234,11 +234,15 @@ if("shangchuan" == $param["caozuo"]){
 	}
 	//还是有总金额跟货物金额汇总不一致的情况！干脆在这里重新计算总金额。财账那边是直接显示这里保存的结果。
 	$zongjine = 0;
-	foreach($fahuodan["huowu"] as $huowu){
-		$zongjine += $huowu["danjia"]*$huowu["shuliang"];
+	if(!empty($fahuodan["huowu"])){
+		foreach($fahuodan["huowu"] as $huowu){
+			$zongjine += $huowu["danjia"]*$huowu["shuliang"]*$huowu["jianshu"];
+		}
 	}
-	foreach($fahuodan["qitafei"] as $qita){
-		$zongjine += $qita["jine"];
+	if(!empty($fahuodan["qitafei"])){
+		foreach($fahuodan["qitafei"] as $qita){
+			$zongjine += $qita["jine"];
+		}
 	}
 	$fahuodan["zongjine"] = $zongjine;
 	unset($fahuodan["huowu"]);

@@ -938,6 +938,7 @@ function _hanshuku_(){}
 			$("#chaifen").hide();
 		}
 		$("#fangqi").hide();$("#baocun").hide();
+		
 	}
 	
 	function edit(event){
@@ -1151,7 +1152,7 @@ function _hanshuku_(){}
 			$(".th_daifu").show();
 			$(".clz_daifu").show();
 		}
-		if($("#fhd_zonge").text() && (parseFloat($("#fhd_zonge").text()) != currFHD.zongjine)){//数据不一致，保存的时候数据库出现异常了。
+		if(currFHD.zongjine && $("#fhd_zonge").text() && (parseFloat($("#fhd_zonge").text()) != currFHD.zongjine)){//数据不一致，保存的时候数据库出现异常了。
 			tip(null,"可能是数据库异常导致发货单数据不一致，请重新保存发货单！记录的总金额为："+currFHD.zongjine,3000);
 		}
 	}
