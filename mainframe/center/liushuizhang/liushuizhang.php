@@ -270,6 +270,7 @@ if("xinjian" == $param["caozuo"]){
 	}else if($param["option"]["zhuangtai"] == "未付"){
 		$query["yifu"] = false;
 		$query["jine"] = array('$exists'=>true);
+		unset($query["fukuanriqi"]);
 	}
 	if(isset($param["option"]["kemu"])){
 		$query["kemu"] = $param["option"]["kemu"];
