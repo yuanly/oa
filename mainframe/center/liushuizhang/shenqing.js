@@ -48,6 +48,9 @@ $(function(){
 			window.open("../liushuizhang/liushuizhang.html?showId="+currSQ.liushuizhang._id,"_blank");
 		}
 	}
+	$("#tongji").click(function(){
+		window.open("../liushuizhang/yuejietongji.html","_blank");
+	});
 	$("#sq_fukuanxinxi").click(link_liushui);
 	function selShengchengliushui(event){
 		var liushui = {};

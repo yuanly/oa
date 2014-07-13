@@ -26,6 +26,7 @@ $(function(){
 		$(".ui-layout-center").show();
 		obj2form({danwei:"码",zhuangtai:"正常",yijiazhe:getTheUser()._id,yijiariqi:(new Date()).format("yyyy/MM/dd")});
 		bianji();
+		$("#liuyan").hide();
 	}
 	$("#xinzengyangban").click(xinzengyangban_handle);
 	$(".list").dblclick(function(){
@@ -212,6 +213,7 @@ $(function(){
 	}
 	//用参数对象更新表单的内容
 	function obj2form(yangban){
+		$("#liuyan").show();
 		$("#xiangdan").data("yangban",yangban);
 		$("#bianhao").vals(yangban.index);
 		$("#taiguoxinghao").vals(yangban.taiguoxinghao);

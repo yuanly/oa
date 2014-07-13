@@ -16,7 +16,7 @@ if(isset($param["_id"])){//
 	}
 	echo jsonEncode($one);
 }else if(isset($param["caozuo"]) && "sfchongfu" == $param["caozuo"]){//检查人工索引是否重复
-	$one = coll("yangban")->findOne(array("index"=>upper($param["index"])));
+	$one = coll("yangban")->findOne(array("index"=>mb_strtoupper($param["index"],"UTF-8")));	
 	if($one){
 		echo '{"success":true,"err":"编号重复，请重置！"}';
 	}else{

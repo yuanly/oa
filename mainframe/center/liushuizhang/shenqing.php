@@ -131,4 +131,8 @@ if("xinzengshenqing" == $param["caozuo"]){
 	coll("fahuodan")->save($obj);
 	statExpired();
 	echo '{"success":true}';
+}else if("yuejietongji" == $param["caozuo"]){//
+	$query = array("liucheng.dongzuo"=>array('$ne'=>"作废"),"gonghuoshang._id"=>$param["option"]["lxrId"],"liushuizhang"=>array('$exists'=>false));
+	$cur = coll("fahuodan")->find($query,array("zongjine"=>1,"ludanzhe"=>1))->sort(array("subid"=>1));
+	echo  cur2json($cur);
 }
