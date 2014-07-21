@@ -1,0 +1,59 @@
+﻿<html>
+	<head>
+	<link rel="shortcut icon" href="../../../logo/zhongtailogo.ico">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=0"> 
+	<link type="text/css" rel="stylesheet" href="../../../css/my.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/oa.css" />
+	<link type="text/css" rel="stylesheet" href="../../../css/layout-default-latest.css" />
+<link rel="stylesheet" href="../../../css/ui-lightness/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen">
+	<title>流水账统计</title>
+	<script src="../../../js/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-migrate-1.1.1.js" type="text/javascript"></script> 
+	<script src="../../../xheditor-1.2.1/xheditor-1.2.1.min.js" type="text/javascript"></script>    
+	<script src="../../../xheditor-1.2.1/xheditor_lang/zh-cn.js" type="text/javascript"></script>
+	<script src="../../../js/my.js" type="text/javascript"></script>
+	<script src="../../../js/localstorage.js" type="text/javascript"></script>
+	<script src="../../../js/server.js" type="text/javascript"></script>
+	<script src="../../../uploader/client/fileuploader.js" type="text/javascript"></script>
+	<script src="../../../js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+	<script src="../../../js/jquery.layout-latest.js" type="text/javascript"></script>
+	<script src="../../../js/ui.datepicker-zh-CN.js" type="text/javascript"></script>
+	<script type="text/javascript" src="yuejietongji.js"></script>
+	<style>
+		th{
+			background-color:#99ccff;
+		}
+		.tip{
+			color:#95B9C7;
+			cursor:pointer
+		}
+	</style>
+</head>
+<body style="margin:0px;padding:0px">
+	<div align=center id="title_div">
+		<h3>商家未记账申请款统计</h3>
+	</div>
+	<div align=center style="margin:20px;" id="div_options">
+		商家：<div class="myinput" id="lianxiren" style="cursor:pointer">&nbsp;</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="plainBtn" id="tongji">统计</span>&nbsp;&nbsp;
+	</div>
+	<div align=center>
+		未记账总额：<span id="weijizhangzonge" style="font-weight:bolder;color:red"></span>
+	</div>
+	<table align=center id="tb_shenqing" style="font-size:0.85em">
+		<tr id="tr_header">
+			<th id="td_no">No.</th>
+			<th id="td_bianhao">编号</th>
+			<th id="td_ludanzhe">申请者</th>
+			<th id="td_shoukuanjine">申请金额</th>
+		</tr>
+		<tr id="tr_shenqing" class="tr_shenqing">
+			<td class="td_no" id="td_no" style="text-align:center"></td>
+			<td id="td_bianhao" class="td_bianhao"></td>
+			<td id="td_ludanzhe" class="td_ludanzhe"></td>
+			<td class="td_shoukuanjine" id="td_shoukuanjine"></td>
+		</tr>
+	</table>
+</body>
+</html>
