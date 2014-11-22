@@ -229,10 +229,9 @@ function new2tr(theNew){
 }
 
 function getnews(page,type){
-	server.getnews(page,type,function(news){ 
+	server.getnews(page,type,function(news){
 		if(news instanceof Array){
 			$("#newslist").empty(); 
-			$(".ui-layout-center").hide();
 			for(i=0;i<news.length;i++){
 				try{
 				$("#newslist").append(new2tr(news[i]));
@@ -243,6 +242,8 @@ function getnews(page,type){
 					if($("#newslist").find("#lin").length>0){
 						$(".ui-layout-center").show();
 						$("#newslist").find("#lin").click();
+					}else{
+						$(".ui-layout-center").hide();
 					}
 				}catch(e){}
 			}
@@ -289,11 +290,11 @@ function setNewsDetail(theNew){
 		$("#newsDetail table").append(first_tr);
 		//show replies
 		louceng=2;
-		server.getNewsReplies(theNew._id,function(replies){  
+		server.getNewsReplies(theNew._id,function(replies){
 			for(var i = 0; i<replies.length; i++){
 				var tr = setNewsReplyTr(replies[i]); 
 				$("#newsDetail table").append(tr);
-			} 
+			}
 		});
 	}catch(e){console.log(e)}
 }
