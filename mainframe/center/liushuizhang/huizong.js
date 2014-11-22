@@ -118,10 +118,10 @@
 				tr_liushui.find("#td_fukuanzhanghu").text(liushui.fukuanzhanghu);
 				tr_liushui.find("#td_shoukuanfang").text(liushui.shoukuanfangname);
 				tr_liushui.find("#td_shoukuanzhanghu").text(liushui.shoukuanzhanghu);
-				tr_liushui.find("#td_jine").text(liushui.jine);
-				tr_liushui.find("#td_shoukuanjine").text(liushui.zhuanrujine?liushui.zhuanrujine:liushui.jine);
-				tr_liushui.find("#td_shijihuilv").text(liushui.huilv?liushui.huilv:"");
-				tr_liushui.find("#td_shouxufei").text(liushui.shouxufei?liushui.shouxufei:"");
+				tr_liushui.find("#td_jine").text(roundFix(liushui.jine));
+				tr_liushui.find("#td_shoukuanjine").text(roundFix(liushui.zhuanrujine?liushui.zhuanrujine:liushui.jine,2));
+				tr_liushui.find("#td_shijihuilv").text(liushui.huilv?roundFix(liushui.huilv,2):"");
+				tr_liushui.find("#td_shouxufei").text(liushui.shouxufei?roundFix(liushui.shouxufei,2):"");
 				tr_liushui.find(".td_beizhu").text(liushui.zhaiyao?liushui.zhaiyao:"");
 				if(!option.zhanghao){
 					if(option.lxrId == liushui.fukuanfang){
@@ -151,16 +151,16 @@
 						}
 					}
 				}
-				tr_liushui.find("#td_yue").text(zongshouru - zongzhichu + chushiyue);
+				tr_liushui.find("#td_yue").text(roundFix(zongshouru - zongzhichu + chushiyue,2));
 				tr_liushui.find("#td_fukuanriqi").text(liushui.fukuanriqi);
 				tr_liushui.find("#td_kemu").text(liushui.kemu); 
 				
 				tr_liushui.css("background-color",toggle("#fff","#eee"));
 				$("#tb_liushui").append(tr_liushui);
 			});
-			$("#zongzhichu").text(zongzhichu);
-			$("#zongshouru").text(zongshouru);
-			$("#jingzhichu").text(zongzhichu - zongshouru);
+			$("#zongzhichu").text(roundFix(zongzhichu,2));
+			$("#zongshouru").text(roundFix(zongshouru,2));
+			$("#jingzhichu").text(roundFix(zongzhichu - zongshouru,2));
 			if(zongzhichu - zongshouru>=0){
 				$("#jingzhichu").css("color","red");
 			}else{

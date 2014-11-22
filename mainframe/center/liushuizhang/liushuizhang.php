@@ -283,7 +283,11 @@ if("xinjian" == $param["caozuo"]){
 								 							array("shoukuanfang"=>$param["option"]["lxrId"]));
 	}
 	//var_dump($query);
-	$cur = coll("liushuizhang")->find($query)->sort(array("_id",-1));
+	if($param["option"]["zhuangtai"] == "已付"){
+		$cur = coll("liushuizhang")->find($query)->sort(array("fukuanriqi"=>1));
+	}else{		
+		$cur = coll("liushuizhang")->find($query)->sort(array("_id"=>1));
+	}
 	echo  cur2json($cur);
 }else if("chayue" == $param["caozuo"]){//出现死锁时调用
 	echo getBalance($param["lxrId"],$param["zhanghao"]);	
